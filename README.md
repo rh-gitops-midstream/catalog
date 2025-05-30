@@ -2,7 +2,7 @@
 
 ## Update catalog
 
-```
+```bash
 bin/opm alpha render-template basic catalog/v4.12/catalog-template.yaml -o yaml > catalog/v4.12/openshift-gitops-operator/catalog.yaml 
 ```
 
@@ -26,6 +26,7 @@ bin/opm render --use-http localhost:5000/redhat-operator-index:v4.12 -o yaml > c
 # https://olm.operatorframework.io/docs/reference/catalog-templates/#converting-from-fbc-to-basic-template
 # create a template
 bin/opm alpha convert-template basic catalog-render-4.12.yaml -o yaml > catalog-4.12-basic-template.yaml
+mv catalog-4.12-basic-template.yaml catalog/v4.12/catalog-template.yaml
 ```
 
 

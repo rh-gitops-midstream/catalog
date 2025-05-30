@@ -541,6 +541,8 @@ entries:
     - openshift-gitops-operator.v1.16.0
   - name: openshift-gitops-operator.v1.16.1
     replaces: openshift-gitops-operator.v1.16.0-0.1746014725.p
+  - name: openshift-gitops-operator.v1.16.2
+    replaces: openshift-gitops-operator.v1.16.1
   - name: openshift-gitops-operator.v1.5.2
     skipRange: '>=1.0.0 <1.5.2'
   - name: openshift-gitops-operator.v1.5.3
@@ -875,6 +877,8 @@ entries:
     - openshift-gitops-operator.v1.16.0
   - name: openshift-gitops-operator.v1.16.1
     replaces: openshift-gitops-operator.v1.16.0-0.1746014725.p
+  - name: openshift-gitops-operator.v1.16.2
+    replaces: openshift-gitops-operator.v1.16.1
   - name: openshift-gitops-operator.v1.5.2
     skipRange: '>=1.0.0 <1.5.2'
   - name: openshift-gitops-operator.v1.5.3
@@ -1151,4 +1155,6 @@ entries:
 - image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:d8725149c57d5de6c5c10d472cfd54721e8f8bf12e66e34c0311103a835a3081
   schema: olm.bundle
 - image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:27efa0ab1d9c69047a924bc1dcd2b56108f5f390a6da56afb6ab7a37cb4578e2
+  schema: olm.bundle
+- image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:6cc8d926a03733694cc1aa876019b1dd73cf5ec575d4f70527503b5c6a19b80a
   schema: olm.bundle
