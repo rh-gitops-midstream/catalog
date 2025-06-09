@@ -1,4 +1,4 @@
-schema: olm.template.basic
+---
 entries:
 - defaultChannel: latest
   icon:
@@ -541,8 +541,6 @@ entries:
     - openshift-gitops-operator.v1.16.0
   - name: openshift-gitops-operator.v1.16.1
     replaces: openshift-gitops-operator.v1.16.0-0.1746014725.p
-  - name: openshift-gitops-operator.v1.16.2
-    replaces: openshift-gitops-operator.v1.16.1
   - name: openshift-gitops-operator.v1.5.2
     skipRange: '>=1.0.0 <1.5.2'
   - name: openshift-gitops-operator.v1.5.3
@@ -877,8 +875,6 @@ entries:
     - openshift-gitops-operator.v1.16.0
   - name: openshift-gitops-operator.v1.16.1
     replaces: openshift-gitops-operator.v1.16.0-0.1746014725.p
-  - name: openshift-gitops-operator.v1.16.2
-    replaces: openshift-gitops-operator.v1.16.1
   - name: openshift-gitops-operator.v1.5.2
     skipRange: '>=1.0.0 <1.5.2'
   - name: openshift-gitops-operator.v1.5.3
@@ -1156,5 +1152,5 @@ entries:
   schema: olm.bundle
 - image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:27efa0ab1d9c69047a924bc1dcd2b56108f5f390a6da56afb6ab7a37cb4578e2
   schema: olm.bundle
-- image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:808bbf55f73a3f579301f3c76ea504b48ebc5d035794355d9694ba5327d6651f
-  schema: olm.bundle
+schema: olm.template.basic
+
