@@ -36,14 +36,7 @@ spec:
     - name: path-context
       value: catalog/v4.12
   pipelineRef:
-    resolver: git
-    params:
-      - name: url
-        value: https://github.com/rh-gitops-midstream/catalog.git
-      - name: revision
-        value: main
-      - name: pathInRepo
-        value: /konflux-ci/pipelines/multi-platform-fbc-image-build.yaml
+    name: multi-platform-fbc-image-build
   taskRunTemplate:
     serviceAccountName: build-pipeline-catalog-4-12
   workspaces:
