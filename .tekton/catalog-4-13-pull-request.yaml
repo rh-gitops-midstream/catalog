@@ -13,10 +13,10 @@ metadata:
       == "main"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: catalog-4-12
-    appstudio.openshift.io/component: catalog-4-12
+    appstudio.openshift.io/application: catalog-4-13
+    appstudio.openshift.io/component: catalog-4-13
     pipelines.appstudio.openshift.io/type: build
-  name: catalog-4-12-on-pull-request
+  name: catalog-4-13-on-pull-request
   namespace: rh-openshift-gitops-tenant
 spec:
   params:
@@ -31,7 +31,7 @@ spec:
     - name: dockerfile
       value: Dockerfile
     - name: path-context
-      value: catalog/v4.12
+      value: catalog/v4.13
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate:
