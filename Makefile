@@ -47,5 +47,14 @@ catalog:
 	@for version in $(OCP_VERSIONS); do \
 		echo "Rendering catalog for v$$version..."; \
 		mkdir -p catalog/v$$version/openshift-gitops-operator; \
-		$(OPM) alpha render-template basic catalog/v$$version/template.yaml -o yaml > catalog/v$$version/openshift-gitops-operator/catalog.yaml; \
+		MAJOR=$$(echo $$version | cut -d. -f1); \
+		MINOR=$$(echo $$version | cut -d. -f2); \
+		if [ "$$MAJOR" -eq 4 ] && [ "$$MINOR" -ge 17 ]; then \
+			MIGRATE="--migrate-level=bundle-object-to-csv-metadata"; \
+		else \
+			MIGRATE=""; \
+		fi; \
+		$(OPM) alpha render-template basic catalog/v$$version/template.yaml $$MIGRATE -o yaml > catalog/v$$version/openshift-gitops-operator/catalog.yaml; \
+		echo "Replacing quay.io with registry.redhat.io in v$$version catalog..."; \
+		sed -i '' 's~quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle~registry.redhat.io/openshift-gitops-1/gitops-operator-bundle~g' catalog/v$$version/openshift-gitops-operator/catalog.yaml; \
 	done
