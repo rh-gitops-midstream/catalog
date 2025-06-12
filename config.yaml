@@ -1,0 +1,7 @@
+package: openshift-gitops-operator
+channels:
+  - name: gitops-1.16
+    versions:
+      - name: openshift-gitops-operator.v1.16.2
+        replaces: openshift-gitops-operator.v1.16.1
+        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:cc14268ddbd89c654124439711249fc888a50de97ddf0e29d9665cd490bb1aeb
