@@ -1,2 +1,4 @@
 bin/
 catalog-renders/
+
+.DS_Store

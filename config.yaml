@@ -1,7 +1,23 @@
 package: openshift-gitops-operator
+supportedOCP: [v4.12, v4.13, v4.14, v4.15, v4.16, v4.17, v4.18]
 channels:
   - name: gitops-1.16
     versions:
       - name: openshift-gitops-operator.v1.16.2
         replaces: openshift-gitops-operator.v1.16.1
+        skipRange: ""
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:cc14268ddbd89c654124439711249fc888a50de97ddf0e29d9665cd490bb1aeb
+      - name: openshift-gitops-operator.v1.16.3
+        replaces: openshift-gitops-operator.v1.16.2
+        skipRange: ""
+        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:aa
+  - name: gitops-1.17
+    versions:
+      - name: openshift-gitops-operator.v1.17.0
+        replaces: openshift-gitops-operator.v1.16.3
+        skipRange: ""
+        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:cc
+      - name: openshift-gitops-operator.v1.17.1
+        replaces: openshift-gitops-operator.v1.16.0
+        skipRange: ""
+        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:adsa
