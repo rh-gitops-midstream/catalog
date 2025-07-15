@@ -1,0 +1,23 @@
+apiVersion: appstudio.redhat.com/v1alpha1
+kind: Release
+metadata:
+  name: catalog-4-18-stage-2
+  namespace: rh-openshift-gitops-tenant
+spec:
+  data:
+    releaseNotes:
+      topic: "Red Hat OpenShift GitOps release"
+      synopsis: "Red Hat OpenShift GitOps update"
+      description: |
+        An update is now available for Red Hat OpenShift GitOps.
+      solution: |
+        Before applying this update, make sure all previously released errata relevant to your system have been applied.
+        
+        For details on how to apply this update, refer to:
+        
+        https://access.redhat.com/articles/11258
+      references:
+        - https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/1.16/
+  gracePeriodDays: 7
+  releasePlan: catalog-4-18-stage
+  snapshot: catalog-4-18-nwn7v
