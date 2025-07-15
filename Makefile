@@ -1,6 +1,6 @@
 OS := $(shell uname | tr '[:upper:]' '[:lower:]')
 ARCH := $(shell uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
-OCP_VERSIONS := 4.12 4.13 4.14 4.15 4.16 4.17 4.18 
+OCP_VERSIONS := 4.12 4.13 4.14 4.15 4.16 4.17 4.18 4.19
 BIN_DIR := bin
 OPM_VERSION := "v1.47.0"
 OPM_FILENAME := opm-$(OPM_VERSION)
@@ -41,6 +41,10 @@ convert-to-basic-template:
 		mkdir -p catalog/v$$version; \
 		$(OPM) alpha convert-template basic catalog-renders/render-v$$version.yaml -o yaml > catalog/v$$version/template.yaml; \
 	done
+
+.PHONY: catalog-template
+catalog-template: 
+	python3 generate-catalog-template.py
 
 .PHONY: catalog
 catalog:
