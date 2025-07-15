@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://github.com/rh-gitops-midstream/catalog?rev={{revision}}
+    build.appstudio.redhat.com/commit_sha: "{{revision}}"
+    build.appstudio.redhat.com/target_branch: "{{target_branch}}"
+    pipelinesascode.tekton.dev/cancel-in-progress: "false"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-cel-expression:
+      event == "push" && target_branch
+      == "main"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: catalog-4-19
+    appstudio.openshift.io/component: catalog-4-19
+    pipelines.appstudio.openshift.io/type: build
+  name: catalog-4-19-on-push
+  namespace: rh-openshift-gitops-tenant
+spec:
+  params:
+    - name: git-url
+      value: "{{source_url}}"
+    - name: revision
+      value: "{{revision}}"
+    - name: output-image
+      value: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:{{revision}}
+    - name: dockerfile
+      value: Dockerfile
+    - name: path-context
+      value: catalog/v4.19
+    - name: additional-tags
+      value:
+      - v4.19
+  pipelineRef:
+    name: multi-platform-fbc-image-build
+  taskRunTemplate: {}
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: "{{ git_auth_secret }}"
+status: {}
