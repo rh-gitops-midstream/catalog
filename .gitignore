@@ -1,4 +1,6 @@
 bin/
 catalog-renders/
 
+**/catalog.yaml
+
 .DS_Store
