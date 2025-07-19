@@ -47,6 +47,12 @@ catalog-template:
 	python3 generate-catalog-template.py
 
 .PHONY: catalog
+# Detect platform and set SED_INPLACE accordingly
+ifeq ($(shell uname), Darwin)
+  SED_INPLACE = sed -i ''
+else
+  SED_INPLACE = sed -i
+endif
 catalog: deps
 	@if [ -z "$(ocp)" ]; then \
 		echo "Error: 'ocp' parameter is required. Usage: make catalog ocp=v4.14"; \
@@ -65,4 +71,4 @@ catalog: deps
 	$(OPM) alpha render-template basic catalog/$$version/template.yaml $$MIGRATE -o yaml > catalog/$$version/openshift-gitops-operator/catalog.yaml; \
 	ls -lh catalog/$$version/openshift-gitops-operator/catalog.yaml; \
 	echo "Replacing quay.io with registry.redhat.io in $$version catalog..."; \
-	sed -i '' 's~quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle~registry.redhat.io/openshift-gitops-1/gitops-operator-bundle~g' catalog/$$version/openshift-gitops-operator/catalog.yaml
+	$(SED_INPLACE) 's~quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle~registry.redhat.io/openshift-gitops-1/gitops-operator-bundle~g' catalog/$$version/openshift-gitops-operator/catalog.yaml
