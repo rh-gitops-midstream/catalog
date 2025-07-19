@@ -210,6 +210,13 @@ spec:
         # Volume to store a copy of the source code accessible only to this Task.
         - name: workdir
           emptyDir: {}
+        - name: trusted-ca
+          configMap:
+            items:
+              - key: $(params.caTrustConfigMapKey)
+                path: ca-bundle.crt
+            name: $(params.caTrustConfigMapName)
+            optional: true
   # task end
   - name: prefetch-dependencies
     params:
