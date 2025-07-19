@@ -157,6 +157,10 @@ spec:
     params:
       - name: SOURCE_ARTIFACT
         value: $(tasks.clone-repository.results.SOURCE_ARTIFACT)
+      - name: ociStorage
+        value: $(params.output-image).git
+      - name: ociArtifactExpiresAfter
+        value: $(params.image-expires-after)
     runAfter:
       - clone-repository
     taskSpec:
@@ -179,6 +183,29 @@ spec:
           image: registry.access.redhat.com/ubi8/ubi:latest
           workingDir: /var/workdir/source
           script: yum install make -y && make catalog ocp=$(params.ocp-version)
+        - name: create-trusted-artifact
+          image: quay.io/konflux-ci/build-trusted-artifacts:latest@sha256:4689f88dd253bd1feebf57f1a76a5a751880f739000719cd662bbdc76990a7fd
+          args:
+            - create
+            - --store
+            - $(params.ociStorage)
+            - $(results.SOURCE_ARTIFACT.path)=/var/workdir/source
+          volumeMounts:
+            - mountPath: /var/workdir
+              name: workdir
+            - mountPath: /etc/pki/tls/certs/ca-custom-bundle.crt
+              name: trusted-ca
+              readOnly: true
+              subPath: ca-bundle.crt
+          env:
+            - name: IMAGE_EXPIRES_AFTER
+              value: $(params.ociArtifactExpiresAfter)
+          computeResources:
+            limits:
+              memory: 3Gi
+            requests:
+              cpu: "1"
+              memory: 3Gi
       volumes:
         # Volume to store a copy of the source code accessible only to this Task.
         - name: workdir
