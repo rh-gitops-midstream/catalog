@@ -63,5 +63,6 @@ catalog: deps
 		MIGRATE=""; \
 	fi; \
 	$(OPM) alpha render-template basic catalog/$$version/template.yaml $$MIGRATE -o yaml > catalog/$$version/openshift-gitops-operator/catalog.yaml; \
+	ls -lh catalog/$$version/openshift-gitops-operator/catalog.yaml; \
 	echo "Replacing quay.io with registry.redhat.io in $$version catalog..."; \
 	sed -i '' 's~quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle~registry.redhat.io/openshift-gitops-1/gitops-operator-bundle~g' catalog/$$version/openshift-gitops-operator/catalog.yaml
