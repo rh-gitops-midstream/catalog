@@ -32,6 +32,8 @@ spec:
       value: Dockerfile
     - name: path-context
       value: catalog/v4.19
+    - name: ocp-version
+      value: "v4.19"
     - name: build-platforms
       value:
       - linux/x86_64

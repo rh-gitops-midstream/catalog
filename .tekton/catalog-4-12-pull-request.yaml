@@ -35,6 +35,8 @@ spec:
     - name: build-platforms
       value:
       - linux/x86_64
+    - name: ocp-version
+      value: "v4.12"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: {}

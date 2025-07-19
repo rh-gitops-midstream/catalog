@@ -32,6 +32,8 @@ spec:
     - name: additional-tags
       value:
       - v4.14
+    - name: ocp-version
+      value: "v4.14"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: {}
