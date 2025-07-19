@@ -1,0 +1,76 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: generate-catalog
+spec:
+  params:
+    - name: SOURCE_ARTIFACT
+      type: string
+      description: The Trusted Artifact URI pointing to the artifact with the application source code.
+    - name: ociStorage
+      type: string
+      description: OCI storage location to push the Trusted Artifact.
+    - name: ociArtifactExpiresAfter
+      type: string
+      description: Expiry metadata for the artifact in OCI.
+    - name: ocp-version
+      type: string
+      description: OpenShift version used to generate catalog.
+    - name: caTrustConfigMapName
+      type: string
+      default: ""
+    - name: caTrustConfigMapKey
+      type: string
+      default: ""
+  results:
+    - name: SOURCE_ARTIFACT
+      description: The Trusted Artifact URI of the generated catalog.
+  stepTemplate:
+    volumeMounts:
+      - mountPath: /var/workdir
+        name: workdir
+  steps:
+    - name: use-trusted-artifact
+      image: quay.io/redhat-appstudio/build-trusted-artifacts:latest@sha256:9b180776a41d9a22a1c51539f1647c60defbbd55b44bbebdd4130e33512d8b0d
+      args:
+        - use
+        - $(params.SOURCE_ARTIFACT)=/var/workdir/source
+
+    - name: catalog-build
+      image: registry.access.redhat.com/ubi8/ubi:latest
+      workingDir: /var/workdir/source
+      script: |
+        yum install make -y
+        make catalog ocp=$(params.ocp-version)
+
+    - name: create-trusted-artifact
+      image: quay.io/konflux-ci/build-trusted-artifacts:latest@sha256:4689f88dd253bd1feebf57f1a76a5a751880f739000719cd662bbdc76990a7fd
+      args:
+        - create
+        - --store
+        - $(params.ociStorage)
+        - $(results.SOURCE_ARTIFACT.path)=/var/workdir/source
+      volumeMounts:
+        - mountPath: /etc/pki/tls/certs/ca-custom-bundle.crt
+          name: trusted-ca
+          readOnly: true
+          subPath: ca-bundle.crt
+      env:
+        - name: IMAGE_EXPIRES_AFTER
+          value: $(params.ociArtifactExpiresAfter)
+      computeResources:
+        limits:
+          memory: 3Gi
+        requests:
+          cpu: "1"
+          memory: 3Gi
+  volumes:
+    - name: workdir
+      emptyDir: {}
+    - name: trusted-ca
+      configMap:
+        name: $(params.caTrustConfigMapName)
+        optional: true
+        items:
+          - key: $(params.caTrustConfigMapKey)
+            path: ca-bundle.crt
