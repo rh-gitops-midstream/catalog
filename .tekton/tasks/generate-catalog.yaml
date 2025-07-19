@@ -17,11 +17,13 @@ spec:
       type: string
       description: OpenShift version used to generate catalog.
     - name: caTrustConfigMapName
+      description: The name of the ConfigMap to read CA bundle data from.
       type: string
-      default: ""
+      default: trusted-ca
     - name: caTrustConfigMapKey
+      description: The name of the key in the ConfigMap that contains the CA bundle data.
       type: string
-      default: ""
+      default: ca-bundle.crt
   results:
     - name: SOURCE_ARTIFACT
       description: The Trusted Artifact URI of the generated catalog.
