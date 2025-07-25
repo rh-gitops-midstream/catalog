@@ -88,6 +88,10 @@ spec:
     description: Additional tags to apply to the image in the registry. Set this only for push events, setting it for PR events will break the bundle update script.
     type: array
     default: []
+  - name: ocp-version
+    description: OpenShift version to use for the FBC build. Prefix with "v" (e.g., "v4.12").
+    type: string
+    default: ""
   results:
   - description: ""
     name: IMAGE_URL
@@ -148,18 +152,33 @@ spec:
     workspaces:
     - name: basic-auth
       workspace: git-auth
+  # Generate catalog
+  - name: generate-catalog
+    taskRef:
+      name: generate-catalog
+    runAfter:
+      - clone-repository
+    params:
+      - name: SOURCE_ARTIFACT
+        value: $(tasks.clone-repository.results.SOURCE_ARTIFACT)
+      - name: ociStorage
+        value: $(params.output-image).git
+      - name: ociArtifactExpiresAfter
+        value: $(params.image-expires-after)
+      - name: ocp-version
+        value: $(params.ocp-version)
   - name: prefetch-dependencies
     params:
     - name: input
       value: $(params.prefetch-input)
     - name: SOURCE_ARTIFACT
-      value: $(tasks.clone-repository.results.SOURCE_ARTIFACT)
+      value: $(tasks.generate-catalog.results.SOURCE_ARTIFACT)
     - name: ociStorage
       value: $(params.output-image).prefetch
     - name: ociArtifactExpiresAfter
       value: $(params.image-expires-after)
     runAfter:
-    - clone-repository
+    - generate-catalog
     taskRef:
       params:
       - name: name
@@ -207,7 +226,7 @@ spec:
     - name: IMAGE_APPEND_PLATFORM
       value: "true"
     runAfter:
-    - clone-repository
+    - prefetch-dependencies
     taskRef:
       params:
       - name: name

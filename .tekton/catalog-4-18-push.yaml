@@ -29,6 +29,8 @@ spec:
       value: Dockerfile
     - name: path-context
       value: catalog/v4.18
+    - name: ocp-version
+      value: "v4.18"
     - name: additional-tags
       value:
       - v4.18
