@@ -154,8 +154,17 @@ spec:
       workspace: git-auth
   # Generate catalog
   - name: generate-catalog
+    # Use git resolver instead of direct task reference to work around conforma issue
+    # ref: https://issues.redhat.com/browse/KFLUXSPRT-4371
     taskRef:
-      name: generate-catalog
+      resolver: "git"
+      params:
+        - name: url
+          value: https://github.com/rh-gitops-midstream/catalog
+        - name: revision
+          value: "main"
+        - name: pathInRepo
+          value: ".tekton/tasks/generate-catalog.yaml"
     runAfter:
       - clone-repository
     params:
