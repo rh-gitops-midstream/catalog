@@ -162,7 +162,7 @@ spec:
         - name: url
           value: https://github.com/rh-gitops-midstream/catalog
         - name: revision
-          value: "main"
+          value: $(params.revision)
         - name: pathInRepo
           value: ".tekton/tasks/generate-catalog.yaml"
     runAfter:
