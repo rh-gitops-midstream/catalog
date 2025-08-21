@@ -855,7 +855,7 @@ entries:
   - name: openshift-gitops-operator.v1.16.2
     replaces: openshift-gitops-operator.v1.16.1
   - name: openshift-gitops-operator.v1.17.0
-    replaces: openshift-gitops-operator.v1.16.3
+    replaces: openshift-gitops-operator.v1.16.2
     skipRange: ">=1.0.0 <1.17.0"
   - name: openshift-gitops-operator.v1.17.1
     replaces: openshift-gitops-operator.v1.17.0
@@ -1023,7 +1023,7 @@ entries:
   schema: olm.channel
   entries:
   - name: openshift-gitops-operator.v1.17.0
-    replaces: openshift-gitops-operator.v1.16.3
+    replaces: openshift-gitops-operator.v1.16.2
     skipRange: ">=1.0.0 <1.17.0"
   - name: openshift-gitops-operator.v1.17.1
     replaces: openshift-gitops-operator.v1.17.0
