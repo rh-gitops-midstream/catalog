@@ -1,7 +1,7 @@
 apiVersion: appstudio.redhat.com/v1alpha1
 kind: Release
 metadata:
-  generateName: catalog-4-15-prod-
+  generateName: catalog-4-18-prod-
   namespace: rh-openshift-gitops-tenant
 spec:
   data:
@@ -19,5 +19,5 @@ spec:
       references:
         - https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/1.16/
   gracePeriodDays: 7
-  releasePlan: catalog-4-15-prod
-  snapshot: catalog-4-15-x6fxh
+  releasePlan: catalog-4-18-prod
+  snapshot: catalog-4-18-7w4xc
