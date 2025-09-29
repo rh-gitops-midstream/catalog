@@ -1,7 +1,7 @@
 from ruamel.yaml import YAML
 from pathlib import Path
 import os
-import sys
+import sys, re
 
 yaml = YAML()
 yaml.preserve_quotes = True
@@ -76,7 +76,7 @@ def ensure_bundle_image(entries, bundle_image):
     })
 
 
-def process_template(template_path, channel, version, allowed_images):
+def process_template(template_path, channel, version, allowed_images, latest_channel):
     template = load_yaml_file(template_path)
     entries = template.setdefault("entries", [])
 
@@ -90,8 +90,11 @@ def process_template(template_path, channel, version, allowed_images):
 
     update_entry = update_channel_entries(entries, name, replaces, skip_range)
 
-    # Update specified and latest channel
-    for ch_name in [channel_name, "latest"]:
+    # Update specified and latest channel(only if latest version)
+    channels = [channel_name]
+    if channel_name == latest_channel:
+        channels.append("latest")
+    for ch_name in channels:
         ch = get_or_create_channel(entries, ch_name)
         update_entry(ch["entries"])
 
@@ -119,6 +122,18 @@ def remove_old_images(template_path, allowed_images):
         print(f"Cleaned old bundle images in: {template_path.name}")
         write_yaml_file(template_path, template)
 
+def latest_y_stream_channel(channels):
+    """
+    Given a list of Y-stream strings like ['gitops-1.15', 'gitops-1.16'],
+    return the latest one.
+    """
+    def parse(v):
+        # Extract major, minor as integers
+        _, ver = v.split('-')
+        major, minor = map(int, ver.split('.'))
+        return major, minor
+    return max(channels, key=parse)
+
 
 def main():
     config = load_yaml_file(CONFIG_FILE)
@@ -128,10 +143,15 @@ def main():
     template_paths = load_catalog_templates(supported_ocp)
     allowed_images = set()
 
+    channel_names = []
+    for channel in channels:
+        channel_names.append(channel.get("name", ""))
+    latest_channel_name = latest_y_stream_channel(channel_names)
+
     for channel in channels:
         for version in channel.get("versions", []):
             for template_path in template_paths:
-                process_template(template_path, channel, version, allowed_images)
+                process_template(template_path, channel, version, allowed_images, latest_channel_name)
 
     for template_path in template_paths:
         remove_old_images(template_path, allowed_images)
