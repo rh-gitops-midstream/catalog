@@ -589,6 +589,8 @@ entries:
     replaces: openshift-gitops-operator.v1.16.1
   - name: openshift-gitops-operator.v1.16.3
     replaces: openshift-gitops-operator.v1.16.2
+  - name: openshift-gitops-operator.v1.16.4
+    replaces: openshift-gitops-operator.v1.16.3
   name: gitops-1.16
   package: openshift-gitops-operator
   schema: olm.channel
@@ -1195,5 +1197,7 @@ entries:
     skipRange: ">=1.0.0 <1.18.0"
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:8546401f9a96b0c397da8ab26306cca412e6fa6d11471c739177a5f533ba6f11
+- schema: olm.bundle
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:78dc89a4a9dfb8dcf93224fd9a3caa63ea1551f8da73a88aebb284123d4a2962
 schema: olm.template.basic
 
