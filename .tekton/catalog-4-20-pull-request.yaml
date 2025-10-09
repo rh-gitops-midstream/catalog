@@ -1,0 +1,54 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  annotations:
+    build.appstudio.openshift.io/repo: https://github.com/rh-gitops-midstream/catalog?rev={{revision}}
+    build.appstudio.redhat.com/commit_sha: "{{revision}}"
+    build.appstudio.redhat.com/pull_request_number: "{{pull_request_number}}"
+    build.appstudio.redhat.com/target_branch: "{{target_branch}}"
+    pipelinesascode.tekton.dev/cancel-in-progress: "true"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/on-cel-expression: >-
+      event == "pull_request" && 
+      target_branch == "main" && 
+      (
+        "catalog/v4.20/***".pathChanged() ||
+        ".tekton/catalog-4-20-pull-request.yaml".pathChanged() ||
+        ".tekton/images-mirror-set.yaml".pathChanged() ||
+        ".tekton/multi-platform-fbc-image-build.yaml".pathChanged() ||
+        ".tekton/tasks/***".pathChanged()
+      )
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: catalog-4-20
+    appstudio.openshift.io/component: catalog-4-20
+    pipelines.appstudio.openshift.io/type: build
+  name: catalog-4-20-on-pull-request
+  namespace: rh-openshift-gitops-tenant
+spec:
+  params:
+    - name: git-url
+      value: "{{source_url}}"
+    - name: revision
+      value: "{{revision}}"
+    - name: output-image
+      value: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:on-pr-{{revision}}
+    - name: image-expires-after
+      value: 5d
+    - name: dockerfile
+      value: Dockerfile
+    - name: path-context
+      value: catalog/v4.20
+    - name: ocp-version
+      value: "v4.20"
+    - name: build-platforms
+      value:
+      - linux/x86_64
+  pipelineRef:
+    name: multi-platform-fbc-image-build
+  taskRunTemplate: {}
+  workspaces:
+    - name: git-auth
+      secret:
+        secretName: "{{ git_auth_secret }}"
+status: {}
