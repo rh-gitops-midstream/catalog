@@ -203,7 +203,7 @@ spec:
     - name: ociArtifactExpiresAfter
       value: $(params.image-expires-after)
     runAfter:
-    - generate-catalog
+    - run-opm-command
     taskRef:
       params:
       - name: name
