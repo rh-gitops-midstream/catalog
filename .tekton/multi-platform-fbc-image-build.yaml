@@ -197,7 +197,7 @@ spec:
     - name: input
       value: $(params.prefetch-input)
     - name: SOURCE_ARTIFACT
-      value: $(tasks.generate-catalog.results.SOURCE_ARTIFACT)
+      value: $(tasks.run-opm-command.results.SOURCE_ARTIFACT)
     - name: ociStorage
       value: $(params.output-image).prefetch
     - name: ociArtifactExpiresAfter
