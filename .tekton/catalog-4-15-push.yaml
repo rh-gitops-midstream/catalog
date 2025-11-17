@@ -43,7 +43,8 @@ spec:
       - v4.15
   pipelineRef:
     name: multi-platform-fbc-image-build
-  taskRunTemplate: {}
+  taskRunTemplate: 
+    serviceAccountName: build-pipeline-catalog-4-15
   workspaces:
     - name: git-auth
       secret:

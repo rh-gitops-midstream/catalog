@@ -46,7 +46,8 @@ spec:
       - linux/x86_64
   pipelineRef:
     name: multi-platform-fbc-image-build
-  taskRunTemplate: {}
+  taskRunTemplate: 
+    serviceAccountName: build-pipeline-catalog-4-19
   workspaces:
     - name: git-auth
       secret:
