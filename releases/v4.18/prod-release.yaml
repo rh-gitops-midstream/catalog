@@ -20,4 +20,4 @@ spec:
         - https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/1.16/
   gracePeriodDays: 7
   releasePlan: catalog-4-18-prod
-  snapshot: catalog-4-18-hq5w2
+  snapshot: catalog-4-18-b8bqb
