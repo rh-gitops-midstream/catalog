@@ -41,9 +41,6 @@ spec:
       value: catalog/v4.20
     - name: ocp-version
       value: "v4.20"
-    - name: build-platforms
-      value:
-      - linux/x86_64
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 
