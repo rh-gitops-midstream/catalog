@@ -1,0 +1,104 @@
+apiVersion: v1
+items:
+- apiVersion: appstudio.redhat.com/v1alpha1
+  kind: Snapshot
+  metadata:
+    annotations:
+      build.appstudio.openshift.io/repo: https://github.com/rh-gitops-midstream/catalog?rev=7f060520af82202855f179da8078b4a3f0d2de97
+      build.appstudio.redhat.com/commit_sha: 7f060520af82202855f179da8078b4a3f0d2de97
+      build.appstudio.redhat.com/target_branch: main
+      pac.test.appstudio.openshift.io/branch: main
+      pac.test.appstudio.openshift.io/cancel-in-progress: "false"
+      pac.test.appstudio.openshift.io/check-run-id: "60856647744"
+      pac.test.appstudio.openshift.io/controller-info: '{"name":"default","configmap":"pipelines-as-code","secret":"pipelines-as-code-secret",
+        "gRepo": "pipelines-as-code"}'
+      pac.test.appstudio.openshift.io/event-type: push
+      pac.test.appstudio.openshift.io/git-auth-secret: pac-gitauth-hpqhzh
+      pac.test.appstudio.openshift.io/git-provider: github
+      pac.test.appstudio.openshift.io/installation-id: "56531091"
+      pac.test.appstudio.openshift.io/log-url: https://konflux-ui.apps.stone-prd-rh01.pg1f.p1.openshiftapps.com/ns/rh-openshift-gitops-tenant/pipelinerun/catalog-4-17-on-push-5jb7l
+      pac.test.appstudio.openshift.io/max-keep-runs: "3"
+      pac.test.appstudio.openshift.io/on-cel-expression: |-
+        event == "push" &&  target_branch == "main" &&  (
+          "catalog/v4.17/***".pathChanged() ||
+          ".tekton/catalog-4-17-push.yaml".pathChanged() ||
+          ".tekton/images-mirror-set.yaml".pathChanged() ||
+          ".tekton/multi-platform-fbc-image-build.yaml".pathChanged() ||
+          ".tekton/tasks/***".pathChanged()
+        )
+      pac.test.appstudio.openshift.io/original-prname: catalog-4-17-on-push
+      pac.test.appstudio.openshift.io/repo-url: https://github.com/rh-gitops-midstream/catalog
+      pac.test.appstudio.openshift.io/repository: catalog-4-12
+      pac.test.appstudio.openshift.io/scm-reporting-plr-started: "true"
+      pac.test.appstudio.openshift.io/sender: svghadi
+      pac.test.appstudio.openshift.io/sha: 7f060520af82202855f179da8078b4a3f0d2de97
+      pac.test.appstudio.openshift.io/sha-title: |-
+        chore(release-candidate): update catalog for build v1.18.3-6 (#73)
+
+        Co-authored-by: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+      pac.test.appstudio.openshift.io/sha-url: https://github.com/rh-gitops-midstream/catalog/commit/7f060520af82202855f179da8078b4a3f0d2de97
+      pac.test.appstudio.openshift.io/source-branch: refs/heads/main
+      pac.test.appstudio.openshift.io/source-repo-url: https://github.com/rh-gitops-midstream/catalog
+      pac.test.appstudio.openshift.io/state: completed
+      pac.test.appstudio.openshift.io/url-org: rh-gitops-midstream
+      pac.test.appstudio.openshift.io/url-repository: catalog
+      test.appstudio.openshift.io/added-to-global-candidate-list: '{"result":true,"reason":"Success","lastupdatedtime":"2026-01-20T06:29:57Z"}'
+      test.appstudio.openshift.io/git-reporter-status: '{"scenarios":{"conforma-catalog-4-17-catalog-4-17-lqtd2":{"lastUpdateTime":"2026-01-20T06:30:42.507507202Z"},"enterprise-contract-catalog-4-17-catalog-4-17-lqtd2":{"lastUpdateTime":"2026-01-20T06:30:23.367514204Z"}}}'
+      test.appstudio.openshift.io/integration-workflow: push
+      test.appstudio.openshift.io/pipelinerunstarttime: "1768889533"
+      test.appstudio.openshift.io/source-repo-url: https://github.com/rh-gitops-midstream/catalog
+      test.appstudio.openshift.io/status: '[{"scenario":"conforma-catalog-4-17","status":"TestPassed","lastUpdateTime":"2026-01-20T06:30:42.507507202Z","details":"Integration
+        test passed","startTime":"2026-01-20T06:29:57.6005954Z","completionTime":"2026-01-20T06:30:42.507507202Z","testPipelineRunName":"conforma-catalog-4-17-6wswc"},{"scenario":"enterprise-contract-catalog-4-17","status":"TestPassed","lastUpdateTime":"2026-01-20T06:30:23.367514204Z","details":"Integration
+        test passed","startTime":"2026-01-20T06:29:57.687647526Z","completionTime":"2026-01-20T06:30:23.367514204Z","testPipelineRunName":"enterprise-contract-catalog-4-17-pcr2h"}]'
+    creationTimestamp: "2026-01-20T06:29:57Z"
+    generateName: catalog-4-17-
+    generation: 1
+    labels:
+      appstudio.openshift.io/application: catalog-4-17
+      appstudio.openshift.io/build-pipelinerun: catalog-4-17-on-push-5jb7l
+      appstudio.openshift.io/component: catalog-4-17
+      pac.test.appstudio.openshift.io/cancel-in-progress: "false"
+      pac.test.appstudio.openshift.io/check-run-id: "60856647744"
+      pac.test.appstudio.openshift.io/event-type: push
+      pac.test.appstudio.openshift.io/original-prname: catalog-4-17-on-push
+      pac.test.appstudio.openshift.io/repository: catalog-4-12
+      pac.test.appstudio.openshift.io/sha: 7f060520af82202855f179da8078b4a3f0d2de97
+      pac.test.appstudio.openshift.io/state: completed
+      pac.test.appstudio.openshift.io/url-org: rh-gitops-midstream
+      pac.test.appstudio.openshift.io/url-repository: catalog
+      test.appstudio.openshift.io/pipelinerunfinishtime: "1768890563"
+      test.appstudio.openshift.io/type: component
+    name: catalog-4-17-1174-1183
+    namespace: rh-openshift-gitops-tenant
+  spec:
+    application: catalog-4-17
+    artifacts: {}
+    components:
+    - containerImage: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog@sha256:ff0ae495ad61f1894f8382b44a0feb326bb7140f427956fd6f2fb2147f8b582c
+      name: catalog-4-17
+      source:
+        git:
+          revision: 7f060520af82202855f179da8078b4a3f0d2de97
+          url: https://github.com/rh-gitops-midstream/catalog
+  status:
+    conditions:
+    - lastTransitionTime: "2026-01-20T06:30:23Z"
+      message: Snapshot integration status condition is finished since all testing
+        pipelines completed
+      reason: Finished
+      status: "True"
+      type: AppStudioIntegrationStatus
+    - lastTransitionTime: "2026-01-20T06:30:23Z"
+      message: All Integration Pipeline tests passed
+      reason: Passed
+      status: "True"
+      type: AppStudioTestSucceeded
+    - lastTransitionTime: "2026-01-20T06:30:23Z"
+      message: Skipping auto-release of the Snapshot because no ReleasePlans have
+        the 'auto-release' label set to 'true'
+      reason: AutoReleased
+      status: "True"
+      type: AutoReleased
+kind: List
+metadata:
+  resourceVersion: ""
