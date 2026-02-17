@@ -180,7 +180,7 @@ spec:
       - name: IDMS_PATH
         value: ".tekton/images-mirror-set.yaml"
       - name: FILE_TO_UPDATE_PULLSPEC
-        value: $(params.catalog-template-path)
+        value: $(params.catalog-output-path)
     runAfter:
       - clone-repository
     taskRef:
