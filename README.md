@@ -6,6 +6,16 @@
 bin/opm alpha render-template basic catalog/v4.12/catalog-template.yaml -o yaml > catalog/v4.12/openshift-gitops-operator/catalog.yaml 
 ```
 
+## Clean a channel from config
+
+```bash
+python clean_config.py <channel-name>
+```
+
+This updates all `catalog/**/template.yaml` files by replacing any `quay.io` bundle
+references from the removed channel with `registry.redhat.io`, then removes the
+channel from `config.yaml`.
+
 ## How initial catalog template was created ?
 
 ```bash
