@@ -45,7 +45,7 @@ spec:
       value:
       - linux/x86_64
     - name: catalog-template-path
-      value: "catalog/v4.20/catalog-template.json"
+      value: "catalog/v4.20/template.yaml"
     - name: catalog-output-path
       value: "catalog/v4.20/openshift-gitops-operator/catalog.json"
     - name: opm-args
