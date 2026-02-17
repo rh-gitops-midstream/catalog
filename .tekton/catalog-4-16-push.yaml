@@ -41,6 +41,10 @@ spec:
     - name: additional-tags
       value:
       - v4.16
+    - name: catalog-template-path
+      value: "catalog/v4.16/template.yaml"
+    - name: catalog-output-path
+      value: "catalog/v4.16/openshift-gitops-operator/catalog.json"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 

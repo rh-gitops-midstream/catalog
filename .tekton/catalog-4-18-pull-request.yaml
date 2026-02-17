@@ -44,6 +44,13 @@ spec:
     - name: build-platforms
       value:
       - linux/x86_64
+    - name: catalog-template-path
+      value: "catalog/v4.18/template.yaml"
+    - name: catalog-output-path
+      value: "catalog/v4.18/openshift-gitops-operator/catalog.json"
+    - name: opm-args
+      value:
+      - "--migrate-level=bundle-object-to-csv-metadata"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 

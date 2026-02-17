@@ -96,6 +96,18 @@ spec:
     default: 'false'
     description: Enable cache proxy configuration
     type: string
+  - name: catalog-template-path
+    description: "TODO: Description for catalog-template-path"
+    type: string
+    default: ""
+  - name: catalog-output-path
+    description: "TODO: Description for catalog-output-path"
+    type: string
+    default: ""
+  - name: opm-args
+    description: Additional OPM arguments (e.g., ["--migrate-level=bundle-object-to-csv-metadata"] for v4.17+)
+    type: array
+    default: []
   results:
   - description: ""
     name: IMAGE_URL
@@ -147,42 +159,51 @@ spec:
     workspaces:
     - name: basic-auth
       workspace: git-auth
-          # Generate catalog
-  - name: generate-catalog
-      # Use git resolver instead of direct task reference to work around conforma issue
-      # ref: https://issues.redhat.com/browse/KFLUXSPRT-4371
-    taskRef:
-      resolver: "git"
-      params:
-      - name: url
-        value: https://github.com/rh-gitops-midstream/catalog
-      - name: revision
-        value: $(params.revision)
-      - name: pathInRepo
-        value: ".tekton/tasks/generate-catalog.yaml"
-    runAfter:
-    - clone-repository
+  # Generate catalog
+  - name: run-opm-command
     params:
-    - name: SOURCE_ARTIFACT
-      value: $(tasks.clone-repository.results.SOURCE_ARTIFACT)
-    - name: ociStorage
-      value: $(params.output-image).git
-    - name: ociArtifactExpiresAfter
-      value: $(params.image-expires-after)
-    - name: ocp-version
-      value: $(params.ocp-version)
+      - name: SOURCE_ARTIFACT
+        value: $(tasks.clone-repository.results.SOURCE_ARTIFACT)
+      - name: ociStorage
+        value: $(params.output-image).opm
+      - name: ociArtifactExpiresAfter
+        value: $(params.image-expires-after)
+      - name: OPM_ARGS
+        value:
+          - alpha
+          - render-template
+          - basic
+          - $(params.catalog-template-path)
+          - $(params.opm-args[*])
+      - name: OPM_OUTPUT_PATH
+        value: $(params.catalog-output-path)
+      - name: IDMS_PATH
+        value: ".tekton/images-mirror-set.yaml"
+      - name: FILE_TO_UPDATE_PULLSPEC
+        value: $(params.catalog-output-path)
+    runAfter:
+      - clone-repository
+    taskRef:
+      params:
+        - name: name
+          value: run-opm-command-oci-ta
+        - name: bundle
+          value: quay.io/konflux-ci/tekton-catalog/task-run-opm-command-oci-ta:0.1@sha256:671866aa9acb0ec82ef6112411e494eceb2e71786b0519bcd0e60e61e207034e
+        - name: kind
+          value: task
+      resolver: bundles
   - name: prefetch-dependencies
     params:
     - name: input
       value: $(params.prefetch-input)
     - name: SOURCE_ARTIFACT
-      value: $(tasks.generate-catalog.results.SOURCE_ARTIFACT)
+      value: $(tasks.run-opm-command.results.SOURCE_ARTIFACT)
     - name: ociStorage
       value: $(params.output-image).prefetch
     - name: ociArtifactExpiresAfter
       value: $(params.image-expires-after)
     runAfter:
-    - generate-catalog
+    - run-opm-command
     taskRef:
       params:
       - name: name

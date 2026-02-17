@@ -41,6 +41,10 @@ spec:
       - v4.14
     - name: ocp-version
       value: "v4.14"
+    - name: catalog-template-path
+      value: "catalog/v4.14/template.yaml"
+    - name: catalog-output-path
+      value: "catalog/v4.14/openshift-gitops-operator/catalog.json"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 
