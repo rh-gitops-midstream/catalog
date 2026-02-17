@@ -51,7 +51,6 @@ spec:
     - name: opm-args
       value:
       - "--migrate-level=bundle-object-to-csv-metadata"
-      - "--skip-tls-verify"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 

@@ -41,6 +41,13 @@ spec:
       - v4.17
     - name: ocp-version
       value: "v4.17"
+    - name: catalog-template-path
+      value: "catalog/v4.17/template.yaml"
+    - name: catalog-output-path
+      value: "catalog/v4.17/openshift-gitops-operator/catalog.json"
+    - name: opm-args
+      value:
+      - "--migrate-level=bundle-object-to-csv-metadata"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 
