@@ -1262,10 +1262,10 @@ entries:
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b5429c67a872f0d75e927339451bff0a646f55f3cf0ab98f68c1da2cd610fbc7
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:f7dedb000c2657445521067af94d4c867bd3c4ea608e9ea20901fef1506ba496
-- schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:28f4abb103e42261349702992b66571b260509fd25546bfe6e0a2dc6b916822f
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:c43f5756e27eef4960476fc54019e4ebe9cf219a781c22fba4f4106bfd8b1ca5
+- schema: olm.bundle
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:81f4d960a7b5cc6b1cc6486264826ee6398517c397ae319d9422e56ccb0871fd
 schema: olm.template.basic
 
