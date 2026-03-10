@@ -12,4 +12,5 @@ RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]
 
 # Set DC-specific label for the location of the DC root directory
 # in the image
+# Vacuous change to trigger integration tests
 LABEL operators.operatorframework.io.index.configs.v1=/configs
