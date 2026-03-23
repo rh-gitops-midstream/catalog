@@ -1130,6 +1130,6 @@ entries:
     replaces: openshift-gitops-operator.v1.19.2
     skipRange: '>=1.0.0 <1.20.0'
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b9be1a78a70472a997679395c86dbc6891e0020770bbe1b41dfc848571271722
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:2aca0e62daad8644afb8725504ad0e20c55a7cf960841c9ec793904adedaf4fd
 schema: olm.template.basic
 
