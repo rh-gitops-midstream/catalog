@@ -20,4 +20,4 @@ spec:
         - https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/1.16/
   gracePeriodDays: 7
   releasePlan: catalog-4-15-prod
-  snapshot: catalog-4-15-20260323-125450-000 
+  snapshot: catalog-4-15-20260327-035254-000
