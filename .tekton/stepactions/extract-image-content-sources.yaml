@@ -1,0 +1,40 @@
+apiVersion: tekton.dev/v1beta1
+kind: StepAction
+metadata:
+  name: extract-image-content-sources
+spec:
+  params:
+    - name: gitUrl
+      type: string
+      description: Git repository URL containing the images-mirror-set.yaml file
+    - name: gitRevision
+      type: string
+      description: Git revision (branch, tag, or commit SHA) to checkout
+    - name: mirrorSetPath
+      type: string
+      description: Path to the ImageDigestMirrorSet YAML file within the repository
+      default: .tekton/images-mirror-set.yaml
+    - name: outputPath
+      type: string
+      description: Path where the JSON output should be written
+      default: /workspace/imageContentSources.json
+  image: docker.io/python:3-alpine
+  script: |
+    #!/bin/sh
+    set -e
+    apk add --no-cache git >/dev/null 2>&1
+    pip install pyyaml --quiet >/dev/null 2>&1
+
+    WORK=$(mktemp -d)
+    git clone "$(params.gitUrl)" "$WORK/repo"
+    cd "$WORK/repo"
+    git checkout "$(params.gitRevision)"
+
+    python3 -c "
+    import yaml, json, sys
+    with open('$(params.mirrorSetPath)') as f:
+        data = yaml.safe_load(f)
+    json.dump(data['spec']['imageDigestMirrors'], sys.stdout)
+    " > "$(params.outputPath)"
+
+    echo "Successfully extracted imageContentSources from $(params.gitUrl)"
