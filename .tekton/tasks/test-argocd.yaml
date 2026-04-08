@@ -1,0 +1,148 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: test-argocd
+spec:
+  description: |
+    Runs upstream ArgoCD E2E tests on an ephemeral cluster with a deployed ArgoCD instance.
+    Produces a TEST_OUTPUT result in Konflux format.
+  params:
+    - name: argoCDImage
+      type: string
+    - name: testRepoUrl
+      type: string
+    - name: testRepoBranch
+      type: string
+    - name: testImageUrl
+      type: string
+    - name: eaasSpaceSecretRef
+      type: string
+    - name: clusterName
+      type: string
+    - name: pipelineRunName
+      type: string
+    - name: argoCDNamespace
+      type: string
+    - name: argoCDServer
+      type: string
+    - name: argoCDAdminPassword
+      type: string
+    - name: argoCDServerName
+      type: string
+    - name: argoCDRepoServerName
+      type: string
+    - name: argoCDApplicationControllerName
+      type: string
+    - name: argoCDRedisName
+      type: string
+    - name: testRunnerImage
+      type: string
+      default: "registry.access.redhat.com/ubi9/go-toolset:latest"
+    - name: quayRepo
+      type: string
+      default: "quay.io/devtools_gitops/test_image"
+  results:
+    - name: TEST_OUTPUT
+      description: Test results in Tekton format
+  volumes:
+    - name: credentials
+      emptyDir: {}
+    - name: quay-credentials
+      secret:
+        secretName: gitops-test-runner-image-push
+  steps:
+    - name: get-kubeconfig
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/build-definitions.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+      params:
+        - name: eaasSpaceSecretRef
+          value: $(params.eaasSpaceSecretRef)
+        - name: clusterName
+          value: $(params.clusterName)
+        - name: credentials
+          value: credentials
+    - name: run-tests
+      image: $(params.testImageUrl)
+      env:
+        - name: ARGOCD_SERVER_IMAGE
+          value: $(params.argoCDImage)
+        - name: TEST_REPO_URL
+          value: $(params.testRepoUrl)
+        - name: BRANCH
+          value: $(params.testRepoBranch)
+        - name: KUBECONFIG
+          value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+        - name: TASK_LOG_NAME
+          value: test-argocd
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+        - name: ARGOCD_NAMESPACE
+          value: $(params.argoCDNamespace)
+        - name: ARGOCD_SERVER
+          value: $(params.argoCDServer)
+        - name: ARGOCD_ADMIN_PASSWORD
+          value: $(params.argoCDAdminPassword)
+        - name: ARGOCD_SERVER_NAME
+          value: $(params.argoCDServerName)
+        - name: ARGOCD_REPO_SERVER_NAME
+          value: $(params.argoCDRepoServerName)
+        - name: ARGOCD_APPLICATION_CONTROLLER_NAME
+          value: $(params.argoCDApplicationControllerName)
+        - name: ARGOCD_REDIS_NAME
+          value: $(params.argoCDRedisName)
+        - name: TEST_RUNNER_IMAGE
+          value: $(params.testRunnerImage)
+      command:
+        - /usr/local/bin/run-and-save-logs.sh
+        - /usr/local/bin/run-argocd-e2e-tests-in-pod.sh
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+        - name: quay-credentials
+          mountPath: /quay-credentials
+    - name: generate-test-output
+      image: $(params.testImageUrl)
+      script: |
+        #!/usr/bin/env python3
+        import json, os, datetime
+
+        junit = "/tmp/task-logs/junit-results.xml"
+        results_json = "/tmp/task-logs/test-results.json"
+
+        if os.path.isfile(junit):
+            os.system(f"python3 /usr/local/bin/parse-test-results.py {junit} {results_json}")
+
+        if os.path.isfile(results_json):
+            with open(results_json) as f:
+                tr = json.load(f)
+            result = "SUCCESS" if tr["failed"] == 0 and tr["errors"] == 0 else "FAILURE"
+            output = {
+                "result": result,
+                "timestamp": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+                "successes": tr["passed"],
+                "failures": tr["failed"] + tr["errors"],
+                "warnings": 0,
+            }
+        else:
+            output = {
+                "result": "ERROR",
+                "timestamp": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+                "successes": 0,
+                "failures": 1,
+                "warnings": 0,
+            }
+
+        with open("$(results.TEST_OUTPUT.path)", "w") as f:
+            json.dump(output, f)
+
+        print(json.dumps(output, indent=2))

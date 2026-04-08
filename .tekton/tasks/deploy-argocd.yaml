@@ -1,0 +1,88 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: deploy-argocd
+spec:
+  description: |
+    Deploys ArgoCD standalone on an ephemeral cluster using the extracted server image.
+  params:
+    - name: argoCDImage
+      type: string
+    - name: argoCDVersion
+      type: string
+    - name: testImageUrl
+      type: string
+    - name: eaasSpaceSecretRef
+      type: string
+    - name: clusterName
+      type: string
+    - name: pipelineRunName
+      type: string
+    - name: quayRepo
+      type: string
+      default: "quay.io/devtools_gitops/test_image"
+  results:
+    - name: namespace
+      description: Namespace where ArgoCD is deployed
+    - name: server
+      description: ArgoCD server service DNS name
+    - name: adminPassword
+      description: ArgoCD admin password
+    - name: serverName
+      description: ArgoCD server deployment name
+    - name: repoServerName
+      description: ArgoCD repo-server deployment name
+    - name: applicationControllerName
+      description: ArgoCD application-controller deployment name
+    - name: redisName
+      description: ArgoCD redis deployment name
+  volumes:
+    - name: credentials
+      emptyDir: {}
+    - name: quay-credentials
+      secret:
+        secretName: gitops-test-runner-image-push
+  steps:
+    - name: get-kubeconfig
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/build-definitions.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+      params:
+        - name: eaasSpaceSecretRef
+          value: $(params.eaasSpaceSecretRef)
+        - name: clusterName
+          value: $(params.clusterName)
+        - name: credentials
+          value: credentials
+    - name: deploy
+      image: $(params.testImageUrl)
+      env:
+        - name: ARGOCD_SERVER_IMAGE
+          value: $(params.argoCDImage)
+        - name: ARGOCD_VERSION
+          value: $(params.argoCDVersion)
+        - name: NAMESPACE
+          value: argocd-e2e
+        - name: KUBECONFIG
+          value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+        - name: TASK_LOG_NAME
+          value: deploy-argocd
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      command:
+        - /usr/local/bin/run-and-save-logs.sh
+        - /usr/local/bin/deploy-argocd-standalone.sh
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+        - name: quay-credentials
+          mountPath: /quay-credentials
