@@ -1063,13 +1063,13 @@ entries:
   - name: openshift-gitops-operator.v1.17.5
     replaces: openshift-gitops-operator.v1.17.4
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:58cfcb4b920d75b83ed2662a8e226724075518ad105f42f2f497dc4463a3221f
+  image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:58cfcb4b920d75b83ed2662a8e226724075518ad105f42f2f497dc4463a3221f
 - schema: olm.bundle
   image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:0b1771f697a700263c5b827dbde56a5c9bab610e9d7df55ef93885a4e54cc0e9
 - schema: olm.bundle
   image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:8441322a0fce02df407573675b5b5d92d56de97c8aec72541b33d2dadc4050d5
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:be93be0341649215fb001725aac0c3c5925343adbf1ad00c979b8c3d489512d6
+  image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:be93be0341649215fb001725aac0c3c5925343adbf1ad00c979b8c3d489512d6
 - name: gitops-1.18
   package: openshift-gitops-operator
   schema: olm.channel
@@ -1092,13 +1092,13 @@ entries:
 - schema: olm.bundle
   image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:78dc89a4a9dfb8dcf93224fd9a3caa63ea1551f8da73a88aebb284123d4a2962
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:4fc82c51692138acd9a7232fc4b3451cbca9f7be763452c811bea7a68867cb93
+  image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:4fc82c51692138acd9a7232fc4b3451cbca9f7be763452c811bea7a68867cb93
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:a27b8dd047e10fbbd6fc49176036c9b5178a1d2841e26719bfde23239ede157d
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b4d6b30d562e1cacbb1ca461e8c14b95c0d42be1baf876599c446669f2584feb
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:e1101b02df32a56a9aec80639372248b72963240dc86add446d0d07da65baca7
+  image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:e1101b02df32a56a9aec80639372248b72963240dc86add446d0d07da65baca7
 - schema: olm.bundle
   image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:1e7fb9262023798711dc58fecf9c57c2fbd260a7f942eef2a9fd2822dbfb0b74
 - name: gitops-1.19
@@ -1119,13 +1119,13 @@ entries:
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:5e78b9e6a98218c209af1d85e60c2000172a90f178f32f06f0e3b6bc11f33cce
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:710f6fe3896177cae0d900643b7147d11410e5e58ee012e139fbeee308ee297b
+  image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:710f6fe3896177cae0d900643b7147d11410e5e58ee012e139fbeee308ee297b
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:a4e9887db8647c4e958df4725f08340a9c6a462cd18fd2bf9c9f1fc939649740
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b5429c67a872f0d75e927339451bff0a646f55f3cf0ab98f68c1da2cd610fbc7
 - schema: olm.bundle
-  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:28f4abb103e42261349702992b66571b260509fd25546bfe6e0a2dc6b916822f
+  image: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle@sha256:28f4abb103e42261349702992b66571b260509fd25546bfe6e0a2dc6b916822f
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:6fc4720fce99dc2d20d5d30e153c01754937dd7aca0a6697e0ecb16c16cab2ac
 - schema: olm.bundle
