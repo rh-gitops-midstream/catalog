@@ -888,6 +888,8 @@ entries:
     replaces: openshift-gitops-operator.v1.20.0
   - name: openshift-gitops-operator.v1.20.2
     replaces: openshift-gitops-operator.v1.20.1
+  - name: openshift-gitops-operator.v1.20.3
+    replaces: openshift-gitops-operator.v1.20.2
   name: latest
   package: openshift-gitops-operator
   schema: olm.channel
@@ -1141,6 +1143,8 @@ entries:
     replaces: openshift-gitops-operator.v1.20.0
   - name: openshift-gitops-operator.v1.20.2
     replaces: openshift-gitops-operator.v1.20.1
+  - name: openshift-gitops-operator.v1.20.3
+    replaces: openshift-gitops-operator.v1.20.2
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:2aca0e62daad8644afb8725504ad0e20c55a7cf960841c9ec793904adedaf4fd
 - schema: olm.bundle
@@ -1151,5 +1155,7 @@ entries:
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:9d16d9f172618c8f03b2b5b930220761ed97faa90ebd38f570d60bed5216b433
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:247a54db35e184702d9c1d6f83cd9e3669f8aae48bd0eeaecdbeeda6176c525f
+- schema: olm.bundle
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:407b2310e342ddde5229624bac66ec364840c368f36e4831502a8ce4e45d972b
 schema: olm.template.basic
 
