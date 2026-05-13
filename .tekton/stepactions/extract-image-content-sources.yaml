@@ -18,6 +18,15 @@ spec:
       type: string
       description: Path where the JSON output should be written
       default: /workspace/imageContentSources.json
+  env:
+    - name: GIT_URL
+      value: $(params.gitUrl)
+    - name: GIT_REVISION
+      value: $(params.gitRevision)
+    - name: MIRROR_SET_PATH
+      value: $(params.mirrorSetPath)
+    - name: OUTPUT_PATH
+      value: $(params.outputPath)
   image: docker.io/python:3-alpine
   script: |
     #!/bin/sh
@@ -26,15 +35,15 @@ spec:
     pip install pyyaml --quiet >/dev/null 2>&1
 
     WORK=$(mktemp -d)
-    git clone "$(params.gitUrl)" "$WORK/repo"
+    git clone "$GIT_URL" "$WORK/repo"
     cd "$WORK/repo"
-    git checkout "$(params.gitRevision)"
+    git checkout "$GIT_REVISION"
 
     python3 -c "
     import yaml, json, sys
-    with open('$(params.mirrorSetPath)') as f:
+    with open('$MIRROR_SET_PATH') as f:
         data = yaml.safe_load(f)
     json.dump(data['spec']['imageDigestMirrors'], sys.stdout)
-    " > "$(params.outputPath)"
+    " > "$OUTPUT_PATH"
 
-    echo "Successfully extracted imageContentSources from $(params.gitUrl)"
+    echo "Successfully extracted imageContentSources from $GIT_URL"
