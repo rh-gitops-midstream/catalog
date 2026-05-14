@@ -21,14 +21,22 @@ import urllib.request
 from datetime import datetime
 
 
-def run_cmd(cmd, timeout=30):
+def run_cmd(cmd, timeout=30, verbose=False):
     """Run a shell command and return stdout, or None on failure."""
     try:
         result = subprocess.run(
             cmd, shell=True, capture_output=True, text=True, timeout=timeout
         )
+        if verbose or result.returncode != 0:
+            logging.info(f"CMD: {cmd}")
+            logging.info(f"  RC: {result.returncode}")
+            if result.stdout:
+                logging.info(f"  STDOUT: {result.stdout[:500]}")
+            if result.stderr:
+                logging.info(f"  STDERR: {result.stderr[:500]}")
         return result.stdout.strip() if result.returncode == 0 else None
-    except Exception:
+    except Exception as e:
+        logging.error(f"CMD exception: {cmd}: {e}")
         return None
 
 
@@ -109,51 +117,96 @@ def get_task_runs(pipeline_run_name):
 
 def get_combined_logs_summary(quay_repo, pipeline_run_name):
     """Pull the combined logs artifact and extract test summary from README.txt."""
+    logging.info(f"=== get_combined_logs_summary ===")
+    logging.info(f"  quay_repo: {quay_repo}")
+    logging.info(f"  pipeline_run_name: {pipeline_run_name}")
+
     ref = f"{quay_repo}:{pipeline_run_name}-logs"
     tmpdir = f"/tmp/slack-combined-logs"
+
+    logging.info(f"  ref: {ref}")
+    logging.info(f"  tmpdir: {tmpdir}")
+
     run_cmd(f"rm -rf {tmpdir} && mkdir -p {tmpdir}")
 
     # Pull the combined logs artifact
-    if run_cmd(f"oras pull --no-tty -o {tmpdir} {ref} 2>/dev/null") is None:
+    logging.info(f"Pulling combined logs artifact...")
+    pull_result = run_cmd(f"oras pull --no-tty -o {tmpdir} {ref}", verbose=True)
+    if pull_result is None:
+        logging.warning(f"Failed to pull combined logs from {ref}")
+        # Try to see what's in the tmpdir anyway
+        ls_output = run_cmd(f"ls -la {tmpdir}", verbose=True)
         run_cmd(f"rm -rf {tmpdir}")
         return None
+
+    logging.info(f"Successfully pulled logs, checking tmpdir contents...")
+    run_cmd(f"ls -la {tmpdir}", verbose=True)
 
     # Extract tarball if present
-    tarball = run_cmd(f"find {tmpdir} -name '*.tar.gz' -type f 2>/dev/null | head -1")
+    logging.info(f"Looking for tarball...")
+    tarball = run_cmd(f"find {tmpdir} -name '*.tar.gz' -type f | head -1", verbose=True)
     if tarball:
-        run_cmd(f"tar xzf {tarball} -C {tmpdir} 2>/dev/null")
+        logging.info(f"Found tarball: {tarball}, extracting...")
+        extract_result = run_cmd(f"tar xzf {tarball} -C {tmpdir}", verbose=True)
+        if extract_result is None:
+            logging.warning(f"Failed to extract tarball {tarball}")
+        else:
+            logging.info(f"Tarball extracted successfully")
+            run_cmd(f"ls -laR {tmpdir}", verbose=True)
+    else:
+        logging.info(f"No tarball found, listing all files...")
+        run_cmd(f"find {tmpdir} -type f", verbose=True)
 
     # Find README.txt
-    readme = run_cmd(f"find {tmpdir} -name 'README.txt' -type f 2>/dev/null | head -1")
+    logging.info(f"Looking for README.txt...")
+    readme = run_cmd(f"find {tmpdir} -name 'README.txt' -type f | head -1", verbose=True)
     if not readme:
+        logging.warning(f"README.txt not found in {tmpdir}")
+        # Try alternate names
+        readme_alt = run_cmd(f"find {tmpdir} -iname 'readme*' -type f", verbose=True)
+        logging.info(f"Alternate README search: {readme_alt}")
         run_cmd(f"rm -rf {tmpdir}")
         return None
+
+    logging.info(f"Found README at: {readme}")
 
     # Read README and extract test summary section
     try:
         with open(readme, 'r') as f:
             content = f.read()
-    except Exception:
+        logging.info(f"README content length: {len(content)} bytes")
+        logging.info(f"README first 500 chars:\n{content[:500]}")
+    except Exception as e:
+        logging.error(f"Failed to read README: {e}")
         run_cmd(f"rm -rf {tmpdir}")
         return None
 
     run_cmd(f"rm -rf {tmpdir}")
 
     # Parse test summary line (format: "Test Summary: Tests: 45 total, 43 passed, 2 failed, 0 skipped, 0 errors")
+    logging.info(f"Parsing test summary...")
     for line in content.split('\n'):
         if line.startswith('Test Summary:'):
-            return line.replace('Test Summary: ', '').strip()
+            summary = line.replace('Test Summary: ', '').strip()
+            logging.info(f"Found test summary: {summary}")
+            return summary
+
+    logging.info(f"No 'Test Summary:' line found, checking for collection warnings...")
 
     # If no test summary found, extract collection warnings
     if 'Collection warnings:' in content:
+        logging.info(f"Found collection warnings")
         warnings_start = content.find('Collection warnings:')
         warnings_end = content.find('\n\n', warnings_start)
         if warnings_end > warnings_start:
             warnings_section = content[warnings_start:warnings_end].strip()
             # Get first 5 lines of warnings
             warning_lines = warnings_section.split('\n')[:6]  # header + 5 lines
-            return '\n'.join(warning_lines)
+            result = '\n'.join(warning_lines)
+            logging.info(f"Returning warnings: {result}")
+            return result
 
+    logging.warning(f"No test summary or collection warnings found in README")
     return None
 
 
@@ -387,6 +440,15 @@ def send_slack_message(webhook_url, blocks, fallback_text):
 
 
 def main():
+    # Configure logging to stderr (will appear in pod logs)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        stream=sys.stderr
+    )
+
+    logging.info("=== Starting send-slack-message.py ===")
+
     webhook_url = os.environ.get("SLACK_WEBHOOK_URL", "")
     pipeline_run_name = os.environ.get("PIPELINE_RUN_NAME", "")
     aggregate_status = os.environ.get("AGGREGATE_STATUS", "Unknown")
@@ -395,25 +457,49 @@ def main():
     quay_creds = os.environ.get("QUAY_CREDENTIALS_PATH", "")
     task_names_str = os.environ.get("TASK_NAMES", "")
 
+    logging.info(f"Environment:")
+    logging.info(f"  PIPELINE_RUN_NAME: {pipeline_run_name}")
+    logging.info(f"  AGGREGATE_STATUS: {aggregate_status}")
+    logging.info(f"  QUAY_REPO: {quay_repo}")
+    logging.info(f"  QUAY_CREDENTIALS_PATH: {quay_creds}")
+    logging.info(f"  TASK_NAMES: {task_names_str}")
+    logging.info(f"  LOG_URL: {log_url}")
+
     if not webhook_url:
         logging.error("SLACK_WEBHOOK_URL is not set")
         return 1
 
     # Setup oras credentials
-    setup_oras_auth(quay_creds)
+    logging.info("Setting up oras authentication...")
+    auth_ok = setup_oras_auth(quay_creds)
+    logging.info(f"  Auth setup result: {auth_ok}")
+    logging.info(f"  DOCKER_CONFIG: {os.environ.get('DOCKER_CONFIG', 'not set')}")
+
+    # Check if oras is available
+    oras_version = run_cmd("oras version 2>&1", verbose=True)
+    logging.info(f"  oras available: {oras_version is not None}")
 
     loggable_tasks = set(task_names_str.split()) if task_names_str else set()
-    task_runs = get_task_runs(pipeline_run_name)
+    logging.info(f"Loggable tasks: {loggable_tasks}")
 
+    logging.info("Fetching task runs from cluster...")
+    task_runs = get_task_runs(pipeline_run_name)
+    logging.info(f"Found {len(task_runs)} task runs")
+
+    logging.info("Building Slack blocks...")
     blocks = build_blocks(
         pipeline_run_name, aggregate_status, log_url, quay_repo, task_runs, loggable_tasks
     )
+    logging.info(f"Built {len(blocks)} blocks")
 
     fallback = f"GitOps Catalog E2E {pipeline_run_name}: {aggregate_status}"
+    logging.info(f"Sending Slack message...")
     ret = send_slack_message(webhook_url, blocks, fallback)
+    logging.info(f"Slack API response: {ret}")
     if ret:
         print(ret)
 
+    logging.info("=== send-slack-message.py completed ===")
     return 0
 
 

@@ -79,19 +79,23 @@ spec:
               secretName: gitops-test-runner-image-push
         steps:
           - name: get-kubeconfig
-            image: quay.io/konflux-ci/appstudio-utils:dbbdd82734232e6289e8fbae5b4c858481a7c057@sha256:c7bae34b7f56a7f5a05c25bd4196091e85a89f5c35d289e31c4fe33739e067fa
-            env:
-              - name: EAAS_SPACE_SECRET_REF
+            onError: continue
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
                 value: $(params.eaasSpaceSecretRef)
-              - name: CLUSTER_NAME
+              - name: clusterName
                 value: $(params.clusterName)
-            script: |
-              #!/bin/sh
-              set +e
-              get_kubeconfig.sh "$CLUSTER_NAME" "$EAAS_SPACE_SECRET_REF" /credentials 2>&1 || echo "Failed to get kubeconfig (cluster may be deprovisioned)"
-            volumeMounts:
               - name: credentials
-                mountPath: /credentials
+                value: credentials
           - name: collect-and-upload-logs
             image: $(params.testImageUrl)
             env:
@@ -356,18 +360,22 @@ spec:
               secretName: gitops-test-runner-image-push
         steps:
           - name: get-kubeconfig
-            image: quay.io/konflux-ci/appstudio-utils:dbbdd82734232e6289e8fbae5b4c858481a7c057@sha256:c7bae34b7f56a7f5a05c25bd4196091e85a89f5c35d289e31c4fe33739e067fa
-            env:
-              - name: EAAS_SPACE_SECRET_REF
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
                 value: $(params.eaasSpaceSecretRef)
-              - name: CLUSTER_NAME
+              - name: clusterName
                 value: $(params.clusterName)
-            script: |
-              #!/bin/sh
-              get_kubeconfig.sh "$CLUSTER_NAME" "$EAAS_SPACE_SECRET_REF" /credentials
-            volumeMounts:
               - name: credentials
-                mountPath: /credentials
+                value: credentials
           - name: extract-image
             image: $(params.testImageUrl)
             env:
@@ -435,18 +443,22 @@ spec:
               secretName: gitops-test-runner-image-push
         steps:
           - name: get-kubeconfig
-            image: quay.io/konflux-ci/appstudio-utils:dbbdd82734232e6289e8fbae5b4c858481a7c057@sha256:c7bae34b7f56a7f5a05c25bd4196091e85a89f5c35d289e31c4fe33739e067fa
-            env:
-              - name: EAAS_SPACE_SECRET_REF
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
                 value: $(params.eaasSpaceSecretRef)
-              - name: CLUSTER_NAME
+              - name: clusterName
                 value: $(params.clusterName)
-            script: |
-              #!/bin/sh
-              get_kubeconfig.sh "$CLUSTER_NAME" "$EAAS_SPACE_SECRET_REF" /credentials
-            volumeMounts:
               - name: credentials
-                mountPath: /credentials
+                value: credentials
           - name: deploy
             image: $(params.testImageUrl)
             env:
@@ -511,18 +523,22 @@ spec:
               secretName: gitops-test-runner-image-push
         steps:
           - name: get-kubeconfig
-            image: quay.io/konflux-ci/appstudio-utils:dbbdd82734232e6289e8fbae5b4c858481a7c057@sha256:c7bae34b7f56a7f5a05c25bd4196091e85a89f5c35d289e31c4fe33739e067fa
-            env:
-              - name: EAAS_SPACE_SECRET_REF
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
                 value: $(params.eaasSpaceSecretRef)
-              - name: CLUSTER_NAME
+              - name: clusterName
                 value: $(params.clusterName)
-            script: |
-              #!/bin/sh
-              get_kubeconfig.sh "$CLUSTER_NAME" "$EAAS_SPACE_SECRET_REF" /credentials
-            volumeMounts:
               - name: credentials
-                mountPath: /credentials
+                value: credentials
           - name: run-tests
             image: $(params.testImageUrl)
             env:
@@ -557,7 +573,7 @@ spec:
 
               # Parse JUnit results if available
               import xml.etree.ElementTree as ET
-              junit_file = "/tmp/task-logs/junit-argocd-e2e.xml"
+              junit_file = "/tmp/task-logs/junit-results.xml"
 
               try:
                   tree = ET.parse(junit_file)

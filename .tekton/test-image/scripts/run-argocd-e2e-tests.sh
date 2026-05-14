@@ -695,6 +695,22 @@ echo "========================================"
 echo "ArgoCD E2E results: ${PASS_COUNT} passed, ${FAIL_COUNT} failed (exit code ${TEST_EXIT_CODE})"
 echo "========================================"
 
+# Create JUnit XML for integration with collect-and-upload-logs.sh
+TOTAL_TESTS=$((PASS_COUNT + FAIL_COUNT))
+JUNIT_FILE="${RESULTS_DIR}/junit-results.xml"
+cat > "${JUNIT_FILE}" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ArgoCD E2E Tests" tests="${TOTAL_TESTS}" failures="${FAIL_COUNT}" errors="0" skipped="0" time="0">
+  <testcase name="ArgoCD E2E Test Suite" classname="argocd.e2e">
+    $(if [ "${FAIL_COUNT}" -gt 0 ]; then
+      echo "<failure message=\"${FAIL_COUNT} test(s) failed\">See argocd-e2e.log for details</failure>"
+    fi)
+  </testcase>
+</testsuite>
+EOF
+
+echo "Generated JUnit XML: ${JUNIT_FILE}"
+
 if [[ "$TEST_EXIT_CODE" -ne 0 || "$FAIL_COUNT" -gt 0 ]]; then
   exit 1
 fi
