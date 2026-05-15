@@ -26,51 +26,30 @@ echo "  Package: ${OPERATOR_NAME}"
 WORK_DIR=$(mktemp -d)
 trap 'rm -rf "$WORK_DIR"' EXIT
 
-# Extract catalog configs directory
-echo "Extracting catalog configs..."
+# Extract catalog.json file directly from the catalog image
+# The catalog structure is /configs/<operator-name>/catalog.json
+echo "Extracting catalog.json..."
 EXTRACT_DIR="${WORK_DIR}/extract"
 mkdir -p "$EXTRACT_DIR"
 
-# Extract /configs directory from catalog image
-if oc image extract "$CATALOG_IMAGE" --path /configs:"${EXTRACT_DIR}/configs" 2>&1; then
-    echo "Extracted catalog /configs using oc image extract"
-else
-    echo "ERROR: Failed to extract /configs from catalog image"
+CATALOG_JSON="${EXTRACT_DIR}/catalog.json"
+
+# Extract the specific catalog.json file
+if ! oc image extract "$CATALOG_IMAGE" \
+    --path "/configs/${OPERATOR_NAME}/catalog.json:${EXTRACT_DIR}" 2>&1; then
+    echo "ERROR: Failed to extract catalog.json from ${CATALOG_IMAGE}"
+    echo "Expected path: /configs/${OPERATOR_NAME}/catalog.json"
     exit 1
 fi
 
-# Check if we got the configs directory
-if [ ! -d "${EXTRACT_DIR}/configs" ]; then
-    echo "ERROR: /configs directory not found in catalog image"
-    echo "Extracted contents:"
+# Verify the file exists and is not empty
+if [ ! -f "$CATALOG_JSON" ] || [ ! -s "$CATALOG_JSON" ]; then
+    echo "ERROR: catalog.json not found or is empty"
     ls -la "$EXTRACT_DIR"
     exit 1
 fi
 
-echo "Catalog configs extracted successfully"
-find "${EXTRACT_DIR}/configs" -type f -name "*.json" | head -5
-
-# Find the catalog index JSON (FBC format)
-# Look for catalog.json specifically (FBC catalogs use this name)
-CATALOG_JSON=$(find "${EXTRACT_DIR}/configs" -name "catalog.json" -type f | head -1)
-
-# If not found, try index.json or any .json that's not in buildinfo
-if [ -z "$CATALOG_JSON" ]; then
-    CATALOG_JSON=$(find "${EXTRACT_DIR}/configs" -name "index.json" -type f | head -1)
-fi
-
-if [ -z "$CATALOG_JSON" ]; then
-    CATALOG_JSON=$(find "${EXTRACT_DIR}/configs" -name "*.json" -type f ! -path "*/buildinfo/*" | head -1)
-fi
-
-if [ -z "$CATALOG_JSON" ]; then
-    echo "ERROR: No JSON catalog file found in configs"
-    echo "Directory structure:"
-    find "${EXTRACT_DIR}/configs" -type f
-    exit 1
-fi
-
-echo "Found catalog JSON: ${CATALOG_JSON}"
+echo "Successfully extracted catalog.json ($(stat -f%z "$CATALOG_JSON" 2>/dev/null || stat -c%s "$CATALOG_JSON") bytes)"
 
 # Parse FBC catalog to find the latest bundle
 echo "Parsing catalog for package: ${OPERATOR_NAME}, channel: ${OPERATOR_CHANNEL}"
@@ -80,9 +59,12 @@ echo "Parsing catalog for package: ${OPERATOR_NAME}, channel: ${OPERATOR_CHANNEL
 # {"schema":"olm.channel","package":"...","name":"...","entries":[...]}
 
 # First find the channel entry for our package
-CHANNEL_ENTRY=$(jq -r --arg pkg "$OPERATOR_NAME" --arg ch "$OPERATOR_CHANNEL" \
+# Compact the JSON first to make grep work, then filter
+echo "Finding channel entry..."
+CHANNEL_ENTRY=$(jq -c --arg pkg "$OPERATOR_NAME" --arg ch "$OPERATOR_CHANNEL" \
     'select(.schema == "olm.channel" and .package == $pkg and .name == $ch)' \
     "$CATALOG_JSON" | head -1)
+echo "Channel entry found"
 
 if [ -z "$CHANNEL_ENTRY" ]; then
     echo "ERROR: Channel ${OPERATOR_CHANNEL} not found for package ${OPERATOR_NAME}"
