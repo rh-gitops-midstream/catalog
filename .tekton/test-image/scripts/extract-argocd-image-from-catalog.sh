@@ -31,17 +31,11 @@ echo "Extracting catalog configs..."
 EXTRACT_DIR="${WORK_DIR}/extract"
 mkdir -p "$EXTRACT_DIR"
 
-# Extract entire image to get /configs directory
-if oc image extract "$CATALOG_IMAGE" --path /:"${EXTRACT_DIR}" 2>/dev/null; then
-    echo "Extracted catalog image using oc image extract"
-elif skopeo copy "docker://${CATALOG_IMAGE}" "dir:${WORK_DIR}/catalog-temp" 2>/dev/null; then
-    echo "Downloaded catalog image using skopeo"
-    # Extract the layer containing /configs (typically the last non-base layer)
-    for layer in $(find "${WORK_DIR}/catalog-temp" -name "*.tar" | sort); do
-        tar -xf "$layer" -C "$EXTRACT_DIR" configs/ 2>/dev/null && break || true
-    done
+# Extract /configs directory from catalog image
+if oc image extract "$CATALOG_IMAGE" --path /configs:"${EXTRACT_DIR}/configs" 2>&1; then
+    echo "Extracted catalog /configs using oc image extract"
 else
-    echo "ERROR: Failed to extract catalog image"
+    echo "ERROR: Failed to extract /configs from catalog image"
     exit 1
 fi
 
