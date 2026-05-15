@@ -28,39 +28,51 @@ trap 'rm -rf "$WORK_DIR"' EXIT
 
 # Extract catalog configs directory
 echo "Extracting catalog configs..."
-CATALOG_DIR="${WORK_DIR}/catalog"
-mkdir -p "$CATALOG_DIR"
+EXTRACT_DIR="${WORK_DIR}/extract"
+mkdir -p "$EXTRACT_DIR"
 
-# Try oc image extract first (faster), fall back to skopeo
-if oc image extract "$CATALOG_IMAGE" --path /configs:"${CATALOG_DIR}" 2>/dev/null; then
-    echo "Extracted catalog configs using oc image extract"
+# Extract entire image to get /configs directory
+if oc image extract "$CATALOG_IMAGE" --path /:"${EXTRACT_DIR}" 2>/dev/null; then
+    echo "Extracted catalog image using oc image extract"
 elif skopeo copy "docker://${CATALOG_IMAGE}" "dir:${WORK_DIR}/catalog-temp" 2>/dev/null; then
     echo "Downloaded catalog image using skopeo"
-    # Extract the layer containing /configs
-    # The catalog image typically has configs in the last layer
-    LAYER_TAR=$(find "${WORK_DIR}/catalog-temp" -name "*.tar" | tail -1)
-    if [ -n "$LAYER_TAR" ]; then
-        tar -xf "$LAYER_TAR" -C "$CATALOG_DIR" configs/ 2>/dev/null || true
-    fi
-    # Move configs up if they're nested
-    if [ -d "${CATALOG_DIR}/configs" ]; then
-        mv "${CATALOG_DIR}/configs"/* "$CATALOG_DIR/" || true
-        rmdir "${CATALOG_DIR}/configs" || true
-    fi
+    # Extract the layer containing /configs (typically the last non-base layer)
+    for layer in $(find "${WORK_DIR}/catalog-temp" -name "*.tar" | sort); do
+        tar -xf "$layer" -C "$EXTRACT_DIR" configs/ 2>/dev/null && break || true
+    done
 else
     echo "ERROR: Failed to extract catalog image"
     exit 1
 fi
 
-echo "Catalog configs extracted to: ${CATALOG_DIR}"
-ls -la "$CATALOG_DIR"
+# Check if we got the configs directory
+if [ ! -d "${EXTRACT_DIR}/configs" ]; then
+    echo "ERROR: /configs directory not found in catalog image"
+    echo "Extracted contents:"
+    ls -la "$EXTRACT_DIR"
+    exit 1
+fi
+
+echo "Catalog configs extracted successfully"
+find "${EXTRACT_DIR}/configs" -type f -name "*.json" | head -5
 
 # Find the catalog index JSON (FBC format)
-# Look for catalog.json or index.json or any .json file
-CATALOG_JSON=$(find "$CATALOG_DIR" -name "*.json" -type f | head -1)
+# Look for catalog.json specifically (FBC catalogs use this name)
+CATALOG_JSON=$(find "${EXTRACT_DIR}/configs" -name "catalog.json" -type f | head -1)
+
+# If not found, try index.json or any .json that's not in buildinfo
+if [ -z "$CATALOG_JSON" ]; then
+    CATALOG_JSON=$(find "${EXTRACT_DIR}/configs" -name "index.json" -type f | head -1)
+fi
+
+if [ -z "$CATALOG_JSON" ]; then
+    CATALOG_JSON=$(find "${EXTRACT_DIR}/configs" -name "*.json" -type f ! -path "*/buildinfo/*" | head -1)
+fi
+
 if [ -z "$CATALOG_JSON" ]; then
     echo "ERROR: No JSON catalog file found in configs"
-    find "$CATALOG_DIR" -type f
+    echo "Directory structure:"
+    find "${EXTRACT_DIR}/configs" -type f
     exit 1
 fi
 
@@ -111,31 +123,35 @@ echo "Found bundle image: ${BUNDLE_IMAGE}"
 
 # Extract bundle manifests
 echo "Extracting bundle manifests..."
-BUNDLE_DIR="${WORK_DIR}/bundle"
-mkdir -p "$BUNDLE_DIR"
+BUNDLE_EXTRACT="${WORK_DIR}/bundle-extract"
+mkdir -p "$BUNDLE_EXTRACT"
 
-if oc image extract "$BUNDLE_IMAGE" --path /manifests:"${BUNDLE_DIR}" 2>/dev/null; then
-    echo "Extracted bundle manifests using oc image extract"
+if oc image extract "$BUNDLE_IMAGE" --path /:"${BUNDLE_EXTRACT}" 2>/dev/null; then
+    echo "Extracted bundle image using oc image extract"
 elif skopeo copy "docker://${BUNDLE_IMAGE}" "dir:${WORK_DIR}/bundle-temp" 2>/dev/null; then
     echo "Downloaded bundle image using skopeo"
-    LAYER_TAR=$(find "${WORK_DIR}/bundle-temp" -name "*.tar" | tail -1)
-    if [ -n "$LAYER_TAR" ]; then
-        tar -xf "$LAYER_TAR" -C "$BUNDLE_DIR" manifests/ 2>/dev/null || true
-    fi
-    if [ -d "${BUNDLE_DIR}/manifests" ]; then
-        mv "${BUNDLE_DIR}/manifests"/* "$BUNDLE_DIR/" || true
-        rmdir "${BUNDLE_DIR}/manifests" || true
-    fi
+    # Extract the layer containing /manifests
+    for layer in $(find "${WORK_DIR}/bundle-temp" -name "*.tar" | sort); do
+        tar -xf "$layer" -C "$BUNDLE_EXTRACT" manifests/ 2>/dev/null && break || true
+    done
 else
     echo "ERROR: Failed to extract bundle image"
     exit 1
 fi
 
+# Check if we got the manifests directory
+if [ ! -d "${BUNDLE_EXTRACT}/manifests" ]; then
+    echo "ERROR: /manifests directory not found in bundle image"
+    echo "Extracted contents:"
+    ls -la "$BUNDLE_EXTRACT"
+    exit 1
+fi
+
 # Find CSV file
-CSV_FILE=$(find "$BUNDLE_DIR" -name "*.clusterserviceversion.yaml" -type f | head -1)
+CSV_FILE=$(find "${BUNDLE_EXTRACT}/manifests" -name "*.clusterserviceversion.yaml" -type f | head -1)
 if [ -z "$CSV_FILE" ]; then
     echo "ERROR: Could not find ClusterServiceVersion in bundle"
-    find "$BUNDLE_DIR" -type f
+    find "${BUNDLE_EXTRACT}/manifests" -type f
     exit 1
 fi
 
