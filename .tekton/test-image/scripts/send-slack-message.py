@@ -129,13 +129,28 @@ def get_combined_logs_summary(quay_repo, pipeline_run_name):
 
     run_cmd(f"rm -rf {tmpdir} && mkdir -p {tmpdir}")
 
-    # Pull the combined logs artifact
+    # Pull the combined logs artifact (with retry)
+    # The upload-logs task should complete before this runs (via runAfter),
+    # but Quay may need a few seconds to make the artifact available
     logging.info(f"Pulling combined logs artifact...")
-    pull_result = run_cmd(f"oras pull --no-tty -o {tmpdir} {ref}", verbose=True)
+    pull_result = None
+    max_attempts = 6
+    wait_times = [2, 3, 5, 10, 15, 20]  # Progressive backoff
+
+    for attempt in range(1, max_attempts + 1):
+        logging.info(f"  Attempt {attempt}/{max_attempts}...")
+        pull_result = run_cmd(f"oras pull --no-tty -o {tmpdir} {ref}", verbose=True)
+        if pull_result is not None:
+            logging.info(f"  Successfully pulled artifact on attempt {attempt}")
+            break
+        if attempt < max_attempts:
+            wait = wait_times[attempt - 1]
+            logging.info(f"  Artifact not ready yet, waiting {wait} seconds...")
+            run_cmd(f"sleep {wait}")
+
     if pull_result is None:
-        logging.warning(f"Failed to pull combined logs from {ref}")
-        # Try to see what's in the tmpdir anyway
-        ls_output = run_cmd(f"ls -la {tmpdir}", verbose=True)
+        logging.warning(f"Failed to pull combined logs from {ref} after {max_attempts} attempts (waited ~55s total)")
+        logging.info(f"This is normal if the upload-logs task failed or hasn't completed yet")
         run_cmd(f"rm -rf {tmpdir}")
         return None
 

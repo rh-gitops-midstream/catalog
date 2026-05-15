@@ -118,6 +118,8 @@ spec:
                 mountPath: /quay-credentials
 
     - name: send-slack-notification
+      runAfter:
+        - upload-logs
       params:
         - name: pipelineRunName
           value: "$(context.pipelineRun.name)"
@@ -199,9 +201,9 @@ spec:
             value: .tekton/tasks/build-ginkgo-test-image.yaml
       params:
         - name: SOURCE_URL
-          value: $(tasks.parse-metadata.results.source-git-url)
+          value: $(params.CATALOG_TASK_URL)
         - name: SOURCE_REVISION
-          value: $(tasks.parse-metadata.results.source-git-revision)
+          value: $(params.CATALOG_TASK_REVISION)
         - name: IMAGE_EXPIRES_AFTER
           value: "7d"
 
@@ -228,9 +230,9 @@ spec:
         - provision-eaas-space
       params:
         - name: catalogSourceUrl
-          value: $(tasks.parse-metadata.results.source-git-url)
+          value: $(params.CATALOG_TASK_URL)
         - name: catalogSourceRevision
-          value: $(tasks.parse-metadata.results.source-git-revision)
+          value: $(params.CATALOG_TASK_REVISION)
         - name: catalogTaskUrl
           value: $(params.CATALOG_TASK_URL)
         - name: catalogTaskRevision
