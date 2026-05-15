@@ -118,8 +118,6 @@ spec:
                 mountPath: /quay-credentials
 
     - name: send-slack-notification
-      runAfter:
-        - upload-logs
       params:
         - name: pipelineRunName
           value: "$(context.pipelineRun.name)"

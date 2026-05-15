@@ -140,8 +140,6 @@ spec:
               - /usr/local/bin/collect-and-upload-logs.sh
 
     - name: send-slack-notification
-      runAfter:
-        - upload-logs
       params:
         - name: aggregateTasksStatus
           value: "$(tasks.status)"
