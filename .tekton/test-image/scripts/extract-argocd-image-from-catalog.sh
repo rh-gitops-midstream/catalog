@@ -23,6 +23,15 @@ echo "Extracting ArgoCD image from catalog: ${CATALOG_IMAGE}"
 echo "  Channel: ${OPERATOR_CHANNEL}"
 echo "  Package: ${OPERATOR_NAME}"
 
+# Setup registry authentication for pulling from registry.redhat.io
+# The pull secret is mounted at /quay-credentials/.dockerconfigjson
+if [ -f /quay-credentials/.dockerconfigjson ]; then
+    echo "Configuring registry authentication..."
+    mkdir -p ~/.docker
+    cp /quay-credentials/.dockerconfigjson ~/.docker/config.json
+    echo "Registry authentication configured"
+fi
+
 WORK_DIR=$(mktemp -d)
 trap 'rm -rf "$WORK_DIR"' EXIT
 
@@ -102,16 +111,10 @@ echo "Extracting bundle manifests..."
 BUNDLE_EXTRACT="${WORK_DIR}/bundle-extract"
 mkdir -p "$BUNDLE_EXTRACT"
 
-if oc image extract "$BUNDLE_IMAGE" --path /:"${BUNDLE_EXTRACT}" 2>/dev/null; then
-    echo "Extracted bundle image using oc image extract"
-elif skopeo copy "docker://${BUNDLE_IMAGE}" "dir:${WORK_DIR}/bundle-temp" 2>/dev/null; then
-    echo "Downloaded bundle image using skopeo"
-    # Extract the layer containing /manifests
-    for layer in $(find "${WORK_DIR}/bundle-temp" -name "*.tar" | sort); do
-        tar -xf "$layer" -C "$BUNDLE_EXTRACT" manifests/ 2>/dev/null && break || true
-    done
+if oc image extract "$BUNDLE_IMAGE" --path /manifests:"${BUNDLE_EXTRACT}" 2>&1; then
+    echo "Extracted bundle manifests using oc image extract"
 else
-    echo "ERROR: Failed to extract bundle image"
+    echo "ERROR: Failed to extract bundle manifests from ${BUNDLE_IMAGE}"
     exit 1
 fi
 
