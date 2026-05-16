@@ -142,22 +142,24 @@ else
     echo "Bundle image already uses Quay or other accessible registry"
 fi
 
-# Extract bundle manifests
-echo "Extracting bundle manifests from: ${BUNDLE_IMAGE}"
+# Extract bundle contents
+echo "Extracting bundle from: ${BUNDLE_IMAGE}"
 BUNDLE_EXTRACT="${WORK_DIR}/bundle-extract"
 mkdir -p "$BUNDLE_EXTRACT"
 
-if oc image extract "$BUNDLE_IMAGE" --path /manifests:"${BUNDLE_EXTRACT}" 2>&1; then
-    echo "Extracted bundle manifests using oc image extract"
-else
-    echo "ERROR: Failed to extract bundle manifests from ${BUNDLE_IMAGE}"
+# Extract entire bundle image to get /manifests directory
+# Using --path /manifests: doesn't work reliably, so extract everything
+if ! oc image extract "$BUNDLE_IMAGE" --path /:"${BUNDLE_EXTRACT}" 2>&1; then
+    echo "ERROR: Failed to extract bundle from ${BUNDLE_IMAGE}"
     exit 1
 fi
+
+echo "Extracted bundle contents"
 
 # Check if we got the manifests directory
 if [ ! -d "${BUNDLE_EXTRACT}/manifests" ]; then
     echo "ERROR: /manifests directory not found in bundle image"
-    echo "Extracted contents:"
+    echo "Bundle contents:"
     ls -la "$BUNDLE_EXTRACT"
     exit 1
 fi
