@@ -358,6 +358,9 @@ spec:
           - name: quay-credentials
             secret:
               secretName: gitops-test-runner-image-push
+          - name: quay-pull-credentials
+            secret:
+              secretName: gitops-quay-pull-secret-merged
         steps:
           - name: get-kubeconfig
             ref:
@@ -395,6 +398,9 @@ spec:
             volumeMounts:
               - name: quay-credentials
                 mountPath: /quay-credentials
+              - name: quay-pull-credentials
+                mountPath: /quay-pull-credentials
+                readOnly: true
           - name: save-result
             image: $(params.testImageUrl)
             script: |

@@ -24,12 +24,15 @@ echo "  Channel: ${OPERATOR_CHANNEL}"
 echo "  Package: ${OPERATOR_NAME}"
 
 # Setup registry authentication for pulling from registry.redhat.io
-# The pull secret is mounted at /quay-credentials/.dockerconfigjson
-if [ -f /quay-credentials/.dockerconfigjson ]; then
+# The pull secret is mounted at /quay-pull-credentials/.dockerconfigjson
+if [ -f /quay-pull-credentials/.dockerconfigjson ]; then
     echo "Configuring registry authentication..."
     mkdir -p ~/.docker
-    cp /quay-credentials/.dockerconfigjson ~/.docker/config.json
+    cp /quay-pull-credentials/.dockerconfigjson ~/.docker/config.json
     echo "Registry authentication configured"
+else
+    echo "WARNING: Pull credentials not found at /quay-pull-credentials/.dockerconfigjson"
+    echo "Bundle extraction from registry.redhat.io may fail"
 fi
 
 WORK_DIR=$(mktemp -d)
