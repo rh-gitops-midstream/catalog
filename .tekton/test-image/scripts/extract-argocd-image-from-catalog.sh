@@ -117,10 +117,33 @@ if [ -z "$BUNDLE_IMAGE" ] || [ "$BUNDLE_IMAGE" = "null" ]; then
     exit 1
 fi
 
-echo "Found bundle image: ${BUNDLE_IMAGE}"
+echo "Found bundle image from catalog: ${BUNDLE_IMAGE}"
+
+# Map registry.redhat.io bundle to Quay equivalent
+# The catalog references registry.redhat.io, but in Konflux we build to Quay
+if [[ "$BUNDLE_IMAGE" == registry.redhat.io/* ]]; then
+    echo "Remapping bundle from registry.redhat.io to Quay..."
+
+    # Extract version from bundle name (e.g., openshift-gitops-operator.v1.20.2 -> v1.20.2)
+    BUNDLE_VERSION=$(echo "$BUNDLE_NAME" | sed -n 's/.*\.\(v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*/\1/p')
+
+    if [ -z "$BUNDLE_VERSION" ]; then
+        echo "WARNING: Could not extract version from bundle name: ${BUNDLE_NAME}"
+        echo "Using bundle name as tag"
+        BUNDLE_VERSION="$BUNDLE_NAME"
+    fi
+
+    # Construct Quay bundle URL
+    QUAY_BUNDLE="quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle:${BUNDLE_VERSION}"
+    echo "  Original: ${BUNDLE_IMAGE}"
+    echo "  Remapped: ${QUAY_BUNDLE}"
+    BUNDLE_IMAGE="$QUAY_BUNDLE"
+else
+    echo "Bundle image already uses Quay or other accessible registry"
+fi
 
 # Extract bundle manifests
-echo "Extracting bundle manifests..."
+echo "Extracting bundle manifests from: ${BUNDLE_IMAGE}"
 BUNDLE_EXTRACT="${WORK_DIR}/bundle-extract"
 mkdir -p "$BUNDLE_EXTRACT"
 
