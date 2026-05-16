@@ -27,9 +27,19 @@ echo "  Package: ${OPERATOR_NAME}"
 # The pull secret is mounted at /quay-pull-credentials/.dockerconfigjson
 if [ -f /quay-pull-credentials/.dockerconfigjson ]; then
     echo "Configuring registry authentication..."
-    mkdir -p ~/.docker
-    cp /quay-pull-credentials/.dockerconfigjson ~/.docker/config.json
-    echo "Registry authentication configured"
+    AUTH_DIR=$(mktemp -d)
+    cp /quay-pull-credentials/.dockerconfigjson "${AUTH_DIR}/config.json"
+    export DOCKER_CONFIG="${AUTH_DIR}"
+    echo "Registry authentication configured (DOCKER_CONFIG=${DOCKER_CONFIG})"
+
+    # Debug: check if registry.redhat.io is in the auth config
+    if grep -q "registry.redhat.io" /quay-pull-credentials/.dockerconfigjson; then
+        echo "  ✓ Found registry.redhat.io credentials in pull secret"
+    else
+        echo "  ✗ WARNING: registry.redhat.io NOT found in pull secret"
+        echo "  Available registries:"
+        jq -r '.auths | keys[]' /quay-pull-credentials/.dockerconfigjson 2>/dev/null || echo "    (unable to parse)"
+    fi
 else
     echo "WARNING: Pull credentials not found at /quay-pull-credentials/.dockerconfigjson"
     echo "Bundle extraction from registry.redhat.io may fail"
