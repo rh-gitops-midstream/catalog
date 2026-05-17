@@ -95,6 +95,19 @@ git config --global user.name "Tekton Pipeline"
 git config --global user.email "tekton@example.com"
 git config --global --add safe.directory "*"
 
+# Debug: Check if pre-compiled test suites exist in image
+echo "Checking for pre-compiled test suites..."
+if [ -d /testsuites ]; then
+  echo "  /testsuites directory exists"
+  ls -la /testsuites/ 2>&1 | head -10
+  if [ -d /testsuites/argocd ]; then
+    echo "  ArgoCD test suites:"
+    ls -la /testsuites/argocd/ 2>&1
+  fi
+else
+  echo "  WARNING: /testsuites directory not found - will compile from source"
+fi
+
 # Detect target cluster architecture for cross-compilation
 TARGET_ARCH=$(oc get nodes -o jsonpath='{.items[0].status.nodeInfo.architecture}' 2>/dev/null || echo "amd64")
 echo "Target cluster architecture: ${TARGET_ARCH}"
@@ -115,25 +128,39 @@ fi
 PREBUILT_BASE="/testsuites/argocd"
 PREBUILT_DIR=""
 
+echo "Checking for pre-built tests (TAG=${TAG}, TARGET_ARCH=${TARGET_ARCH})"
+
 if [[ "${TAG}" =~ ^v2\.14 ]]; then
   PREBUILT_DIR="${PREBUILT_BASE}/v2.14"
+  echo "  Looking for pre-built v2.14 tests at: ${PREBUILT_DIR}"
 fi
 
 # Verify pre-built binaries exist and match target architecture
-if [[ -n "${PREBUILT_DIR}" && -f "${PREBUILT_DIR}/e2e.test" && -f "${PREBUILT_DIR}/dist/argocd" ]]; then
-  # Check if the binary architecture matches target cluster architecture
-  BINARY_ARCH=$(file "${PREBUILT_DIR}/e2e.test" | grep -oP '(x86-64|aarch64|ARM aarch64)' | head -1)
+if [[ -n "${PREBUILT_DIR}" ]]; then
+  echo "  Checking if directory exists: ${PREBUILT_DIR}"
+  ls -la "${PREBUILT_DIR}" 2>&1 || echo "  Directory not found"
 
-  if [[ ("${BINARY_ARCH}" == "x86-64" && "${TARGET_ARCH}" == "amd64") || \
-        (("${BINARY_ARCH}" == "aarch64" || "${BINARY_ARCH}" == "ARM aarch64") && "${TARGET_ARCH}" == "arm64") ]]; then
-    echo "Using pre-built artifacts from ${PREBUILT_DIR} (${TARGET_ARCH})"
-    mkdir -p "${ARGO_CD_DIR}"
-    cp -a "${PREBUILT_DIR}"/* "${ARGO_CD_DIR}/"
-    cd "${ARGO_CD_DIR}" || exit 1
+  if [[ -f "${PREBUILT_DIR}/e2e.test" && -f "${PREBUILT_DIR}/dist/argocd" ]]; then
+    echo "  Found pre-built binaries, checking architecture..."
+    # Check if the binary architecture matches target cluster architecture
+    BINARY_ARCH=$(file "${PREBUILT_DIR}/e2e.test" | grep -oP '(x86-64|aarch64|ARM aarch64)' | head -1)
+    echo "  Binary arch: ${BINARY_ARCH}, Target arch: ${TARGET_ARCH}"
+
+    if [[ ("${BINARY_ARCH}" == "x86-64" && "${TARGET_ARCH}" == "amd64") || \
+          (("${BINARY_ARCH}" == "aarch64" || "${BINARY_ARCH}" == "ARM aarch64") && "${TARGET_ARCH}" == "arm64") ]]; then
+      echo "Using pre-built artifacts from ${PREBUILT_DIR} (${TARGET_ARCH})"
+      mkdir -p "${ARGO_CD_DIR}"
+      cp -a "${PREBUILT_DIR}"/* "${ARGO_CD_DIR}/"
+      cd "${ARGO_CD_DIR}" || exit 1
+    else
+      echo "Pre-built binary architecture (${BINARY_ARCH:-unknown}) doesn't match target (${TARGET_ARCH})"
+      echo "Will compile from source"
+    fi
   else
-    echo "Pre-built binary architecture (${BINARY_ARCH:-unknown}) doesn't match target (${TARGET_ARCH})"
-    echo "Will compile from source"
+    echo "  Pre-built binaries not found in ${PREBUILT_DIR}"
   fi
+else
+  echo "  No pre-built directory for tag ${TAG}"
 fi
 
 # If we haven't copied pre-built artifacts, clone and compile
