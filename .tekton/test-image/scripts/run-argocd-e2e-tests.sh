@@ -208,9 +208,10 @@ echo "ArgoCD server: ${ARGOCD_SERVER}"
 
 # Create test namespaces
 echo "Creating test namespaces..."
+# Note: argocd-e2e already created by deploy-argocd task, just ensure it exists
 oc create namespace argocd-e2e --dry-run=client -o yaml | oc apply -f -
-oc label namespace argocd-e2e e2e.argoproj.io=true --overwrite 2>/dev/null || true
 
+# Only label the external namespaces for cleanup (not argocd-e2e where ArgoCD runs)
 oc create namespace argocd-e2e-external --dry-run=client -o yaml | oc apply -f -
 oc label namespace argocd-e2e-external e2e.argoproj.io=true --overwrite 2>/dev/null || true
 

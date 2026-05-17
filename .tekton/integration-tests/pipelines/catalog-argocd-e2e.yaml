@@ -473,7 +473,7 @@ spec:
               - name: ARGOCD_VERSION
                 value: $(params.argoCDVersion)
               - name: NAMESPACE
-                value: argocd
+                value: argocd-e2e
               - name: KUBECONFIG
                 value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
               - name: TASK_LOG_NAME
