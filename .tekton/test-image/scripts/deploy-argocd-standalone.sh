@@ -31,6 +31,10 @@ echo "Downloading ArgoCD ${ARGOCD_VERSION} manifests..."
 MANIFEST_URL="https://raw.githubusercontent.com/argoproj/argo-cd/${ARGOCD_VERSION}/manifests/install.yaml"
 curl -sSL "$MANIFEST_URL" -o /tmp/argocd-install.yaml
 
+# Patch namespace references (upstream uses 'argocd', we use $NAMESPACE)
+echo "Patching namespace references from 'argocd' to '${NAMESPACE}'..."
+sed -i "s/namespace: argocd$/namespace: ${NAMESPACE}/g" /tmp/argocd-install.yaml
+
 # Apply manifests
 echo "Applying ArgoCD manifests..."
 oc apply -n "$NAMESPACE" -f /tmp/argocd-install.yaml
