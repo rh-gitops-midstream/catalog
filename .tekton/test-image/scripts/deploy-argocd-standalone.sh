@@ -35,6 +35,24 @@ curl -sSL "$MANIFEST_URL" -o /tmp/argocd-install.yaml
 echo "Applying ArgoCD manifests..."
 oc apply -n "$NAMESPACE" -f /tmp/argocd-install.yaml
 
+# OpenShift-specific fixes
+echo "Applying OpenShift-specific patches..."
+
+# Create argocd-redis secret if it doesn't exist (required by pods for redis password)
+if ! oc get secret argocd-redis -n "$NAMESPACE" &>/dev/null; then
+    echo "  Creating argocd-redis secret..."
+    oc create secret generic argocd-redis \
+      --from-literal=auth="" \
+      -n "$NAMESPACE"
+fi
+
+# Grant anyuid SCC to service accounts to allow running as UID 999
+# Upstream ArgoCD manifests use hardcoded UIDs that don't match OpenShift's allocated ranges
+echo "  Granting anyuid SCC to ArgoCD service accounts..."
+for sa in argocd-application-controller argocd-server argocd-repo-server argocd-dex-server argocd-redis; do
+    oc adm policy add-scc-to-user anyuid -z "$sa" -n "$NAMESPACE" 2>/dev/null || true
+done
+
 # Patch argocd-server deployment to use custom image
 echo "Patching argocd-server to use image: ${ARGOCD_SERVER_IMAGE}"
 oc set image deployment/argocd-server \
