@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-zh6bt ===
+=== Timestamp: 2026-05-11 06:53:13 UTC ===
+
+--- Container: manager ---
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:53:12Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "c66a2508-40aa-48da-abd4-0982e2bff240", "error": "roles.rbac.authorization.k8s.io \"test-1-086-custom3-read\" is forbidden: unable to create new content in namespace test-1-086-custom3 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:53:12Z	INFO	controller_argocd	Creating Secret 'test-1-086-custom3/argocd-default-policy-admin-ca'
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "749e78c9-a005-4b6a-bb75-e4e7ef4d4b52", "error": "secrets \"argocd-default-policy-admin-ca\" is forbidden: unable to create new content in namespace test-1-086-custom3 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "fb418074-77d6-494d-9f30-107f6d1a8624", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	removing local user token renewal timers for namespace "test-1-086-custom3"
+2026-05-11T06:53:12Z	INFO	controller_argocd	Updating ArgoCD 'test-1-086-custom3/argocd-default-policy-admin' - removing deletion finalizer
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "test-1-086-custom3", "Request.Name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	ERROR	controller_argocd	unable to update ArgoCD status condition	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"argocd-default-policy-admin\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/test-1-086-custom3/argocd-default-policy-admin, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: ee46c0c3-83fd-4c39-a176-b110f88ccc35, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.updateStatusAndConditionsOfArgoCD
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/util.go:1695
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:159
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:53:12Z	ERROR	controller_argocd	unable to update status of ArgoCD	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"argocd-default-policy-admin\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/test-1-086-custom3/argocd-default-policy-admin, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: ee46c0c3-83fd-4c39-a176-b110f88ccc35, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:160
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:53:12Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "fb418074-77d6-494d-9f30-107f6d1a8624", "error": "Operation cannot be fulfilled on argocds.argoproj.io \"argocd-default-policy-admin\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/test-1-086-custom3/argocd-default-policy-admin, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: ee46c0c3-83fd-4c39-a176-b110f88ccc35, UID in object meta: "}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "cc60e0ea-1442-43de-a913-533b65e440bf", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "6f1c3bb8-ad94-4c06-a270-96e13b836f63", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "1d1ae8c3-1e3f-46d8-a2d7-5a566920a396", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "ca9118b7-8a49-48dc-85df-d4e5292bb571", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "290dc00b-e8df-46ec-b9e2-15b66f8d971e", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "test-1-086-custom3", "Request.Name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "4b1baf4e-7887-4496-895f-8bac12ef7a40", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "b542c5d7-23a0-486c-9c4c-d353b7f86571", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "2b6ad5e6-eabf-4f0b-a65c-234600941b5b", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "5faf4f61-1c5c-418d-844f-32c3472710e7", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "ad815c6e-52fe-4104-aa64-a74041121f9c", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "d27f751c-c30f-4422-8ffd-94aaf41c9f81", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "e6749423-ede8-42ec-a362-d26b6d45fc65", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "ab9bbbda-2d5f-4999-92cf-8feeed577ee3", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "2a8ba6a8-aaa4-48ae-a1ae-94ceeab08c18", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "0b5b9365-7a5e-462c-b1d4-43fed0034dcf", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "b082f9d4-9df1-4697-9e1e-aa531cd72eaa", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "2b5e7c0f-16d6-49a6-b2f3-fdec325fd290", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "a0e2a246-45fa-4781-97cd-3a373ddb7bac", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "47839de0-413e-4bcd-8024-4923eedb920c", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "19b099c7-0451-4467-af1f-2494db3e9cef", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:53:12Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd-default-policy-admin","namespace":"test-1-086-custom3"}, "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin", "reconcileID": "599e3bf1-53ca-4730-b218-72edb8954bfb", "namespace": "test-1-086-custom3", "name": "argocd-default-policy-admin"}
+2026-05-11T06:53:12Z	INFO	controller_argocd	reconciling status
+
+--- Container: kube-rbac-proxy ---
+W0511 06:50:56.882858       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:50:56.883356       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:50:56.884604       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:50:56.884904       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:50:56.885114       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

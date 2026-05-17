@@ -1,0 +1,178 @@
+--- CatalogSource ---
+apiVersion: v1
+items:
+- apiVersion: operators.coreos.com/v1alpha1
+  kind: CatalogSource
+  metadata:
+    annotations:
+      target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+    creationTimestamp: "2026-05-11T05:32:51Z"
+    generation: 1
+    labels:
+      hypershift.openshift.io/managed: "true"
+    name: certified-operators
+    namespace: openshift-marketplace
+    resourceVersion: "69594"
+    uid: 6bd0a7d2-22bd-4b73-9b0e-12f43d381ef9
+  spec:
+    address: certified-operators:50051
+    displayName: Certified Operators
+    grpcPodConfig:
+      securityContextConfig: restricted
+    icon:
+      base64data: ""
+      mediatype: ""
+    priority: -200
+    publisher: Red Hat
+    sourceType: grpc
+    updateStrategy:
+      registryPoll:
+        interval: 10m
+  status:
+    connectionState:
+      address: certified-operators:50051
+      lastConnect: "2026-05-11T06:57:51Z"
+      lastObservedState: READY
+    registryService:
+      createdAt: "2026-05-11T05:32:57Z"
+      protocol: grpc
+- apiVersion: operators.coreos.com/v1alpha1
+  kind: CatalogSource
+  metadata:
+    annotations:
+      target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+    creationTimestamp: "2026-05-11T05:32:51Z"
+    generation: 1
+    labels:
+      hypershift.openshift.io/managed: "true"
+    name: community-operators
+    namespace: openshift-marketplace
+    resourceVersion: "69595"
+    uid: bba96c1a-cdaf-431f-a7f9-2436ac65de40
+  spec:
+    address: community-operators:50051
+    displayName: Community Operators
+    grpcPodConfig:
+      securityContextConfig: restricted
+    icon:
+      base64data: ""
+      mediatype: ""
+    priority: -400
+    publisher: Red Hat
+    sourceType: grpc
+    updateStrategy:
+      registryPoll:
+        interval: 10m
+  status:
+    connectionState:
+      address: community-operators:50051
+      lastConnect: "2026-05-11T06:57:51Z"
+      lastObservedState: READY
+    registryService:
+      createdAt: "2026-05-11T05:32:57Z"
+      protocol: grpc
+- apiVersion: operators.coreos.com/v1alpha1
+  kind: CatalogSource
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"operators.coreos.com/v1alpha1","kind":"CatalogSource","metadata":{"annotations":{},"name":"gitops-stage","namespace":"openshift-marketplace"},"spec":{"displayName":"GitOps Stage Catalog","image":"quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20","publisher":"Konflux","sourceType":"grpc","updateStrategy":{"registryPoll":{"interval":"30m"}}}}
+    creationTimestamp: "2026-05-11T05:40:22Z"
+    generation: 1
+    name: gitops-stage
+    namespace: openshift-marketplace
+    resourceVersion: "61698"
+    uid: e24f6c1d-5302-42ec-8b2a-43e15b85260a
+  spec:
+    displayName: GitOps Stage Catalog
+    image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20
+    publisher: Konflux
+    sourceType: grpc
+    updateStrategy:
+      registryPoll:
+        interval: 30m
+  status:
+    connectionState:
+      address: gitops-stage.openshift-marketplace.svc:50051
+      lastConnect: "2026-05-11T06:45:12Z"
+      lastObservedState: READY
+    latestImageRegistryPoll: "2026-05-11T06:40:22Z"
+    registryService:
+      createdAt: "2026-05-11T05:40:23Z"
+      port: "50051"
+      protocol: grpc
+      serviceName: gitops-stage
+      serviceNamespace: openshift-marketplace
+- apiVersion: operators.coreos.com/v1alpha1
+  kind: CatalogSource
+  metadata:
+    annotations:
+      target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+    creationTimestamp: "2026-05-11T05:32:51Z"
+    generation: 1
+    labels:
+      hypershift.openshift.io/managed: "true"
+    name: redhat-marketplace
+    namespace: openshift-marketplace
+    resourceVersion: "69596"
+    uid: 0e8b8f3c-6e4c-4403-a0de-411745a6c7a6
+  spec:
+    address: redhat-marketplace:50051
+    displayName: Red Hat Marketplace
+    grpcPodConfig:
+      securityContextConfig: restricted
+    icon:
+      base64data: ""
+      mediatype: ""
+    priority: -300
+    publisher: Red Hat
+    sourceType: grpc
+    updateStrategy:
+      registryPoll:
+        interval: 10m
+  status:
+    connectionState:
+      address: redhat-marketplace:50051
+      lastConnect: "2026-05-11T06:57:51Z"
+      lastObservedState: READY
+    registryService:
+      createdAt: "2026-05-11T05:32:57Z"
+      protocol: grpc
+- apiVersion: operators.coreos.com/v1alpha1
+  kind: CatalogSource
+  metadata:
+    annotations:
+      target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+    creationTimestamp: "2026-05-11T05:32:51Z"
+    generation: 1
+    labels:
+      hypershift.openshift.io/managed: "true"
+    name: redhat-operators
+    namespace: openshift-marketplace
+    resourceVersion: "69593"
+    uid: 4b596b6a-c398-452b-aa0e-ab481968212a
+  spec:
+    address: redhat-operators:50051
+    displayName: Red Hat Operators
+    grpcPodConfig:
+      securityContextConfig: restricted
+    icon:
+      base64data: ""
+      mediatype: ""
+    priority: -100
+    publisher: Red Hat
+    sourceType: grpc
+    updateStrategy:
+      registryPoll:
+        interval: 10m
+  status:
+    connectionState:
+      address: redhat-operators:50051
+      lastConnect: "2026-05-11T06:57:51Z"
+      lastObservedState: READY
+    registryService:
+      createdAt: "2026-05-11T05:32:57Z"
+      protocol: grpc
+kind: List
+metadata:
+  resourceVersion: ""

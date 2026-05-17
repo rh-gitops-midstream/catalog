@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-mdm7t ===
+=== Timestamp: 2026-05-11 05:49:05 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:48:50Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	oauth enabled, configuring dex service account
+2026-05-11T05:48:50Z	INFO	controller_argocd	URI: https://openshift-gitops-server-openshift-gitops.apps.39099dae-d19f-48bb-808a-54d1f2eea114.prod.konfluxeaas.com/api/dex/callback
+2026-05-11T05:48:50Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T05:48:50Z	INFO	controller_gitopsservice	No ResourceQuota set for namespace	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T05:48:50Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T05:48:50Z	INFO	controller_gitopsservice	Reconciling ArgoCD	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling roles
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T05:48:50Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling service accounts
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-application-controller'
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-server'
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling certificate authority
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling CA secret
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling CA config map
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling secrets
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling config maps
+2026-05-11T05:48:50Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling local users
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling services
+2026-05-11T05:48:50Z	INFO	controller_argocd	skipping AutoTLS on service openshift-gitops-server since the TLS secret is already present
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling deployments
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring openshift redis	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring openshift redis haproxy	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	Applying ArgoCD Repo Server reconciler hook
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-repo-server' - updating volumes, init containers, replicas, auto-mount service account token, annotations
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-server' - updating volumes, replicas, annotations
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling statefulsets
+2026-05-11T05:48:50Z	INFO	controller_argocd	existing argocd export not found, skipping import
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating StatefulSet 'openshift-gitops/openshift-gitops-application-controller' - updating volumes, annotations
+2026-05-11T05:48:50Z	INFO	openshift_controller_argocd	configuring openshift redis-ha-server stateful set	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling autoscalers
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ingresses
+2026-05-11T05:48:50Z	INFO	controller_argocd	applicationset or applicationset webhook ingress disabled
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling routes
+2026-05-11T05:48:50Z	INFO	controller_argocd	Using reencrypt termination policy for the Server Route
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Route 'openshift-gitops/openshift-gitops-server'
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling prometheus
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ApplicationSet controller
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset serviceaccounts
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset roles
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset role bindings
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating RoleBinding 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset deployments
+2026-05-11T05:48:50Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-applicationset-controller' - due to difference in .Spec.Template.Spec.Containers
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset clusterroles
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset clusterrolebindings
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling applicationset roles & rolebindings in source namespaces
+2026-05-11T05:48:50Z	INFO	controller_argocd	performing cleanup for applicationset source namespaces
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling Image Updater controller
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater deployment
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater role binding
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater cluster role binding
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater service account
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater role
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater cluster role
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater secret
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-config
+2026-05-11T05:48:50Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-ssh-config
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling repo-server TLS secret
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling redis-server TLS secret
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent resources
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resources
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service account
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role binding
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role binding
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal metrics service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal redis proxy service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resource proxy service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal healthz service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal network policy
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal route
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal deployment
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent resources
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent service account
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role binding
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role binding
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent metrics service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent healthz service
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent deployment
+2026-05-11T05:48:50Z	INFO	controller_argocd	reconciling status
+
+--- Container: kube-rbac-proxy ---
+W0511 05:41:11.017371       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:41:11.017923       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:41:11.019202       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:41:11.019507       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:41:11.019717       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

@@ -17,6 +17,7 @@ RUN dnf -y install \
     make \
     tar \
     gzip \
+    file \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 

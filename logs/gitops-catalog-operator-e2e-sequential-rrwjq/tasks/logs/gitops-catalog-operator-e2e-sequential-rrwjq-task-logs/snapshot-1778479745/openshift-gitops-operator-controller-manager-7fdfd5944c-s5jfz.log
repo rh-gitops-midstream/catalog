@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz ===
+=== Timestamp: 2026-05-11 06:09:05 UTC ===
+
+--- Container: manager ---
+2026-05-11T06:08:50Z	INFO	openshift_controller_argocd	updating the Argo CD controller to watch for changes to the admin ClusterRole	{"module": "builder-hook"}
+2026-05-11T06:08:50Z	INFO	setup	Argo Rollouts manager running in cluster-scoped mode
+2026-05-11T06:08:50Z	INFO	setup	starting manager
+2026-05-11T06:08:50Z	INFO	controller-runtime.metrics	Starting metrics server
+2026-05-11T06:08:50Z	INFO	starting server	{"name": "health probe", "addr": "[::]:8081"}
+2026-05-11T06:08:50Z	INFO	controller-runtime.webhook	Starting webhook server
+2026-05-11T06:08:50Z	INFO	controller-runtime.metrics	Serving metrics server	{"bindAddress": "127.0.0.1:8080", "secure": false}
+I0511 06:08:50.042815       1 leaderelection.go:257] attempting to acquire leader lease openshift-gitops-operator/2b63967d.openshift.io...
+2026-05-11T06:08:50Z	INFO	controller-runtime.certwatcher	Updated current TLS certificate	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key"}
+2026-05-11T06:08:50Z	INFO	controller-runtime.webhook	Serving webhook server	{"host": "", "port": 9443}
+2026-05-11T06:08:50Z	INFO	controller-runtime.certwatcher	Starting certificate poll+watcher	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key", "interval": "10s"}
+I0511 06:09:05.200763       1 leaderelection.go:271] successfully acquired lease openshift-gitops-operator/2b63967d.openshift.io
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1beta1.ArgoCD"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1beta1.ArgoCD"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route", "source": "kind source: *v1.Route"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Namespace"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1beta1.ArgoCD"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Secret"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Namespace"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1alpha1.RolloutManager"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Deployment"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ServiceAccount"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Route"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Service"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Deployment"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.ClusterRoleBinding"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1alpha1.RolloutManager"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ClusterRoleBinding"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.StatefulSet"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1alpha1.GitopsService"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.NetworkPolicy"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1alpha1.NotificationsConfiguration"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1beta1.NamespaceManagement"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration", "source": "kind source: *v1alpha1.NotificationsConfiguration"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Role"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Route"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.RoleBinding"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.RoleBinding"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Prometheus"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Deployment"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Service"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ServiceMonitor"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Service"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Role"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Ingress"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ClusterRoleBinding"}
+2026-05-11T06:09:05Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:09:05Z	INFO	Starting Controller	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T06:09:05Z	INFO	Starting workers	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "worker count": 1}
+2026-05-11T06:09:05Z	INFO	Starting Controller	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration"}
+2026-05-11T06:09:05Z	INFO	Starting workers	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration", "worker count": 1}
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:09:05Z	INFO	Starting Controller	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager"}
+2026-05-11T06:09:05Z	INFO	Starting workers	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "worker count": 1}
+2026-05-11T06:09:05Z	INFO	Starting Controller	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService"}
+2026-05-11T06:09:05Z	INFO	Starting workers	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "worker count": 1}
+2026-05-11T06:09:05Z	INFO	controller_gitopsservice	Reconciling GitopsService	{"Request.Namespace": "", "Request.Name": "openshift-gitops"}
+2026-05-11T06:09:05Z	INFO	Starting Controller	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route"}
+2026-05-11T06:09:05Z	INFO	Starting workers	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route", "worker count": 1}
+2026-05-11T06:09:05Z	INFO	controller_argocd_route	Reconciling ArgoCD Route	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_route	Route found for argocd-server	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server", "Route.Host": "openshift-gitops-server-openshift-gitops.apps.39099dae-d19f-48bb-808a-54d1f2eea114.prod.konfluxeaas.com"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "argocd-agent-principal-1-051-read"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Creating new read role binding	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "argocd-agent-principal-1-051-prometheus-k8s-read-binding"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "example"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "example-server"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "example-repo-server"}
+2026-05-11T06:09:05Z	INFO	Starting Controller	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T06:09:05Z	INFO	controller_argocd_route	Skip reconcile: ConsoleLink already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server", "ConsoleLink.Name": "argocd"}
+2026-05-11T06:09:05Z	INFO	Starting workers	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "worker count": 1}
+2026-05-11T06:09:05Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "e2c657e3-d1cc-49ba-a082-8ffef863b7cf", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:09:05Z	INFO	controller_argocd	Updating ArgoCD 'argocd-agent-principal-1-051/example' - adding deletion finalizer
+2026-05-11T06:09:05Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:09:05Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:09:05Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-server'
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-redis-ha'
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-redis'
+2026-05-11T06:09:05Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating ClusterRole 'example-argocd-agent-principal-1-051-argocd-application-controller'
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating ClusterRole 'example-argocd-agent-principal-1-051-argocd-server'
+2026-05-11T06:09:05Z	INFO	controller_argocd_metrics	Creating new alert rule	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T06:09:05Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T06:09:05Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T06:09:05Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating ServiceAccount 'argocd-agent-principal-1-051/example-argocd-application-controller'
+2026-05-11T06:09:05Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:09:05Z	INFO	controller_argocd	Creating ServiceAccount 'argocd-agent-principal-1-051/example-argocd-server'
+
+--- Container: kube-rbac-proxy ---
+W0511 06:08:49.934604       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:08:49.935103       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:08:49.936247       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:08:49.936539       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:08:49.936770       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

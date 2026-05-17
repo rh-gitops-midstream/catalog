@@ -1,0 +1,2544 @@
++ export TEST_DIR=./test/openshift/e2e/ginkgo/sequential
++ TEST_DIR=./test/openshift/e2e/ginkgo/sequential
++ export PROCS=1
++ PROCS=1
++ export TIMEOUT=120m
++ TIMEOUT=120m
++ export 'GINKGO_FOCUS_FILE=1-002-validate_backend_service_test.go|1-004_validate_argocd_installation_test.go|1-008_validate-4.9CI-Failures_test.go|1-018_validate_disable_default_instance_test.go|1-026-validate_backend_service_permissions_test.go|1-028-validate_run_on_infra_test.go|1-035_validate_argocd_secret_repopulate_test.go|1-037_validate_applicationset_in_any_namespace_test.go|1-051_validate_argocd_agent_principal_test.go|1-052_validate_rolebinding_number_test.go|1-056_validate_managed-by_test.go|1-064_validate_tcp_reset_error_test.go|1-071_validate_SCC_HA_test.go|1-077_validate_disable_dex_removed_test.go|1-083_validate_apps_in_any_namespace_test.go|1-086_validate_default_argocd_role_test.go|1-101_validate_rollout_policyrules_test.go|1-103-validate-rollouts-imagepullpolicy.go|1-105_validate_label_selector_test.go|1-107_validate_redis_scc_test.go|1-110_validate_podsecurity_alerts_test.go|1-112_validate_rollout_plugin_support_test.go|1-114_validate_imagepullpolicy_test.go|1-120_repo_server_system_ca_trust.go|1-121-valiate_resource_constraints_gitopsservice_test.go|1-123_validate_list_order_comparison_test.go'
++ GINKGO_FOCUS_FILE='1-002-validate_backend_service_test.go|1-004_validate_argocd_installation_test.go|1-008_validate-4.9CI-Failures_test.go|1-018_validate_disable_default_instance_test.go|1-026-validate_backend_service_permissions_test.go|1-028-validate_run_on_infra_test.go|1-035_validate_argocd_secret_repopulate_test.go|1-037_validate_applicationset_in_any_namespace_test.go|1-051_validate_argocd_agent_principal_test.go|1-052_validate_rolebinding_number_test.go|1-056_validate_managed-by_test.go|1-064_validate_tcp_reset_error_test.go|1-071_validate_SCC_HA_test.go|1-077_validate_disable_dex_removed_test.go|1-083_validate_apps_in_any_namespace_test.go|1-086_validate_default_argocd_role_test.go|1-101_validate_rollout_policyrules_test.go|1-103-validate-rollouts-imagepullpolicy.go|1-105_validate_label_selector_test.go|1-107_validate_redis_scc_test.go|1-110_validate_podsecurity_alerts_test.go|1-112_validate_rollout_plugin_support_test.go|1-114_validate_imagepullpolicy_test.go|1-120_repo_server_system_ca_trust.go|1-121-valiate_resource_constraints_gitopsservice_test.go|1-123_validate_list_order_comparison_test.go'
++ SKIP_FILE=/usr/local/bin/skip-sequential.txt
++ [[ -f /usr/local/bin/skip-sequential.txt ]]
+++ grep -v '^\s*#' /usr/local/bin/skip-sequential.txt
+++ grep -v '^\s*$'
+++ paste -sd '|'
++ SKIP_PATTERN='1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support'
++ [[ -n 1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support ]]
++ [[ -n '' ]]
++ export 'GINKGO_SKIP=1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support'
++ GINKGO_SKIP='1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support'
++ /usr/local/bin/run-e2e-tests.sh
++ RESULTS_DIR=/tmp/task-logs
++ mkdir -p /tmp/task-logs
+++ mktemp -d
++ CACHE_DIR=/tmp/tmp.f2Bj7O7tBa
++ export GOCACHE=/tmp/tmp.f2Bj7O7tBa/go-cache
++ GOCACHE=/tmp/tmp.f2Bj7O7tBa/go-cache
++ export GOMODCACHE=/tmp/tmp.f2Bj7O7tBa/go-mod
++ GOMODCACHE=/tmp/tmp.f2Bj7O7tBa/go-mod
++ mkdir -p /tmp/tmp.f2Bj7O7tBa/go-cache /tmp/tmp.f2Bj7O7tBa/go-mod
++ oc status
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+In project default on server https://a94bfa9aca99b4a81a8784f7f80002f8-16fc8a273c7db173.elb.us-east-1.amazonaws.com:6443
+
+svc/openshift - kubernetes.default.svc.cluster.local
+svc/openshift-apiserver - 172.31.24.164:443
+svc/openshift-oauth-apiserver - 172.31.4.102:443
+svc/packageserver - 172.31.74.171:443
+svc/kubernetes - 172.31.0.1:443 -> 6443
+
+View details with 'oc describe <resource>/<name>' or list resources with 'oc get all'.
++ command -v argocd
+++ oc get deployment openshift-gitops-repo-server -n openshift-gitops -o 'jsonpath={.spec.template.spec.containers[0].image}'
++ ARGOCD_IMAGE=registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
++ [[ -n registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84 ]]
++ echo 'Extracting argocd CLI from registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84...'
+Extracting argocd CLI from registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84...
+++ mktemp -d
++ EXTRACT_AUTH_DIR=/tmp/tmp.bc9AUoqo9t
++ oc get secret pull-secret -n openshift-config -o 'jsonpath={.data.\.dockerconfigjson}'
++ base64 -d
+++ mktemp -d
++ ARGOCD_BIN_DIR=/tmp/tmp.iXW6WtsjWu
++ EXTRACTED=false
++ for bin_path in /usr/local/bin/argocd /usr/bin/argocd
++ DOCKER_CONFIG=/tmp/tmp.bc9AUoqo9t
++ oc image extract registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84 --path /usr/local/bin/argocd:/tmp/tmp.iXW6WtsjWu/ --confirm
++ [[ -f /tmp/tmp.iXW6WtsjWu/argocd ]]
++ EXTRACTED=true
++ break
++ rm -rf /tmp/tmp.bc9AUoqo9t
++ [[ true == \t\r\u\e ]]
++ chmod +x /tmp/tmp.iXW6WtsjWu/argocd
++ /tmp/tmp.iXW6WtsjWu/argocd version --client --short
+argocd: v3.3.9+8bbb2c9
++ export PATH=/tmp/tmp.iXW6WtsjWu:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ PATH=/tmp/tmp.iXW6WtsjWu:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+++ argocd version --client --short
++ echo 'argocd CLI installed: argocd: v3.3.9+8bbb2c9'
+argocd CLI installed: argocd: v3.3.9+8bbb2c9
++ cd /testsuites/gitops-operator/
++ TEST_REPO_URL=https://github.com/rh-gitops-release-qa/gitops-operator.git
++ git remote set-url origin https://github.com/rh-gitops-release-qa/gitops-operator.git
++ git fetch origin
+From https://github.com/rh-gitops-release-qa/gitops-operator
+ * [new branch]      master     -> origin/master
++ git clean -fd
+Removing .ci-operator.yaml
+Removing .dockerignore
+Removing .github/
+Removing .gitignore
+Removing .gitleaks.toml
+Removing .golangci.yml
+Removing CONTRIBUTING.md
+Removing Containerfile.plugin
+Removing Dockerfile
+Removing LICENSE
+Removing Makefile
+Removing OWNERS
+Removing PROJECT
+Removing README.md
+Removing api/
+Removing build/
+Removing bundle.Dockerfile
+Removing bundle/
+Removing cmd/
+Removing common/
+Removing config/
+Removing controllers/
+Removing docs/
+Removing go.mod
+Removing go.sum
+Removing hack/
+Removing openshift-ci/
+Removing openshift-gitops-e2e.json
+Removing scripts/
+Removing test/appcrs/
+Removing test/e2e/
+Removing test/examples/
+Removing test/helper/
+Removing test/nondefaulte2e/
+Removing test/openshift/e2e/README.md
+Removing test/openshift/e2e/ginkgo/fixture/
+Removing test/openshift/e2e/ginkgo/parallel/1-001_alpha_to_beta_dex_conversion_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-003_alpha_to_beta_sso_conflict_conversion_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-003_validate_console_link_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-004_beta_to_alpha_conversion_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-005_validate_metrics_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-005_validate_route_tls_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-007_validate_namespace_scoped_install_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-007_validate_volume_mounts_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-008_validate-custom-argocd-namespace_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-009_validate-manage-other-namespace_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-012_validate-managed-by-chain_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-019_validate_volume_mounts_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-021_validate_rolebindings_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-023_validate_repo_server_tls_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-025-validate-managed-by-change_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-029_validate_tls_secret_no_scale_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-030_validate_reencrypt_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-031_validate_toolchain_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-032_validate_dynamic_scaling_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-032_validate_resource_inclusions_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-033_validate_resource_exclusions_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-034_validate_webhook_notifications_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-037_validate_argocd_setting_replicas_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-038_validate_productized_images_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-039_validate_fix_argocd-tls-certs-cm_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-041_validate_argocd_sync_alert_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-042_restricted_pss_compliant_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-042_validate_status_host_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-043_validate_custom_labels_annotations_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-043_validate_log_level_format_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-044_validate_resource_limit_changes_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-045_validate_applicationset_image_override_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-045_validate_repo_exec_timeout_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-046_validate_application_tracking_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-047_validate_custom_env_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-048_validate_controller_sharding_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-049_validate_parallelism_limit_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-050_validate_sso_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-051-validate_csv_permissions_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-053_validate_cluster_admin_rbac_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-054_validate_deploymentconfig_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-055_drop_resource_customizations_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-055_validate_notification_controller_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-057_validate_notifications_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-058_validate_prometheus_rule_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-061_validate_resource_tracking_method_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-062_validate_extra_config_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-063_validate_dex_liveness_probe_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-063_validate_statefulset_restart_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-064_validate_security_contexts_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-065_validate_redis_ha_anti_affinity_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-066_validate_redis_secure_comm_no_autotls_no_ha_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-067_validate_redis_secure_comm_no_autotls_ha_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-068_validate_redis_secure_comm_autols_no_ha_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-069_validate_redis_secure_comm_autotls_ha_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-070_validate_config_management_plugin_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-072_validate_liveness_probe_removed_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-075_validate_dex_anyuid_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-079_validate_vars_for_notificaitons_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-080_validate_regex_support_argocd_rbac_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-081_validate_applicationset_deployment_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-082_validate_node_placement_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-083_validate_kustomize_namereference_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-083_validate_resource_customization_subkeys_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-084_validate_status_host_ingress_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-086_validate_applicationset_extra_command_args.go
+Removing test/openshift/e2e/ginkgo/parallel/1-087_validate_repo_server_settings_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-088_validate_applicationset_add_env_vars_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-089_validate_extra_repo_commands_args_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-090_validate_permissions_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-091_argocd_app_validate-applicationset-status_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-095_validate_dex_clientsecret_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-096-validate_home_env_argocd_controller_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-098_validate_dex_clientsecret_deprecated.go
+Removing test/openshift/e2e/ginkgo/parallel/1-099_validate_server_autoscale_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-103_argocd_alpha_to_beta_conversion_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-104_validate_applicationset_tls_scm_volume_mount_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-104_validate_prometheus_alert_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-106_validate_appcontroller_initcontainers_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-107_validate_server_initcontainers_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-108_validate_appcontroller_sidecar_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-109_validate_reencrypt_termination_policy_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-109_validate_server_sidecar_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-111_validate_appcontroller_initcontainers_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-112_validate_server_initcontainers_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-113_validate_appcontroller_sidecar_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-114_validate_server_sidecar_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-115_validate_controller_extra_command_args_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-116_annotation-based-tracking_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-117_redis_SA_reconciliation_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-118_validate_redis_ssc_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-119_argocd_respectRBAC_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-120_validate_banner_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-120_validate_resource_health_persisted_in_application_status_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-121_validate_custom_labels_rollouts.go
+Removing test/openshift/e2e/ginkgo/parallel/1-121_validate_image_updater_test.go
+Removing test/openshift/e2e/ginkgo/parallel/1-122_validate_user_defined_appproject.go
+Removing test/openshift/e2e/ginkgo/parallel/1-124_validate_networkpolicies_test.go
+Removing test/openshift/e2e/ginkgo/parallel/suite_test.go
+Removing test/openshift/e2e/ginkgo/sequential/.gitignore
+Removing test/openshift/e2e/ginkgo/sequential/1-002-validate_backend_service_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-003_validate_cluster_config_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-004_validate_argocd_installation_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-006_validate_machine_config_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-008_validate-4.9CI-Failures_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-010_validate-ootb-manage-other-namespace_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-018_validate_disable_default_instance_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-020_validate_redis_ha_nonha_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-026-validate_backend_service_permissions_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-027_validate_operand_from_git_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-028-validate_run_on_infra_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-034_validate_custom_roles_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-035_validate_argocd_secret_repopulate_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-036_validate_role_rolebinding_for_source_namespace_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-037_validate_applicationset_in_any_namespace_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-040_validate_quoted_RBAC_group_names_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-052_validate_argocd_agent_agent_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-052_validate_rolebinding_number_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-053_validate_argocd_agent_principal_connected_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-056_validate_managed-by_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-058_validate_notifications_source_namespaces_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-064_validate_tcp_reset_error_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-071_validate_SCC_HA_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-071_validate_node_selectors_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-074_validate_terminating_namespace_block_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-077_validate_disable_dex_removed_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-078_validate_default_argocd_consoleLink_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-083_validate_apps_in_any_namespace_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-085_validate_dynamic_plugin_installation_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-086_validate_default_argocd_role_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-100_validate_rollouts_resources_creation_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-101_validate_rollout_policyrules_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-102_validate_handle_terminating_namespaces_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-103-validate-rollouts-imagepullpolicy.go
+Removing test/openshift/e2e/ginkgo/sequential/1-105_validate_default_argocd_route_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-105_validate_label_selector_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-106_validate_argocd_metrics_controller_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-107_validate_redis_scc_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-108_alternate_cluster_roles_cluster_scoped_instance_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-110_validate_podsecurity_alerts_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-111_validate_default_argocd_route_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-112_validate_rollout_plugin_support_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-113_validate_namespacemanagement_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-114_validate_imagepullpolicy_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-115_validate_imagepullpolicy_console_plugin_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go
+Removing test/openshift/e2e/ginkgo/sequential/1-120_validate_running_must_gather.go
+Removing test/openshift/e2e/ginkgo/sequential/1-121-valiate_resource_constraints_gitopsservice_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-122_validate_namespace_test.go
+Removing test/openshift/e2e/ginkgo/sequential/1-123_validate_list_order_comparison_test.go
+Removing test/openshift/e2e/ginkgo/sequential/suite_test.go
+Removing test/openshift/e2e/ginkgo/snapshots/
+Removing test/openshift/e2e/ignore-tests/
+Removing test/openshift/e2e/parallel/
+Removing test/openshift/e2e/sequential/
+Removing version/
++ git checkout -B master origin/master
+Reset branch 'master'
+branch 'master' set up to track 'origin/master'.
++ source /usr/local/bin/go-cache.sh
+++ QUAY_REPO=quay.io/devtools_gitops/test_image
++ go_cache_pull operator-master
++ local tag
+++ _go_cache_tag operator-master
+++ local suffix=operator-master
+++ local arch
++++ go env GOARCH
+++ arch=amd64
+++ local sum_hash=unknown
+++ '[' -f go.sum ']'
++++ sha256sum go.sum
++++ cut -c1-12
+++ sum_hash=e361b73fb62b
+++ echo go-cache-amd64-operator-master-e361b73fb62b
++ tag=quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
++ _go_cache_setup_auth
++ local auth_path=/quay-credentials/.dockerconfigjson
++ '[' -f /quay-credentials/.dockerconfigjson ']'
++ '[' -z '' ']'
++ local temp_config
+++ mktemp -d
++ temp_config=/tmp/tmp.kl4hdqHnsb
++ cp /quay-credentials/.dockerconfigjson /tmp/tmp.kl4hdqHnsb/config.json
++ export DOCKER_CONFIG=/tmp/tmp.kl4hdqHnsb
++ DOCKER_CONFIG=/tmp/tmp.kl4hdqHnsb
++ local tmpdir
+++ mktemp -d
++ tmpdir=/tmp/tmp.7mZl77aNZD
++ cd /tmp/tmp.7mZl77aNZD
++ oras pull --no-tty quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
+Downloading 9ff22afcb3dc go-cache.tar.gz
+Downloaded  9ff22afcb3dc go-cache.tar.gz
+Pulled [registry] quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
+Digest: sha256:e71b6ff97cbe4f6b4e8d2bafdcda96b915d4a0c10e0848424887dcbcc9d589f3
++ '[' -f /tmp/tmp.7mZl77aNZD/go-cache.tar.gz ']'
++ tar xzf /tmp/tmp.7mZl77aNZD/go-cache.tar.gz -C /
++ echo 'Go cache restored from quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b'
+Go cache restored from quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
++ rm -rf /tmp/tmp.7mZl77aNZD
++ GINKGO_ARGS=()
++ [[ -n 1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support ]]
++ GINKGO_ARGS+=("--skip=${GINKGO_SKIP}")
++ echo 'Skipping tests matching: 1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support'
+Skipping tests matching: 1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support
++ [[ -n 1-002-validate_backend_service_test.go|1-004_validate_argocd_installation_test.go|1-008_validate-4.9CI-Failures_test.go|1-018_validate_disable_default_instance_test.go|1-026-validate_backend_service_permissions_test.go|1-028-validate_run_on_infra_test.go|1-035_validate_argocd_secret_repopulate_test.go|1-037_validate_applicationset_in_any_namespace_test.go|1-051_validate_argocd_agent_principal_test.go|1-052_validate_rolebinding_number_test.go|1-056_validate_managed-by_test.go|1-064_validate_tcp_reset_error_test.go|1-071_validate_SCC_HA_test.go|1-077_validate_disable_dex_removed_test.go|1-083_validate_apps_in_any_namespace_test.go|1-086_validate_default_argocd_role_test.go|1-101_validate_rollout_policyrules_test.go|1-103-validate-rollouts-imagepullpolicy.go|1-105_validate_label_selector_test.go|1-107_validate_redis_scc_test.go|1-110_validate_podsecurity_alerts_test.go|1-112_validate_rollout_plugin_support_test.go|1-114_validate_imagepullpolicy_test.go|1-120_repo_server_system_ca_trust.go|1-121-valiate_resource_constraints_gitopsservice_test.go|1-123_validate_list_order_comparison_test.go ]]
++ GINKGO_ARGS+=("--focus-file=${GINKGO_FOCUS_FILE}")
++ echo 'Focusing on files matching: 1-002-validate_backend_service_test.go|1-004_validate_argocd_installation_test.go|1-008_validate-4.9CI-Failures_test.go|1-018_validate_disable_default_instance_test.go|1-026-validate_backend_service_permissions_test.go|1-028-validate_run_on_infra_test.go|1-035_validate_argocd_secret_repopulate_test.go|1-037_validate_applicationset_in_any_namespace_test.go|1-051_validate_argocd_agent_principal_test.go|1-052_validate_rolebinding_number_test.go|1-056_validate_managed-by_test.go|1-064_validate_tcp_reset_error_test.go|1-071_validate_SCC_HA_test.go|1-077_validate_disable_dex_removed_test.go|1-083_validate_apps_in_any_namespace_test.go|1-086_validate_default_argocd_role_test.go|1-101_validate_rollout_policyrules_test.go|1-103-validate-rollouts-imagepullpolicy.go|1-105_validate_label_selector_test.go|1-107_validate_redis_scc_test.go|1-110_validate_podsecurity_alerts_test.go|1-112_validate_rollout_plugin_support_test.go|1-114_validate_imagepullpolicy_test.go|1-120_repo_server_system_ca_trust.go|1-121-valiate_resource_constraints_gitopsservice_test.go|1-123_validate_list_order_comparison_test.go'
+Focusing on files matching: 1-002-validate_backend_service_test.go|1-004_validate_argocd_installation_test.go|1-008_validate-4.9CI-Failures_test.go|1-018_validate_disable_default_instance_test.go|1-026-validate_backend_service_permissions_test.go|1-028-validate_run_on_infra_test.go|1-035_validate_argocd_secret_repopulate_test.go|1-037_validate_applicationset_in_any_namespace_test.go|1-051_validate_argocd_agent_principal_test.go|1-052_validate_rolebinding_number_test.go|1-056_validate_managed-by_test.go|1-064_validate_tcp_reset_error_test.go|1-071_validate_SCC_HA_test.go|1-077_validate_disable_dex_removed_test.go|1-083_validate_apps_in_any_namespace_test.go|1-086_validate_default_argocd_role_test.go|1-101_validate_rollout_policyrules_test.go|1-103-validate-rollouts-imagepullpolicy.go|1-105_validate_label_selector_test.go|1-107_validate_redis_scc_test.go|1-110_validate_podsecurity_alerts_test.go|1-112_validate_rollout_plugin_support_test.go|1-114_validate_imagepullpolicy_test.go|1-120_repo_server_system_ca_trust.go|1-121-valiate_resource_constraints_gitopsservice_test.go|1-123_validate_list_order_comparison_test.go
++ PARALLEL_FLAG=
++ [[ 1 -gt 1 ]]
++ TEST_EXIT=0
++ /testsuites/gitops-operator/bin/ginkgo -timeout 120m -procs=1 --no-color -v --trace -r '--skip=1-006_validate_machine_config|1-064_validate_tcp_reset_error|1-111_validate_default_argocd_route|1-071_validate_node_selectors|1-053_validate_argocd_agent_principal_connected|1-110_validate_podsecurity_alerts|1-113_validate_namespacemanagement|1-112_validate_rollout_plugin_support' '--focus-file=1-002-validate_backend_service_test.go|1-004_validate_argocd_installation_test.go|1-008_validate-4.9CI-Failures_test.go|1-018_validate_disable_default_instance_test.go|1-026-validate_backend_service_permissions_test.go|1-028-validate_run_on_infra_test.go|1-035_validate_argocd_secret_repopulate_test.go|1-037_validate_applicationset_in_any_namespace_test.go|1-051_validate_argocd_agent_principal_test.go|1-052_validate_rolebinding_number_test.go|1-056_validate_managed-by_test.go|1-064_validate_tcp_reset_error_test.go|1-071_validate_SCC_HA_test.go|1-077_validate_disable_dex_removed_test.go|1-083_validate_apps_in_any_namespace_test.go|1-086_validate_default_argocd_role_test.go|1-101_validate_rollout_policyrules_test.go|1-103-validate-rollouts-imagepullpolicy.go|1-105_validate_label_selector_test.go|1-107_validate_redis_scc_test.go|1-110_validate_podsecurity_alerts_test.go|1-112_validate_rollout_plugin_support_test.go|1-114_validate_imagepullpolicy_test.go|1-120_repo_server_system_ca_trust.go|1-121-valiate_resource_constraints_gitopsservice_test.go|1-123_validate_list_order_comparison_test.go' --junit-report=/tmp/task-logs/junit-results.xml --json-report=/tmp/task-logs/test-results.json ./test/openshift/e2e/ginkgo/sequential/.
+go: downloading github.com/argoproj-labs/argo-rollouts-manager v0.0.8-0.20260224121037-1824164aac67
+go: downloading github.com/argoproj-labs/argocd-operator v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b
+go: downloading k8s.io/client-go v0.34.1
+go: downloading github.com/onsi/gomega v1.39.1
+go: downloading github.com/onsi/ginkgo/v2 v2.28.1
+go: downloading github.com/argoproj/argo-cd/v3 v3.3.2
+go: downloading gopkg.in/yaml.v3 v3.0.1
+go: downloading k8s.io/api v0.34.1
+go: downloading k8s.io/apimachinery v0.34.1
+go: downloading k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
+go: downloading sigs.k8s.io/controller-runtime v0.22.3
+go: downloading github.com/hashicorp/go-version v1.7.0
+go: downloading github.com/argoproj/gitops-engine v0.7.1-0.20251217140045-5baed5604d2d
+go: downloading github.com/openshift/api v0.0.0-20240906151052-5d963dce87aa
+go: downloading github.com/operator-framework/api v0.17.5
+go: downloading github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.73.2
+go: downloading k8s.io/apiextensions-apiserver v0.34.1
+go: downloading github.com/argoproj-labs/argocd-image-updater v1.1.1
+go: downloading github.com/google/go-cmp v0.7.0
+go: downloading golang.org/x/mod v0.33.0
+go: downloading github.com/distribution/reference v0.6.0
+go: downloading gopkg.in/yaml.v2 v2.4.0
+go: downloading github.com/go-logr/logr v1.4.3
+go: downloading k8s.io/kube-aggregator v0.34.0
+go: downloading k8s.io/kubectl v0.34.0
+go: downloading github.com/evanphx/json-patch/v5 v5.9.11
+go: downloading github.com/go-logr/zapr v1.3.0
+go: downloading go.uber.org/zap v1.27.1
+go: downloading github.com/sirupsen/logrus v1.9.4
+go: downloading github.com/gogo/protobuf v1.3.2
+go: downloading sigs.k8s.io/randfill v1.0.0
+go: downloading gopkg.in/inf.v0 v0.9.1
+go: downloading k8s.io/klog/v2 v2.130.1
+go: downloading github.com/google/uuid v1.6.1-0.20241114170450-2d3c2a9cc518
+go: downloading sigs.k8s.io/structured-merge-diff/v6 v6.3.1-0.20251003215857-446d8398e19c
+go: downloading golang.org/x/sys v0.40.0
+go: downloading go.yaml.in/yaml/v3 v3.0.4
+go: downloading golang.org/x/net v0.49.0
+go: downloading github.com/Masterminds/semver/v3 v3.4.0
+go: downloading github.com/spf13/cobra v1.10.2
+go: downloading golang.org/x/sync v0.19.0
+go: downloading k8s.io/cli-runtime v0.34.0
+go: downloading k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b
+go: downloading sigs.k8s.io/yaml v1.6.0
+go: downloading sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8
+go: downloading github.com/opencontainers/go-digest v1.0.0
+go: downloading github.com/blang/semver/v4 v4.0.0
+go: downloading go.uber.org/multierr v1.11.0
+go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
+go: downloading github.com/spf13/pflag v1.0.10
+go: downloading golang.org/x/term v0.39.0
+go: downloading github.com/google/gnostic-models v0.7.0
+go: downloading google.golang.org/protobuf v1.36.11
+go: downloading golang.org/x/tools v0.41.0
+go: downloading gomodules.xyz/jsonpatch/v2 v2.4.0
+go: downloading golang.org/x/time v0.14.0
+go: downloading github.com/google/btree v1.1.3
+go: downloading k8s.io/kubernetes v1.34.2
+go: downloading github.com/cert-manager/cert-manager v1.15.4
+go: downloading github.com/fxamacker/cbor/v2 v2.9.0
+go: downloading golang.org/x/oauth2 v0.34.0
+go: downloading github.com/json-iterator/go v1.1.12
+go: downloading go.yaml.in/yaml/v2 v2.4.2
+go: downloading github.com/prometheus/client_golang v1.23.2
+go: downloading github.com/jonboulle/clockwork v0.5.0
+go: downloading k8s.io/component-base v0.34.1
+go: downloading k8s.io/component-helpers v0.34.0
+go: downloading gopkg.in/evanphx/json-patch.v4 v4.12.0
+go: downloading github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
+go: downloading github.com/moby/term v0.5.2
+go: downloading golang.org/x/text v0.33.0
+go: downloading sigs.k8s.io/kustomize/api v0.21.0
+go: downloading sigs.k8s.io/kustomize/kyaml v0.21.0
+go: downloading github.com/go-openapi/jsonreference v0.21.3
+go: downloading github.com/go-openapi/swag v0.23.1
+go: downloading github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
+go: downloading github.com/x448/float16 v0.8.4
+go: downloading github.com/fsnotify/fsnotify v1.9.0
+go: downloading github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
+go: downloading github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+go: downloading github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee
+go: downloading github.com/chai2010/gettext-go v1.0.3
+go: downloading github.com/MakeNowJust/heredoc v1.0.0
+go: downloading github.com/mitchellh/go-wordwrap v1.0.1
+go: downloading github.com/russross/blackfriday/v2 v2.1.0
+go: downloading github.com/exponent-io/jsonpath v0.0.0-20210407135951-1de76d718b3f
+go: downloading github.com/prometheus/client_model v0.6.2
+go: downloading github.com/prometheus/common v0.66.1
+go: downloading github.com/fatih/camelcase v1.0.0
+go: downloading github.com/beorn7/perks v1.0.1
+go: downloading github.com/cespare/xxhash/v2 v2.3.0
+go: downloading github.com/prometheus/procfs v0.16.1
+go: downloading github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
+go: downloading github.com/peterbourgon/diskv v2.0.1+incompatible
+go: downloading github.com/pkg/errors v0.9.1
+go: downloading github.com/go-openapi/jsonpointer v0.22.1
+go: downloading github.com/mailru/easyjson v0.9.0
+go: downloading github.com/emicklei/go-restful/v3 v3.12.2
+go: downloading github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
+go: downloading github.com/go-openapi/swag/jsonname v0.25.1
+go: downloading github.com/josharian/intern v1.0.0
+go: downloading github.com/go-errors/errors v1.5.1
+go: downloading sigs.k8s.io/gateway-api v1.1.0
+go: downloading github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00
+go: downloading github.com/xlab/treeprint v1.2.0
+go: downloading github.com/moby/spdystream v0.5.0
+go: downloading github.com/gobwas/glob v0.2.3
+go: downloading github.com/robfig/cron/v3 v3.0.2-0.20210106135023-bc59245fe10e
+go: downloading google.golang.org/grpc v1.77.0
+go: downloading github.com/coreos/go-oidc/v3 v3.14.1
+go: downloading github.com/golang-jwt/jwt/v5 v5.3.1
+go: downloading github.com/golang/protobuf v1.5.4
+go: downloading github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
+go: downloading github.com/grpc-ecosystem/grpc-gateway v1.16.0
+go: downloading github.com/hashicorp/go-retryablehttp v0.7.8
+go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.63.0
+go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20251022142026-3a174f9686a8
+go: downloading google.golang.org/genproto v0.0.0-20240401170217-c3f982113cda
+go: downloading github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f
+go: downloading github.com/redis/go-redis/v9 v9.8.0
+go: downloading golang.org/x/crypto v0.47.0
+go: downloading github.com/argoproj/pkg v0.13.7-0.20250305113207-cbc37dc61de5
+go: downloading github.com/bmatcuk/doublestar/v4 v4.10.0
+go: downloading github.com/bradleyfalzon/ghinstallation/v2 v2.17.0
+go: downloading github.com/cenkalti/backoff/v5 v5.0.3
+go: downloading github.com/chainguard-dev/git-urls v1.0.2
+go: downloading github.com/go-git/go-git/v5 v5.16.5
+go: downloading github.com/google/go-github/v69 v69.2.0
+go: downloading github.com/patrickmn/go-cache v2.1.1-0.20191004192108-46f407853014+incompatible
+go: downloading github.com/argoproj/pkg/v2 v2.0.1
+go: downloading oras.land/oras-go/v2 v2.6.0
+go: downloading github.com/cyphar/filepath-securejoin v0.6.1
+go: downloading github.com/opencontainers/image-spec v1.1.1
+go: downloading github.com/casbin/casbin/v2 v2.135.0
+go: downloading github.com/casbin/govaluate v1.10.0
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/azcore v1.20.0
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
+go: downloading github.com/stretchr/testify v1.11.1
+go: downloading github.com/r3labs/diff/v3 v3.0.2
+go: downloading github.com/go-jose/go-jose/v4 v4.1.3
+go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+go: downloading go.opentelemetry.io/otel v1.38.0
+go: downloading go.opentelemetry.io/otel/metric v1.38.0
+go: downloading go.opentelemetry.io/otel/trace v1.38.0
+go: downloading github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20251022142026-3a174f9686a8
+go: downloading github.com/golang-jwt/jwt/v4 v4.5.2
+go: downloading github.com/google/go-github/v75 v75.0.0
+go: downloading dario.cat/mergo v1.0.2
+go: downloading github.com/go-git/go-billy/v5 v5.6.2
+go: downloading github.com/ProtonMail/go-crypto v1.1.6
+go: downloading github.com/sergi/go-diff v1.4.0
+go: downloading cloud.google.com/go/compute/metadata v0.9.0
+go: downloading github.com/go-redis/cache/v9 v9.0.0
+go: downloading github.com/dlclark/regexp2 v1.11.5
+go: downloading github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
+go: downloading github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8
+go: downloading github.com/kevinburke/ssh_config v1.2.0
+go: downloading github.com/skeema/knownhosts v1.3.1
+go: downloading github.com/xanzy/ssh-agent v0.3.3
+go: downloading github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99
+go: downloading github.com/felixge/httpsnoop v1.0.4
+go: downloading github.com/bombsimon/logrusr/v4 v4.1.0
+go: downloading github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
+go: downloading github.com/AzureAD/microsoft-authentication-library-for-go v1.6.0
+go: downloading github.com/google/go-querystring v1.1.0
+go: downloading github.com/vmihailenco/msgpack/v5 v5.4.1
+go: downloading github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376
+go: downloading github.com/pjbgf/sha1cd v0.3.2
+go: downloading github.com/emirpasic/gods v1.18.1
+go: downloading github.com/klauspost/compress v1.18.0
+go: downloading github.com/vmihailenco/go-tinylfu v0.2.2
+go: downloading github.com/go-logr/stdr v1.2.2
+go: downloading go.opentelemetry.io/auto/sdk v1.2.1
+go: downloading gopkg.in/warnings.v0 v0.1.2
+go: downloading github.com/kylelemons/godebug v1.1.0
+go: downloading github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
+go: downloading github.com/cloudflare/circl v1.6.1
+go: downloading github.com/vmihailenco/tagparser/v2 v2.0.0
+go: downloading k8s.io/controller-manager v0.34.0
+go: downloading k8s.io/apiserver v0.34.1
+
+Running Suite: Sequential Suite - /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential
+==================================================================================================
+Random Seed: 1778478182
+
+Will run 50 of 94 specs
+------------------------------
+[BeforeSuite] 
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/suite_test.go:42
+[BeforeSuite] PASSED [0.000 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-026-validate_backend_service_permissions validates backend service permissions
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-026-validate_backend_service_permissions_test.go:22
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying that various backend-related resources exist and have the expected values @ 05/11/26 05:48:13.936
+  Object exists in ExistByName: cluster
+  Object exists in ExistByName: gitops-service-cluster
+  Object exists in ExistByName: gitops-service-cluster
+  Object exists in ExistByName: gitops-service-cluster
+• [10.282 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-018_validate_disable_default_instance verifies that the default ArgoCD instance from openshift-gitops namespace is recreated when deleted manually
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-018_validate_disable_default_instance_test.go:43
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying that the openshift-gitops ArgoCD instance exists initially @ 05/11/26 05:48:24.195
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying associated deployments exist @ 05/11/26 05:48:34.227
+  Object exists in ExistByName: openshift-gitops-server
+  Object exists in ExistByName: openshift-gitops-redis
+  Object exists in ExistByName: openshift-gitops-repo-server
+  Object exists in ExistByName: openshift-gitops-applicationset-controller
+  Object exists in ExistByName: openshift-gitops-application-controller
+  STEP: manually deleting the openshift-gitops ArgoCD instance @ 05/11/26 05:48:34.291
+  STEP: verifying ArgoCD CR gets recreated automatically by the operator @ 05/11/26 05:48:34.311
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying deployments and statefulset are recreated and become ready @ 05/11/26 05:49:09.453
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-redis
+  Deployment  openshift-gitops-redis - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-repo-server
+  Deployment  openshift-gitops-repo-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-applicationset-controller
+  Deployment  openshift-gitops-applicationset-controller - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+• [55.614 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-018_validate_disable_default_instance verifies that DISABLE_DEFAULT_ARGOCD_INSTANCE env var will delete the argo cd instance from openshift-gitops, and that default Argo CD instance will be restored when the env var is removed
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-018_validate_disable_default_instance_test.go:103
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  Object exists in ExistByName: openshift-gitops
+  STEP: disabling default Argo CD instance via env var @ 05/11/26 05:49:19.823
+  STEP: verifying operator restarts with DISABLE_DEFAULT_ARGOCD_INSTANCE set @ 05/11/26 05:49:19.863
+  Object exists in ExistByName: openshift-gitops-operator-controller-manager
+  HaveContainerWithEnvVar - Key  DISABLE_DEFAULT_ARGOCD_INSTANCE  Expected: true Actual: true
+  Deployment openshift-gitops-operator-controller-manager - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-operator-controller-manager - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-operator-controller-manager - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-operator-controller-manager - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-operator-controller-manager - HaveReplicas: expected:  1 actual:  1
+  Deployment HaveAvailableReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-operator-controller-manager - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying ArgoCD CR no longer exists @ 05/11/26 05:49:35.037
+  STEP: verifying Argo CD gitops service Deployment no longer exists @ 05/11/26 05:49:53.175
+  STEP: remove the DISABLE_DEFAULT_ARGOCD_INSTANCE env var we set above @ 05/11/26 05:49:53.192
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object does not exists in ExistByName: openshift-gitops argocds.argoproj.io "openshift-gitops" not found
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying deployment and statefulset have expected number of replicas, including the repo server which should have 2 @ 05/11/26 05:51:03.514
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-redis
+  Deployment openshift-gitops-redis - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-redis - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-repo-server
+  Deployment openshift-gitops-repo-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-repo-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-applicationset-controller
+  Deployment openshift-gitops-applicationset-controller - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-applicationset-controller - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+• [114.097 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-008_validate-4.9CI-Failures verifies 4.9 CI failures
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-008_validate-4.9CI-Failures_test.go:53
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'source-ns' @ 05/11/26 05:51:13.909
+  STEP: creating simple namespace-scoped ArgoCD instance with route enabled @ 05/11/26 05:51:13.915
+  STEP: creating target-ns namespace which we will deploy into @ 05/11/26 05:51:13.933
+  HavePhase: expected: Available / actual: 
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Available
+  STEP: ensuring default AppProject exists in source-ns @ 05/11/26 05:51:49.11
+  Object exists in ExistByName: default
+  STEP: ensuring Roles are created in target-ns, which indicates that it is successfully managed @ 05/11/26 05:51:49.124
+  Object exists in ExistByName: argocd-argocd-application-controller
+  Object exists in ExistByName: argocd-argocd-server
+  Object exists in ExistByName: argocd-argocd-application-controller
+  Object exists in ExistByName: argocd-argocd-server
+  STEP: creating unrestricted role/rolebinding in source-ns NS for source-ns application-controller ServiceAccount @ 05/11/26 05:51:49.172
+  STEP: verifying the role and rolebinding that we created exist @ 05/11/26 05:51:49.185
+  STEP: creating Argo CD Application which tries to deploy from source-ns instance to target-ns NS @ 05/11/26 05:51:49.19
+  STEP: verifying Argo CD in source-ns is able to deploy to managed namespace target-ns @ 05/11/26 05:51:49.197
+  HaveHealthStatusCode - current health:  / expected health: Healthy
+  HaveHealthStatusCode - current health: Healthy / expected health: Healthy
+  HaveSyncStatusCode - current syncStatusCode: Synced  / expected syncStatusCode: Synced
+• [55.552 seconds]
+------------------------------
+SSSSSSSS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-052_validate_rolebinding_number verifies RoleBindings are added to namespace-scoped Namespace when that Namespace is managed by openshift-gitops
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-052_validate_rolebinding_number_test.go:38
+  Deleting Namespace source-ns
+  Deleting Namespace target-ns
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating simple namespace-scoped Argo CD instance @ 05/11/26 05:52:44.468
+  STEP: creating namespace 'gitops-e2e-test-e1ec3cc6-f062' @ 05/11/26 05:52:44.479
+  Object does not exists in ExistByName: openshift-gitops-argocd-application-controller rolebindings.rbac.authorization.k8s.io "openshift-gitops-argocd-application-controller" not found
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Deleting Namespace gitops-e2e-test-e1ec3cc6-f062
+• [96.345 seconds]
+------------------------------
+SSS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-004_validate_argocd_installation verifies that default openshift-gitops Argo CD instance becomes available after modifying .spec.controller.processors.operation value
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-004_validate_argocd_installation_test.go:36
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying default openshift-gitops Argo CD instance is available @ 05/11/26 05:53:45.814
+  ArgoCD status is now Available
+  STEP: modifying Argo CD instance app controller operation processors to 20 @ 05/11/26 05:53:55.855
+  STEP: verifying app controller instance becomes available @ 05/11/26 05:54:02.886
+  ArgoCD status is now Available
+• [44.355 seconds]
+------------------------------
+SSSSS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-123_validate_list_order_comparison Should not trigger updates when only list order differs
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-123_validate_list_order_comparison_test.go:120
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  Object exists in ExistByName: gitops-plugin
+  Deployment  gitops-plugin - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: capturing initial state before simulating etcd order change @ 05/11/26 05:54:30.182
+  STEP: simulating etcd returning lists in different order @ 05/11/26 05:54:30.185
+  STEP: triggering reconciliation by updating GitopsService CR @ 05/11/26 05:54:30.199
+  STEP: verifying no unnecessary update was triggered @ 05/11/26 05:54:50.248
+• [30.304 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-123_validate_list_order_comparison Should trigger updates when actual changes are made
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-123_validate_list_order_comparison_test.go:217
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  Object exists in ExistByName: gitops-plugin
+  Deployment  gitops-plugin - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: capturing initial state before making actual change @ 05/11/26 05:55:00.511
+  STEP: making an actual change to the deployment @ 05/11/26 05:55:00.514
+  STEP: triggering reconciliation @ 05/11/26 05:55:15.552
+  STEP: verifying operator corrected the image back to the expected image @ 05/11/26 05:55:30.613
+• [40.363 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-035-validate_argocd_secret_repopulate verifies 'argocd-secret' secret is regenerated and we are able to login using that Secret
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-035_validate_argocd_secret_repopulate_test.go:36
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: checking OpenShift GitOps ArgoCD instance is available @ 05/11/26 05:55:40.944
+  ArgoCD status is now Available
+  STEP: removing data from argocd-secret, to check that it is regenerated @ 05/11/26 05:55:50.979
+  STEP: verifying that Secret repopulates @ 05/11/26 05:55:50.998
+  ArgoCD status is now Available
+  STEP: verifying operator Deployment is ready @ 05/11/26 05:56:04.036
+  Deployment  openshift-gitops-operator-controller-manager - HaveReadyReplicas: expected:  1 actual:  1
+  executing command: argocd login (...)
+  {"level":"warning","msg":"Failed to invoke grpc call. Use flag --grpc-web in grpc calls. To avoid this warning message, use flag --grpc-web.","time":"2026-05-11T05:56:05Z"}
+  'admin:login' logged in successfully
+  Context 'openshift-gitops-server-openshift-gitops.apps.39099dae-d19f-48bb-808a-54d1f2eea114.prod.konfluxeaas.com' updated
+
+• [35.094 seconds]
+------------------------------
+S
+------------------------------
+GitOps Operator Sequential E2E Tests 1-107_validate_redis_scc verifies that when Argo CD has HA enabled that the redis pods use restricted-v2 security policy
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-107_validate_redis_scc_test.go:35
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying we are running on a cluster with at least 3 nodes. This is required for Redis HA @ 05/11/26 05:56:15.925
+  ExpectHasAtLeastXNodes, expected: 3 actual: 3
+  STEP: creating simple namespace-scoped Argo CD instance with HA enabled @ 05/11/26 05:56:15.938
+  STEP: creating namespace 'gitops-e2e-test-9c42c506-8a0b' @ 05/11/26 05:56:15.95
+  STEP: verifying HA Redis becomes available @ 05/11/26 05:56:15.975
+  HaveRedisStatus: expected: Running / actual: 
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Pending
+  HaveRedisStatus: expected: Running / actual: Running
+  STEP: verifying that argocd-redis-ha pod has scc of restricted-v2 @ 05/11/26 05:58:21.538
+  STEP: verifying that argocd-redis-ha-haproxy pod has scc of restricted-v2 @ 05/11/26 05:58:21.543
+  Deleting Namespace gitops-e2e-test-9c42c506-8a0b
+• [185.844 seconds]
+------------------------------
+S
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that missing Secret aborts startup
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:109
+  STEP: creating Argo CD instance with missing Secret @ 05/11/26 05:59:12.096
+  HaveServerStatus: expected: Running / actual: 
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Pending
+  HaveServerStatus: expected: Running / actual: Running
+  HaveRepoStatus: expected: Pending / actual: Pending
+  HaveRepoStatus: expected: Pending / actual: Pending
+  HaveRepoStatus: expected: Pending / actual: Pending
+  HaveRepoStatus: expected: Pending / actual: Pending
+  ArgoCD status is not yet Available
+  Deleting Namespace gitops-e2e-test-24872034-7164
+• [95.814 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that ClusterTrustBundles are trusted in repo-server and plugins
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:128
+  [SKIPPED] in [It] - /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:130 @ 05/11/26 06:00:47.903
+S [SKIPPED] [0.536 seconds]
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust [It] ensures that ClusterTrustBundles are trusted in repo-server and plugins
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:128
+
+  [SKIPPED] Cluster does not support ClusterTrustBundles
+  In [It] at: /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:130 @ 05/11/26 06:00:47.903
+
+  Full Stack Trace
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that CMs and Secrets are trusted in repo-server and plugins
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:173
+  STEP: Creating ConfigManagementPlugin resources for git clone @ 05/11/26 06:00:48.438
+  STEP: creating Argo CD instance trusting CTBs @ 05/11/26 06:00:48.443
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: creating helm Application nginx @ 05/11/26 06:01:38.756
+  STEP: creating plugin Application https-kernel-googlesource-com-pub-scm-docs-man-pages-website-git @ 05/11/26 06:01:38.764
+  STEP: creating helm Application podinfo @ 05/11/26 06:01:38.77
+  STEP: creating plugin Application https-github-com-argoproj-labs-argocd-operator-git @ 05/11/26 06:01:38.777
+  HaveConditionMatching - expected: ComparisonError/.*failed to fetch chart.*; current(0):
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  HaveSyncStatusCode - current syncStatusCode: Synced  / expected syncStatusCode: Synced
+  HaveSyncStatusCode - current syncStatusCode:   / expected syncStatusCode: Synced
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  HaveSyncStatusCode - current syncStatusCode: Synced  / expected syncStatusCode: Synced
+  HaveSyncStatusCode - current syncStatusCode:   / expected syncStatusCode: Synced
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  HaveSyncStatusCode - current syncStatusCode: Synced  / expected syncStatusCode: Synced
+  HaveSyncStatusCode - current syncStatusCode: Synced  / expected syncStatusCode: Synced
+  Deleting Namespace gitops-e2e-test-39cf7149-d7b5
+• [116.220 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that 0 trusted certs with DropImageCertificates trusts nothing
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:222
+  STEP: creating Argo CD instance with empty system trust @ 05/11/26 06:02:44.634
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: creating helm Application podinfo @ 05/11/26 06:03:20.197
+  HaveConditionMatching - expected: ComparisonError/.*tls: failed to verify certificate: x509: certificate signed by unknown authority.*; current(0):
+  HaveSyncStatusCode - current syncStatusCode: Unknown  / expected syncStatusCode: Unknown
+  Deleting Namespace gitops-e2e-test-d2431542-a2b5
+• [61.147 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that empty trust keeps image certs in place
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:255
+  STEP: creating Argo CD instance with empty system trust @ 05/11/26 06:03:45.824
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  Deleting Namespace gitops-e2e-test-71f1f653-d88e
+• [56.170 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that Secrets and ConfigMaps get reconciled
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:270
+  STEP: creating Argo CD instance with empty system trust, but full of anticipation @ 05/11/26 06:04:41.895
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: creating ConfigMap with 1 cert @ 05/11/26 06:05:17.434
+  STEP: Expecting reconcile of old pod argocd-repo-server-64cf8859f4-5cjvj: true @ 05/11/26 06:05:17.459
+  STEP: creating Secret with 1 cert @ 05/11/26 06:05:38.021
+  STEP: Expecting reconcile of old pod argocd-repo-server-58845f7df6-fdjxn: true @ 05/11/26 06:05:38.048
+  STEP: updating ConfigMap to 2 certs @ 05/11/26 06:05:53.6
+  STEP: Expecting reconcile of old pod argocd-repo-server-7b94845d9-zrv92: true @ 05/11/26 06:05:53.606
+  STEP: updating Secret to 0 certs @ 05/11/26 06:06:09.116
+  STEP: Expecting reconcile of old pod argocd-repo-server-cc944ffcd-8cdx4: true @ 05/11/26 06:06:09.12
+  STEP: updating ConfigMap to 1 certs @ 05/11/26 06:06:24.75
+  STEP: Expecting reconcile of old pod argocd-repo-server-59747f7d9d-wmjsw: true @ 05/11/26 06:06:24.755
+  STEP: deleting ConfigMap @ 05/11/26 06:06:45.318
+  STEP: Expecting reconcile of old pod argocd-repo-server-558c9bf864-cb49z: true @ 05/11/26 06:06:45.323
+  Deleting Namespace gitops-e2e-test-9b8ee30e-59e3
+• [159.427 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust ensures that ClusterTrustBundles get reconciled
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:358
+  [SKIPPED] in [It] - /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:360 @ 05/11/26 06:07:21.359
+S [SKIPPED] [0.490 seconds]
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust [It] ensures that ClusterTrustBundles get reconciled
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:358
+
+  [SKIPPED] Cluster does not support ClusterTrustBundles
+  In [It] at: /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:360 @ 05/11/26 06:07:21.359
+
+  Full Stack Trace
+------------------------------
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust only relevant ClusterTrustBundles changes get reconciled
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:411
+  [SKIPPED] in [It] - /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:413 @ 05/11/26 06:07:21.837
+S [SKIPPED] [0.478 seconds]
+GitOps Operator Sequential E2E Tests 1-120_repo_server_system_ca_trust [It] only relevant ClusterTrustBundles changes get reconciled
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:411
+
+  [SKIPPED] Cluster does not support ClusterTrustBundles
+  In [It] at: /testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-120_repo_server_system_ca_trust.go:413 @ 05/11/26 06:07:21.837
+
+  Full Stack Trace
+------------------------------
+SSSSSS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should create argocd agent principal resources, but pod should fail to start as image does not exist
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:300
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:07:32.218
+  STEP: Create ArgoCD instance @ 05/11/26 06:07:32.223
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:07:32.245
+  STEP: verifying expected resources exist @ 05/11/26 06:07:32.245
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object does not exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal clusterroles.rbac.authorization.k8s.io "example-argocd-agent-principal-1-051-agent-principal" not found
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal has the custom image we specified in ArgoCD CR @ 05/11/26 06:08:08.259
+  STEP: Verify environment variables are set correctly @ 05/11/26 06:08:08.259
+  STEP: Disable principal @ 05/11/26 06:08:08.259
+  STEP: Verify principal resources are deleted @ 05/11/26 06:08:15.298
+  STEP: verifying resources are deleted for principal pod @ 05/11/26 06:08:15.298
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:08:15.881
+  STEP: Cleanup namespace @ 05/11/26 06:08:15.887
+  Deleting Namespace argocd-agent-principal-1-051
+• [74.062 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should create argocd agent principal resources, and pod should start successfully with default image
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:341
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:09:02.334
+  STEP: Create ArgoCD instance @ 05/11/26 06:09:02.34
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:09:02.365
+  STEP: verifying expected resources exist @ 05/11/26 06:09:02.366
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object does not exists in ExistByName: example-agent-principal serviceaccounts "example-agent-principal" not found
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal uses the default agent image @ 05/11/26 06:09:10.166
+  STEP: Create required secrets and certificates for principal pod to start properly @ 05/11/26 06:09:10.59
+  STEP: creating required secrets for principal pod @ 05/11/26 06:09:10.592
+  STEP: Verify principal pod starts successfully by checking logs @ 05/11/26 06:09:10.89
+  executing command: [kubectl logs deployment/example-agent-principal -n argocd-agent-principal-1-051 --tail=200]
+  Error getting agent logs:  exit status 1
+  executing command: [kubectl logs deployment/example-agent-principal -n argocd-agent-principal-1-051 --tail=200]
+  STEP: verify that deployment is in Ready state @ 05/11/26 06:09:16.142
+  Deployment  example-agent-principal - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: Verify environment variables are set correctly @ 05/11/26 06:09:16.157
+  STEP: Disable principal @ 05/11/26 06:09:16.157
+  STEP: Verify principal resources are deleted @ 05/11/26 06:09:23.19
+  STEP: verifying resources are deleted for principal pod @ 05/11/26 06:09:23.19
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:09:23.758
+  STEP: Cleanup namespace @ 05/11/26 06:09:23.763
+  Deleting Namespace argocd-agent-principal-1-051
+• [67.875 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal Should reflect configuration changes from ArgoCD CR to the principal deployment
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:411
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:09:57.06
+  STEP: Create ArgoCD instance @ 05/11/26 06:09:57.066
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:09:57.089
+  STEP: verifying expected resources exist @ 05/11/26 06:09:57.089
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal has the custom image we specified in ArgoCD CR @ 05/11/26 06:10:17.968
+  STEP: Verify environment variables are set correctly @ 05/11/26 06:10:17.968
+  STEP: Update ArgoCD CR with new configuration @ 05/11/26 06:10:17.968
+  STEP: Create required secrets and certificates for principal pod to start properly @ 05/11/26 06:10:25.002
+  STEP: creating required secrets for principal pod @ 05/11/26 06:10:25.004
+  STEP: Verify principal has the updated image we specified in ArgoCD CR @ 05/11/26 06:10:25.398
+  Object exists in ExistByName: example-agent-principal
+  STEP: verify that deployment is in Ready state @ 05/11/26 06:10:25.413
+  Deployment  example-agent-principal - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  example-agent-principal - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  example-agent-principal - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  example-agent-principal - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: Verify environment variables are updated correctly @ 05/11/26 06:10:40.483
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:10:40.483
+  STEP: Cleanup namespace @ 05/11/26 06:10:40.493
+  Deleting Namespace argocd-agent-principal-1-051
+• [76.731 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should handle route disabled configuration correctly
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:522
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:11:26.891
+  STEP: Create ArgoCD instance with route disabled @ 05/11/26 06:11:26.898
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:11:26.918
+  STEP: verifying expected resources exist @ 05/11/26 06:11:26.918
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify Route for principal does not exist @ 05/11/26 06:11:33.239
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:11:43.653
+  STEP: Cleanup namespace @ 05/11/26 06:11:43.665
+  Deleting Namespace argocd-agent-principal-1-051
+• [63.172 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should handle route enabled configuration correctly
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:542
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:12:30.03
+  STEP: Create ArgoCD instance with route enabled @ 05/11/26 06:12:30.036
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:12:30.083
+  STEP: verifying expected resources exist @ 05/11/26 06:12:30.083
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object does not exists in ExistByName: example-agent-principal serviceaccounts "example-agent-principal" not found
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify Route for principal exists @ 05/11/26 06:12:37.924
+  Object exists in ExistByName: example-agent-principal
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:12:38.38
+  STEP: Cleanup namespace @ 05/11/26 06:12:38.389
+  Deleting Namespace argocd-agent-principal-1-051
+• [54.724 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should handle route toggle from enabled to disabled correctly
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:562
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:13:11.688
+  STEP: Create ArgoCD instance with route enabled @ 05/11/26 06:13:11.694
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:13:11.712
+  STEP: verifying expected resources exist @ 05/11/26 06:13:11.712
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object does not exists in ExistByName: example-agent-principal serviceaccounts "example-agent-principal" not found
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify Route for principal exists @ 05/11/26 06:13:33.621
+  Object exists in ExistByName: example-agent-principal
+  STEP: Disable route while keeping principal enabled @ 05/11/26 06:13:34.062
+  STEP: Verify Route for principal is deleted @ 05/11/26 06:13:41.099
+  STEP: Verify other principal resources still exist @ 05/11/26 06:13:41.534
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  STEP: Re-enable route @ 05/11/26 06:13:41.609
+  STEP: Verify Route for principal is recreated @ 05/11/26 06:13:48.642
+  Object exists in ExistByName: example-agent-principal
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:13:49.124
+  STEP: Cleanup namespace @ 05/11/26 06:13:49.135
+  Deleting Namespace argocd-agent-principal-1-051
+• [70.745 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should handle service type ClusterIP configuration correctly
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:628
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:14:35.532
+  STEP: Create ArgoCD instance with service type ClusterIP @ 05/11/26 06:14:35.546
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:14:35.593
+  STEP: verifying expected resources exist @ 05/11/26 06:14:35.593
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal service has ClusterIP type @ 05/11/26 06:14:42.441
+  Object exists in ExistByName: example-agent-principal
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:14:42.456
+  STEP: Cleanup namespace @ 05/11/26 06:14:42.468
+  Deleting Namespace argocd-agent-principal-1-051
+• [53.334 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should handle service type LoadBalancer configuration correctly
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:653
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:15:28.844
+  STEP: Create ArgoCD instance with service type LoadBalancer @ 05/11/26 06:15:28.849
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:15:28.865
+  STEP: verifying expected resources exist @ 05/11/26 06:15:28.865
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal service has LoadBalancer type @ 05/11/26 06:15:37.765
+  Object exists in ExistByName: example-agent-principal
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:15:37.777
+  STEP: Cleanup namespace @ 05/11/26 06:15:37.787
+  Deleting Namespace argocd-agent-principal-1-051
+• [55.316 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should handle service type updates correctly
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:678
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:16:25.16
+  STEP: Create ArgoCD instance with service type ClusterIP @ 05/11/26 06:16:25.167
+  STEP: Verify expected resources are created for principal pod @ 05/11/26 06:16:25.187
+  STEP: verifying expected resources exist @ 05/11/26 06:16:25.187
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal service has ClusterIP type initially @ 05/11/26 06:16:34.021
+  Object exists in ExistByName: example-agent-principal
+  STEP: Update service type to LoadBalancer @ 05/11/26 06:16:34.033
+  STEP: Verify principal service type is updated to LoadBalancer @ 05/11/26 06:16:41.068
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:16:41.072
+  STEP: Cleanup namespace @ 05/11/26 06:16:41.083
+  Deleting Namespace argocd-agent-principal-1-051
+• [63.296 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-051_validate_argocd_agent_principal should create principal NetworkPolicy if principal is enabled
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-051_validate_argocd_agent_principal_test.go:720
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating namespace 'argocd-agent-principal-1-051' @ 05/11/26 06:17:14.39
+  STEP: Create ArgoCD instance with principal enabled @ 05/11/26 06:17:14.395
+  STEP: verifying expected resources exist @ 05/11/26 06:17:14.412
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object does not exists in ExistByName: example-redis-initial-password secrets "example-redis-initial-password" not found
+  Object exists in ExistByName: example-redis-initial-password
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-argocd-agent-principal-1-051-agent-principal
+  Object exists in ExistByName: example-agent-principal-network-policy
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-agent-principal-metrics
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal-redisproxy
+  Object exists in ExistByName: example-agent-principal-resource-proxy
+  Object exists in ExistByName: example-agent-principal-healthz
+  Object exists in ExistByName: example-agent-principal
+  Object exists in ExistByName: example-redis
+  Object exists in ExistByName: example-repo-server
+  Object exists in ExistByName: example-server
+  Object exists in ExistByName: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: principal / Have: principal
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: example / Have: example
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: example-agent-principal / Have: example-agent-principal
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd-agent / Have: argocd-agent
+  STEP: Verify principal NetworkPolicy exists and has expected policy addresses and ports @ 05/11/26 06:17:33.424
+  STEP: Verify principal NetworkPolicy is deleted when principal instance is disabled @ 05/11/26 06:17:33.424
+  STEP: Verify principal NetworkPolicy is created when principal instance is enabled and network policy is enabled @ 05/11/26 06:17:40.47
+  Object exists in ExistByName: example-agent-principal-network-policy
+  STEP: Verify principal NetworkPolicy is not created when network policy is disabled @ 05/11/26 06:17:47.527
+  STEP: Cleanup cluster-scoped resources @ 05/11/26 06:17:54.588
+  STEP: Cleanup namespace @ 05/11/26 06:17:54.598
+  Deleting Namespace argocd-agent-principal-1-051
+• [73.517 seconds]
+------------------------------
+S
+------------------------------
+GitOps Operator Sequential E2E Tests 1-103_validate_rollouts_imagepullpolicy creates a cluster-scopes Argo Rollouts instance and verifies the default image pull policy
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-103-validate-rollouts-imagepullpolicy.go:51
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating simple cluster-scoped Argo Rollouts instance via RolloutManager in openshift-gitops namespace @ 05/11/26 06:18:24.819
+  STEP: verifying deplyment exists @ 05/11/26 06:18:24.834
+  Object does not exists in ExistByName: argo-rollouts deployments.apps "argo-rollouts" not found
+  Object exists in ExistByName: argo-rollouts
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying deployment has ImagePullPolicy set to default(IfNotPresent) @ 05/11/26 06:18:42.939
+• [28.338 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-103_validate_rollouts_imagepullpolicy creates a cluster-scopes Argo Rollouts instance and verifies the CR value imagePullPolicy is applied
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-103-validate-rollouts-imagepullpolicy.go:75
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating simple cluster-scoped Argo Rollouts instance via RolloutManager in openshift-gitops namespace with imagePullPolicy set to Always @ 05/11/26 06:18:53.206
+  STEP: verifying deplyment exists @ 05/11/26 06:18:53.221
+  Object does not exists in ExistByName: argo-rollouts deployments.apps "argo-rollouts" not found
+  Object exists in ExistByName: argo-rollouts
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying deployment has ImagePullPolicy set to the CR value(Always) @ 05/11/26 06:19:06.302
+  STEP: updating the RolloutManager CR to set imagePullPolicy to Never @ 05/11/26 06:19:06.314
+  STEP: verifying deployment has ImagePullPolicy set to the CR value(Never) @ 05/11/26 06:19:06.321
+  STEP: Removing the imagePullPolicy from the CR and check if the deployment has the imagePullPolicy set to default(IfNotPresent) @ 05/11/26 06:19:06.335
+  STEP: verifying deployment has ImagePullPolicy set to default(IfNotPresent) @ 05/11/26 06:19:06.34
+• [28.423 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-103_validate_rollouts_imagepullpolicy creates a cluster-scopes Argo Rollouts instance and verifies subscription image pull policy is applied
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-103-validate-rollouts-imagepullpolicy.go:118
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: setting the IMAGE_PULL_POLICY environment variable to Always @ 05/11/26 06:19:21.604
+  STEP: creating simple cluster-scoped Argo Rollouts instance via RolloutManager in openshift-gitops namespace @ 05/11/26 06:19:21.643
+  STEP: verifying deplyment exists @ 05/11/26 06:19:21.659
+  Object does not exists in ExistByName: argo-rollouts deployments.apps "argo-rollouts" not found
+  Object exists in ExistByName: argo-rollouts
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  0
+  Deployment  argo-rollouts - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying deployment has ImagePullPolicy set to Always @ 05/11/26 06:19:34.738
+  STEP: changing the subscription image pull policy to Never @ 05/11/26 06:19:54.831
+  STEP: verifying deployment has ImagePullPolicy set to Never @ 05/11/26 06:19:54.87
+  STEP: changing the subscription image pull policy to IfNotPresent @ 05/11/26 06:20:30.02
+  STEP: verifying deployment has ImagePullPolicy set to IfNotPresent @ 05/11/26 06:20:30.056
+  STEP: setting imagePullPolicy in CR and verify if the deployment has the imagePullPolicy set to the CR value @ 05/11/26 06:21:00.185
+  STEP: removing IMAGE_PULL_POLICY environment variable to restore default behavior @ 05/11/26 06:21:00.206
+  Waiting: {IMAGE_PULL_POLICY IfNotPresent nil} is still present in Deployment  openshift-gitops-operator-controller-manager
+• [121.946 seconds]
+------------------------------
+S
+------------------------------
+GitOps Operator Sequential E2E Tests 1-071_validate_SCC_HA creates SCC and ensure HA Argo CD starts as expected
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-071_validate_SCC_HA_test.go:53
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying we are running on a cluster with at least 3 nodes. This is required for Redis HA @ 05/11/26 06:21:33.582
+  ExpectHasAtLeastXNodes, expected: 3 actual: 3
+  STEP: creating namespace 'gitops-e2e-test-bbe76484-839f' @ 05/11/26 06:21:33.626
+  STEP: creating simple namespace-scoped Argo CD instance @ 05/11/26 06:21:33.631
+  STEP: waiting for ArgoCD CR to be reconciled and the instance to be ready @ 05/11/26 06:21:33.641
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying workload pods exist and are running @ 05/11/26 06:22:08.757
+  STEP: enabling HA on Argo CD @ 05/11/26 06:22:08.761
+  STEP: waiting for HA to be enabled on Argo CD, and Argo CD to be ready @ 05/11/26 06:22:15.789
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying workload pods exist and are running @ 05/11/26 06:24:06.043
+  STEP: verifying workload HA pods exist and are running @ 05/11/26 06:24:06.057
+  Object exists in ExistByName: argocd-redis-ha-server-1
+  Pod HavePhase: expected:  Running actual:  Running
+  Object exists in ExistByName: argocd-redis-ha-server-2
+  Pod HavePhase: expected:  Running actual:  Running
+  Deleting Namespace gitops-e2e-test-bbe76484-839f
+• [222.811 seconds]
+------------------------------
+SSSSSSSSS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-101_validate_rollout_policyrules verifying Rollouts operator creates the expected policy rules
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-101_validate_rollout_policyrules_test.go:33
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating cluster-scoped Argo Rollouts instance in openshift-gitops RolloutManager @ 05/11/26 06:25:06.35
+  STEP: verifying Rollouts ClusterRole contains expected policy rules @ 05/11/26 06:25:06.364
+  Object exists in ExistByName: argo-rollouts
+  HaveLabelWithValue - Key app.kubernetes.io/component Expect: argo-rollouts / Have: argo-rollouts
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: argo-rollouts / Have: argo-rollouts
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argo-rollouts / Have: argo-rollouts
+• [10.283 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-028-validate_run_on_infra_test validates that Argo CD runs on infra nodes
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-028-validate_run_on_infra_test.go:38
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: enabling run on infra on GitOpsService CR @ 05/11/26 06:25:16.668
+  Object exists in ExistByName: cluster
+  STEP: verifying the openshift-gitops resources have the run on infra labels and tolerations applied @ 05/11/26 06:25:16.702
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: [{infra  reserved NoSchedule <nil>}]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: [{infra  reserved NoSchedule <nil>}]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: [{infra  reserved NoSchedule <nil>}]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: [{infra  reserved NoSchedule <nil>}]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: [{infra  reserved NoSchedule <nil>}]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: [{infra  reserved NoSchedule <nil>}]
+  STEP: creating a simple namespace-scoped Argo CD instance in another namespace @ 05/11/26 06:25:19.882
+  STEP: creating namespace 'gitops-e2e-test-246d9720-7f84' @ 05/11/26 06:25:19.895
+  HavePhase: expected: Available / actual: 
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Pending
+  HavePhase: expected: Available / actual: Available
+  STEP: verifying that the namespace-scoped Argo CD instance does NOT have run on infra set. @ 05/11/26 06:25:55.072
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: []
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: []
+  deployments.apps "argocd-dex-server" not found
+  deployments.apps "argocd-dex-server" not found
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: []
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: []
+  STEP: disabling run on infra on GitOpsService CR @ 05/11/26 06:25:55.192
+  Object exists in ExistByName: cluster
+  STEP: verifying that the resources in openshift-gitops no longer have run on infra tolerations/label set @ 05/11/26 06:25:55.222
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:]
+  HaveTemplateSpecNodeSelector - expected: map[kubernetes.io/os:linux node-role.kubernetes.io/infra:] actual: map[kubernetes.io/os:linux]
+  HaveTolerations - expected: [{infra  reserved NoSchedule <nil>}] actual: []
+  deployments.apps "argocd-server" not found
+  deployments.apps "argocd-server" not found
+  deployments.apps "argocd-repo-server" not found
+  deployments.apps "argocd-repo-server" not found
+  deployments.apps "argocd-dex-server" not found
+  deployments.apps "argocd-dex-server" not found
+  deployments.apps "argocd-redis" not found
+  deployments.apps "argocd-redis" not found
+  fetchStatefulSet: statefulsets.apps "argocd-application-controller" not found
+  fetchStatefulSet: statefulsets.apps "argocd-application-controller" not found
+  Object does not exists in ExistByName: openshift-gitops-application-controller statefulsets.apps "openshift-gitops-application-controller" not found
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  0
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  0
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+• [65.066 seconds]
+------------------------------
+SSSSS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-056_validate_managed-by verifies that managed-by works as expected and that REMOVE_MANAGED_BY_LABEL_ON_ARGOCD_DELETION will remove managed-by label when the related ArgoCD instance is deleted
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-056_validate_managed-by_test.go:40
+  Deleting Namespace gitops-e2e-test-246d9720-7f84
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating two namespaces in managed-by relationship @ 05/11/26 06:26:41.71
+  STEP: creating namespace 'test-1-56-target' @ 05/11/26 06:26:41.721
+  STEP: creating simple Argo CD instance in test-1-56-target NS @ 05/11/26 06:26:41.75
+  STEP: verifying Argo CD instance is started and expected resources exist @ 05/11/26 06:26:41.768
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  Deployment  example-argocd-redis - HaveReadyReplicas: expected:  1 actual:  1
+  Deployment example-argocd-redis - HaveReplicas: expected:  1 actual:  1
+  Deployment  example-argocd-repo-server - HaveReadyReplicas: expected:  1 actual:  1
+  Deployment example-argocd-repo-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  example-argocd-server - HaveReadyReplicas: expected:  1 actual:  1
+  Deployment example-argocd-server - HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  STEP: deleting Argo CD instance in test-1-56-target @ 05/11/26 06:27:16.982
+  STEP: verifying test-1-56-custom is managed by test-1-56-target @ 05/11/26 06:27:16.99
+  HaveLabelWithValue - Key argocd.argoproj.io/managed-by Expect: test-1-56-target / Have: test-1-56-target
+  STEP: adding REMOVE_MANAGED_BY_LABEL_ON_ARGOCD_DELETION=true to operator Subscription or Deployment @ 05/11/26 06:27:17.001
+  STEP: creating new 2 new namespaces in managed-by relationship and an Argo CD instance to manage them @ 05/11/26 06:27:17.048
+  STEP: creating namespace 'test-1-56-target-2' @ 05/11/26 06:27:17.067
+  STEP: verifying new Argo CD is available along with the expected resources, in the new Namespace @ 05/11/26 06:27:17.125
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  Deployment  example-argocd-2-redis - HaveReadyReplicas: expected:  1 actual:  1
+  Deployment example-argocd-2-redis - HaveReplicas: expected:  1 actual:  1
+  Deployment  example-argocd-2-repo-server - HaveReadyReplicas: expected:  1 actual:  1
+  Deployment example-argocd-2-repo-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  example-argocd-2-server - HaveReadyReplicas: expected:  1 actual:  1
+  Deployment example-argocd-2-server - HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  STEP: deleting the Argo CD in new namespace @ 05/11/26 06:27:52.344
+  STEP: verifying Namespace test-1-56-custom-2 does not have managed-by label for deleted Argo CD namespace @ 05/11/26 06:27:52.35
+  NotHaveLabelWithValue: not expected:  argocd.argoproj.io/managed-by / test-1-56-target-2 . actual: 
+  STEP: removing REMOVE_MANAGED_BY_LABEL_ON_ARGOCD_DELETION from operator Subscription or Deplyoment @ 05/11/26 06:27:52.362
+  STEP: removing Namespaces created during the test @ 05/11/26 06:27:52.495
+• [101.047 seconds]
+------------------------------
+SS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-077_validate_disable_dex_removed verifies that DISABLE_DEX is not specified in the Subscription/CSV that was used to install the operator
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-077_validate_disable_dex_removed_test.go:49
+  ArgoCD status is now Available
+  STEP: getting the Subscription and CSV that was used to install the operator @ 05/11/26 06:27:55.578
+  STEP: verifying that the CSV install spec does not contain DISABLE_DEX @ 05/11/26 06:27:55.595
+• [3.082 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-121-validate_resource_constraints_gitopsservice_test validates that GitOpsService can take in custom resource constraints
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-121-valiate_resource_constraints_gitopsservice_test.go:88
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  executing command: [oc version]
+  Client Version: 4.14.58
+  Kustomize Version: v5.0.1
+  Server Version: 4.20.21
+  Kubernetes Version: v1.33.10
+
+  Object exists in ExistByName: gitops-plugin
+  Deployment  gitops-plugin - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: cluster
+• [30.716 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-121-validate_resource_constraints_gitopsservice_test validates that GitOpsService can update resource constraints
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-121-valiate_resource_constraints_gitopsservice_test.go:169
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  executing command: [oc version]
+  Client Version: 4.14.58
+  Kustomize Version: v5.0.1
+  Server Version: 4.20.21
+  Kubernetes Version: v1.33.10
+
+  Object exists in ExistByName: gitops-plugin
+  Deployment  gitops-plugin - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: cluster
+• [37.634 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-121-validate_resource_constraints_gitopsservice_test validates gitops plugin and backend can have different resource constraints
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-121-valiate_resource_constraints_gitopsservice_test.go:240
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  executing command: [oc version]
+  Client Version: 4.14.58
+  Kustomize Version: v5.0.1
+  Server Version: 4.20.21
+  Kubernetes Version: v1.33.10
+
+  Object exists in ExistByName: gitops-plugin
+  Deployment  gitops-plugin - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: cluster
+• [28.764 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-114_validate_imagepullpolicy verifies that imagePullPolicy from ArgoCD CR spec is propagated to all ArgoCD workload resources
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-114_validate_imagepullpolicy_test.go:52
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating a test namespace for ArgoCD instance @ 05/11/26 06:29:48.047
+  STEP: creating namespace 'gitops-e2e-test-e03c2f3b-2706' @ 05/11/26 06:29:48.059
+  STEP: creating an ArgoCD instance with imagePullPolicy set to Always @ 05/11/26 06:29:48.068
+  STEP: waiting for ArgoCD to become available @ 05/11/26 06:29:48.087
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying all ArgoCD deployments have imagePullPolicy set to Always on all containers @ 05/11/26 06:30:33.251
+  Object exists in ExistByName: argocd-server
+  Deployment  argocd-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: argocd-repo-server
+  Deployment  argocd-repo-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: argocd-redis
+  Deployment  argocd-redis - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying ArgoCD application-controller statefulset has imagePullPolicy set to Always @ 05/11/26 06:30:33.322
+  Object exists in ExistByName: argocd-application-controller
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  STEP: updating ArgoCD instance to use imagePullPolicy IfNotPresent @ 05/11/26 06:30:33.345
+  STEP: waiting for ArgoCD to reconcile the change @ 05/11/26 06:30:40.369
+  ArgoCD status is now Available
+  STEP: verifying all deployments have been updated to use IfNotPresent imagePullPolicy @ 05/11/26 06:30:50.388
+  Object exists in ExistByName: argocd-server
+  Object exists in ExistByName: argocd-repo-server
+  Object exists in ExistByName: argocd-redis
+  STEP: verifying statefulset has been updated to use IfNotPresent imagePullPolicy @ 05/11/26 06:30:50.468
+  Deleting Namespace gitops-e2e-test-e03c2f3b-2706
+• [87.774 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-114_validate_imagepullpolicy verifies that imagePullPolicy works correctly on default openshift-gitops ArgoCD instance
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-114_validate_imagepullpolicy_test.go:141
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying that the openshift-gitops ArgoCD instance exists and is available @ 05/11/26 06:31:10.717
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: updating openshift-gitops ArgoCD to set imagePullPolicy to Always @ 05/11/26 06:31:20.757
+  STEP: waiting for ArgoCD to reconcile @ 05/11/26 06:31:27.788
+  ArgoCD status is now Available
+  STEP: verifying openshift-gitops deployments have imagePullPolicy set to Always @ 05/11/26 06:31:37.817
+  Object exists in ExistByName: openshift-gitops-server
+  Object exists in ExistByName: openshift-gitops-repo-server
+  Object exists in ExistByName: openshift-gitops-redis
+  Object exists in ExistByName: openshift-gitops-applicationset-controller
+  STEP: verifying openshift-gitops statefulset has imagePullPolicy set to Always @ 05/11/26 06:31:37.922
+  Object exists in ExistByName: openshift-gitops-application-controller
+  STEP: restoring openshift-gitops ArgoCD imagePullPolicy to default after test @ 05/11/26 06:31:37.947
+• [44.479 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-114_validate_imagepullpolicy verifies default imagePullPolicy is applied to all ArgoCD workload resources when not specified in either CR spec or subscription
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-114_validate_imagepullpolicy_test.go:197
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying that the openshift-gitops ArgoCD instance exists and is available @ 05/11/26 06:31:55.197
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: waiting for ArgoCD to reconcile @ 05/11/26 06:32:05.228
+  ArgoCD status is now Available
+  STEP: verifying openshift-gitops deployments have imagePullPolicy set to default(IfNotPresent) @ 05/11/26 06:32:15.255
+  Object exists in ExistByName: openshift-gitops-server
+  Object exists in ExistByName: openshift-gitops-repo-server
+  Object exists in ExistByName: openshift-gitops-redis
+  Object exists in ExistByName: openshift-gitops-applicationset-controller
+  STEP: verifying openshift-gitops statefulset has imagePullPolicy set to default(IfNotPresent) @ 05/11/26 06:32:15.359
+  Object exists in ExistByName: openshift-gitops-application-controller
+• [30.403 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-114_validate_imagepullpolicy verifies that IMAGE_PULL_POLICY environment variable at operator level sets default imagePullPolicy for all ArgoCD instances
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-114_validate_imagepullpolicy_test.go:241
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating a test namespace for first ArgoCD instance without imagePullPolicy set @ 05/11/26 06:32:25.586
+  STEP: creating namespace 'gitops-e2e-test-3d42cee5-5d0c' @ 05/11/26 06:32:25.598
+  STEP: creating an ArgoCD instance without explicitly setting imagePullPolicy @ 05/11/26 06:32:25.603
+  STEP: waiting for ArgoCD to become available @ 05/11/26 06:32:25.621
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: setting IMAGE_PULL_POLICY environment variable at operator level to Always @ 05/11/26 06:33:00.749
+  STEP: verifying second ArgoCD deployments inherit operator-level imagePullPolicy (Always) @ 05/11/26 06:33:00.788
+  STEP: verifying operator has restarted with IMAGE_PULL_POLICY environment variable set @ 05/11/26 06:33:00.788
+  Object exists in ExistByName: openshift-gitops-operator-controller-manager
+  Deployment HaveAvailableReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-operator-controller-manager - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying first ArgoCD deployment has ImagePullPolicy set to Always @ 05/11/26 06:33:00.829
+  Object exists in ExistByName: argocd-server
+  Object exists in ExistByName: argocd-repo-server
+  Object exists in ExistByName: argocd-redis
+  STEP: verifying first ArgoCD statefulset inherits operator-level imagePullPolicy (Always) @ 05/11/26 06:33:36.032
+  Object exists in ExistByName: argocd-application-controller
+  STEP: creating a second test namespace for ArgoCD instance that should inherit operator-level default @ 05/11/26 06:33:36.056
+  STEP: creating namespace 'gitops-e2e-test-9534847d-ffac' @ 05/11/26 06:33:36.067
+  STEP: creating a second ArgoCD instance without explicitly setting imagePullPolicy @ 05/11/26 06:33:36.074
+  STEP: waiting for second ArgoCD to become available @ 05/11/26 06:33:36.083
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying second ArgoCD deployments inherits operator-level imagePullPolicy (Always) @ 05/11/26 06:34:11.193
+  Object exists in ExistByName: argocd-server
+  Object exists in ExistByName: argocd-repo-server
+  Object exists in ExistByName: argocd-redis
+  STEP: verifying second ArgoCD statefulset inherits operator-level imagePullPolicy (Always) @ 05/11/26 06:34:11.271
+  Object exists in ExistByName: argocd-application-controller
+  STEP: creating a third test namespace for ArgoCD instance with explicit imagePullPolicy override @ 05/11/26 06:34:11.3
+  STEP: creating namespace 'gitops-e2e-test-4b3c43d0-f1b1' @ 05/11/26 06:34:11.314
+  STEP: creating a third ArgoCD instance with explicit imagePullPolicy set to IfNotPresent (overriding operator default) @ 05/11/26 06:34:11.322
+  STEP: waiting for third ArgoCD to become available @ 05/11/26 06:34:11.333
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  STEP: verifying third ArgoCD deployments use explicit imagePullPolicy (IfNotPresent) instead of operator default @ 05/11/26 06:34:46.458
+  Object exists in ExistByName: argocd-server
+  Object exists in ExistByName: argocd-repo-server
+  Object exists in ExistByName: argocd-redis
+  STEP: verifying third ArgoCD statefulset uses explicit imagePullPolicy (IfNotPresent) @ 05/11/26 06:34:46.532
+  Object exists in ExistByName: argocd-application-controller
+  Deleting Namespace gitops-e2e-test-4b3c43d0-f1b1
+  Deleting Namespace gitops-e2e-test-9534847d-ffac
+  STEP: removing IMAGE_PULL_POLICY environment variable to restore default behavior @ 05/11/26 06:35:06.596
+  Waiting: {IMAGE_PULL_POLICY Always nil} is still present in Deployment  openshift-gitops-operator-controller-manager
+  Deleting Namespace gitops-e2e-test-3d42cee5-5d0c
+• [215.353 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-037_validate_applicationset_in_any_namespace verifying that ArgoCD CR '.spec.applicationset.sourcenamespaces' and '.spec.sourcenamespaces' correctly control role/rolebindings within the managed namespaces
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-037_validate_applicationset_in_any_namespace_test.go:57
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: 0) create namespaces: appset-argocd, appset-old-ns, appset-new-ns @ 05/11/26 06:36:00.984
+  STEP: creating namespace 'appset-argocd' @ 05/11/26 06:36:00.996
+  STEP: creating namespace 'appset-old-ns' @ 05/11/26 06:36:01.014
+  STEP: creating namespace 'appset-new-ns' @ 05/11/26 06:36:01.033
+  STEP: 1) create Argo CD instance with no source namespaces @ 05/11/26 06:36:01.039
+  STEP: verifying that the appset deployment does not contains 'applications in any namespace' parameter, since no source namespaces are specified @ 05/11/26 06:36:01.058
+  Object does not exists in ExistByName: example-applicationset-controller deployments.apps "example-applicationset-controller" not found
+  Object exists in ExistByName: example-applicationset-controller
+  HaveContainerCommandSubstring: Have:
+  entrypoint.sh argocd-applicationset-controller --argocd-repo-server example-repo-server.appset-argocd.svc.cluster.local:8081 --loglevel info --logformat text --allowed-scm-providers github.com
+  HaveContainerCommandSubstring: Expect substring:
+  --applicationset-namespaces
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  HaveApplicationSetControllerStatus: expected: Running / actual: Running
+  STEP: verifying that expected Role/Rolebindings [example_appset-old-ns example-appset-argocd-applicationset] exist in appset-old-ns @ 05/11/26 06:36:36.209
+  STEP: verifying 'example_appset-old-ns' @ 05/11/26 06:36:36.21
+  STEP: verifying 'example-appset-argocd-applicationset' @ 05/11/26 06:36:56.239
+  STEP: verifying that namespaceappset-old-ns does not have label 'argocd.argoproj.io/applicationset-managed-by-cluster-argocd': 'appset-argocd' @ 05/11/26 06:37:16.269
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 2) modifying ArgoCD to have one sourceNamespace: appset-old-ns @ 05/11/26 06:37:26.286
+  ArgoCD status is now Available
+  STEP: verifying that the appset deployment does not contain 'applications in any namespace' parameter, because .spec.sourceNamespaces is not specified @ 05/11/26 06:37:43.341
+  Object exists in ExistByName: example-applicationset-controller
+  HaveContainerCommandSubstring: Have:
+  entrypoint.sh argocd-applicationset-controller --argocd-repo-server example-repo-server.appset-argocd.svc.cluster.local:8081 --loglevel info --logformat text --allowed-scm-providers github.com
+  HaveContainerCommandSubstring: Expect substring:
+  --applicationset-namespaces
+  STEP: verifying that expected Role/Rolebindings [example_appset-old-ns example-appset-argocd-applicationset] exist in appset-old-ns @ 05/11/26 06:37:43.362
+  STEP: verifying 'example_appset-old-ns' @ 05/11/26 06:37:43.362
+  STEP: verifying 'example-appset-argocd-applicationset' @ 05/11/26 06:38:03.389
+  STEP: verifying that namespaceappset-old-ns does not have label 'argocd.argoproj.io/applicationset-managed-by-cluster-argocd': 'appset-argocd' @ 05/11/26 06:38:23.421
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 3) modifying ArgoCD to have 2 sourceNamespaces: appset-old-ns, appset-new-ns @ 05/11/26 06:38:33.435
+  ArgoCD status is now Available
+  STEP: verifying that expected Role/Rolebindings [example_appset-new-ns example-appset-argocd-applicationset] exist in appset-new-ns @ 05/11/26 06:38:50.486
+  STEP: verifying 'example_appset-new-ns' @ 05/11/26 06:38:50.486
+  STEP: verifying 'example-appset-argocd-applicationset' @ 05/11/26 06:39:10.516
+  STEP: verifying that namespaceappset-new-ns does not have label 'argocd.argoproj.io/applicationset-managed-by-cluster-argocd': 'appset-argocd' @ 05/11/26 06:39:30.545
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: verifying that expected Role/Rolebindings [example_appset-old-ns example-appset-argocd-applicationset] exist in appset-old-ns @ 05/11/26 06:39:40.561
+  STEP: verifying 'example_appset-old-ns' @ 05/11/26 06:39:40.561
+  STEP: verifying 'example-appset-argocd-applicationset' @ 05/11/26 06:40:00.591
+  STEP: verifying that namespaceappset-old-ns does not have label 'argocd.argoproj.io/applicationset-managed-by-cluster-argocd': 'appset-argocd' @ 05/11/26 06:40:20.623
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 4) Add a sourceNamespace of 'appset-new-ns' to ArgoCD CR @ 05/11/26 06:40:30.639
+  STEP: verifying appset namespaces parameter exists, and it points to only the namespace specified in .spec.sourceNamespaces @ 05/11/26 06:40:37.668
+  Object exists in ExistByName: example-applicationset-controller
+  HaveContainerCommandSubstring: Have:
+  entrypoint.sh argocd-applicationset-controller --argocd-repo-server example-repo-server.appset-argocd.svc.cluster.local:8081 --loglevel info --logformat text --applicationset-namespaces appset-new-ns --allowed-scm-providers github.com
+  HaveContainerCommandSubstring: Expect substring:
+  --applicationset-namespaces appset-new-ns
+  STEP: verifying that Role in appset-new-ns has expected RBAC permissions: ability to modify applications, batch, and applicationsets @ 05/11/26 06:40:37.695
+  Object exists in ExistByName: example_appset-new-ns
+  HaveRules -  Expected: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []} {[create get list patch update watch delete] [argoproj.io] [applicationsets] [] []}] / Actual: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []} {[create get list patch update watch delete] [argoproj.io] [applicationsets] [] []}]
+  STEP: verifying RoleBinding for argocd-server and argocd-application-controller exists in appset-new-ns namespace @ 05/11/26 06:40:37.72
+  Object exists in ExistByName: example_appset-new-ns
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  STEP: verifying appset-new-ns namespace is managed as both a source namespace and an application set source namespace @ 05/11/26 06:40:37.753
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  STEP: verifying that expected Role/Rolebindings [example_appset-old-ns example-appset-argocd-applicationset] exist in appset-old-ns @ 05/11/26 06:40:37.775
+  STEP: verifying 'example_appset-old-ns' @ 05/11/26 06:40:37.775
+  STEP: verifying 'example-appset-argocd-applicationset' @ 05/11/26 06:40:57.801
+  STEP: verifying that namespaceappset-old-ns does not have label 'argocd.argoproj.io/applicationset-managed-by-cluster-argocd': 'appset-argocd' @ 05/11/26 06:41:17.831
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 5) Adds 'appset-old-ns' to spec.sourceNamespace @ 05/11/26 06:41:27.846
+  Object exists in ExistByName: example-applicationset-controller
+  HaveContainerCommandSubstring: Have:
+  entrypoint.sh argocd-applicationset-controller --argocd-repo-server example-repo-server.appset-argocd.svc.cluster.local:8081 --loglevel info --logformat text --applicationset-namespaces appset-new-ns,appset-old-ns --allowed-scm-providers github.com
+  HaveContainerCommandSubstring: Expect substring:
+  --applicationset-namespaces appset-new-ns,appset-old-ns
+  STEP: verifying that appset-old-ns gains Role/RoleBindings similar to appset-new-ns @ 05/11/26 06:41:34.917
+  HaveRules -  Expected: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []} {[create get list patch update watch delete] [argoproj.io] [applicationsets] [] []}] / Actual: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []} {[create get list patch update watch delete] [argoproj.io] [applicationsets] [] []}]
+  Object exists in ExistByName: example_appset-old-ns
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Object exists in ExistByName: example_appset-new-ns
+  HaveRules -  Expected: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []} {[create get list patch update watch delete] [argoproj.io] [applicationsets] [] []}] / Actual: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []} {[create get list patch update watch delete] [argoproj.io] [applicationsets] [] []}]
+  Object exists in ExistByName: example_appset-new-ns
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Object exists in ExistByName: example-appset-argocd-applicationset
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  STEP: 6) Remove 'appset-new-ns' from .spec.appliationSet.sourceNamespaces @ 05/11/26 06:41:55.051
+  STEP: verifying that applicationsets has been removed from Role @ 05/11/26 06:42:02.08
+  Object exists in ExistByName: example_appset-new-ns
+  HaveRules -  Expected: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []}] / Actual: [{[create get list patch update watch delete] [argoproj.io] [applications] [] []}]
+  STEP: verifying RoleBinding still has expected role and subjects @ 05/11/26 06:42:02.108
+  Object exists in ExistByName: example_appset-new-ns
+  STEP: verifying appset-new-ns namespace should still be managed-by-cluster-argocd @ 05/11/26 06:42:02.12
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  STEP: verifying appset-new-ns applicationset role/binding no longer exists in the namespace @ 05/11/26 06:42:02.132
+  STEP: verifying appset-new-ns applicationset is not applicationset-managed-by Argo CD instance @ 05/11/26 06:42:22.158
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 7) Remove all .spec.sourceNamespaces @ 05/11/26 06:42:32.172
+  STEP: verifying role/rolebinding no longer exists in any namespace @ 05/11/26 06:42:39.198
+  STEP: verifying applicationset-managed-by and managed-by are not set on any namespace @ 05/11/26 06:43:39.289
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Deleting Namespace appset-argocd
+  Deleting Namespace appset-old-ns
+  Deleting Namespace appset-new-ns
+• [538.637 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-037_validate_applicationset_in_any_namespace verifies that ArgoCD sourcenamespaces resources are cleaned up automatically
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-037_validate_applicationset_in_any_namespace_test.go:596
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: creating Argo CD namespace and appset source namespace @ 05/11/26 06:44:59.588
+  STEP: creating namespace 'target-ns-1-037' @ 05/11/26 06:44:59.603
+  STEP: creating namespace 'appset-namespace-scoped' @ 05/11/26 06:44:59.626
+  STEP: creating ArgoCD instance with target ns as a source NS, BUT note the ArgoCD instance is namespace-scoped @ 05/11/26 06:44:59.634
+  HaveApplicationSetControllerStatus: expected: Running / actual: 
+  HaveApplicationSetControllerStatus: expected: Running / actual: Pending
+  HaveApplicationSetControllerStatus: expected: Running / actual: Pending
+  HaveApplicationSetControllerStatus: expected: Running / actual: Pending
+  HaveApplicationSetControllerStatus: expected: Running / actual: Running
+  STEP: verifying that the appset deplomyent does not contain 'applications in any namespace' parameter @ 05/11/26 06:45:19.75
+  Object exists in ExistByName: example-applicationset-controller
+  HaveContainerCommandSubstring: Have:
+  entrypoint.sh argocd-applicationset-controller --argocd-repo-server example-repo-server.appset-namespace-scoped.svc.cluster.local:8081 --loglevel info --logformat text
+  HaveContainerCommandSubstring: Expect substring:
+  --applicationset-namespaces
+  STEP: first verify that the ClusterRole was not automatically created for the Argo CD instance @ 05/11/26 06:45:19.775
+  STEP: creating ClusterRole and then ensuring it is automatically cleaned up @ 05/11/26 06:45:29.776
+  Object exists in ExistByName: example-appset-namespace-scoped-argocd-applicationset-controller
+  Object does not exists in ExistByName: example-appset-namespace-scoped-argocd-applicationset-controller clusterroles.rbac.authorization.k8s.io "example-appset-namespace-scoped-argocd-applicationset-controller" not found
+  STEP: first verify that ClusterRoleBinding was not automatically created for the Argo CD instance @ 05/11/26 06:45:34.814
+  STEP: creating ClusterRoleBinding and then ensuring it is automatically cleaned up @ 05/11/26 06:45:44.816
+  Object exists in ExistByName: example-appset-namespace-scoped-argocd-applicationset-controller
+  Object does not exists in ExistByName: example-appset-namespace-scoped-argocd-applicationset-controller clusterrolebindings.rbac.authorization.k8s.io "example-appset-namespace-scoped-argocd-applicationset-controller" not found
+  STEP: first verifying that Role does not exist in namespace specified in appset sourceNamespaces field @ 05/11/26 06:45:49.853
+  STEP: creating Role in source NS and verifying it is not cleaned up (yet) @ 05/11/26 06:45:59.854
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  STEP: verifying that there exist no rolebindings that point to the namespace-scoped argocd instance namespace @ 05/11/26 06:46:09.86
+  STEP: first verifying that RoleBinding does not exist in source namespace @ 05/11/26 06:46:19.86
+  STEP: creating RoleBinding in source NS and verifying it is not cleaned up (yet) @ 05/11/26 06:46:29.861
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  Object exists in ExistByName: example-appset-namespace-scoped-applicationset
+  STEP: adding ArgoCDApplicationSetManagedByClusterArgoCDLabel label to target NS @ 05/11/26 06:46:39.87
+  STEP: verifying the label is automatically removed @ 05/11/26 06:46:39.889
+  NotHaveLabelWithValue: not expected:  argocd.argoproj.io/applicationset-managed-by-cluster-argocd / appset-namespace-scoped . actual: appset-namespace-scoped
+  NotHaveLabelWithValue: not expected:  argocd.argoproj.io/applicationset-managed-by-cluster-argocd / appset-namespace-scoped . actual: 
+  STEP: verifying that the roles/rolebindings we created in the previous steps are now automatically cleaned up, because the namespace had the ArgoCDApplicationSetManagedByClusterArgoCDLabel @ 05/11/26 06:46:44.916
+  Deleting Namespace appset-argocd
+  Deleting Namespace appset-old-ns
+  Deleting Namespace appset-new-ns
+  Deleting Namespace target-ns-1-037
+  Deleting Namespace appset-namespace-scoped
+• [145.632 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-037_validate_applicationset_in_any_namespace verifies that wildcard patterns in .spec.applicationSet.sourceNamespaces correctly match and manage multiple namespaces
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-037_validate_applicationset_in_any_namespace_test.go:739
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: 0) create namespaces: appset-argocd, team-1, team-2, team-frontend, team-backend, other-ns @ 05/11/26 06:47:25.205
+  STEP: creating namespace 'appset-argocd' @ 05/11/26 06:47:25.261
+  STEP: creating namespace 'team-1' @ 05/11/26 06:47:25.279
+  STEP: creating namespace 'team-2' @ 05/11/26 06:47:25.317
+  STEP: creating namespace 'team-frontend' @ 05/11/26 06:47:25.357
+  STEP: creating namespace 'team-backend' @ 05/11/26 06:47:25.42
+  STEP: creating namespace 'other-ns' @ 05/11/26 06:47:25.444
+  STEP: 1) create Argo CD instance with wildcard pattern 'team-*' in both sourceNamespaces and applicationSet.sourceNamespaces @ 05/11/26 06:47:25.455
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  HaveApplicationSetControllerStatus: expected: Running / actual: Running
+  STEP: 2) verifying that the appset deployment contains all matching namespaces in the command @ 05/11/26 06:48:10.644
+  Object exists in ExistByName: wildcard-example-applicationset-controller
+  HaveContainerCommandSubstring: Have:
+  entrypoint.sh argocd-applicationset-controller --argocd-repo-server wildcard-example-repo-server.appset-argocd.svc.cluster.local:8081 --loglevel info --logformat text --applicationset-namespaces team-1,team-2,team-backend,team-frontend --allowed-scm-providers github.com
+  HaveContainerCommandSubstring: Expect substring:
+  --applicationset-namespaces
+  STEP: 3) verifying that Role and RoleBinding are created in all matching team-* namespaces @ 05/11/26 06:48:10.671
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  STEP: 4) verifying that namespace labels are set correctly for all matching namespaces @ 05/11/26 06:48:10.766
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  STEP: 5) verifying that non-matching namespace (other-ns) does NOT have appset resources @ 05/11/26 06:48:10.812
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 6) creating a new namespace that matches the pattern and verifying it gets resources automatically @ 05/11/26 06:48:40.813
+  STEP: creating namespace 'team-3' @ 05/11/26 06:48:40.829
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: appset-argocd
+  STEP: 7) updating ArgoCD to use a more specific pattern 'team-*' -> 'team-1' and verifying cleanup @ 05/11/26 06:48:45.901
+  ArgoCD status is now Available
+  STEP: 8) verifying that team-1 still has resources @ 05/11/26 06:49:03.061
+  Object exists in ExistByName: wildcard-example-appset-argocd-applicationset
+  STEP: 9) verifying that other team-* namespaces have resources cleaned up @ 05/11/26 06:49:03.172
+  STEP: 10) verifying that labels are removed from namespaces that no longer match @ 05/11/26 06:49:33.643
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  Namespace - HaveLabel: Key: argocd.argoproj.io/applicationset-managed-by-cluster-argocd Expected: appset-argocd / Actual: 
+  STEP: 11) verifying deployment command only includes team-1 @ 05/11/26 06:49:34.016
+  Deleting Namespace appset-argocd
+  Deleting Namespace appset-old-ns
+  Deleting Namespace appset-new-ns
+  Deleting Namespace target-ns-1-037
+  Deleting Namespace appset-namespace-scoped
+  Deleting Namespace appset-argocd
+  Deleting Namespace team-1
+  Deleting Namespace team-2
+  Deleting Namespace team-frontend
+  Deleting Namespace team-backend
+  Deleting Namespace other-ns
+  Deleting Namespace team-3
+• [220.123 seconds]
+------------------------------
+SS
+------------------------------
+GitOps Operator Sequential E2E Tests 1-086_validate_default_argocd_role verifies that Argo CD roles are defined as expected in argocd-rbac-cm, based on values in ArgoCD .spec.rbac.defaultPolicy
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-086_validate_default_argocd_role_test.go:36
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: verifying default ArgoCD in openshift-gitops is running and has defined expected RBAC values in ConfigMap argocd-rbac-cm @ 05/11/26 06:51:06.133
+  ArgoCD status is now Available
+  Object exists in ExistByName: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: openshift-gitops / Have: openshift-gitops
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: argocd-rbac-cm / Have: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd / Have: argocd
+  STEP: creating 3 ArgoCD instances in 3 different namespaces, with different RBAC policies @ 05/11/26 06:51:16.408
+  STEP: creating namespace 'test-1-086-custom' @ 05/11/26 06:51:16.423
+  STEP: creating namespace 'test-1-086-custom2' @ 05/11/26 06:51:16.49
+  STEP: creating namespace 'test-1-086-custom3' @ 05/11/26 06:51:16.526
+  STEP: verifying Argo CD instances become available @ 05/11/26 06:51:16.587
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is now Available
+  ArgoCD status is now Available
+  ArgoCD status is now Available
+  STEP: verifying argocd-rbac-cm ConfigMap contains the expected values in each namespace @ 05/11/26 06:52:21.8
+  Object exists in ExistByName: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: argocd-default-policy / Have: argocd-default-policy
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: argocd-rbac-cm / Have: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd / Have: argocd
+  Object exists in ExistByName: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: argocd-default-policy-empty / Have: argocd-default-policy-empty
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: argocd-rbac-cm / Have: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd / Have: argocd
+  Object exists in ExistByName: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/managed-by Expect: argocd-default-policy-admin / Have: argocd-default-policy-admin
+  HaveLabelWithValue - Key app.kubernetes.io/name Expect: argocd-rbac-cm / Have: argocd-rbac-cm
+  HaveLabelWithValue - Key app.kubernetes.io/part-of Expect: argocd / Have: argocd
+• [86.814 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-105_validate_label_selector ensures that ARGOCD_LABEL_SELECTOR controls which ArgoCD CRs are reconciled via operator
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-105_validate_label_selector_test.go:46
+  Deleting Namespace test-1-086-custom
+  Deleting Namespace test-1-086-custom2
+  Deleting Namespace test-1-086-custom3
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: adding ARGOCD_LABEL_SELECTOR foo=bar to Operator @ 05/11/26 06:53:32.17
+  STEP: creating new namespace-scoped ArgoCD instance @ 05/11/26 06:53:32.206
+  STEP: creating namespace 'gitops-e2e-test-b01abdc4-e203' @ 05/11/26 06:53:32.218
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  ArgoCD status is not yet Available
+  STEP: adding foo=bar label to ArgoCD, which should now cause the ArgoCD to be reconciled @ 05/11/26 06:55:42.255
+  STEP: verifying that ArgoCD becomes available @ 05/11/26 06:55:49.285
+  ArgoCD status is now Available
+  STEP: adding custom rbac to .spec.rbac of ArgoCD @ 05/11/26 06:55:59.313
+  STEP: verifying ArgoCD becomes available after .spec update and that argocd-rbac-cm ConfigMap has expected values from ArgoCD CR rbac field @ 05/11/26 06:56:06.336
+  ArgoCD status is now Available
+  Object exists in ExistByName: argocd-rbac-cm
+  STEP: removing foo label from ArgoCD @ 05/11/26 06:56:16.374
+  STEP: updating RBAC policy field of ArgoCD @ 05/11/26 06:56:23.403
+  STEP: verifying that Argo CD argocd-rbac-cm ConfigMap has not changed, since ArgoCD does not have the required foo=bar label @ 05/11/26 06:56:30.436
+  Object exists in ExistByName: argocd-rbac-cm
+  Waiting: {ARGOCD_LABEL_SELECTOR foo=bar nil} is still present in Deployment  openshift-gitops-operator-controller-manager
+  Deleting Namespace gitops-e2e-test-b01abdc4-e203
+• [291.662 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-083_validate_apps_in_any_namespace verifies that namespaces added to .spec.sourceNamespaces are managed by openshift-gitops Argo CD instance, except when those namespaces also have managed-by label. Both addition and removal of values from this field are tested
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-083_validate_apps_in_any_namespace_test.go:57
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: 1) create test-1-24-custom namespace managed by openshift-gitops instance @ 05/11/26 06:57:23.802
+  STEP: verifying openshift-gitops workloads exist and are running @ 05/11/26 06:57:23.821
+  ArgoCD status is now Available
+  Object exists in ExistByName: openshift-gitops-redis
+  Deployment openshift-gitops-redis - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-redis - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-repo-server
+  Deployment openshift-gitops-repo-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-repo-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-applicationset-controller
+  Deployment openshift-gitops-applicationset-controller - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-applicationset-controller - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by Expected: openshift-gitops / Actual: openshift-gitops
+  STEP: verifying that test-1-24-custom namespace has the expected server/app controller roles/rolebindings, and that the rolebindings grant access to openshift-gitops Argo CD instance @ 05/11/26 06:57:34.025
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops-argocd-application-controller} / Actual: {rbac.authorization.k8s.io Role openshift-gitops-argocd-application-controller}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops-argocd-server} / Actual: {rbac.authorization.k8s.io Role openshift-gitops-argocd-server}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  STEP: 2) Adding 'test-1-24-custom' as a source NS to openshift-gitops .spec.sourceNamespaces @ 05/11/26 06:57:34.117
+  STEP: verifying openshift-gitops instance should become ready @ 05/11/26 06:57:41.148
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifing expected managed labels on test-1-24-custom, both managed-by and managed-by-cluster-argocd @ 05/11/26 06:58:06.317
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by Expected: openshift-gitops / Actual: openshift-gitops
+  STEP: verifying that test-1-24-custom namespace has the expected server/app controller roles/rolebindings, and that the rolebindings grant access to openshift-gitops Argo CD instance @ 05/11/26 06:58:06.328
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops-argocd-application-controller} / Actual: {rbac.authorization.k8s.io Role openshift-gitops-argocd-application-controller}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops-argocd-server} / Actual: {rbac.authorization.k8s.io Role openshift-gitops-argocd-server}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: openshift-gitops / Actual: 
+  STEP: verify 'openshift-gitops_test-1-24-custom' role/rolebinding does not exist in test-1-24-custom @ 05/11/26 06:58:06.429
+  STEP: 3) Delete the 'test-1-24-custom' namespace. In this test, the main reason to do this is to remove the managed-by labels and any other remaining roles/rolebindings @ 05/11/26 06:58:06.453
+  STEP: 4) Remove source namespace (added in previous steps) from openshift-gitops @ 05/11/26 06:58:06.465
+  STEP: verifying Argo CD instance becomes ready @ 05/11/26 06:58:13.496
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  STEP: 5) create 'test-1-24-custom' namespace again, and add it ArgoCD instance via .spec.sourceNamespaces @ 05/11/26 06:58:40.75
+  STEP: verify openshift-gitops workloads become ready @ 05/11/26 06:58:47.789
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  STEP: verifying test-1-24-custom has managed-by-cluster-argocd label @ 05/11/26 06:59:15.01
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: openshift-gitops / Actual: openshift-gitops
+  STEP: verify openshift-roles and rolebindings exist. In previous step, they would not exist due to labels on test-1-24-custom. NOW, in this step, they should. @ 05/11/26 06:59:15.021
+  Object exists in ExistByName: openshift-gitops_test-1-24-custom
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops_test-1-24-custom} / Actual: {rbac.authorization.k8s.io Role openshift-gitops_test-1-24-custom}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  2) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  STEP: 6) Add the managed-by label to test-1-24-custom namespace @ 05/11/26 06:59:15.056
+  STEP: verifying that test-1-24-custom namespace has the expected server/app controller roles/rolebindings, and that the rolebindings grant access to openshift-gitops Argo CD instance @ 05/11/26 06:59:15.074
+  Object does not exists in ExistByName: openshift-gitops-argocd-application-controller roles.rbac.authorization.k8s.io "openshift-gitops-argocd-application-controller" not found
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  Object exists in ExistByName: openshift-gitops-argocd-application-controller
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops-argocd-application-controller} / Actual: {rbac.authorization.k8s.io Role openshift-gitops-argocd-application-controller}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  Object exists in ExistByName: openshift-gitops-argocd-server
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops-argocd-server} / Actual: {rbac.authorization.k8s.io Role openshift-gitops-argocd-server}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  STEP: now that the managed-by label has been added, the custom roles should be deleted, and should stay deleted @ 05/11/26 06:59:18.181
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom roles.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Object does not exists in ExistByName: openshift-gitops_test-1-24-custom rolebindings.rbac.authorization.k8s.io "openshift-gitops_test-1-24-custom" not found
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: openshift-gitops / Actual: 
+  STEP: 7) Remove managed-by from test-1-24-custom and verify the roles exist again @ 05/11/26 06:59:38.225
+  STEP: restarts the server and app controller workloads. I presume this is because their startup is too slow to pick up the RBAC changes we have made (removing the label) @ 05/11/26 06:59:38.245
+  executing command: [oc rollout restart deployment.apps/openshift-gitops-server -n openshift-gitops]
+  deployment.apps/openshift-gitops-server restarted
+
+  executing command: [oc rollout restart statefulset.apps/openshift-gitops-application-controller -n openshift-gitops]
+  statefulset.apps/openshift-gitops-application-controller restarted
+
+  STEP: workloads should become available @ 05/11/26 06:59:38.528
+  Object exists in ExistByName: openshift-gitops-server
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  2
+  Deployment openshift-gitops-server - HaveReplicas: expected:  1 actual:  1
+  Deployment  openshift-gitops-server - HaveReadyReplicas: expected:  1 actual:  1
+  Object exists in ExistByName: openshift-gitops-application-controller
+  StatefulSet HaveReplicas: expected:  1 actual:  1
+  StatefulSet HaveReadyReplicas: expected:  1 actual:  1
+  STEP: role rolebindings to openshift-gitops instance should exist @ 05/11/26 07:00:11.806
+  Object exists in ExistByName: openshift-gitops_test-1-24-custom
+  HaveRoleRef - Expected:  {rbac.authorization.k8s.io Role openshift-gitops_test-1-24-custom} / Actual: {rbac.authorization.k8s.io Role openshift-gitops_test-1-24-custom}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  2) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-application-controller openshift-gitops}
+  HaveSubject - Want: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  1) HaveSubject - Have: {ServiceAccount  openshift-gitops-argocd-server openshift-gitops}
+  STEP: 8) Remove namespaces from .spec.sourceNamespaces @ 05/11/26 07:00:11.85
+  STEP: verifying managed-by-cluster-argocd label is removed, and the custom role/binding are deleted @ 05/11/26 07:00:18.879
+  Namespace - HaveLabel: Key: argocd.argoproj.io/managed-by-cluster-argocd Expected: openshift-gitops / Actual: 
+  Deleting Namespace test-1-24-custom
+• [195.322 seconds]
+------------------------------
+GitOps Operator Sequential E2E Tests 1-002-validate_backend_service validates backend service permissions
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/1-002-validate_backend_service_test.go:22
+  Object exists in ExistByName: openshift-gitops
+  ArgoCD status is now Available
+  STEP: checking the openshift-gitops namespace installed by default @ 05/11/26 07:00:39.108
+  Object exists in ExistByName: openshift-gitops
+  STEP: checking we have a cluster deployment in the namespace @ 05/11/26 07:00:39.122
+  Object exists in ExistByName: cluster
+  Deployment cluster - HaveReplicas: expected:  1 actual:  1
+  Deployment  cluster - HaveReadyReplicas: expected:  1 actual:  1
+  STEP: checking Service for cluster exists @ 05/11/26 07:00:39.158
+  Object exists in ExistByName: cluster
+• [10.242 seconds]
+------------------------------
+[AfterSuite] 
+/testsuites/gitops-operator/test/openshift/e2e/ginkgo/sequential/suite_test.go:47
+[AfterSuite] PASSED [0.000 seconds]
+------------------------------
+[ReportAfterSuite] Autogenerated ReportAfterSuite for --json-report --junit-report
+autogenerated by Ginkgo
+[ReportAfterSuite] PASSED [0.014 seconds]
+------------------------------
+
+Ran 47 of 94 Specs in 4355.468 seconds
+SUCCESS! -- 47 Passed | 0 Failed | 0 Pending | 47 Skipped
+PASS
+
+Ginkgo ran 1 suite in 1h17m36.510247107s
+Test Suite Passed
++ go_cache_push operator-master
++ local tag
+++ _go_cache_tag operator-master
+++ local suffix=operator-master
+++ local arch
++++ go env GOARCH
+++ arch=amd64
+++ local sum_hash=unknown
+++ '[' -f go.sum ']'
++++ sha256sum go.sum
++++ cut -c1-12
+++ sum_hash=e361b73fb62b
+++ echo go-cache-amd64-operator-master-e361b73fb62b
++ tag=quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
++ _go_cache_setup_auth
++ local auth_path=/quay-credentials/.dockerconfigjson
++ '[' -f /quay-credentials/.dockerconfigjson ']'
++ '[' -z /tmp/tmp.kl4hdqHnsb ']'
++ local gocache gomodcache
+++ go env GOCACHE
++ gocache=/tmp/tmp.f2Bj7O7tBa/go-cache
+++ go env GOMODCACHE
++ gomodcache=/tmp/tmp.f2Bj7O7tBa/go-mod
++ paths=()
++ local paths
++ '[' -d /tmp/tmp.f2Bj7O7tBa/go-cache ']'
++ paths+=("${gocache#/}")
++ '[' -d /tmp/tmp.f2Bj7O7tBa/go-mod ']'
++ paths+=("${gomodcache#/}")
++ '[' 2 -eq 0 ']'
++ local tmpdir
+++ mktemp -d
++ tmpdir=/tmp/tmp.2QmIwUA6N9
++ tar czf /tmp/tmp.2QmIwUA6N9/go-cache.tar.gz -C / tmp/tmp.f2Bj7O7tBa/go-cache tmp/tmp.f2Bj7O7tBa/go-mod
++ cd /tmp/tmp.2QmIwUA6N9
++ oras push --no-tty --artifact-type application/vnd.go-cache.v1+tar quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b go-cache.tar.gz
+Uploading aba6918b65af go-cache.tar.gz
+Uploaded  aba6918b65af go-cache.tar.gz
+Pushed [registry] quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
+ArtifactType: application/vnd.go-cache.v1+tar
+Digest: sha256:9f7aed1c739937afc2df0f3d07d5e48414e87a9d74b2287ad14d366136620abd
++ echo 'Go cache pushed to quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b'
+Go cache pushed to quay.io/devtools_gitops/test_image:go-cache-amd64-operator-master-e361b73fb62b
++ rm -rf /tmp/tmp.2QmIwUA6N9
++ exit 0
++ exit 0

@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9 ===
+=== Timestamp: 2026-05-11 06:18:22 UTC ===
+
+--- Container: manager ---
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:18:04Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "139aee90-d6a9-46bb-9346-6ef429f40e27", "error": "prometheusrules.monitoring.coreos.com \"gitops-operator-argocd-alerts\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "57e78af5-5787-40c2-ac96-ebfffe3c25cd", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "a9f3e6c6-b022-4d0c-8c7c-820d6a1e0045", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "5786912e-e420-427a-880b-3dfc63a14864", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "cb26d817-3a46-4072-933a-82e368d9da94", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "4cdc1825-7aee-4bf7-9a05-86c8971f51ef", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "0540ac28-4afa-4678-8c99-a25c53fc8f8e", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "3a58b291-17f5-48cd-8a3f-4f1959890c2c", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "7bb7c00c-cf9b-4a1b-a1a0-9ac3140d0971", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "f47c1bbf-162f-4d80-a5ce-5a00620e524d", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "ea9ed412-1c74-4992-b289-f70ea631c50e", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "3f12c5c6-9ff0-4576-80b4-4ab3069de765", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "46c76a52-acc4-488f-85d8-ca490b7318ac", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "041f7cc2-04da-477f-9920-97349522c20d", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "ea8918db-ac9d-4faf-8e7f-c14cec8eaa0e", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "37a82ef7-8fca-46cb-9f9d-d3db83f45480", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "913d222f-35c1-4b36-ad94-cf89fd0e71c3", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "140c38a5-92cd-4155-855a-686597972afc", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "39f31447-49e7-4719-828d-cb291947ba56", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "85bbe599-6ee5-4ac9-8834-3a9f5ef79c78", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "259e3214-3da2-4529-bca4-8164bab1b1fd", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "979bbec4-4aa8-4df2-afd2-288c69757932", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "3338ddfe-8af9-40b1-9eb2-6fc68bc354f1", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "bb67cc43-94de-40d2-ae21-3ea0f667228b", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "15ac6c95-e4c7-4ccf-9a38-bb7231bacdc2", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "ea73f128-e066-41b0-a2ed-ee2192b7d8d4", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "531b8a48-bb7e-46e5-824e-5412b2553392", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "60a3bf8b-0980-463c-9430-7d3ad106dc18", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "5a5bce0c-c0a0-4e94-b2e0-f5f952299a5f", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "4272bc6e-52bd-4449-bd2a-dce5f0af4e48", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "64747ce7-3f54-4ee9-80a8-16fea88ed894", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "a148d5b7-7654-4a2f-bbb7-f5f4d02dd8b6", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "cd368dba-cfc6-4eae-9b5d-fb1ee97a458c", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "b9aacc6b-b735-4f25-b267-1f5c769be1f9", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "41ff66fa-03a9-491c-a38e-9518253054e9", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "9cb8b5f6-aa33-477b-9ec3-a8160c986fd7", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "fab07f0d-ecde-4066-af99-e1f50e13cde9", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "31230943-657d-4678-b5f7-50066580d690", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "e07e4429-f3cd-4e40-a115-3acc063642e1", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "24b66f73-3eed-46f5-a19a-e044dd0ae914", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "16dccf99-0a8f-4fb3-baf6-22d23b5a235e", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "ae8966a7-25bd-493e-9609-97d5922ea50e", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:18:04Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "62728b7a-f41b-473f-b495-538b8700a755", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:18:04Z	INFO	controller_argocd	reconciling status
+
+--- Container: kube-rbac-proxy ---
+W0511 06:17:15.485105       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:17:15.485889       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:17:15.518385       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:17:15.518728       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:17:15.518952       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

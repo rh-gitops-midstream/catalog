@@ -1,0 +1,11 @@
+=== Pod: openshift-gitops-operator-controller-manager-7fdfd5944c-qd997 ===
+=== Timestamp: 2026-05-11 06:13:12 UTC ===
+
+--- Container: manager ---
+Error from server (BadRequest): container "manager" in pod "openshift-gitops-operator-controller-manager-7fdfd5944c-qd997" is waiting to start: ContainerCreating
+(no logs available)
+
+--- Container: kube-rbac-proxy ---
+Error from server (BadRequest): container "kube-rbac-proxy" in pod "openshift-gitops-operator-controller-manager-7fdfd5944c-qd997" is waiting to start: ContainerCreating
+(no logs available)
+

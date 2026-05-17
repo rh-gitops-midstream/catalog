@@ -1,0 +1,574 @@
+--- Events ---
+LAST SEEN   TYPE      REASON                OBJECT                                                               MESSAGE
+52m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl to ip-10-0-131-145.ec2.internal
+33m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-4sw9t to ip-10-0-131-145.ec2.internal
+11m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-zh6bt to ip-10-0-131-145.ec2.internal
+34m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-xmvmw to ip-10-0-131-145.ec2.internal
+54m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-wmwr5 to ip-10-0-131-145.ec2.internal
+15m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7 to ip-10-0-131-145.ec2.internal
+55m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2 to ip-10-0-131-145.ec2.internal
+6m8s        Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-t5dzk to ip-10-0-131-145.ec2.internal
+47m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb to ip-10-0-131-145.ec2.internal
+17m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-snps6 to ip-10-0-131-145.ec2.internal
+34m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch to ip-10-0-131-145.ec2.internal
+44m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-hs9kr to ip-10-0-131-145.ec2.internal
+48m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-7g9tt to ip-10-0-131-145.ec2.internal
+9m17s       Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs to ip-10-0-131-145.ec2.internal
+51m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-sk7fm to ip-10-0-131-145.ec2.internal
+73m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x to ip-10-0-131-145.ec2.internal
+33m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-v5blh to ip-10-0-131-145.ec2.internal
+54m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz to ip-10-0-131-145.ec2.internal
+49m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997 to ip-10-0-131-145.ec2.internal
+50m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp to ip-10-0-131-145.ec2.internal
+51m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs to ip-10-0-131-145.ec2.internal
+34m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-vzn74 to ip-10-0-131-145.ec2.internal
+49m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-wg64h to ip-10-0-131-145.ec2.internal
+35m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n to ip-10-0-131-145.ec2.internal
+33m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg to ip-10-0-131-145.ec2.internal
+46m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-xmb7v to ip-10-0-131-145.ec2.internal
+41m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-8jfk5 to ip-10-0-131-145.ec2.internal
+29m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-68c777fc54-ftb27 to ip-10-0-131-145.ec2.internal
+81m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-mdm7t to ip-10-0-131-145.ec2.internal
+42m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs to ip-10-0-131-145.ec2.internal
+27m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-495dc to ip-10-0-131-145.ec2.internal
+45m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-9js52 to ip-10-0-131-145.ec2.internal
+42m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt to ip-10-0-131-145.ec2.internal
+50m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-gk8dd to ip-10-0-131-145.ec2.internal
+46m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb to ip-10-0-131-145.ec2.internal
+48m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx to ip-10-0-131-145.ec2.internal
+47m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-qhq29 to ip-10-0-131-145.ec2.internal
+72m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-xbq5d to ip-10-0-131-145.ec2.internal
+33m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p to ip-10-0-131-145.ec2.internal
+43m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb to ip-10-0-131-145.ec2.internal
+45m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9 to ip-10-0-131-145.ec2.internal
+26m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv to ip-10-0-131-145.ec2.internal
+53m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-fc7df578-ggftr to ip-10-0-131-145.ec2.internal
+81m         Normal    RequirementsUnknown   clusterserviceversion/openshift-gitops-operator.v1.20.3              requirements not yet checked
+81m         Normal    RequirementsNotMet    clusterserviceversion/openshift-gitops-operator.v1.20.3              one or more requirements couldn't be found
+81m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-mdm7t
+81m         Normal    Pulling               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Pulling image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e"
+81m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Add eth0 [10.133.0.19/23] from ovn-kubernetes
+81m         Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: waiting for deployment openshift-gitops-operator-controller-manager to become ready: deployment "openshift-gitops-operator-controller-manager" not available: Deployment does not have minimum availability.
+81m         Normal    Pulling               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Pulling image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554"
+81m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-mdm7t_6216e461-02eb-492e-a3b3-6bc5334a6c7d became leader
+81m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Started container manager
+81m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Created container: manager
+81m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Successfully pulled image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" in 2.541s (2.541s including waiting). Image size: 266277892 bytes.
+81m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Created container: kube-rbac-proxy
+81m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Successfully pulled image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" in 3.367s (3.367s including waiting). Image size: 494867321 bytes.
+81m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Started container kube-rbac-proxy
+81m         Normal    NeedsReinstall        clusterserviceversion/openshift-gitops-operator.v1.20.3              calculated deployment install is bad
+81m         Warning   AppliedWithWarnings   installplan/install-vrrxv                                            1 warning(s) generated during installation of operator "openshift-gitops-operator.v1.20.3" (CustomResourceDefinition "argocds.argoproj.io"): ArgoCD v1alpha1 version is deprecated and will be converted to v1beta1 automatically. Moving forward, please use v1beta1 as the ArgoCD API version.
+81m         Normal    AllRequirementsMet    clusterserviceversion/openshift-gitops-operator.v1.20.3              all requirements found, attempting install
+73m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw, new hash=1U24ja6Z5DLBiSOmMK8UbNN1YXWX9xXD64TNd3
+73m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-757f6ff866   Created pod: openshift-gitops-operator-controller-manager-757f6ff866-8bv8x
+73m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled up replica set openshift-gitops-operator-controller-manager-757f6ff866 from 0 to 1
+73m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+73m         Normal    Started               pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Started container manager
+73m         Normal    Created               pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Created container: manager
+73m         Normal    Started               pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Started container kube-rbac-proxy
+73m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+73m         Normal    Created               pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Created container: kube-rbac-proxy
+73m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Add eth0 [10.133.0.25/23] from ovn-kubernetes
+73m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Stopping container manager
+73m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-mdm7t      Stopping container kube-rbac-proxy
+73m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-mdm7t
+72m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-757f6ff866-8bv8x_fd8d7790-360e-4018-8771-0cdd933f67ef became leader
+72m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=1U24ja6Z5DLBiSOmMK8UbNN1YXWX9xXD64TNd3, new hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw
+72m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-xbq5d
+72m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Started container kube-rbac-proxy
+72m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+72m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+72m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Started container manager
+72m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Created container: manager
+72m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Created container: kube-rbac-proxy
+72m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Add eth0 [10.133.0.26/23] from ovn-kubernetes
+72m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Stopping container kube-rbac-proxy
+72m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-757f6ff866   Deleted pod: openshift-gitops-operator-controller-manager-757f6ff866-8bv8x
+72m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled down replica set openshift-gitops-operator-controller-manager-757f6ff866 from 1 to 0
+72m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x    Stopping container manager
+72m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-xbq5d_35f22180-3a08-4f8f-b341-5783ed6990dd became leader
+55m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2
+55m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw, new hash=rkvcllbTfQrYzLx8AZtgXAeKYDIvzxim8pQ9O
+55m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Created container: kube-rbac-proxy
+55m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Created container: manager
+55m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Add eth0 [10.133.0.47/23] from ovn-kubernetes
+55m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Started container kube-rbac-proxy
+55m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+55m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Started container manager
+55m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+55m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Stopping container manager
+55m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-xbq5d      Stopping container kube-rbac-proxy
+55m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-xbq5d
+54m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2_94ffb5b2-0faf-43dc-9c39-80c6994c259e became leader
+54m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-wmwr5
+54m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Started container kube-rbac-proxy
+54m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Add eth0 [10.133.0.51/23] from ovn-kubernetes
+54m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+54m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Created container: manager
+54m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Started container manager
+54m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+54m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Created container: kube-rbac-proxy
+54m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Stopping container manager
+54m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2    Stopping container kube-rbac-proxy
+54m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2
+54m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Created container: kube-rbac-proxy
+54m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Started container kube-rbac-proxy
+54m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+54m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Started container manager
+54m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz
+54m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Created container: manager
+54m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+54m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Add eth0 [10.133.0.52/23] from ovn-kubernetes
+53m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Stopping container manager
+53m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-wmwr5      Stopping container kube-rbac-proxy
+53m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-wmwr5
+53m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz_c868c130-e5a2-4cba-86b0-bcda3f374813 became leader
+53m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-ggftr
+53m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+53m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Add eth0 [10.133.0.56/23] from ovn-kubernetes
+53m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Started container kube-rbac-proxy
+53m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Created container: kube-rbac-proxy
+53m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+53m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Started container manager
+53m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Created container: manager
+52m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz
+52m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Stopping container manager
+52m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz    Stopping container kube-rbac-proxy
+52m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl
+52m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+52m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Add eth0 [10.133.0.57/23] from ovn-kubernetes
+52m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Started container kube-rbac-proxy
+52m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Created container: kube-rbac-proxy
+52m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+52m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Started container manager
+52m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Created container: manager
+52m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Stopping container kube-rbac-proxy
+52m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-ggftr      Stopping container manager
+52m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-ggftr
+52m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl_c17cfbe0-42c5-4ed2-9b63-63b9a29652bc became leader
+51m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Started container kube-rbac-proxy
+51m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Add eth0 [10.133.0.61/23] from ovn-kubernetes
+51m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-sk7fm
+51m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Created container: kube-rbac-proxy
+51m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+51m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Started container manager
+51m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Created container: manager
+51m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+51m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Stopping container manager
+51m         Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw, new hash=rkvcllbTfQrYzLx8AZtgXAeKYDIvzxim8pQ9O
+51m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl    Stopping container kube-rbac-proxy
+51m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl
+51m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs
+51m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Add eth0 [10.133.0.62/23] from ovn-kubernetes
+51m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Created container: kube-rbac-proxy
+51m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Started container kube-rbac-proxy
+51m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+51m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Created container: manager
+51m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Started container manager
+51m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+51m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-sk7fm
+51m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Stopping container manager
+51m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-sk7fm      Stopping container kube-rbac-proxy
+51m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs_5bf90549-441f-4917-a003-5d9332330e20 became leader
+50m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Add eth0 [10.133.0.64/23] from ovn-kubernetes
+50m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+50m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Started container manager
+50m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+50m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Created container: manager
+50m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-gk8dd
+50m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Started container kube-rbac-proxy
+50m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Created container: kube-rbac-proxy
+50m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp
+50m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Stopping container kube-rbac-proxy
+50m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs    Stopping container manager
+50m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs
+50m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Created container: manager
+50m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Add eth0 [10.133.0.65/23] from ovn-kubernetes
+50m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+50m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Started container manager
+50m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+50m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Started container kube-rbac-proxy
+50m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Created container: kube-rbac-proxy
+50m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Stopping container manager
+50m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-gk8dd      Stopping container kube-rbac-proxy
+50m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-gk8dd
+50m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp_6c0c8009-2da6-4292-96df-a7eb38a7dd45 became leader
+49m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-wg64h
+49m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Add eth0 [10.133.0.68/23] from ovn-kubernetes
+49m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+49m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+49m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Started container manager
+49m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Created container: kube-rbac-proxy
+49m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Created container: manager
+49m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Started container kube-rbac-proxy
+49m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Stopping container manager
+49m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp    Stopping container kube-rbac-proxy
+49m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp
+49m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Started container manager
+49m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+49m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Created container: manager
+49m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+49m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Created container: kube-rbac-proxy
+49m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Started container kube-rbac-proxy
+49m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Add eth0 [10.133.0.69/23] from ovn-kubernetes
+49m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-qd997
+49m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-wg64h
+49m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Stopping container manager
+49m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-wg64h      Stopping container kube-rbac-proxy
+49m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-qd997_f08eb7e4-5d10-4d2f-b0fb-de0b67b4c940 became leader
+48m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-7g9tt
+48m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Created container: kube-rbac-proxy
+48m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Started container kube-rbac-proxy
+48m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+48m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Started container manager
+48m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Created container: manager
+48m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+48m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Add eth0 [10.133.0.71/23] from ovn-kubernetes
+48m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-qd997
+48m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Stopping container kube-rbac-proxy
+48m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997    Stopping container manager
+48m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled down replica set openshift-gitops-operator-controller-manager-7fdfd5944c from 1 to 0
+48m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+48m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Started container kube-rbac-proxy
+48m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx
+48m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled up replica set openshift-gitops-operator-controller-manager-7fdfd5944c from 0 to 1
+48m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Add eth0 [10.133.0.72/23] from ovn-kubernetes
+48m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+48m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Created container: manager
+48m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Started container manager
+48m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Created container: kube-rbac-proxy
+48m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-7g9tt
+48m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Stopping container manager
+48m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled down replica set openshift-gitops-operator-controller-manager-fc7df578 from 1 to 0
+48m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-7g9tt      Stopping container kube-rbac-proxy
+48m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx_b49990c3-ac20-4e8b-a57c-1f072adeee93 became leader
+47m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Created container: manager
+47m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Started container manager
+47m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+47m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Created container: kube-rbac-proxy
+47m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+47m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Add eth0 [10.133.0.75/23] from ovn-kubernetes
+47m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Started container kube-rbac-proxy
+47m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-qhq29
+47m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx
+47m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Stopping container kube-rbac-proxy
+47m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx    Stopping container manager
+47m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb
+47m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Add eth0 [10.133.0.76/23] from ovn-kubernetes
+47m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+47m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Created container: manager
+47m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+47m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Created container: kube-rbac-proxy
+47m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Started container kube-rbac-proxy
+47m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Started container manager
+47m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-qhq29
+47m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Stopping container manager
+47m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-qhq29      Stopping container kube-rbac-proxy
+47m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb_1f6994e6-04d2-40d3-9d6a-aac664d0c738 became leader
+46m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-xmb7v
+46m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+46m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Add eth0 [10.133.0.78/23] from ovn-kubernetes
+46m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Started container kube-rbac-proxy
+46m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Created container: kube-rbac-proxy
+46m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+46m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Started container manager
+46m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Created container: manager
+46m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb
+46m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Stopping container manager
+46m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb    Stopping container kube-rbac-proxy
+46m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb
+46m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Created container: kube-rbac-proxy
+46m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Add eth0 [10.133.0.79/23] from ovn-kubernetes
+46m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+46m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Created container: manager
+46m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Started container manager
+46m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+46m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Started container kube-rbac-proxy
+46m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-xmb7v
+46m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Stopping container manager
+46m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-xmb7v      Stopping container kube-rbac-proxy
+46m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb_97d46127-f395-4e11-88c0-0e9a88c92f18 became leader
+45m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-9js52
+45m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Started container manager
+45m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Created container: kube-rbac-proxy
+45m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Started container kube-rbac-proxy
+45m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+45m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Created container: manager
+45m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+45m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Add eth0 [10.133.0.82/23] from ovn-kubernetes
+45m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Stopping container kube-rbac-proxy
+45m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb    Stopping container manager
+45m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   (combined from similar events): Created pod: openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9
+45m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb
+45m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Add eth0 [10.133.0.83/23] from ovn-kubernetes
+45m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Started container kube-rbac-proxy
+45m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Created container: kube-rbac-proxy
+45m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+45m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Started container manager
+45m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Created container: manager
+45m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+45m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Stopping container manager
+45m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-9js52      Stopping container kube-rbac-proxy
+45m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9_f7d8dc7a-8a83-4caf-bf34-18af7779fbeb became leader
+44m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=rkvcllbTfQrYzLx8AZtgXAeKYDIvzxim8pQ9O, new hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw
+44m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Started container kube-rbac-proxy
+44m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+44m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     (combined from similar events): Created pod: openshift-gitops-operator-controller-manager-fc7df578-hs9kr
+44m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Created container: kube-rbac-proxy
+44m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+44m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Created container: manager
+44m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Started container manager
+44m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Add eth0 [10.133.0.87/23] from ovn-kubernetes
+44m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fdfd5944c   (combined from similar events): Deleted pod: openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9
+44m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Stopping container kube-rbac-proxy
+44m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9    Stopping container manager
+44m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-hs9kr_92e71cb5-cd4d-461d-bb33-fa3bfebb783b became leader
+43m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Add eth0 [10.133.0.93/23] from ovn-kubernetes
+43m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+43m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled up replica set openshift-gitops-operator-controller-manager-68c777fc54 from 0 to 1
+43m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-68c777fc54   Created pod: openshift-gitops-operator-controller-manager-68c777fc54-gmrdb
+43m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+43m         Normal    Created               pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Created container: manager
+43m         Normal    Started               pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Started container manager
+43m         Normal    Created               pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Created container: kube-rbac-proxy
+43m         Normal    Started               pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Started container kube-rbac-proxy
+43m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     (combined from similar events): Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-hs9kr
+43m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Stopping container kube-rbac-proxy
+43m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-hs9kr      Stopping container manager
+42m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-68c777fc54-gmrdb_270a46e6-276c-4950-84ec-f35ead3ba507 became leader
+42m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Add eth0 [10.133.0.97/23] from ovn-kubernetes
+42m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+42m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-84bd9df874   Created pod: openshift-gitops-operator-controller-manager-84bd9df874-8n9vs
+42m         Normal    Created               pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Created container: manager
+42m         Normal    Started               pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Started container manager
+42m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+42m         Normal    Created               pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Created container: kube-rbac-proxy
+42m         Normal    Started               pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Started container kube-rbac-proxy
+42m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Stopping container kube-rbac-proxy
+42m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb    Stopping container manager
+42m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-68c777fc54   Deleted pod: openshift-gitops-operator-controller-manager-68c777fc54-gmrdb
+42m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-84bd9df874-8n9vs_ae8abba2-136e-42bc-8c07-6916e417ff0b became leader
+42m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-586d6ddf9d   Created pod: openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt
+42m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Add eth0 [10.133.0.102/23] from ovn-kubernetes
+42m         Normal    Started               pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Started container kube-rbac-proxy
+42m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+42m         Normal    Started               pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Started container manager
+42m         Normal    Created               pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Created container: manager
+42m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+42m         Normal    Created               pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Created container: kube-rbac-proxy
+42m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Stopping container manager
+42m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-84bd9df874   Deleted pod: openshift-gitops-operator-controller-manager-84bd9df874-8n9vs
+42m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs    Stopping container kube-rbac-proxy
+41m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt_eb8fb227-c70b-46c5-bc0d-94f3e0aeb494 became leader
+41m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-8jfk5
+41m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Add eth0 [10.133.0.107/23] from ovn-kubernetes
+41m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Started container manager
+41m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+41m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+41m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Created container: manager
+41m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Created container: kube-rbac-proxy
+41m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Started container kube-rbac-proxy
+41m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Stopping container kube-rbac-proxy
+41m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-586d6ddf9d   Deleted pod: openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt
+41m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt    Stopping container manager
+41m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-8jfk5_2a90d344-955c-4715-b855-f442517a239e became leader
+35m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7d6bf6b8b8   Created pod: openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n
+35m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw, new hash=1gZFPuT2lLoXfluA6S2KD7YZNOz4MpKxHZv7QQ
+35m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Created container: manager
+35m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Started container kube-rbac-proxy
+35m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+35m         Normal    Started               pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Started container manager
+35m         Normal    Created               pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Created container: kube-rbac-proxy
+35m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+35m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Add eth0 [10.133.0.118/23] from ovn-kubernetes
+35m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Stopping container manager
+35m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-8jfk5      Stopping container kube-rbac-proxy
+35m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-8jfk5
+35m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n_0ff0cc4d-7d54-4acb-b0ed-8ba777141339 became leader
+34m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=1gZFPuT2lLoXfluA6S2KD7YZNOz4MpKxHZv7QQ, new hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw
+34m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+34m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+34m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Started container manager
+34m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Created container: manager
+34m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Started container kube-rbac-proxy
+34m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Add eth0 [10.133.0.121/23] from ovn-kubernetes
+34m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-xmvmw
+34m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Created container: kube-rbac-proxy
+34m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Stopping container manager
+34m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n    Stopping container kube-rbac-proxy
+34m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7d6bf6b8b8   Deleted pod: openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n
+34m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-667d5cf5b    Created pod: openshift-gitops-operator-controller-manager-667d5cf5b-hsxch
+34m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+34m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Add eth0 [10.133.0.122/23] from ovn-kubernetes
+34m         Normal    Started               pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Started container kube-rbac-proxy
+34m         Normal    Created               pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Created container: kube-rbac-proxy
+34m         Normal    Created               pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Created container: manager
+34m         Normal    Started               pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Started container manager
+34m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+34m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-xmvmw_130c171c-fd7a-40ed-8aca-d437811e49b7 became leader
+34m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Stopping container kube-rbac-proxy
+34m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-xmvmw      Stopping container manager
+34m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-vzn74
+34m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-xmvmw
+34m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Created container: kube-rbac-proxy
+34m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Started container manager
+34m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+34m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Started container kube-rbac-proxy
+34m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Created container: manager
+34m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+34m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Add eth0 [10.133.0.126/23] from ovn-kubernetes
+34m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Stopping container manager
+34m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch     Stopping container kube-rbac-proxy
+34m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-667d5cf5b    Deleted pod: openshift-gitops-operator-controller-manager-667d5cf5b-hsxch
+34m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-vzn74_121272c1-7430-49e6-92d7-1686db6f49d4 became leader
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Started container manager
+33m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Add eth0 [10.133.0.128/23] from ovn-kubernetes
+33m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-667d5cf5b    Created pod: openshift-gitops-operator-controller-manager-667d5cf5b-qv44p
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Created container: manager
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Started container kube-rbac-proxy
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Created container: kube-rbac-proxy
+33m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-vzn74
+33m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Stopping container manager
+33m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-vzn74      Stopping container kube-rbac-proxy
+33m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Add eth0 [10.133.0.130/23] from ovn-kubernetes
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Started container kube-rbac-proxy
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Created container: kube-rbac-proxy
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Started container manager
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Created container: manager
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+33m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-v5blh
+33m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Stopping container kube-rbac-proxy
+33m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled down replica set openshift-gitops-operator-controller-manager-667d5cf5b from 1 to 0
+33m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-667d5cf5b    Deleted pod: openshift-gitops-operator-controller-manager-667d5cf5b-qv44p
+33m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p     Stopping container manager
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+33m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-667d5cf5b    Created pod: openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg
+33m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Add eth0 [10.133.0.131/23] from ovn-kubernetes
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Created container: manager
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Created container: kube-rbac-proxy
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Started container manager
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Started container kube-rbac-proxy
+33m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-v5blh_f5949d24-3170-4293-bf37-199983d2f51d became leader
+33m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Stopping container kube-rbac-proxy
+33m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-v5blh      Stopping container manager
+33m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-v5blh
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Started container kube-rbac-proxy
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Created container: manager
+33m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Started container manager
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+33m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Created container: kube-rbac-proxy
+33m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+33m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Add eth0 [10.133.0.134/23] from ovn-kubernetes
+33m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-4sw9t
+32m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-667d5cf5b    Deleted pod: openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg
+32m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Stopping container manager
+32m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg     Stopping container kube-rbac-proxy
+32m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-4sw9t_a9ba8bcc-8f07-452d-b5fe-a2e6f384b62f became leader
+29m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+29m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Add eth0 [10.133.0.144/23] from ovn-kubernetes
+29m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-68c777fc54   Created pod: openshift-gitops-operator-controller-manager-68c777fc54-ftb27
+29m         Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: deployment changed old hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw, new hash=8Cnd0aU69wj0gWWs5SLUVCzuPE7qTwXWNhto9Y
+29m         Normal    Created               pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Created container: manager
+29m         Normal    Started               pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Started container manager
+29m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+29m         Normal    Created               pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Created container: kube-rbac-proxy
+29m         Normal    Started               pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Started container kube-rbac-proxy
+29m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-4sw9t
+29m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Stopping container kube-rbac-proxy
+29m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-4sw9t      Stopping container manager
+29m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-68c777fc54-ftb27_52c53fdf-ad9c-4d1f-b3cd-7f2f813ffe07 became leader
+27m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Add eth0 [10.133.0.153/23] from ovn-kubernetes
+27m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-495dc
+27m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+27m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Created container: manager
+27m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Started container manager
+27m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+27m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Created container: kube-rbac-proxy
+27m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Started container kube-rbac-proxy
+27m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Stopping container manager
+27m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-68c777fc54   Deleted pod: openshift-gitops-operator-controller-manager-68c777fc54-ftb27
+27m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-68c777fc54-ftb27    Stopping container kube-rbac-proxy
+27m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-495dc_7c6c004e-e70a-4f72-b6ec-b5bd09407ffe became leader
+26m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-5cbbb94947   Created pod: openshift-gitops-operator-controller-manager-5cbbb94947-q27jv
+26m         Normal    Created               pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Created container: kube-rbac-proxy
+26m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+26m         Normal    Started               pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Started container manager
+26m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Add eth0 [10.133.0.157/23] from ovn-kubernetes
+26m         Normal    Created               pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Created container: manager
+26m         Normal    Started               pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Started container kube-rbac-proxy
+26m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+26m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Stopping container manager
+26m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-495dc
+26m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-495dc      Stopping container kube-rbac-proxy
+26m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-5cbbb94947-q27jv_d50fe4a1-fa7d-4055-91db-892c4d539de7 became leader
+17m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Started container manager
+17m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+17m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Created container: kube-rbac-proxy
+17m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+17m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled up replica set openshift-gitops-operator-controller-manager-fc7df578 from 0 to 1
+17m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Created container: manager
+17m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-snps6
+17m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Add eth0 [10.133.0.164/23] from ovn-kubernetes
+17m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Started container kube-rbac-proxy
+17m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Stopping container kube-rbac-proxy
+17m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv    Stopping container manager
+17m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-5cbbb94947   Deleted pod: openshift-gitops-operator-controller-manager-5cbbb94947-q27jv
+17m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-snps6_672464a6-b384-425d-8ace-02a74438faab became leader
+15m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-6ffc9db9b5   Created pod: openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7
+15m         Normal    Created               pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Created container: manager
+15m         Normal    Started               pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Started container manager
+15m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Add eth0 [10.133.0.166/23] from ovn-kubernetes
+15m         Normal    Started               pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Started container kube-rbac-proxy
+15m         Normal    Created               pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Created container: kube-rbac-proxy
+15m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+15m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+15m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Stopping container kube-rbac-proxy
+15m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-snps6      Stopping container manager
+15m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-snps6
+14m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7_f5735b94-07b1-4877-b205-260d7907e4cb became leader
+11m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+11m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Started container kube-rbac-proxy
+11m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Created container: kube-rbac-proxy
+11m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+11m         Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Started container manager
+11m         Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Created container: manager
+11m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-zh6bt
+11m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Add eth0 [10.133.0.171/23] from ovn-kubernetes
+11m         Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-6ffc9db9b5   Deleted pod: openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7
+11m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Stopping container manager
+11m         Normal    InstallSucceeded      clusterserviceversion/openshift-gitops-operator.v1.20.3              install strategy completed with no errors
+11m         Normal    Killing               pod/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7    Stopping container kube-rbac-proxy
+11m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-zh6bt_6fc6503d-6c56-4f8e-9fcd-b1371bbfe168 became leader
+9m17s       Normal    ComponentUnhealthy    clusterserviceversion/openshift-gitops-operator.v1.20.3              (combined from similar events): installing: deployment changed old hash=9dqogK5esbgOqnGMc38hYuEid9VPVtrmrPaQQw, new hash=5qF6cRXDp4JQx64M5BV2G4CqJbRxMFsQuhzl41
+9m17s       Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7fc68c9f9b   Created pod: openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs
+9m16s       Normal    Started               pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Started container manager
+9m16s       Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Add eth0 [10.133.0.176/23] from ovn-kubernetes
+9m16s       Normal    Created               pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Created container: manager
+9m16s       Normal    Started               pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Started container kube-rbac-proxy
+9m16s       Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: waiting for deployment openshift-gitops-operator-controller-manager to become ready: deployment "openshift-gitops-operator-controller-manager" waiting for 1 outdated replica(s) to be terminated
+9m16s       Normal    Created               pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Created container: kube-rbac-proxy
+9m16s       Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+9m16s       Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+9m5s        Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Deleted pod: openshift-gitops-operator-controller-manager-fc7df578-zh6bt
+9m5s        Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Stopping container kube-rbac-proxy
+9m5s        Normal    Killing               pod/openshift-gitops-operator-controller-manager-fc7df578-zh6bt      Stopping container manager
+8m44s       Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs_265e3de4-e738-4c26-b340-0812c6a0c5b0 became leader
+6m8s        Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Started container manager
+6m8s        Normal    InstallSucceeded      clusterserviceversion/openshift-gitops-operator.v1.20.3              waiting for install components to report healthy
+6m8s        Normal    Started               pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Started container kube-rbac-proxy
+6m8s        Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              (combined from similar events): Scaled up replica set openshift-gitops-operator-controller-manager-fc7df578 from 0 to 1
+6m8s        Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Add eth0 [10.133.0.178/23] from ovn-kubernetes
+6m8s        Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Created container: kube-rbac-proxy
+6m8s        Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+6m8s        Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-fc7df578     Created pod: openshift-gitops-operator-controller-manager-fc7df578-t5dzk
+6m8s        Normal    Pulled                pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+6m8s        Normal    Created               pod/openshift-gitops-operator-controller-manager-fc7df578-t5dzk      Created container: manager
+5m56s       Normal    SuccessfulDelete      replicaset/openshift-gitops-operator-controller-manager-7fc68c9f9b   Deleted pod: openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs
+5m56s       Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Stopping container kube-rbac-proxy
+5m56s       Normal    Killing               pod/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs    Stopping container manager
+5m40s       Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-fc7df578-t5dzk_d7742bd8-e29d-47a2-be20-3fcd6673e4a5 became leader

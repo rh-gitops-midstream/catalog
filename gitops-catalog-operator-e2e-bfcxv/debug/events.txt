@@ -1,0 +1,23 @@
+--- Events ---
+LAST SEEN   TYPE      REASON                OBJECT                                                               MESSAGE
+39m         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs to ip-10-0-132-215.ec2.internal
+39m         Normal    RequirementsNotMet    clusterserviceversion/openshift-gitops-operator.v1.20.3              one or more requirements couldn't be found
+39m         Normal    RequirementsUnknown   clusterserviceversion/openshift-gitops-operator.v1.20.3              requirements not yet checked
+39m         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-64b9464bfb   Created pod: openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs
+39m         Normal    AllRequirementsMet    clusterserviceversion/openshift-gitops-operator.v1.20.3              all requirements found, attempting install
+39m         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled up replica set openshift-gitops-operator-controller-manager-64b9464bfb to 1
+39m         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Add eth0 [10.134.0.21/23] from ovn-kubernetes
+39m         Normal    Pulling               pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Pulling image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e"
+39m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Successfully pulled image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" in 3.685392421s (3.685403842s including waiting)
+39m         Normal    Pulling               pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Pulling image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554"
+39m         Normal    Started               pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Started container manager
+39m         Normal    Created               pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Created container manager
+39m         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs_c78d5bf6-2198-44dc-a00c-3863785171af became leader
+39m         Warning   AppliedWithWarnings   installplan/install-hhqdp                                            1 warning(s) generated during installation of operator "openshift-gitops-operator.v1.20.3" (CustomResourceDefinition "argocds.argoproj.io"): ArgoCD v1alpha1 version is deprecated and will be converted to v1beta1 automatically. Moving forward, please use v1beta1 as the ArgoCD API version.
+39m         Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              Webhook install failed: conversionWebhook not ready
+39m         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Successfully pulled image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" in 10.751960287s (10.751969148s including waiting)
+39m         Normal    Created               pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Created container kube-rbac-proxy
+39m         Normal    Started               pod/openshift-gitops-operator-controller-manager-64b9464bfb-5dfxs    Started container kube-rbac-proxy
+39m         Normal    InstallSucceeded      clusterserviceversion/openshift-gitops-operator.v1.20.3              waiting for install components to report healthy
+39m         Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: waiting for deployment openshift-gitops-operator-controller-manager to become ready: deployment "openshift-gitops-operator-controller-manager" not available: Deployment does not have minimum availability.
+39m         Normal    InstallSucceeded      clusterserviceversion/openshift-gitops-operator.v1.20.3              install strategy completed with no errors

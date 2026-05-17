@@ -108,9 +108,14 @@ else
   echo "  WARNING: /testsuites directory not found - will compile from source"
 fi
 
-# Detect target cluster architecture for cross-compilation
-TARGET_ARCH=$(oc get nodes -o jsonpath='{.items[0].status.nodeInfo.architecture}' 2>/dev/null || echo "amd64")
-echo "Target cluster architecture: ${TARGET_ARCH}"
+# Detect test runner architecture (where this pod/container is running)
+# Note: Tests execute in the Konflux pod, not on the target cluster nodes
+TARGET_ARCH=$(uname -m)
+case "${TARGET_ARCH}" in
+  x86_64) TARGET_ARCH="amd64" ;;
+  aarch64) TARGET_ARCH="arm64" ;;
+esac
+echo "Test runner architecture: ${TARGET_ARCH}"
 
 TAG="${BRANCH}"
 if [[ "${BRANCH}" =~ ^v ]]; then

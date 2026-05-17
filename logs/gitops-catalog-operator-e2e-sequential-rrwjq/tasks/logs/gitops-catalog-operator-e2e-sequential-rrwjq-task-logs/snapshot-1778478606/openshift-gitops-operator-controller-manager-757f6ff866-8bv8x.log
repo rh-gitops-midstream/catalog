@@ -1,0 +1,119 @@
+=== Pod: openshift-gitops-operator-controller-manager-757f6ff866-8bv8x ===
+=== Timestamp: 2026-05-11 05:50:06 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:49:50Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:50Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "ccd762fb-d9ce-473a-8cfa-ca7fe24d79f9", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:50Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:50Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "f194899b-4017-4dd3-a63f-e934e03b7e2e", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:50Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "055db7c7-e17b-48d5-a9eb-6657b3066066", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "632d5846-7220-4d72-9682-5e03d42a2f77", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "2bbe2e26-7cc0-4d35-b6fa-115c9f5e399f", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "996b0828-0eb4-4948-a0f7-3b017864b961", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "59e8f048-d890-48fd-9d08-84a2cc45be83", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "081698f7-1e64-4562-bcbe-0ba7aa8da198", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "e6ccce69-eb26-4a70-b6a9-30eecb9b58c6", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "0c4239a9-4c99-474d-8db0-95e095f95b14", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "1bd652ee-44c4-4d2f-b736-50cad68c282d", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "892044ef-4afd-482c-896d-377de28998f9", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "790ba710-811a-4914-bcb8-a837cebbf856", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "7f17a332-e694-4de4-8ee3-2b658d840681", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "708226c5-57a7-4c32-8807-a31b2800e9d5", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	controller_argocd_route	Reconciling ArgoCD Route	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server"}
+2026-05-11T05:49:51Z	INFO	controller_argocd_route	ArgoCD server route not found	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server", "Route.Namespace": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd_route	Deleting ConsoleLink	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server", "ConsoleLink.Name": "argocd"}
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "63e99b71-f91f-4dbe-8060-1399fb08c49a", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "8b436311-3be9-4f41-88b1-f7a8050969cd", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "52945f3b-98a3-49fa-b325-204a93519aa6", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "c382517f-16e3-4d75-8398-d2e0e2817d81", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "b6e31778-12e9-482d-83de-47da446eb362", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "bdd7bd67-0f2f-480a-961d-293eb4cdfff4", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "9234f27f-af3c-4142-aa9e-6faa4c0f9b7e", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "cc2b929a-f1e3-47e0-a6ab-17e26d979a32", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "d8bb41f0-e011-4198-a1ab-b54a500eae93", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "7eccedf6-197a-4bf7-9c55-e0a0b74cfa51", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "eeb524ae-aad2-4b3c-8412-2f4c1b8fb89f", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "5dc1b451-16a8-44ae-88eb-bf43083df03c", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "04191b14-b8bd-466d-9492-64127ca6f5a5", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "3934e0b0-253a-4cb3-8966-1412e446c3d4", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "2aaec548-821e-4974-9dab-5552a23359f6", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "0e4e9294-be38-4204-b2a8-2e54e1220559", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "72906eec-561a-4370-a4b2-a0468b38eee9", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "2a9afafd-441c-43c5-a51a-1b66f03440af", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "35c5c1c6-32ee-4b67-86c7-118f79964a3b", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "062da89b-599c-4c74-80ba-c873cc3c394d", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "83936bce-5e15-46c2-9782-b5f0ed9481b6", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:49:51Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "1d167c5a-62f1-4978-9c14-c8f9a0ffe07e", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:49:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:50:06Z	INFO	Stopping and waiting for non leader election runnables
+2026-05-11T05:50:06Z	INFO	Stopping and waiting for leader election runnables
+2026-05-11T05:50:06Z	INFO	Stopping and waiting for warmup runnables
+2026-05-11T05:50:06Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T05:50:06Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService"}
+2026-05-11T05:50:06Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T05:50:06Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager"}
+2026-05-11T05:50:06Z	INFO	All workers finished	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager"}
+2026-05-11T05:50:06Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route"}
+2026-05-11T05:50:06Z	INFO	All workers finished	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T05:50:06Z	INFO	Shutdown signal received, waiting for all workers to finish	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration"}
+2026-05-11T05:50:06Z	INFO	All workers finished	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration"}
+2026-05-11T05:50:06Z	INFO	All workers finished	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T05:50:06Z	INFO	All workers finished	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService"}
+2026-05-11T05:50:06Z	INFO	All workers finished	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route"}
+2026-05-11T05:50:06Z	INFO	Stopping and waiting for caches
+2026-05-11T05:50:06Z	INFO	Stopping and waiting for webhooks
+2026-05-11T05:50:06Z	INFO	controller-runtime.webhook	Shutting down webhook server with timeout of 1 minute
+2026-05-11T05:50:06Z	INFO	Stopping and waiting for HTTP servers
+2026-05-11T05:50:06Z	INFO	controller-runtime.metrics	Shutting down metrics server with timeout of 1 minute
+2026-05-11T05:50:06Z	INFO	shutting down server	{"name": "health probe", "addr": "[::]:8081"}
+2026-05-11T05:50:06Z	INFO	Wait completed, proceeding to shutdown the manager
+
+--- Container: kube-rbac-proxy ---
+W0511 05:49:21.267241       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:49:21.267721       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:49:21.269850       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:49:21.270150       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:49:21.270372       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+I0511 05:50:06.541680       1 kube-rbac-proxy.go:495] received interrupt, shutting down
+

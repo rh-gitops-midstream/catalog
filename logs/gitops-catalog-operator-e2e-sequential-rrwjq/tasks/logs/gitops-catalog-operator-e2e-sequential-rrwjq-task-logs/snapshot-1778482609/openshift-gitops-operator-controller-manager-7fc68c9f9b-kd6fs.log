@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs ===
+=== Timestamp: 2026-05-11 06:56:49 UTC ===
+
+--- Container: manager ---
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "gitops-e2e-test-b01abdc4-e203", "Name": "gitops-e2e-test-b01abdc4-e203-prometheus-k8s-read-binding"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "gitops-e2e-test-b01abdc4-e203", "Name": "test1"}
+2026-05-11T06:56:23Z	ERROR	the ArgoCD instance 'gitops-e2e-test-b01abdc4-e203/test1' does not match the label selector 'foo=bar' and skipping for reconciliation	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "eb243d97-d898-450b-b964-6f6973304a10", "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1"}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).internalReconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:211
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:144
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:23Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "gitops-e2e-test-b01abdc4-e203", "Name": "test1-server"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "gitops-e2e-test-b01abdc4-e203", "Name": "test1-repo-server"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	An alert rule instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "gitops-e2e-test-b01abdc4-e203", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-components.json"}
+2026-05-11T06:56:23Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "eb243d97-d898-450b-b964-6f6973304a10", "error": "the ArgoCD instance 'gitops-e2e-test-b01abdc4-e203/test1' does not match the label selector 'foo=bar' and skipping for reconciliation"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-components"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-grpc.json"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-grpc"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T06:56:23Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-b01abdc4-e203", "Request.Name": "test1", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+2026-05-11T06:56:26Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "832f10f3-ee8c-4188-acd9-44fe6c01fbcb", "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1"}
+2026-05-11T06:56:26Z	ERROR	the ArgoCD instance 'gitops-e2e-test-b01abdc4-e203/test1' does not match the label selector 'foo=bar' and skipping for reconciliation	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "832f10f3-ee8c-4188-acd9-44fe6c01fbcb", "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1"}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).internalReconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:211
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:144
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:26Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:56:26Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "832f10f3-ee8c-4188-acd9-44fe6c01fbcb", "error": "the ArgoCD instance 'gitops-e2e-test-b01abdc4-e203/test1' does not match the label selector 'foo=bar' and skipping for reconciliation"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:47Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "97160f33-3bbe-449b-bed3-94357dd20b41", "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1"}
+2026-05-11T06:56:47Z	ERROR	the ArgoCD instance 'gitops-e2e-test-b01abdc4-e203/test1' does not match the label selector 'foo=bar' and skipping for reconciliation	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "97160f33-3bbe-449b-bed3-94357dd20b41", "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1"}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).internalReconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:211
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:144
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:47Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:56:47Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"test1","namespace":"gitops-e2e-test-b01abdc4-e203"}, "namespace": "gitops-e2e-test-b01abdc4-e203", "name": "test1", "reconcileID": "97160f33-3bbe-449b-bed3-94357dd20b41", "error": "the ArgoCD instance 'gitops-e2e-test-b01abdc4-e203/test1' does not match the label selector 'foo=bar' and skipping for reconciliation"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:49Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "407723b1-deb3-4a76-a72e-4e9b7011c6ec", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T06:56:49Z	ERROR	the ArgoCD instance 'openshift-gitops/openshift-gitops' does not match the label selector 'foo=bar' and skipping for reconciliation	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "407723b1-deb3-4a76-a72e-4e9b7011c6ec", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).internalReconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:211
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:144
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:56:49Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:56:49Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "407723b1-deb3-4a76-a72e-4e9b7011c6ec", "error": "the ArgoCD instance 'openshift-gitops/openshift-gitops' does not match the label selector 'foo=bar' and skipping for reconciliation"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+
+--- Container: kube-rbac-proxy ---
+W0511 06:53:33.452939       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:53:33.453501       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:53:33.454807       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:53:33.455131       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:53:33.455432       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

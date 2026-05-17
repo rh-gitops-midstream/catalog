@@ -1,0 +1,35 @@
+--- Cluster Version ---
+Client Version: 4.14.58
+Kustomize Version: v5.0.1
+Server Version: 4.20.21
+Kubernetes Version: v1.33.10
+
+--- Cluster Operators ---
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+console                                    4.20.21   True        False         False      84m     
+csi-snapshot-controller                    4.20.21   True        False         False      93m     
+dns                                        4.20.21   True        False         False      88m     
+image-registry                             4.20.21   True        False         False      88m     
+ingress                                    4.20.21   True        False         False      84m     
+insights                                   4.20.21   True        False         False      89m     
+kube-apiserver                             4.20.21   True        False         False      93m     
+kube-controller-manager                    4.20.21   True        False         False      93m     
+kube-scheduler                             4.20.21   True        False         False      93m     
+kube-storage-version-migrator              4.20.21   True        False         False      89m     
+monitoring                                 4.20.21   True        False         False      85m     
+network                                    4.20.21   True        False         False      93m     
+node-tuning                                4.20.21   True        False         False      89m     
+openshift-apiserver                        4.20.21   True        False         False      93m     
+openshift-controller-manager               4.20.21   True        False         False      93m     
+openshift-samples                          4.20.21   True        False         False      88m     
+operator-lifecycle-manager                 4.20.21   True        False         False      93m     
+operator-lifecycle-manager-catalog         4.20.21   True        False         False      93m     
+operator-lifecycle-manager-packageserver   4.20.21   True        False         False      93m     
+service-ca                                 4.20.21   True        False         False      89m     
+storage                                    4.20.21   True        False         False      89m     
+
+--- Nodes ---
+NAME                          STATUS   ROLES    AGE   VERSION    INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                                                KERNEL-VERSION                   CONTAINER-RUNTIME
+ip-10-0-137-53.ec2.internal   Ready    worker   90m   v1.33.10   10.0.137.53   <none>        Red Hat Enterprise Linux CoreOS 9.6.20260504-0 (Plow)   5.14.0-570.112.1.el9_6.aarch64   cri-o://1.33.11-2.rhaos4.20.gitb2a8320.el9
+ip-10-0-140-29.ec2.internal   Ready    worker   90m   v1.33.10   10.0.140.29   <none>        Red Hat Enterprise Linux CoreOS 9.6.20260504-0 (Plow)   5.14.0-570.112.1.el9_6.aarch64   cri-o://1.33.11-2.rhaos4.20.gitb2a8320.el9
+ip-10-0-143-39.ec2.internal   Ready    worker   90m   v1.33.10   10.0.143.39   <none>        Red Hat Enterprise Linux CoreOS 9.6.20260504-0 (Plow)   5.14.0-570.112.1.el9_6.aarch64   cri-o://1.33.11-2.rhaos4.20.gitb2a8320.el9

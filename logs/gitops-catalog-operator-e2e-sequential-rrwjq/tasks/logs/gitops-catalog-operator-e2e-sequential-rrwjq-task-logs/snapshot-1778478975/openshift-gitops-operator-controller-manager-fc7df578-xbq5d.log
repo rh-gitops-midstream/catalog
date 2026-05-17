@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-xbq5d ===
+=== Timestamp: 2026-05-11 05:56:15 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater role binding
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater cluster role binding
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater service account
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater role
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater cluster role
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater secret
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-config
+2026-05-11T05:55:51Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-ssh-config
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling repo-server TLS secret
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling redis-server TLS secret
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent resources
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resources
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service account
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role binding
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role binding
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal metrics service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal redis proxy service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resource proxy service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal healthz service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal network policy
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal route
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal deployment
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent resources
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent service account
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role binding
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role binding
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent metrics service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent healthz service
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent deployment
+2026-05-11T05:55:51Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:56:15Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd"}
+2026-05-11T05:56:15Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-9c42c506-8a0b"}, "namespace": "gitops-e2e-test-9c42c506-8a0b", "name": "argocd", "reconcileID": "22d3c307-58ae-42d0-a27b-c9bd5b20a7a8", "namespace": "gitops-e2e-test-9c42c506-8a0b", "name": "argocd"}
+2026-05-11T05:56:15Z	INFO	controller_argocd	Updating ArgoCD 'gitops-e2e-test-9c42c506-8a0b/argocd' - adding deletion finalizer
+2026-05-11T05:56:15Z	ERROR	controller_argocd_metrics	Error updating namespace	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "error": "Operation cannot be fulfilled on namespaces \"gitops-e2e-test-9c42c506-8a0b\": the object has been modified; please apply your changes to the latest version and try again"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:133
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:56:15Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-9c42c506-8a0b"}, "namespace": "gitops-e2e-test-9c42c506-8a0b", "name": "argocd", "reconcileID": "87d768aa-7c08-46fa-8e4a-bdf4240f6b66", "error": "Operation cannot be fulfilled on namespaces \"gitops-e2e-test-9c42c506-8a0b\": the object has been modified; please apply your changes to the latest version and try again"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:56:15Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd"}
+2026-05-11T05:56:15Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T05:56:15Z	INFO	controller_argocd	reconciling roles
+2026-05-11T05:56:15Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "gitops-e2e-test-9c42c506-8a0b", "ArgoCD Name": "argocd"}
+2026-05-11T05:56:15Z	INFO	controller_argocd	Creating Role 'gitops-e2e-test-9c42c506-8a0b/argocd-argocd-application-controller'
+2026-05-11T05:56:15Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "gitops-e2e-test-9c42c506-8a0b-read"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Creating new read role binding	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "gitops-e2e-test-9c42c506-8a0b-prometheus-k8s-read-binding"}
+2026-05-11T05:56:16Z	INFO	controller_argocd	Creating Role 'gitops-e2e-test-9c42c506-8a0b/argocd-argocd-server'
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "argocd"}
+2026-05-11T05:56:16Z	INFO	controller_argocd	Creating Role 'gitops-e2e-test-9c42c506-8a0b/argocd-argocd-redis-ha'
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "argocd-server"}
+2026-05-11T05:56:16Z	INFO	controller_argocd	Creating Role 'gitops-e2e-test-9c42c506-8a0b/argocd-argocd-redis'
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "argocd-repo-server"}
+2026-05-11T05:56:16Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "gitops-e2e-test-9c42c506-8a0b", "ArgoCD Name": "argocd"}
+2026-05-11T05:56:16Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T05:56:16Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T05:56:16Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T05:56:16Z	INFO	controller_argocd	Creating ServiceAccount 'gitops-e2e-test-9c42c506-8a0b/argocd-argocd-application-controller'
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Creating new alert rule	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T05:56:16Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "gitops-e2e-test-9c42c506-8a0b", "ArgoCD Name": "argocd"}
+2026-05-11T05:56:16Z	INFO	controller_argocd	Creating RoleBinding 'gitops-e2e-test-9c42c506-8a0b/argocd-argocd-application-controller'
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-components.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-components"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-grpc.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-grpc"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "gitops-e2e-test-9c42c506-8a0b-read"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "gitops-e2e-test-9c42c506-8a0b-prometheus-k8s-read-binding"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "argocd"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "argocd-server"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "argocd-repo-server"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	An alert rule instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-9c42c506-8a0b", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-components.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-components"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-grpc.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-grpc"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T05:56:16Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "gitops-e2e-test-9c42c506-8a0b", "Request.Name": "argocd", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+
+--- Container: kube-rbac-proxy ---
+W0511 05:49:54.571714       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:49:54.572175       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:49:54.574486       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:49:54.574871       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:49:54.575087       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

@@ -1,0 +1,356 @@
+Makefile:13: "No container runtime (Docker or Podman) found in PATH. Please install one of them."
+NAMESPACE_SCOPED_ARGO_ROLLOUTS=true hack/run-rollouts-manager-e2e-tests.sh
++ '[' true == true ']'
++ go test -v -p=1 -timeout=30m -race -count=1 -coverprofile=coverage.out ./tests/e2e/namespace-scoped
+=== RUN   TestNamespaceScoped
+Running Suite: Namespace-scoped Suite - /tmp/tmp.VblnaxJcuh/argo-rollouts-manager/tests/e2e/namespace-scoped
+============================================================================================================
+Random Seed: [1m1778479169[0m
+
+Will run [1m20[0m of [1m20[0m specs
+HavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 05:59:45 +0000 UTC Success }
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-aggregate-to-admin
+Object exists in ExistByName: argo-rollouts-aggregate-to-edit
+Object exists in ExistByName: argo-rollouts-aggregate-to-view
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-metrics
+Object exists in ExistByName: argo-rollouts-notification-secret
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 06:00:24 +0000 UTC Success }
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+HavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 06:00:40 +0000 UTC Success }
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts
+Object does not exists in ExistByName: argo-rollouts deployments.apps "argo-rollouts" not found
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 06:02:22 +0000 UTC Success }
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-aggregate-to-admin
+Object exists in ExistByName: argo-rollouts-aggregate-to-edit
+Object exists in ExistByName: argo-rollouts-aggregate-to-view
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-metrics
+Object exists in ExistByName: argo-rollouts-notification-secret
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 06:04:10 +0000 UTC Success }
+HavePhase: expected:  Failure actual:  Failure
+HaveCondition: expected:  {Reconciled False 0 0001-01-01 00:00:00 +0000 UTC InvalidRolloutManagerScope when Subscription has environment variable NAMESPACE_SCOPED_ARGO_ROLLOUTS set to True, there may not exist any cluster-scoped RolloutManagers: in this case, only namespace-scoped RolloutManager resources are supported} actual:  {Reconciled False 0 2026-05-11 06:04:23 +0000 UTC InvalidRolloutManagerScope when Subscription has environment variable NAMESPACE_SCOPED_ARGO_ROLLOUTS set to True, there may not exist any cluster-scoped RolloutManagers: in this case, only namespace-scoped RolloutManager resources are supported}
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 06:04:10 +0000 UTC Success }
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+HaveSuccessCondition: expected:  {Reconciled True 0 0001-01-01 00:00:00 +0000 UTC Success } actual:  {Reconciled True 0 2026-05-11 06:05:20 +0000 UTC Success }
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-aggregate-to-admin
+Object exists in ExistByName: argo-rollouts-aggregate-to-edit
+Object exists in ExistByName: argo-rollouts-aggregate-to-view
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-metrics
+Object exists in ExistByName: argo-rollouts-notification-secret
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: rollout-bluegreen-active
+Object exists in ExistByName: rollout-bluegreen-preview
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-aggregate-to-admin
+Object exists in ExistByName: argo-rollouts-aggregate-to-edit
+Object exists in ExistByName: argo-rollouts-aggregate-to-view
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts-metrics
+Object exists in ExistByName: argo-rollouts-notification-secret
+Object exists in ExistByName: argo-rollouts
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts
+Object does not exists in ExistByName: argo-rollouts serviceaccounts "argo-rollouts" not found
+Object does not exists in ExistByName: argo-rollouts roles.rbac.authorization.k8s.io "argo-rollouts" not found
+Object does not exists in ExistByName: argo-rollouts rolebindings.rbac.authorization.k8s.io "argo-rollouts" not found
+Object does not exists in ExistByName: argo-rollouts deployments.apps "argo-rollouts" not found
+Object does not exists in ExistByName: argo-rollouts-metrics services "argo-rollouts-metrics" not found
+Object does not exists in ExistByName: argo-rollouts-notification-secret secrets "argo-rollouts-notification-secret" not found
+Object does not exists in ExistByName: argo-rollouts servicemonitors.monitoring.coreos.com "argo-rollouts" not found
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts
+[38;5;10m•[0mHavePhase: expected:  Pending actual:  
+HavePhase: expected:  Pending actual:  Pending
+Object exists in ExistByName: argo-rollouts
+Object exists in ExistByName: argo-rollouts
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object does not exists in ExistByName: argo-rollouts-notification-secret secrets "argo-rollouts-notification-secret" not found
+Object exists in ExistByName: argo-rollouts-notification-secret
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts-notification-secret
+Object does not exists in ExistByName: argo-rollouts-notification-secret secrets "argo-rollouts-notification-secret" not found
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+Object exists in ExistByName: argo-rollouts-notification-secret
+Object exists in ExistByName: argo-rollouts-notification-secret
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+[38;5;10m•[0mHavePhase: expected:  Available actual:  
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Pending
+HavePhase: expected:  Available actual:  Available
+[38;5;10m•[0mObject does not exists in ExistByName: argo-rollouts deployments.apps "argo-rollouts" not found
+Object exists in ExistByName: argo-rollouts
+[38;5;10m•[0m
+
+[38;5;10m[1mRan 20 of 20 Specs in 827.921 seconds[0m
+[38;5;10m[1mSUCCESS![0m -- [38;5;10m[1m20 Passed[0m | [38;5;9m[1m0 Failed[0m | [38;5;11m[1m0 Pending[0m | [38;5;14m[1m0 Skipped[0m
+--- PASS: TestNamespaceScoped (827.92s)
+PASS
+coverage: [no statements]
+ok  	github.com/argoproj-labs/argo-rollouts-manager/tests/e2e/namespace-scoped	828.995s	coverage: [no statements]
++ [[ true == '' ]]
++ set +e
++ '[' -f /tmp/e2e-operator-run.log ']'
++ cleanup
++ echo '* Cleaning up'
+* Cleaning up
++ killall main
+main: no process found
++ true
++ killall go

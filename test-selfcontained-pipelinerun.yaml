@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: test-selfcontained-
+spec:
+  pipelineSpec:
+    tasks:
+      - name: utility-task
+        taskSpec:
+          metadata: {}
+          steps:
+            - image: 'quay.io/devtools_gitops/test_image:latest'
+              name: selfcontained-test
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 2Gi
+                limits:
+                  cpu: '2'
+                  memory: 4Gi
+              script: |
+                set -x
+                echo "STARTED"
+                sleep 30
+                echo "WORKS"
