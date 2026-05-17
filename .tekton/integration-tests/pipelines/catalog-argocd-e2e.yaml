@@ -486,7 +486,7 @@ spec:
               - name: NAMESPACE
                 value: argocd
               - name: KUBECONFIG
-                value: /credentials/kubeconfig
+                value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
               - name: TASK_LOG_NAME
                 value: deploy-argocd
               - name: PIPELINE_RUN_NAME
@@ -566,7 +566,7 @@ spec:
               - name: BRANCH
                 value: $(params.testRepoBranch)
               - name: KUBECONFIG
-                value: /credentials/kubeconfig
+                value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
               - name: TASK_LOG_NAME
                 value: test-argocd
               - name: PIPELINE_RUN_NAME
