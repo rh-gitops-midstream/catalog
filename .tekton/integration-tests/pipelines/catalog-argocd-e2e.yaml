@@ -355,6 +355,8 @@ spec:
         volumes:
           - name: credentials
             emptyDir: {}
+          - name: shared-data
+            emptyDir: {}
           - name: quay-credentials
             secret:
               secretName: gitops-test-runner-image-push
@@ -396,6 +398,8 @@ spec:
               - /usr/local/bin/run-and-save-logs.sh
               - /usr/local/bin/extract-argocd-image-from-catalog.sh
             volumeMounts:
+              - name: shared-data
+                mountPath: /shared
               - name: quay-credentials
                 mountPath: /quay-credentials
               - name: quay-pull-credentials
@@ -406,13 +410,13 @@ spec:
             script: |
               #!/bin/bash
               # Read the ArgoCD image from the file written by extract script
-              if [ ! -f /tmp/argocd-image.txt ]; then
-                echo "ERROR: /tmp/argocd-image.txt not found"
+              if [ ! -f /shared/argocd-image.txt ]; then
+                echo "ERROR: /shared/argocd-image.txt not found"
                 echo "ArgoCD extraction may have failed"
                 exit 1
               fi
 
-              ARGOCD_IMAGE=$(cat /tmp/argocd-image.txt)
+              ARGOCD_IMAGE=$(cat /shared/argocd-image.txt)
               if [ -z "$ARGOCD_IMAGE" ]; then
                 echo "ERROR: ArgoCD image is empty"
                 exit 1
@@ -420,6 +424,9 @@ spec:
 
               echo -n "$ARGOCD_IMAGE" > $(results.argoCDImage.path)
               echo "ArgoCD image saved: $ARGOCD_IMAGE"
+            volumeMounts:
+              - name: shared-data
+                mountPath: /shared
 
     - name: deploy-argocd
       runAfter:

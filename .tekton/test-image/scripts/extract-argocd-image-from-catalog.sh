@@ -199,8 +199,13 @@ fi
 
 echo "Successfully extracted ArgoCD image: ${ARGOCD_IMAGE}"
 
-# Write to a persistent location for the save-result step
-# /tmp/argocd-image.txt will survive log collection
-echo "$ARGOCD_IMAGE" > /tmp/argocd-image.txt
+# Write to shared volume for the save-result step
+# /shared is mounted from an emptyDir volume shared between steps
+if [ -d /shared ]; then
+    echo "$ARGOCD_IMAGE" > /shared/argocd-image.txt
+    echo "Wrote ArgoCD image to /shared/argocd-image.txt"
+else
+    echo "WARNING: /shared directory not found, save-result step may fail"
+fi
 
 echo "$ARGOCD_IMAGE"
