@@ -326,7 +326,6 @@ spec:
 
     - name: extract-argocd-image
       runAfter:
-        - provision-cluster
         - build-test-image
       params:
         - name: catalogImage
@@ -335,10 +334,6 @@ spec:
           value: $(params.OPERATOR_CHANNEL)
         - name: testImageUrl
           value: $(tasks.build-test-image.results.IMAGE_URL)
-        - name: eaasSpaceSecretRef
-          value: $(tasks.provision-eaas-space.results.secretRef)
-        - name: clusterName
-          value: $(tasks.provision-cluster.results.clusterName)
         - name: pipelineRunName
           value: $(context.pipelineRun.name)
       taskSpec:
@@ -346,15 +341,11 @@ spec:
           - name: catalogImage
           - name: operatorChannel
           - name: testImageUrl
-          - name: eaasSpaceSecretRef
-          - name: clusterName
           - name: pipelineRunName
         results:
           - name: argoCDImage
             description: ArgoCD server image extracted from catalog
         volumes:
-          - name: credentials
-            emptyDir: {}
           - name: shared-data
             emptyDir: {}
           - name: quay-credentials
@@ -364,23 +355,6 @@ spec:
             secret:
               secretName: gitops-quay-pull-secret-merged
         steps:
-          - name: get-kubeconfig
-            ref:
-              resolver: git
-              params:
-                - name: url
-                  value: https://github.com/konflux-ci/build-definitions.git
-                - name: revision
-                  value: main
-                - name: pathInRepo
-                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
-            params:
-              - name: eaasSpaceSecretRef
-                value: $(params.eaasSpaceSecretRef)
-              - name: clusterName
-                value: $(params.clusterName)
-              - name: credentials
-                value: credentials
           - name: extract-image
             image: $(params.testImageUrl)
             env:
