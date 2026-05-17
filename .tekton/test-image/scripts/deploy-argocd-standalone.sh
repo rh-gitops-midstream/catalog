@@ -26,17 +26,20 @@ echo ""
 echo "Creating namespace ${NAMESPACE}..."
 oc create namespace "$NAMESPACE" --dry-run=client -o yaml | oc apply -f -
 
-# Download upstream ArgoCD manifests
-echo "Downloading ArgoCD ${ARGOCD_VERSION} manifests..."
-MANIFEST_URL="https://raw.githubusercontent.com/argoproj/argo-cd/${ARGOCD_VERSION}/manifests/install.yaml"
-curl -sSL "$MANIFEST_URL" -o /tmp/argocd-install.yaml
+# Use bundled ArgoCD manifests with namespace placeholder
+echo "Preparing ArgoCD ${ARGOCD_VERSION} manifests..."
+INSTALL_TEMPLATE="/usr/local/argocd-install/argocd-v2.14.1-install.yaml"
 
-# Patch namespace references (upstream uses 'argocd', we use $NAMESPACE)
-echo "Patching namespace references from 'argocd' to '${NAMESPACE}'..."
-sed -i "s/namespace: argocd$/namespace: ${NAMESPACE}/g" /tmp/argocd-install.yaml
+if [ ! -f "$INSTALL_TEMPLATE" ]; then
+  echo "ERROR: ArgoCD install template not found at ${INSTALL_TEMPLATE}"
+  exit 1
+fi
+
+# Substitute namespace placeholder with target namespace
+sed "s/ARGOCD_NAMESPACE_PLACEHOLDER/${NAMESPACE}/g" "$INSTALL_TEMPLATE" > /tmp/argocd-install.yaml
 
 # Apply manifests
-echo "Applying ArgoCD manifests..."
+echo "Applying ArgoCD manifests to namespace ${NAMESPACE}..."
 oc apply -n "$NAMESPACE" -f /tmp/argocd-install.yaml
 
 # OpenShift-specific fixes

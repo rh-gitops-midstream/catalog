@@ -17,6 +17,7 @@ RUN ARCH=$(uname -m) && \
 # Copy helper scripts and config files
 COPY scripts/ /usr/local/bin/
 COPY config/ /usr/local/config/
+COPY argocd-v2.14.1-install.yaml /usr/local/argocd-install/argocd-v2.14.1-install.yaml
 RUN chmod +x /usr/local/bin/*.sh /usr/local/bin/*.py /usr/local/bin/lib/*.sh
 
 WORKDIR /workspace
