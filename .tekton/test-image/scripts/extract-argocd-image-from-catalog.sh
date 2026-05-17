@@ -198,4 +198,9 @@ if [ -z "$ARGOCD_IMAGE" ]; then
 fi
 
 echo "Successfully extracted ArgoCD image: ${ARGOCD_IMAGE}"
+
+# Write to a persistent location for the save-result step
+# /tmp/argocd-image.txt will survive log collection
+echo "$ARGOCD_IMAGE" > /tmp/argocd-image.txt
+
 echo "$ARGOCD_IMAGE"
