@@ -14,7 +14,7 @@ mkdir -p "${RESULTS_DIR}"
 
 ROOT_DIR=$(mktemp -d)
 TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/argoproj/argo-cd.git}"
-BRANCH="${BRANCH:-master}"
+BRANCH="${BRANCH:-v2.14.1}"
 
 SKIP_FILE=/usr/local/config/skip-argocd.txt
 if [[ -f "$SKIP_FILE" ]]; then
@@ -110,13 +110,12 @@ if [[ "${IMAGE_TAG}" == "master" || "${IMAGE_TAG}" == "main" ]]; then
 fi
 
 # Check for pre-built ArgoCD E2E tests in test image
-# Match by version prefix (v2.14.1 → v2.14, master → master)
+# Match by version prefix (v2.14.1 → v2.14)
+# Note: master is not pre-compiled (requires Go 1.26+)
 PREBUILT_BASE="/testsuites/argocd"
 PREBUILT_DIR=""
 
-if [[ "${TAG}" == "master" ]]; then
-  PREBUILT_DIR="${PREBUILT_BASE}/master"
-elif [[ "${TAG}" =~ ^v2\.14 ]]; then
+if [[ "${TAG}" =~ ^v2\.14 ]]; then
   PREBUILT_DIR="${PREBUILT_BASE}/v2.14"
 fi
 

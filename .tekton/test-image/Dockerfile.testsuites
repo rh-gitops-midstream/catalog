@@ -51,19 +51,8 @@ RUN git clone --depth 1 --branch ${ARGOCD_VERSION_2_14} https://github.com/argop
     rm -rf .git /root/.cache/go-build /root/go/pkg/mod/cache
 
 # ArgoCD master (latest)
-RUN git clone --depth 1 --branch master https://github.com/argoproj/argo-cd.git master && \
-    cd master && \
-    go mod download && \
-    CLIENT_VERSION=$(cat VERSION 2>/dev/null || echo "master") && \
-    CLIENT_VERSION="${CLIENT_VERSION#v}" && \
-    mkdir -p dist && \
-    GOOS=linux GOARCH=${TARGETARCH} go test -c \
-      -ldflags "-X github.com/argoproj/argo-cd/v3/common.version=${CLIENT_VERSION}" \
-      -o e2e.test ./test/e2e && \
-    GOOS=linux GOARCH=${TARGETARCH} go build \
-      -ldflags "-X github.com/argoproj/argo-cd/v3/common.version=${CLIENT_VERSION}" \
-      -o dist/argocd ./cmd && \
-    rm -rf .git /root/.cache/go-build /root/go/pkg/mod/cache
+# Note: Skipped for now as master requires Go 1.26.1+ (base image has 1.25.9)
+# Will compile from source at runtime if master branch is requested
 
 WORKDIR /workspace
 ENTRYPOINT ["/bin/bash"]

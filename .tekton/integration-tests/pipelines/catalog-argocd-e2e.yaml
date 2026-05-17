@@ -43,7 +43,7 @@ spec:
       type: string
     - description: Git branch or revision of the ArgoCD test repository
       name: TEST_REPO_BRANCH
-      default: "master"
+      default: "v2.14.1"
       type: string
     - description: AWS instance type for the ephemeral cluster
       name: CLUSTER_INSTANCE_TYPE
