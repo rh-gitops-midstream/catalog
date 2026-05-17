@@ -426,6 +426,21 @@ spec:
           - name: eaasSpaceSecretRef
           - name: clusterName
           - name: pipelineRunName
+        results:
+          - name: namespace
+            description: Namespace where ArgoCD is deployed
+          - name: server
+            description: ArgoCD server service DNS name
+          - name: adminPassword
+            description: ArgoCD admin password
+          - name: serverName
+            description: ArgoCD server deployment name
+          - name: repoServerName
+            description: ArgoCD repo-server deployment name
+          - name: applicationControllerName
+            description: ArgoCD application-controller deployment name
+          - name: redisName
+            description: ArgoCD redis deployment name
         volumes:
           - name: credentials
             emptyDir: {}
@@ -494,6 +509,20 @@ spec:
           value: $(tasks.provision-cluster.results.clusterName)
         - name: pipelineRunName
           value: $(context.pipelineRun.name)
+        - name: argoCDNamespace
+          value: $(tasks.deploy-argocd.results.namespace)
+        - name: argoCDServer
+          value: $(tasks.deploy-argocd.results.server)
+        - name: argoCDAdminPassword
+          value: $(tasks.deploy-argocd.results.adminPassword)
+        - name: argoCDServerName
+          value: $(tasks.deploy-argocd.results.serverName)
+        - name: argoCDRepoServerName
+          value: $(tasks.deploy-argocd.results.repoServerName)
+        - name: argoCDApplicationControllerName
+          value: $(tasks.deploy-argocd.results.applicationControllerName)
+        - name: argoCDRedisName
+          value: $(tasks.deploy-argocd.results.redisName)
       taskSpec:
         params:
           - name: argoCDImage
@@ -503,6 +532,13 @@ spec:
           - name: eaasSpaceSecretRef
           - name: clusterName
           - name: pipelineRunName
+          - name: argoCDNamespace
+          - name: argoCDServer
+          - name: argoCDAdminPassword
+          - name: argoCDServerName
+          - name: argoCDRepoServerName
+          - name: argoCDApplicationControllerName
+          - name: argoCDRedisName
         results:
           - name: TEST_OUTPUT
             description: Test results in Tekton format
@@ -547,6 +583,20 @@ spec:
                 value: $(params.pipelineRunName)
               - name: QUAY_REPO
                 value: quay.io/devtools_gitops/test_image
+              - name: ARGOCD_NAMESPACE
+                value: $(params.argoCDNamespace)
+              - name: ARGOCD_SERVER
+                value: $(params.argoCDServer)
+              - name: ARGOCD_ADMIN_PASSWORD
+                value: $(params.argoCDAdminPassword)
+              - name: ARGOCD_SERVER_NAME
+                value: $(params.argoCDServerName)
+              - name: ARGOCD_REPO_SERVER_NAME
+                value: $(params.argoCDRepoServerName)
+              - name: ARGOCD_APPLICATION_CONTROLLER_NAME
+                value: $(params.argoCDApplicationControllerName)
+              - name: ARGOCD_REDIS_NAME
+                value: $(params.argoCDRedisName)
             command:
               - /usr/local/bin/run-and-save-logs.sh
               - /usr/local/bin/run-argocd-e2e-tests.sh

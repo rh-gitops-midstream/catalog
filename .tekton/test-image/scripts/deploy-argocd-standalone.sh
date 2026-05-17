@@ -90,11 +90,33 @@ echo ""
 # Show deployment status
 oc get deployments,statefulsets,pods -n "$NAMESPACE" -o wide
 
-# Get ArgoCD server route/service
-ARGOCD_SERVER=$(oc get svc argocd-server -n "$NAMESPACE" -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || \
-                oc get svc argocd-server -n "$NAMESPACE" -o jsonpath='{.spec.clusterIP}' 2>/dev/null || \
-                echo "localhost")
+# Extract admin password
+ADMIN_PASSWORD=$(oc get secret argocd-initial-admin-secret -n "$NAMESPACE" -o jsonpath='{.data.password}' 2>/dev/null | base64 -d || echo "")
+
+if [ -z "$ADMIN_PASSWORD" ]; then
+  echo "WARNING: Could not extract admin password from argocd-initial-admin-secret"
+  # Try cluster secret (some ArgoCD versions use this)
+  ADMIN_PASSWORD=$(oc get secret argocd-cluster -n "$NAMESPACE" -o jsonpath='{.data.admin\.password}' 2>/dev/null | base64 -d || echo "password")
+fi
+
+# Get ArgoCD server service DNS name (for in-cluster access)
+ARGOCD_SERVER_SERVICE="argocd-server.${NAMESPACE}.svc.cluster.local"
 
 echo ""
-echo "ArgoCD server: ${ARGOCD_SERVER}"
-echo "Admin password: Run 'oc get secret argocd-initial-admin-secret -n ${NAMESPACE} -o jsonpath={.data.password} | base64 -d'"
+echo "ArgoCD server service: ${ARGOCD_SERVER_SERVICE}"
+echo "Admin username: admin"
+echo "Admin password: ${ADMIN_PASSWORD:0:8}..." # Print first 8 chars only
+
+# Write task results for use by test task
+# These will be available as $(tasks.deploy-argocd.results.xxx)
+if [ -d /tekton/results ]; then
+  echo -n "$NAMESPACE" > /tekton/results/namespace
+  echo -n "$ARGOCD_SERVER_SERVICE" > /tekton/results/server
+  echo -n "$ADMIN_PASSWORD" > /tekton/results/adminPassword
+  echo -n "argocd-server" > /tekton/results/serverName
+  echo -n "argocd-repo-server" > /tekton/results/repoServerName
+  echo -n "argocd-application-controller" > /tekton/results/applicationControllerName
+  echo -n "argocd-redis" > /tekton/results/redisName
+
+  echo "Task results written to /tekton/results/"
+fi
