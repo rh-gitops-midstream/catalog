@@ -109,19 +109,37 @@ if [[ "${IMAGE_TAG}" == "master" || "${IMAGE_TAG}" == "main" ]]; then
   IMAGE_TAG="latest"
 fi
 
-PREBUILT_DIR="/prebuilt/argocd-e2e"
-PREBUILT_BRANCH=$(cat "${PREBUILT_DIR}/BRANCH" 2>/dev/null || true)
-PREBUILT_ARCH=$(cat "${PREBUILT_DIR}/GOARCH" 2>/dev/null || true)
+# Check for pre-built ArgoCD E2E tests in test image
+# Match by version prefix (v2.14.1 → v2.14, master → master)
+PREBUILT_BASE="/testsuites/argocd"
+PREBUILT_DIR=""
 
-if [[ -f "${PREBUILT_DIR}/e2e.test" && -f "${PREBUILT_DIR}/argocd" \
-      && "${PREBUILT_BRANCH}" == "${TAG}" && "${PREBUILT_ARCH}" == "${TARGET_ARCH}" ]]; then
-  echo "Using pre-built artifacts for ${TAG}/${TARGET_ARCH}"
-  mkdir -p "${ARGO_CD_DIR}/dist"
-  cp "${PREBUILT_DIR}/e2e.test" "${ARGO_CD_DIR}/e2e.test"
-  cp "${PREBUILT_DIR}/argocd" "${ARGO_CD_DIR}/dist/argocd"
-  cp "${PREBUILT_DIR}/test-fixtures.tar.gz" "${ARGO_CD_DIR}/test-fixtures.tar.gz"
-else
-  echo "Pre-built artifacts not available (want ${TAG}/${TARGET_ARCH}, have ${PREBUILT_BRANCH:-none}/${PREBUILT_ARCH:-none})"
+if [[ "${TAG}" == "master" ]]; then
+  PREBUILT_DIR="${PREBUILT_BASE}/master"
+elif [[ "${TAG}" =~ ^v2\.14 ]]; then
+  PREBUILT_DIR="${PREBUILT_BASE}/v2.14"
+fi
+
+# Verify pre-built binaries exist and match target architecture
+if [[ -n "${PREBUILT_DIR}" && -f "${PREBUILT_DIR}/e2e.test" && -f "${PREBUILT_DIR}/dist/argocd" ]]; then
+  # Check if the binary architecture matches target cluster architecture
+  BINARY_ARCH=$(file "${PREBUILT_DIR}/e2e.test" | grep -oP '(x86-64|aarch64|ARM aarch64)' | head -1)
+
+  if [[ ("${BINARY_ARCH}" == "x86-64" && "${TARGET_ARCH}" == "amd64") || \
+        (("${BINARY_ARCH}" == "aarch64" || "${BINARY_ARCH}" == "ARM aarch64") && "${TARGET_ARCH}" == "arm64") ]]; then
+    echo "Using pre-built artifacts from ${PREBUILT_DIR} (${TARGET_ARCH})"
+    mkdir -p "${ARGO_CD_DIR}"
+    cp -a "${PREBUILT_DIR}"/* "${ARGO_CD_DIR}/"
+    cd "${ARGO_CD_DIR}" || exit 1
+  else
+    echo "Pre-built binary architecture (${BINARY_ARCH:-unknown}) doesn't match target (${TARGET_ARCH})"
+    echo "Will compile from source"
+  fi
+fi
+
+# If we haven't copied pre-built artifacts, clone and compile
+if [[ ! -d "${ARGO_CD_DIR}" ]]; then
+  echo "Pre-built artifacts not available (want ${TAG}/${TARGET_ARCH})"
   echo "Cloning argo-cd from ${TEST_REPO_URL} @ ${BRANCH}"
 
   git clone --depth 1 "${TEST_REPO_URL}" "${ARGO_CD_DIR}" 2>&1

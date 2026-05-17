@@ -26,5 +26,44 @@ RUN go clean -cache \
     && rm -rf .git \
     && git init && git remote add origin ${TEST_REPO_URL}
 
+# Pre-compile ArgoCD E2E tests for common versions
+# Note: These are compiled for the image's native architecture (TARGETARCH)
+# For cross-arch testing, the test script will recompile if needed
+WORKDIR /testsuites/argocd
+
+ARG TARGETARCH
+ENV GOARCH=${TARGETARCH}
+
+# ArgoCD v2.14.x (stable)
+ARG ARGOCD_VERSION_2_14=v2.14.1
+RUN git clone --depth 1 --branch ${ARGOCD_VERSION_2_14} https://github.com/argoproj/argo-cd.git v2.14 && \
+    cd v2.14 && \
+    go mod download && \
+    CLIENT_VERSION=$(cat VERSION 2>/dev/null || echo ${ARGOCD_VERSION_2_14}) && \
+    CLIENT_VERSION="${CLIENT_VERSION#v}" && \
+    mkdir -p dist && \
+    GOOS=linux GOARCH=${TARGETARCH} go test -c \
+      -ldflags "-X github.com/argoproj/argo-cd/v3/common.version=${CLIENT_VERSION}" \
+      -o e2e.test ./test/e2e && \
+    GOOS=linux GOARCH=${TARGETARCH} go build \
+      -ldflags "-X github.com/argoproj/argo-cd/v3/common.version=${CLIENT_VERSION}" \
+      -o dist/argocd ./cmd && \
+    rm -rf .git /root/.cache/go-build /root/go/pkg/mod/cache
+
+# ArgoCD master (latest)
+RUN git clone --depth 1 --branch master https://github.com/argoproj/argo-cd.git master && \
+    cd master && \
+    go mod download && \
+    CLIENT_VERSION=$(cat VERSION 2>/dev/null || echo "master") && \
+    CLIENT_VERSION="${CLIENT_VERSION#v}" && \
+    mkdir -p dist && \
+    GOOS=linux GOARCH=${TARGETARCH} go test -c \
+      -ldflags "-X github.com/argoproj/argo-cd/v3/common.version=${CLIENT_VERSION}" \
+      -o e2e.test ./test/e2e && \
+    GOOS=linux GOARCH=${TARGETARCH} go build \
+      -ldflags "-X github.com/argoproj/argo-cd/v3/common.version=${CLIENT_VERSION}" \
+      -o dist/argocd ./cmd && \
+    rm -rf .git /root/.cache/go-build /root/go/pkg/mod/cache
+
 WORKDIR /workspace
 ENTRYPOINT ["/bin/bash"]
