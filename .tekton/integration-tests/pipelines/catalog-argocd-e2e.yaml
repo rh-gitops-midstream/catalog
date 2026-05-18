@@ -599,7 +599,7 @@ spec:
                 value: $(params.argoCDRedisName)
             command:
               - /usr/local/bin/run-and-save-logs.sh
-              - /usr/local/bin/run-argocd-e2e-tests.sh
+              - /usr/local/bin/run-argocd-e2e-tests-in-pod.sh
             volumeMounts:
               - name: credentials
                 mountPath: /credentials
