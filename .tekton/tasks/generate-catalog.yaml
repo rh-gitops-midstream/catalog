@@ -46,7 +46,7 @@ spec:
         make catalog ocp=$(params.ocp-version)
 
     - name: create-trusted-artifact
-      image: quay.io/konflux-ci/build-trusted-artifacts:latest@sha256:4beac4abaec7e04792e0eea049bb25e589b235961495de1226bf2f9c16cdcc31
+      image: quay.io/konflux-ci/build-trusted-artifacts:latest@sha256:a246cf2267fe6fa68ae8885c6ca4141923edca3ccf9b56838d1ebe369d31b46d
       args:
         - create
         - --store
