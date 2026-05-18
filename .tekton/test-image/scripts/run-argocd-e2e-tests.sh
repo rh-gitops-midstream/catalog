@@ -269,6 +269,33 @@ EOF
 echo "Waiting for git-server to be ready..."
 oc wait --for=condition=Ready pod/git-server -n argocd-e2e --timeout=120s 2>&1 || true
 
+# Verify ArgoCD service exists and is resolvable
+echo "Verifying ArgoCD service..."
+echo "  Checking service in namespace ${ARGOCD_NAMESPACE}..."
+if ! oc get service argocd-server -n "${ARGOCD_NAMESPACE}" &>/dev/null; then
+  echo "ERROR: argocd-server service not found in namespace ${ARGOCD_NAMESPACE}"
+  echo "  Available services:"
+  oc get services -n "${ARGOCD_NAMESPACE}" || true
+  exit 1
+fi
+
+echo "  Service details:"
+oc get service argocd-server -n "${ARGOCD_NAMESPACE}" -o wide
+
+echo "  Testing DNS resolution for ${ARGOCD_SERVER}..."
+if ! getent hosts "${ARGOCD_SERVER}"; then
+  echo "ERROR: DNS lookup failed for ${ARGOCD_SERVER}"
+  echo "  All services in ${ARGOCD_NAMESPACE}:"
+  oc get services -n "${ARGOCD_NAMESPACE}" -o wide || true
+  echo "  DNS config (/etc/resolv.conf):"
+  cat /etc/resolv.conf || true
+  echo "  Testing short name resolution..."
+  getent hosts "argocd-server.${ARGOCD_NAMESPACE}.svc" || true
+  getent hosts "argocd-server.${ARGOCD_NAMESPACE}" || true
+  exit 1
+fi
+echo "  DNS resolution successful"
+
 # --- Set ArgoCD E2E environment variables ---
 
 echo "Configuring E2E test environment..."
