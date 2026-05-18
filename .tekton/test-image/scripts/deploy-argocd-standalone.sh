@@ -97,6 +97,21 @@ echo ""
 # Show deployment status
 oc get deployments,statefulsets,pods -n "$NAMESPACE" -o wide
 
+# Create Route to expose ArgoCD server externally (for cross-cluster access from Konflux)
+echo ""
+echo "Creating external Route for ArgoCD server..."
+oc create route passthrough argocd-server --service=argocd-server --port=https -n "$NAMESPACE"
+
+# Get external Route URL
+ARGOCD_SERVER_URL=$(oc get route argocd-server -n "$NAMESPACE" -o jsonpath='{.spec.host}')
+
+if [ -z "$ARGOCD_SERVER_URL" ]; then
+  echo "ERROR: Failed to get ArgoCD server route URL"
+  exit 1
+fi
+
+echo "ArgoCD server route: https://${ARGOCD_SERVER_URL}"
+
 # Extract admin password
 ADMIN_PASSWORD=$(oc get secret argocd-initial-admin-secret -n "$NAMESPACE" -o jsonpath='{.data.password}' 2>/dev/null | base64 -d || echo "")
 
@@ -106,11 +121,8 @@ if [ -z "$ADMIN_PASSWORD" ]; then
   ADMIN_PASSWORD=$(oc get secret argocd-cluster -n "$NAMESPACE" -o jsonpath='{.data.admin\.password}' 2>/dev/null | base64 -d || echo "password")
 fi
 
-# Get ArgoCD server service DNS name (for in-cluster access)
-ARGOCD_SERVER_SERVICE="argocd-server.${NAMESPACE}.svc.cluster.local"
-
 echo ""
-echo "ArgoCD server service: ${ARGOCD_SERVER_SERVICE}"
+echo "ArgoCD server URL: https://${ARGOCD_SERVER_URL}"
 echo "Admin username: admin"
 echo "Admin password: ${ADMIN_PASSWORD:0:8}..." # Print first 8 chars only
 
@@ -118,7 +130,7 @@ echo "Admin password: ${ADMIN_PASSWORD:0:8}..." # Print first 8 chars only
 # These will be available as $(tasks.deploy-argocd.results.xxx)
 if [ -d /tekton/results ]; then
   echo -n "$NAMESPACE" > /tekton/results/namespace
-  echo -n "$ARGOCD_SERVER_SERVICE" > /tekton/results/server
+  echo -n "$ARGOCD_SERVER_URL" > /tekton/results/server
   echo -n "$ADMIN_PASSWORD" > /tekton/results/adminPassword
   echo -n "argocd-server" > /tekton/results/serverName
   echo -n "argocd-repo-server" > /tekton/results/repoServerName

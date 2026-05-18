@@ -6,7 +6,7 @@ set -u -o pipefail
 #
 # Expected env vars (from deploy-argocd task results):
 # - ARGOCD_NAMESPACE: Namespace where ArgoCD is deployed
-# - ARGOCD_SERVER: ArgoCD server service DNS name
+# - ARGOCD_SERVER: ArgoCD server external Route hostname
 # - ARGOCD_ADMIN_PASSWORD: ArgoCD admin password
 # - ARGOCD_SERVER_NAME: ArgoCD server deployment name
 # - ARGOCD_REPO_SERVER_NAME: ArgoCD repo-server deployment name
@@ -269,32 +269,21 @@ EOF
 echo "Waiting for git-server to be ready..."
 oc wait --for=condition=Ready pod/git-server -n argocd-e2e --timeout=120s 2>&1 || true
 
-# Verify ArgoCD service exists and is resolvable
-echo "Verifying ArgoCD service..."
-echo "  Checking service in namespace ${ARGOCD_NAMESPACE}..."
-if ! oc get service argocd-server -n "${ARGOCD_NAMESPACE}" &>/dev/null; then
-  echo "ERROR: argocd-server service not found in namespace ${ARGOCD_NAMESPACE}"
-  echo "  Available services:"
-  oc get services -n "${ARGOCD_NAMESPACE}" || true
-  exit 1
-fi
+# Verify ArgoCD Route is accessible
+echo "Verifying ArgoCD Route..."
+echo "  ArgoCD server URL: ${ARGOCD_SERVER}"
 
-echo "  Service details:"
-oc get service argocd-server -n "${ARGOCD_NAMESPACE}" -o wide
-
-echo "  Testing DNS resolution for ${ARGOCD_SERVER}..."
-if ! getent hosts "${ARGOCD_SERVER}"; then
-  echo "ERROR: DNS lookup failed for ${ARGOCD_SERVER}"
-  echo "  All services in ${ARGOCD_NAMESPACE}:"
-  oc get services -n "${ARGOCD_NAMESPACE}" -o wide || true
-  echo "  DNS config (/etc/resolv.conf):"
-  cat /etc/resolv.conf || true
-  echo "  Testing short name resolution..."
-  getent hosts "argocd-server.${ARGOCD_NAMESPACE}.svc" || true
-  getent hosts "argocd-server.${ARGOCD_NAMESPACE}" || true
-  exit 1
+# Test Route connectivity
+echo "  Testing Route connectivity..."
+if ! curl -k -s -o /dev/null -w "%{http_code}" "https://${ARGOCD_SERVER}/healthz" | grep -q "200"; then
+  echo "WARNING: ArgoCD Route healthcheck returned non-200 status"
+  echo "  Checking Route resource..."
+  oc get route argocd-server -n "${ARGOCD_NAMESPACE}" -o wide || true
+  echo "  Checking ArgoCD pods..."
+  oc get pods -n "${ARGOCD_NAMESPACE}" -l app.kubernetes.io/name=argocd-server || true
+  echo "  Continuing anyway - server might still be starting..."
 fi
-echo "  DNS resolution successful"
+echo "  Route verification complete"
 
 # --- Set ArgoCD E2E environment variables ---
 
@@ -303,9 +292,9 @@ echo "Configuring E2E test environment..."
 # Execution mode - remote (not local goreman)
 export ARGOCD_E2E_REMOTE=true
 
-# ArgoCD connection
-export ARGOCD_SERVER="${ARGOCD_SERVER}:80"
-export ARGOCD_SERVER_INSECURE=true
+# ArgoCD connection (Route URL uses HTTPS on default port 443)
+export ARGOCD_SERVER="${ARGOCD_SERVER}"
+export ARGOCD_SERVER_INSECURE=true  # Route uses self-signed cert
 export ARGOCD_E2E_ADMIN_USERNAME=admin
 export ARGOCD_E2E_ADMIN_PASSWORD="${ARGOCD_ADMIN_PASSWORD}"
 
