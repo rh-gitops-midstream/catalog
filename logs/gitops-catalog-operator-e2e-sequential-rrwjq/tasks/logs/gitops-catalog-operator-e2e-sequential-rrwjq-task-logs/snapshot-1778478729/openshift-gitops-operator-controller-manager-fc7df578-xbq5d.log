@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-xbq5d ===
+=== Timestamp: 2026-05-11 05:52:09 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd"}
+2026-05-11T05:52:09Z	ERROR	controller_argocd_metrics	Error creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createServiceMonitorIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:347
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:154
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"source-ns"}, "namespace": "source-ns", "name": "argocd", "reconcileID": "942d6222-3b2f-4afb-94ee-b5e800ac8fc5", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "source-ns", "ArgoCD Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	controller_argocd	reconciling service accounts
+2026-05-11T05:52:09Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "source-ns", "ArgoCD Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "source-ns", "Request.Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "source-ns-read"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "source-ns-prometheus-k8s-read-binding"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "source-ns", "ArgoCD Name": "argocd"}
+2026-05-11T05:52:09Z	ERROR	controller_argocd_metrics	Error creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createServiceMonitorIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:347
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:154
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"source-ns"}, "namespace": "source-ns", "name": "argocd", "reconcileID": "1b101fe7-d3f4-446e-a102-1b667f11a20d", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "source-ns", "ArgoCD Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	controller_argocd	reconciling certificate authority
+2026-05-11T05:52:09Z	INFO	controller_argocd	reconciling CA secret
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "source-ns", "Request.Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "source-ns-read"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "source-ns-prometheus-k8s-read-binding"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd"}
+2026-05-11T05:52:09Z	ERROR	controller_argocd_metrics	Error creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createServiceMonitorIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:347
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:154
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"source-ns"}, "namespace": "source-ns", "name": "argocd", "reconcileID": "a467b893-5666-4c6f-8a24-86e7c6df0a3b", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "source-ns", "Request.Name": "argocd"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "source-ns-read"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "source-ns-prometheus-k8s-read-binding"}
+2026-05-11T05:52:09Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd"}
+2026-05-11T05:52:09Z	ERROR	controller_argocd_metrics	Error creating a new ServiceMonitor instance	{"Request.Namespace": "source-ns", "Request.Name": "argocd", "Namespace": "source-ns", "Name": "argocd", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createServiceMonitorIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:347
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:154
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:52:09Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"source-ns"}, "namespace": "source-ns", "name": "argocd", "reconcileID": "2aee355f-b0e5-4c84-a8ef-aec4b98f0ade", "error": "servicemonitors.monitoring.coreos.com \"argocd\" is forbidden: unable to create new content in namespace source-ns because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+
+--- Container: kube-rbac-proxy ---
+W0511 05:49:54.571714       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:49:54.572175       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:49:54.574486       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:49:54.574871       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:49:54.575087       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

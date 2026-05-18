@@ -1,0 +1,2277 @@
+++ echo 4.20
+++ grep -oP '^\d+\.\d+'
++ MINOR_VERSION=4.20
++ CATALOG_IMAGE=quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20
++ echo 'Installing GitOps Operator from catalog: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20'
+Installing GitOps Operator from catalog: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20
++ echo 'OpenShift version: 4.20 (minor: 4.20)'
+OpenShift version: 4.20 (minor: 4.20)
++ echo 'Target namespace: openshift-gitops-operator'
+Target namespace: openshift-gitops-operator
++ [[ -f /quay-pull-credentials/.dockerconfigjson ]]
++ echo 'Injecting quay pull credentials into cluster global pull-secret...'
+Injecting quay pull credentials into cluster global pull-secret...
+++ oc get secret pull-secret -n openshift-config -o 'jsonpath={.data.\.dockerconfigjson}'
+++ base64 -d
++ EXISTING='{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"}}}'
+++ echo '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"}}}'
+++ python3 -c '
+import json, sys
+existing = json.load(sys.stdin)
+with open('\''/quay-pull-credentials/.dockerconfigjson'\'') as f:
+    extra = json.load(f)
+existing.setdefault('\''auths'\'', {}).update(extra.get('\''auths'\'', {}))
+print(json.dumps(existing))
+'
++ MERGED='{"auths": {"cloud.openshift.com": {"auth": "b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==", "email": "konflux-o11y@redhat.com"}, "quay.io": {"auth": "b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==", "email": "konflux-o11y@redhat.com"}, "registry.connect.redhat.com": {"auth": "fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==", "email": "konflux-o11y@redhat.com"}, "registry.redhat.io": {"auth": "fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==", "email": "konflux-o11y@redhat.com"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9yaGVsOV84MWZlMjczY2Q4X3B1bGw6UDlWMFM4RDQ0SkhQSU1UQjE3WEdIWDVaWk4xQUFXNkRNQzlQTlZUN1lLTkkzUjRYTkUwUFhLQlE2MTFIQk1aVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9yaGVsOF9iZGViM2M3ZDNmX3B1bGw6RDA4Mk1PRkc2VlJXUzhZNEFWTVdXRUpRMENXMDROSlNEOFJSRlhaM1BWRDMzWVg4RUxJT1o2UFBQSE1BNjFNQg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOV80MWMwZTVjOGEyX3B1bGw6N1BTMVpWT0lGMjFTWDJTTUtQNVZYS1A2OUpNM1VFVkcyTlI1WlVLMzMyTzBaMktQTEpPQkoyNjRPQkI5VEtDVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOF8yNmY4MjE4N2NmX3B1bGw6TktDUjRKV0o0TldYWTZMV0ZES0NKU0o4VE9QOVZWMzE1VEROMUw3NDhFUDhYV1NGMkhESUkzUkFPRVJENFRQMg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9-operator": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOV9vcGVyYXRvcl85NzI4OWM0NTc5X3B1bGw6QzlXRDUxQVFCVEg1OTdJVTVHQTc1MVpCS0lFVTVMWEtCQ0E0UTVTRExYMlFXSU00RFNLTjlQVFlJQURGSDBSTg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8-operator": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOF9vcGVyYXRvcl82NDdmZTY3YWM0X3B1bGw6TkE4TEVXMU0yRUo5TzRZTExKUllYM0k4SjhSRFhBSkc0QTRETk9OWko4S1hUQldUMVRZR1MxWU1JTjNMMzJCUQ=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2NvbnNvbGVfcGx1Z2luX3JoZWw5X2JkYWNjY2YzYzBfcHVsbDpYQkZJV0MxRDJDMDM1RERINlM0TVgzWFVYQzlWMElUTzVaSTRCQ09OVEhEMzkxTEtDMlFGUllEWkdKUVlXNTkx"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2NvbnNvbGVfcGx1Z2luX3JoZWw4X2UwZGRhMjIwMmRfcHVsbDoyR0YwOTg5V1FYTjRKUVgwSzNBN1RIVzQ1TFVOR1NOQTBaQVU5STk5WTc3WDRRU0hLRjRaSUo4OTlKQzlSVVFW"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2RleF9yaGVsOV82MjQ1YmU5Mzg0X3B1bGw6MVY1UVdPUFEzQTBUT083TTdLWFFGOTBEN05RRFpWVU1aT1hYOVRSWDRVVU5NQ01OWUdUQk0yMURYTVNVU1NDVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2RleF9yaGVsOF82MTU0ODZmYmI4X3B1bGw6V1VDWlNMMk83Uk8wQUpFMVBXUUE3U1pEWldDR0FPSDJKT1M0REcyODI3VzAxTTU0TFpTUTJCM1pPTzhaNzZNSw=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X211c3RfZ2F0aGVyX3JoZWw5X2YxYzM5ZGRhYjRfcHVsbDpMNDNUMTQyQ0NGUUdCWjU5QTdNUVREVjZNQzJKT0QyUFlBMVowRUNGSkxPQVUzSUJMVkJXSVhVM1lWWjhGSE5J"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X211c3RfZ2F0aGVyX3JoZWw4Xzg5NTJkNGIzN2ZfcHVsbDpMTEJaV1VSRE5KOU9aRUpLUURNRDdNN0tRWVpBVTNHRU9QMEs3UkJYNElGVlc2NkdVNzFMVEJOUTFJTlZXVlRL"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9hZ2VudF9yaGVsOV8zMDk1MTM3OWYzX3B1bGw6Rjc3QkRUUUdHV0xNTURUWE1LNlg0V1ZNS1c4Rk9XSUVNTFM0U0pRM001STI0NFQ1SFM1RUNLQ09UMDJMVFdKUw=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9hZ2VudF9yaGVsOF83MzA3ODI5MzBjX3B1bGw6NU5KWksxV0Y2U1FLRDRJMDlXNjZNV0ZaUkY5TE5CSUdEN0FTWk4ySFdUOUpJTDM3TVExSTFPNlUwSDQxNUJKWQ=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29fcm9sbG91dHNfcmhlbDlfZmVhNmY1OGVjM19wdWxsOldVTkoxQU03U09WM0JBOUMwTk44WUlUSU1EM0lGWEI4Rjk3VENWMEtOWTMzUFBMWThVNTBQS1FZQjZLRE1NN1k="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29fcm9sbG91dHNfcmhlbDhfMWIwNDQ5M2NjN19wdWxsOjdNUTIyVEs3UVEwTFI3NEIzNkZYRTM2SlVIRk5RWUtLTE5ENlI0UUJPWjhFSDlMWk5JNlZJSlA3UDNTMTdSQ1Q="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9leHRlbnNpb25zX3JoZWw5XzQzYzJmMTdkMTdfcHVsbDpKN1U4VVY1WjlCVzRSM08ySDY1SlExVExONzBZR0pOTVM2QVNTUzg4TE4zSDUzTFBYU05JMjkyWE4yT1A4QzU2"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9leHRlbnNpb25zX3JoZWw4XzU3ODA3NDJmMTVfcHVsbDpEM1JRWTBJN0dIODFOSEJPNFZUTjk4R1pXTENON0xSSjNHWldTRlVGNFhYTjRSSUZMN1hKRjMyUUxORlhSNlRY"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9pbWFnZV91cGRhdGVyX3JoZWw5X2VlODBjN2MxYTlfcHVsbDpUTURUQlM2WDE1OVJTOFNBMTZIVTQ3SzZLNVRXQk1FMFo4SkRSTkpMVEZLTjRYRDRYQk9RMTJFM0NRRVNBUTZR"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9pbWFnZV91cGRhdGVyX3JoZWw4XzZjMjYwNjFlNWRfcHVsbDpRWjQwQ0JDRTgxWFJONEpUMDlVN1hCR0xaMktRMjI5TkVYTVBFMzhQV0JFUllOM0JUVFlPQzVRMTkxMjNJRlA5"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19vcGVyYXRvcl9idW5kbGVfNTY4YzQyOTI2OF9wdWxsOkFETjFKMjg1OFBUWlZRRU9ISVA4Sko1QUZQWlRZQlBTV1hRUkRDVThJUERMNFBNUTM4SjJPOUc3VU5OMFVBUkU="}}}'
++ oc set data secret/pull-secret -n openshift-config '--from-literal=.dockerconfigjson={"auths": {"cloud.openshift.com": {"auth": "b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==", "email": "konflux-o11y@redhat.com"}, "quay.io": {"auth": "b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==", "email": "konflux-o11y@redhat.com"}, "registry.connect.redhat.com": {"auth": "fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==", "email": "konflux-o11y@redhat.com"}, "registry.redhat.io": {"auth": "fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==", "email": "konflux-o11y@redhat.com"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9yaGVsOV84MWZlMjczY2Q4X3B1bGw6UDlWMFM4RDQ0SkhQSU1UQjE3WEdIWDVaWk4xQUFXNkRNQzlQTlZUN1lLTkkzUjRYTkUwUFhLQlE2MTFIQk1aVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9yaGVsOF9iZGViM2M3ZDNmX3B1bGw6RDA4Mk1PRkc2VlJXUzhZNEFWTVdXRUpRMENXMDROSlNEOFJSRlhaM1BWRDMzWVg4RUxJT1o2UFBQSE1BNjFNQg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOV80MWMwZTVjOGEyX3B1bGw6N1BTMVpWT0lGMjFTWDJTTUtQNVZYS1A2OUpNM1VFVkcyTlI1WlVLMzMyTzBaMktQTEpPQkoyNjRPQkI5VEtDVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOF8yNmY4MjE4N2NmX3B1bGw6TktDUjRKV0o0TldYWTZMV0ZES0NKU0o4VE9QOVZWMzE1VEROMUw3NDhFUDhYV1NGMkhESUkzUkFPRVJENFRQMg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9-operator": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOV9vcGVyYXRvcl85NzI4OWM0NTc5X3B1bGw6QzlXRDUxQVFCVEg1OTdJVTVHQTc1MVpCS0lFVTVMWEtCQ0E0UTVTRExYMlFXSU00RFNLTjlQVFlJQURGSDBSTg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8-operator": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOF9vcGVyYXRvcl82NDdmZTY3YWM0X3B1bGw6TkE4TEVXMU0yRUo5TzRZTExKUllYM0k4SjhSRFhBSkc0QTRETk9OWko4S1hUQldUMVRZR1MxWU1JTjNMMzJCUQ=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2NvbnNvbGVfcGx1Z2luX3JoZWw5X2JkYWNjY2YzYzBfcHVsbDpYQkZJV0MxRDJDMDM1RERINlM0TVgzWFVYQzlWMElUTzVaSTRCQ09OVEhEMzkxTEtDMlFGUllEWkdKUVlXNTkx"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2NvbnNvbGVfcGx1Z2luX3JoZWw4X2UwZGRhMjIwMmRfcHVsbDoyR0YwOTg5V1FYTjRKUVgwSzNBN1RIVzQ1TFVOR1NOQTBaQVU5STk5WTc3WDRRU0hLRjRaSUo4OTlKQzlSVVFW"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2RleF9yaGVsOV82MjQ1YmU5Mzg0X3B1bGw6MVY1UVdPUFEzQTBUT083TTdLWFFGOTBEN05RRFpWVU1aT1hYOVRSWDRVVU5NQ01OWUdUQk0yMURYTVNVU1NDVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2RleF9yaGVsOF82MTU0ODZmYmI4X3B1bGw6V1VDWlNMMk83Uk8wQUpFMVBXUUE3U1pEWldDR0FPSDJKT1M0REcyODI3VzAxTTU0TFpTUTJCM1pPTzhaNzZNSw=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X211c3RfZ2F0aGVyX3JoZWw5X2YxYzM5ZGRhYjRfcHVsbDpMNDNUMTQyQ0NGUUdCWjU5QTdNUVREVjZNQzJKT0QyUFlBMVowRUNGSkxPQVUzSUJMVkJXSVhVM1lWWjhGSE5J"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X211c3RfZ2F0aGVyX3JoZWw4Xzg5NTJkNGIzN2ZfcHVsbDpMTEJaV1VSRE5KOU9aRUpLUURNRDdNN0tRWVpBVTNHRU9QMEs3UkJYNElGVlc2NkdVNzFMVEJOUTFJTlZXVlRL"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9hZ2VudF9yaGVsOV8zMDk1MTM3OWYzX3B1bGw6Rjc3QkRUUUdHV0xNTURUWE1LNlg0V1ZNS1c4Rk9XSUVNTFM0U0pRM001STI0NFQ1SFM1RUNLQ09UMDJMVFdKUw=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9hZ2VudF9yaGVsOF83MzA3ODI5MzBjX3B1bGw6NU5KWksxV0Y2U1FLRDRJMDlXNjZNV0ZaUkY5TE5CSUdEN0FTWk4ySFdUOUpJTDM3TVExSTFPNlUwSDQxNUJKWQ=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29fcm9sbG91dHNfcmhlbDlfZmVhNmY1OGVjM19wdWxsOldVTkoxQU03U09WM0JBOUMwTk44WUlUSU1EM0lGWEI4Rjk3VENWMEtOWTMzUFBMWThVNTBQS1FZQjZLRE1NN1k="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29fcm9sbG91dHNfcmhlbDhfMWIwNDQ5M2NjN19wdWxsOjdNUTIyVEs3UVEwTFI3NEIzNkZYRTM2SlVIRk5RWUtLTE5ENlI0UUJPWjhFSDlMWk5JNlZJSlA3UDNTMTdSQ1Q="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9leHRlbnNpb25zX3JoZWw5XzQzYzJmMTdkMTdfcHVsbDpKN1U4VVY1WjlCVzRSM08ySDY1SlExVExONzBZR0pOTVM2QVNTUzg4TE4zSDUzTFBYU05JMjkyWE4yT1A4QzU2"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9leHRlbnNpb25zX3JoZWw4XzU3ODA3NDJmMTVfcHVsbDpEM1JRWTBJN0dIODFOSEJPNFZUTjk4R1pXTENON0xSSjNHWldTRlVGNFhYTjRSSUZMN1hKRjMyUUxORlhSNlRY"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9pbWFnZV91cGRhdGVyX3JoZWw5X2VlODBjN2MxYTlfcHVsbDpUTURUQlM2WDE1OVJTOFNBMTZIVTQ3SzZLNVRXQk1FMFo4SkRSTkpMVEZLTjRYRDRYQk9RMTJFM0NRRVNBUTZR"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9pbWFnZV91cGRhdGVyX3JoZWw4XzZjMjYwNjFlNWRfcHVsbDpRWjQwQ0JDRTgxWFJONEpUMDlVN1hCR0xaMktRMjI5TkVYTVBFMzhQV0JFUllOM0JUVFlPQzVRMTkxMjNJRlA5"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19vcGVyYXRvcl9idW5kbGVfNTY4YzQyOTI2OF9wdWxsOkFETjFKMjg1OFBUWlZRRU9ISVA4Sko1QUZQWlRZQlBTV1hRUkRDVThJUERMNFBNUTM4SjJPOUc3VU5OMFVBUkU="}}}'
+secret/pull-secret data updated
+++ echo '{"auths": {"cloud.openshift.com": {"auth": "b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==", "email": "konflux-o11y@redhat.com"}, "quay.io": {"auth": "b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==", "email": "konflux-o11y@redhat.com"}, "registry.connect.redhat.com": {"auth": "fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==", "email": "konflux-o11y@redhat.com"}, "registry.redhat.io": {"auth": "fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==", "email": "konflux-o11y@redhat.com"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9yaGVsOV84MWZlMjczY2Q4X3B1bGw6UDlWMFM4RDQ0SkhQSU1UQjE3WEdIWDVaWk4xQUFXNkRNQzlQTlZUN1lLTkkzUjRYTkUwUFhLQlE2MTFIQk1aVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9yaGVsOF9iZGViM2M3ZDNmX3B1bGw6RDA4Mk1PRkc2VlJXUzhZNEFWTVdXRUpRMENXMDROSlNEOFJSRlhaM1BWRDMzWVg4RUxJT1o2UFBQSE1BNjFNQg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOV80MWMwZTVjOGEyX3B1bGw6N1BTMVpWT0lGMjFTWDJTTUtQNVZYS1A2OUpNM1VFVkcyTlI1WlVLMzMyTzBaMktQTEpPQkoyNjRPQkI5VEtDVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOF8yNmY4MjE4N2NmX3B1bGw6TktDUjRKV0o0TldYWTZMV0ZES0NKU0o4VE9QOVZWMzE1VEROMUw3NDhFUDhYV1NGMkhESUkzUkFPRVJENFRQMg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9-operator": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOV9vcGVyYXRvcl85NzI4OWM0NTc5X3B1bGw6QzlXRDUxQVFCVEg1OTdJVTVHQTc1MVpCS0lFVTVMWEtCQ0E0UTVTRExYMlFXSU00RFNLTjlQVFlJQURGSDBSTg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8-operator": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19yaGVsOF9vcGVyYXRvcl82NDdmZTY3YWM0X3B1bGw6TkE4TEVXMU0yRUo5TzRZTExKUllYM0k4SjhSRFhBSkc0QTRETk9OWko4S1hUQldUMVRZR1MxWU1JTjNMMzJCUQ=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2NvbnNvbGVfcGx1Z2luX3JoZWw5X2JkYWNjY2YzYzBfcHVsbDpYQkZJV0MxRDJDMDM1RERINlM0TVgzWFVYQzlWMElUTzVaSTRCQ09OVEhEMzkxTEtDMlFGUllEWkdKUVlXNTkx"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2NvbnNvbGVfcGx1Z2luX3JoZWw4X2UwZGRhMjIwMmRfcHVsbDoyR0YwOTg5V1FYTjRKUVgwSzNBN1RIVzQ1TFVOR1NOQTBaQVU5STk5WTc3WDRRU0hLRjRaSUo4OTlKQzlSVVFW"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2RleF9yaGVsOV82MjQ1YmU5Mzg0X3B1bGw6MVY1UVdPUFEzQTBUT083TTdLWFFGOTBEN05RRFpWVU1aT1hYOVRSWDRVVU5NQ01OWUdUQk0yMURYTVNVU1NDVg=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2RleF9yaGVsOF82MTU0ODZmYmI4X3B1bGw6V1VDWlNMMk83Uk8wQUpFMVBXUUE3U1pEWldDR0FPSDJKT1M0REcyODI3VzAxTTU0TFpTUTJCM1pPTzhaNzZNSw=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X211c3RfZ2F0aGVyX3JoZWw5X2YxYzM5ZGRhYjRfcHVsbDpMNDNUMTQyQ0NGUUdCWjU5QTdNUVREVjZNQzJKT0QyUFlBMVowRUNGSkxPQVUzSUJMVkJXSVhVM1lWWjhGSE5J"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X211c3RfZ2F0aGVyX3JoZWw4Xzg5NTJkNGIzN2ZfcHVsbDpMTEJaV1VSRE5KOU9aRUpLUURNRDdNN0tRWVpBVTNHRU9QMEs3UkJYNElGVlc2NkdVNzFMVEJOUTFJTlZXVlRL"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9hZ2VudF9yaGVsOV8zMDk1MTM3OWYzX3B1bGw6Rjc3QkRUUUdHV0xNTURUWE1LNlg0V1ZNS1c4Rk9XSUVNTFM0U0pRM001STI0NFQ1SFM1RUNLQ09UMDJMVFdKUw=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9hZ2VudF9yaGVsOF83MzA3ODI5MzBjX3B1bGw6NU5KWksxV0Y2U1FLRDRJMDlXNjZNV0ZaUkY5TE5CSUdEN0FTWk4ySFdUOUpJTDM3TVExSTFPNlUwSDQxNUJKWQ=="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29fcm9sbG91dHNfcmhlbDlfZmVhNmY1OGVjM19wdWxsOldVTkoxQU03U09WM0JBOUMwTk44WUlUSU1EM0lGWEI4Rjk3VENWMEtOWTMzUFBMWThVNTBQS1FZQjZLRE1NN1k="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29fcm9sbG91dHNfcmhlbDhfMWIwNDQ5M2NjN19wdWxsOjdNUTIyVEs3UVEwTFI3NEIzNkZYRTM2SlVIRk5RWUtLTE5ENlI0UUJPWjhFSDlMWk5JNlZJSlA3UDNTMTdSQ1Q="}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9leHRlbnNpb25zX3JoZWw5XzQzYzJmMTdkMTdfcHVsbDpKN1U4VVY1WjlCVzRSM08ySDY1SlExVExONzBZR0pOTVM2QVNTUzg4TE4zSDUzTFBYU05JMjkyWE4yT1A4QzU2"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9leHRlbnNpb25zX3JoZWw4XzU3ODA3NDJmMTVfcHVsbDpEM1JRWTBJN0dIODFOSEJPNFZUTjk4R1pXTENON0xSSjNHWldTRlVGNFhYTjRSSUZMN1hKRjMyUUxORlhSNlRY"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel9": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9pbWFnZV91cGRhdGVyX3JoZWw5X2VlODBjN2MxYTlfcHVsbDpUTURUQlM2WDE1OVJTOFNBMTZIVTQ3SzZLNVRXQk1FMFo4SkRSTkpMVEZLTjRYRDRYQk9RMTJFM0NRRVNBUTZR"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel8": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2FyZ29jZF9pbWFnZV91cGRhdGVyX3JoZWw4XzZjMjYwNjFlNWRfcHVsbDpRWjQwQ0JDRTgxWFJONEpUMDlVN1hCR0xaMktRMjI5TkVYTVBFMzhQV0JFUllOM0JUVFlPQzVRMTkxMjNJRlA5"}, "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle": {"auth": "cmVkaGF0LXVzZXItd29ya2xvYWRzK3JoX29wZW5zaGlmdF9naXRvcHNfdGVuYW50X2dpdG9wc19vcGVyYXRvcl9idW5kbGVfNTY4YzQyOTI2OF9wdWxsOkFETjFKMjg1OFBUWlZRRU9ISVA4Sko1QUZQWlRZQlBTV1hRUkRDVThJUERMNFBNUTM4SjJPOUc3VU5OMFVBUkU="}}}'
+++ python3 -c 'import json,sys; print(len(json.load(sys.stdin)['\''auths'\'']))'
++ echo 'Injected 25 registry credentials into cluster pull-secret'
+Injected 25 registry credentials into cluster pull-secret
++ echo 'Creating additional-pull-secret in kube-system for HyperShift node credential injection...'
+Creating additional-pull-secret in kube-system for HyperShift node credential injection...
++ oc create secret generic additional-pull-secret -n kube-system --from-file=.dockerconfigjson=/quay-pull-credentials/.dockerconfigjson --type=kubernetes.io/dockerconfigjson --dry-run=client -o yaml
++ oc apply -f -
+secret/additional-pull-secret created
++ echo 'Waiting for pull-secret syncer DaemonSet...'
+Waiting for pull-secret syncer DaemonSet...
++ SYNC_TIMEOUT=300
+++ date +%s
++ SYNC_START=1778477994
++ true
+++ oc get daemonset -n kube-system -o 'jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}'
+++ grep -i pull-secret
++ DS_NAME=global-pull-secret-syncer
++ [[ -n global-pull-secret-syncer ]]
+++ oc get ds global-pull-secret-syncer -n kube-system -o 'jsonpath={.status.desiredNumberScheduled}'
++ DESIRED=3
+++ oc get ds global-pull-secret-syncer -n kube-system -o 'jsonpath={.status.numberReady}'
++ READY=3
++ [[ 3 -gt 0 ]]
++ [[ 3 == \3 ]]
++ echo 'Pull-secret syncer DaemonSet global-pull-secret-syncer is ready (3/3 nodes)'
+Pull-secret syncer DaemonSet global-pull-secret-syncer is ready (3/3 nodes)
++ break
++ oc create namespace openshift-gitops-operator --dry-run=client -o yaml
++ oc apply -f -
+namespace/openshift-gitops-operator created
++ cat
++ oc apply -f -
+catalogsource.operators.coreos.com/gitops-stage created
++ cat
++ oc apply -f -
+operatorgroup.operators.coreos.com/gitops-operator-group created
++ cat
++ oc apply -f -
+subscription.operators.coreos.com/gitops-operator-konflux created
++ echo 'Waiting for ClusterServiceVersion to appear and succeed...'
+Waiting for ClusterServiceVersion to appear and succeed...
++ sleep 30
++ CSV_NAME=
++ for _ in {1..30}
+++ oc get sub gitops-operator-konflux -n openshift-gitops-operator -o 'jsonpath={.status.installedCSV}'
++ CSV_NAME=
++ '[' -n '' ']'
++ echo 'Waiting for subscription status to be updated...'
+Waiting for subscription status to be updated...
++ sleep 10
++ for _ in {1..30}
+++ oc get sub gitops-operator-konflux -n openshift-gitops-operator -o 'jsonpath={.status.installedCSV}'
++ CSV_NAME=
++ '[' -n '' ']'
++ echo 'Waiting for subscription status to be updated...'
+Waiting for subscription status to be updated...
++ sleep 10
++ for _ in {1..30}
+++ oc get sub gitops-operator-konflux -n openshift-gitops-operator -o 'jsonpath={.status.installedCSV}'
++ CSV_NAME=
++ '[' -n '' ']'
++ echo 'Waiting for subscription status to be updated...'
+Waiting for subscription status to be updated...
++ sleep 10
++ for _ in {1..30}
+++ oc get sub gitops-operator-konflux -n openshift-gitops-operator -o 'jsonpath={.status.installedCSV}'
++ CSV_NAME=
++ '[' -n '' ']'
++ echo 'Waiting for subscription status to be updated...'
+Waiting for subscription status to be updated...
++ sleep 10
++ for _ in {1..30}
+++ oc get sub gitops-operator-konflux -n openshift-gitops-operator -o 'jsonpath={.status.installedCSV}'
++ CSV_NAME=
++ '[' -n '' ']'
++ echo 'Waiting for subscription status to be updated...'
+Waiting for subscription status to be updated...
++ sleep 10
++ for _ in {1..30}
+++ oc get sub gitops-operator-konflux -n openshift-gitops-operator -o 'jsonpath={.status.installedCSV}'
++ CSV_NAME=openshift-gitops-operator.v1.20.3
++ '[' -n openshift-gitops-operator.v1.20.3 ']'
++ break
++ '[' -z openshift-gitops-operator.v1.20.3 ']'
++ oc wait '--for=jsonpath={.status.phase}=Succeeded' csv/openshift-gitops-operator.v1.20.3 -n openshift-gitops-operator --timeout=25m
+clusterserviceversion.operators.coreos.com/openshift-gitops-operator.v1.20.3 condition met
++ echo 'Operator installed successfully'
+Operator installed successfully
++ SA_PATCH_PID=
++ [[ -f /quay-pull-credentials/.dockerconfigjson ]]
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo 'Starting background pull-secret injection'
+Starting background pull-secret injection
++ echo ==========================================
+==========================================
++ SA_PATCH_PID=614
++ echo 'Background pull-secret injection started (PID: 614)'
+Background pull-secret injection started (PID: 614)
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo 'Verifying related images are available'
+Verifying related images are available
++ echo ==========================================
+==========================================
++ /usr/local/bin/verify-images.sh
++ true
++ oc get namespace openshift-gitops
++ oc create secret generic quay-mirror-pull --from-file=.dockerconfigjson=/quay-pull-credentials/.dockerconfigjson --type=kubernetes.io/dockerconfigjson -n openshift-gitops --dry-run=client -o yaml
++ oc apply -f -
+Target architecture: arm64
+Installed CSV: openshift-gitops-operator.v1.20.3
+Found 15 related images in CSV
+Loading mirrors from cluster IDMS...
+
+Mirror mappings loaded: 21 entries
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator (arm64 in: amd64,arm64,ppc64le,s390x)
+  SKIP [no mirror] registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9
+  SKIP [no mirror] registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/dex-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/gitops-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/argocd-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+  SKIP [no mirror] registry.redhat.io/rhel9/redis-7
+  SKIP [no mirror] registry.redhat.io/openshift4/ose-haproxy-router-rhel9
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/console-plugin-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+++ oc get sa -n openshift-gitops -o 'jsonpath={.items[*].metadata.name}'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa builder -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
++ oc patch sa builder -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa default -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa default -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa deployer -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa deployer -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
+++ oc get pods -n openshift-gitops
+++ grep -E 'ImagePullBackOff|ErrImagePull'
+++ awk '{print $1}'
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/must-gather-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
++ STUCK=
++ sleep 10
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+  OK   [mirror] registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9 (arm64 in: amd64,arm64,ppc64le,s390x)
+
+==========================================
+Image verification: 11 OK, 0 FAILED, 4 SKIPPED (no mirror)
+==========================================
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo 'DEBUG INFO: Post-Installation State'
+DEBUG INFO: Post-Installation State
++ echo ==========================================
+==========================================
++ echo ''
+
++ echo '--- CatalogSource Status ---'
+--- CatalogSource Status ---
++ oc get catalogsource gitops-stage -n openshift-marketplace -o yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"operators.coreos.com/v1alpha1","kind":"CatalogSource","metadata":{"annotations":{},"name":"gitops-stage","namespace":"openshift-marketplace"},"spec":{"displayName":"GitOps Stage Catalog","image":"quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20","publisher":"Konflux","sourceType":"grpc","updateStrategy":{"registryPoll":{"interval":"30m"}}}}
+  creationTimestamp: "2026-05-11T05:39:55Z"
+  generation: 1
+  name: gitops-stage
+  namespace: openshift-marketplace
+  resourceVersion: "11556"
+  uid: fcceacb4-3254-46c3-8551-ccc3569d8259
+spec:
+  displayName: GitOps Stage Catalog
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v4.20
+  publisher: Konflux
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 30m
+status:
+  connectionState:
+    address: gitops-stage.openshift-marketplace.svc:50051
+    lastConnect: "2026-05-11T05:40:55Z"
+    lastObservedState: READY
+  registryService:
+    createdAt: "2026-05-11T05:39:56Z"
+    port: "50051"
+    protocol: grpc
+    serviceName: gitops-stage
+    serviceNamespace: openshift-marketplace
++ echo ''
+
++ echo '--- Subscription Status ---'
+--- Subscription Status ---
++ oc get subscription gitops-operator-konflux -n openshift-gitops-operator -o yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"operators.coreos.com/v1alpha1","kind":"Subscription","metadata":{"annotations":{},"name":"gitops-operator-konflux","namespace":"openshift-gitops-operator"},"spec":{"channel":"latest","name":"openshift-gitops-operator","source":"gitops-stage","sourceNamespace":"openshift-marketplace"}}
+  creationTimestamp: "2026-05-11T05:39:56Z"
+  generation: 1
+  labels:
+    operators.coreos.com/openshift-gitops-operator.openshift-gitops-operator: ""
+  name: gitops-operator-konflux
+  namespace: openshift-gitops-operator
+  resourceVersion: "12356"
+  uid: b376ff9b-3b61-4fb6-9a08-b6b3b9e260b4
+spec:
+  channel: latest
+  name: openshift-gitops-operator
+  source: gitops-stage
+  sourceNamespace: openshift-marketplace
+status:
+  catalogHealth:
+  - catalogSourceRef:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      name: certified-operators
+      namespace: openshift-marketplace
+      resourceVersion: "2026"
+      uid: d6b5b8ef-134d-46c9-b1d5-7df0bbb00392
+    healthy: true
+    lastUpdated: "2026-05-11T05:40:04Z"
+  - catalogSourceRef:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      name: community-operators
+      namespace: openshift-marketplace
+      resourceVersion: "2032"
+      uid: 7a582649-38c8-4f36-85f4-0716e427140c
+    healthy: true
+    lastUpdated: "2026-05-11T05:40:04Z"
+  - catalogSourceRef:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      name: gitops-stage
+      namespace: openshift-marketplace
+      resourceVersion: "10996"
+      uid: fcceacb4-3254-46c3-8551-ccc3569d8259
+    healthy: true
+    lastUpdated: "2026-05-11T05:40:04Z"
+  - catalogSourceRef:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      name: redhat-marketplace
+      namespace: openshift-marketplace
+      resourceVersion: "2051"
+      uid: b9aa47de-0b33-4a37-a2a1-1e7cf85808e6
+    healthy: true
+    lastUpdated: "2026-05-11T05:40:04Z"
+  - catalogSourceRef:
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: CatalogSource
+      name: redhat-operators
+      namespace: openshift-marketplace
+      resourceVersion: "2053"
+      uid: dbef8521-c133-405a-ba74-f2421e05be00
+    healthy: true
+    lastUpdated: "2026-05-11T05:40:04Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T05:40:05Z"
+    message: all available catalogsources are healthy
+    reason: AllCatalogSourcesHealthy
+    status: "False"
+    type: CatalogSourcesUnhealthy
+  currentCSV: openshift-gitops-operator.v1.20.3
+  installPlanGeneration: 1
+  installPlanRef:
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: InstallPlan
+    name: install-hmbc5
+    namespace: openshift-gitops-operator
+    resourceVersion: "11663"
+    uid: b2a722b4-826a-4470-843e-ff0aa1ab0865
+  installedCSV: openshift-gitops-operator.v1.20.3
+  installplan:
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: InstallPlan
+    name: install-hmbc5
+    uuid: b2a722b4-826a-4470-843e-ff0aa1ab0865
+  lastUpdated: "2026-05-11T05:41:33Z"
+  state: AtLatestKnown
++ echo ''
+
++ echo '--- ClusterServiceVersion Status ---'
+--- ClusterServiceVersion Status ---
++ oc get csv openshift-gitops-operator.v1.20.3 -n openshift-gitops-operator -o yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: |-
+      [
+        {
+          "apiVersion": "argoproj.io/v1alpha1",
+          "kind": "AppProject",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": null
+        },
+        {
+          "apiVersion": "argoproj.io/v1alpha1",
+          "kind": "Application",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": null
+        },
+        {
+          "apiVersion": "argoproj.io/v1alpha1",
+          "kind": "ApplicationSet",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": null
+        },
+        {
+          "apiVersion": "argoproj.io/v1alpha1",
+          "kind": "NotificationsConfiguration",
+          "metadata": {
+            "name": "default-notifications-configuration"
+          },
+          "spec": {
+            "templates": {
+              "template.app-created": "email:\n  subject: Application {{.app.metadata.name}} has been created.\nmessage: Application {{.app.metadata.name}} has been created.\nteams:\n  title: Application {{.app.metadata.name}} has been created.",
+              "template.app-deleted": "email:\n  subject: Application {{.app.metadata.name}} has been deleted.\nmessage: Application {{.app.metadata.name}} has been deleted.\nteams:\n  title: Application {{.app.metadata.name}} has been deleted.",
+              "template.app-deployed": "email:\n  subject: New version of an application {{.app.metadata.name}} is up and running.\nmessage: |\n  {{if eq .serviceType \"slack\"}}:white_check_mark:{{end}} Application {{.app.metadata.name}} is now running new version of deployments manifests.\nslack:\n  attachments: |\n    [{\n      \"title\": \"{{ .app.metadata.name}}\",\n      \"title_link\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n      \"color\": \"#18be52\",\n      \"fields\": [\n      {\n        \"title\": \"Sync Status\",\n        \"value\": \"{{.app.status.sync.status}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Repository\",\n        \"value\": \"{{.app.spec.source.repoURL}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Revision\",\n        \"value\": \"{{.app.status.sync.revision}}\",\n        \"short\": true\n      }\n      {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"title\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\",\n        \"short\": true\n      }\n      {{end}}\n      ]\n    }]\n  deliveryPolicy: Post\n  groupingKey: \"\"\n  notifyBroadcast: false\nteams:\n  facts: |\n    [{\n      \"name\": \"Sync Status\",\n      \"value\": \"{{.app.status.sync.status}}\"\n    },\n    {\n      \"name\": \"Repository\",\n      \"value\": \"{{.app.spec.source.repoURL}}\"\n    },\n    {\n      \"name\": \"Revision\",\n      \"value\": \"{{.app.status.sync.revision}}\"\n    }\n    {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"name\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\"\n      }\n    {{end}}\n    ]\n  potentialAction: |-\n    [{\n      \"@type\":\"OpenUri\",\n      \"name\":\"Operation Application\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\"\n      }]\n    },\n    {\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Repository\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.app.spec.source.repoURL | call .repo.RepoURLToHTTPS}}\"\n      }]\n    }]\n  themeColor: '#000080'\n  title: New version of an application {{.app.metadata.name}} is up and running.",
+              "template.app-health-degraded": "email:\n  subject: Application {{.app.metadata.name}} has degraded.\nmessage: |\n  {{if eq .serviceType \"slack\"}}:exclamation:{{end}} Application {{.app.metadata.name}} has degraded.\n  Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.\nslack:\n  attachments: |\n    [{\n      \"title\": \"{{ .app.metadata.name}}\",\n      \"title_link\": \"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n      \"color\": \"#f4c030\",\n      \"fields\": [\n      {\n        \"title\": \"Health Status\",\n        \"value\": \"{{.app.status.health.status}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Repository\",\n        \"value\": \"{{.app.spec.source.repoURL}}\",\n        \"short\": true\n      }\n      {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"title\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\",\n        \"short\": true\n      }\n      {{end}}\n      ]\n    }]\n  deliveryPolicy: Post\n  groupingKey: \"\"\n  notifyBroadcast: false\nteams:\n  facts: |\n    [{\n      \"name\": \"Health Status\",\n      \"value\": \"{{.app.status.health.status}}\"\n    },\n    {\n      \"name\": \"Repository\",\n      \"value\": \"{{.app.spec.source.repoURL}}\"\n    }\n    {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"name\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\"\n      }\n    {{end}}\n    ]\n  potentialAction: |\n    [{\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Application\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\"\n      }]\n    },\n    {\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Repository\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.app.spec.source.repoURL | call .repo.RepoURLToHTTPS}}\"\n      }]\n    }]\n  themeColor: '#FF0000'\n  title: Application {{.app.metadata.name}} has degraded.",
+              "template.app-sync-failed": "email:\n  subject: Failed to sync application {{.app.metadata.name}}.\nmessage: |\n  {{if eq .serviceType \"slack\"}}:exclamation:{{end}}  The sync operation of application {{.app.metadata.name}} has failed at {{.app.status.operationState.finishedAt}} with the following error: {{.app.status.operationState.message}}\n  Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .\nslack:\n  attachments: |\n    [{\n      \"title\": \"{{ .app.metadata.name}}\",\n      \"title_link\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n      \"color\": \"#E96D76\",\n      \"fields\": [\n      {\n        \"title\": \"Sync Status\",\n        \"value\": \"{{.app.status.sync.status}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Repository\",\n        \"value\": \"{{.app.spec.source.repoURL}}\",\n        \"short\": true\n      }\n      {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"title\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\",\n        \"short\": true\n      }\n      {{end}}\n      ]\n    }]\n  deliveryPolicy: Post\n  groupingKey: \"\"\n  notifyBroadcast: false\nteams:\n  facts: |\n    [{\n      \"name\": \"Sync Status\",\n      \"value\": \"{{.app.status.sync.status}}\"\n    },\n    {\n      \"name\": \"Failed at\",\n      \"value\": \"{{.app.status.operationState.finishedAt}}\"\n    },\n    {\n      \"name\": \"Repository\",\n      \"value\": \"{{.app.spec.source.repoURL}}\"\n    }\n    {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"name\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\"\n      }\n    {{end}}\n    ]\n  potentialAction: |-\n    [{\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Operation\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true\"\n      }]\n    },\n    {\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Repository\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.app.spec.source.repoURL | call .repo.RepoURLToHTTPS}}\"\n      }]\n    }]\n  themeColor: '#FF0000'\n  title: Failed to sync application {{.app.metadata.name}}.",
+              "template.app-sync-running": "email:\n  subject: Start syncing application {{.app.metadata.name}}.\nmessage: |\n  The sync operation of application {{.app.metadata.name}} has started at {{.app.status.operationState.startedAt}}.\n  Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .\nslack:\n  attachments: |\n    [{\n      \"title\": \"{{ .app.metadata.name}}\",\n      \"title_link\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n      \"color\": \"#0DADEA\",\n      \"fields\": [\n      {\n        \"title\": \"Sync Status\",\n        \"value\": \"{{.app.status.sync.status}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Repository\",\n        \"value\": \"{{.app.spec.source.repoURL}}\",\n        \"short\": true\n      }\n      {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"title\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\",\n        \"short\": true\n      }\n      {{end}}\n      ]\n    }]\n  deliveryPolicy: Post\n  groupingKey: \"\"\n  notifyBroadcast: false\nteams:\n  facts: |\n    [{\n      \"name\": \"Sync Status\",\n      \"value\": \"{{.app.status.sync.status}}\"\n    },\n    {\n      \"name\": \"Started at\",\n      \"value\": \"{{.app.status.operationState.startedAt}}\"\n    },\n    {\n      \"name\": \"Repository\",\n      \"value\": \"{{.app.spec.source.repoURL}}\"\n    }\n    {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"name\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\"\n      }\n    {{end}}\n    ]\n  potentialAction: |-\n    [{\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Operation\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true\"\n      }]\n    },\n    {\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Repository\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.app.spec.source.repoURL | call .repo.RepoURLToHTTPS}}\"\n      }]\n    }]\n  title: Start syncing application {{.app.metadata.name}}.",
+              "template.app-sync-status-unknown": "email:\n  subject: Application {{.app.metadata.name}} sync status is 'Unknown'\nmessage: |\n  {{if eq .serviceType \"slack\"}}:exclamation:{{end}} Application {{.app.metadata.name}} sync is 'Unknown'.\n  Application details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}.\n  {{if ne .serviceType \"slack\"}}\n  {{range $c := .app.status.conditions}}\n      * {{$c.message}}\n  {{end}}\n  {{end}}\nslack:\n  attachments: |\n    [{\n      \"title\": \"{{ .app.metadata.name}}\",\n      \"title_link\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n      \"color\": \"#E96D76\",\n      \"fields\": [\n      {\n        \"title\": \"Sync Status\",\n        \"value\": \"{{.app.status.sync.status}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Repository\",\n        \"value\": \"{{.app.spec.source.repoURL}}\",\n        \"short\": true\n      }\n      {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"title\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\",\n        \"short\": true\n      }\n      {{end}}\n      ]\n    }]\n  deliveryPolicy: Post\n  groupingKey: \"\"\n  notifyBroadcast: false\nteams:\n  facts: |\n    [{\n      \"name\": \"Sync Status\",\n      \"value\": \"{{.app.status.sync.status}}\"\n    },\n    {\n      \"name\": \"Repository\",\n      \"value\": \"{{.app.spec.source.repoURL}}\"\n    }\n    {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"name\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\"\n      }\n    {{end}}\n    ]\n  potentialAction: |-\n    [{\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Application\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\"\n      }]\n    },\n    {\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Repository\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.app.spec.source.repoURL | call .repo.RepoURLToHTTPS}}\"\n      }]\n    }]\n  title: Application {{.app.metadata.name}} sync status is 'Unknown'",
+              "template.app-sync-succeeded": "email:\n  subject: Application {{.app.metadata.name}} has been successfully synced.\nmessage: |\n  {{if eq .serviceType \"slack\"}}:white_check_mark:{{end}} Application {{.app.metadata.name}} has been successfully synced at {{.app.status.operationState.finishedAt}}.\n  Sync operation details are available at: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true .\nslack:\n  attachments: |\n    [{\n      \"title\": \"{{ .app.metadata.name}}\",\n      \"title_link\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n      \"color\": \"#18be52\",\n      \"fields\": [\n      {\n        \"title\": \"Sync Status\",\n        \"value\": \"{{.app.status.sync.status}}\",\n        \"short\": true\n      },\n      {\n        \"title\": \"Repository\",\n        \"value\": \"{{.app.spec.source.repoURL}}\",\n        \"short\": true\n      }\n      {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"title\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\",\n        \"short\": true\n      }\n      {{end}}\n      ]\n    }]\n  deliveryPolicy: Post\n  groupingKey: \"\"\n  notifyBroadcast: false\nteams:\n  facts: |\n    [{\n      \"name\": \"Sync Status\",\n      \"value\": \"{{.app.status.sync.status}}\"\n    },\n    {\n      \"name\": \"Synced at\",\n      \"value\": \"{{.app.status.operationState.finishedAt}}\"\n    },\n    {\n      \"name\": \"Repository\",\n      \"value\": \"{{.app.spec.source.repoURL}}\"\n    }\n    {{range $index, $c := .app.status.conditions}}\n      {{if not $index}},{{end}}\n      {{if $index}},{{end}}\n      {\n        \"name\": \"{{$c.type}}\",\n        \"value\": \"{{$c.message}}\"\n      }\n    {{end}}\n    ]\n  potentialAction: |-\n    [{\n      \"@type\":\"OpenUri\",\n      \"name\":\"Operation Details\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}?operation=true\"\n      }]\n    },\n    {\n      \"@type\":\"OpenUri\",\n      \"name\":\"Open Repository\",\n      \"targets\":[{\n        \"os\":\"default\",\n        \"uri\":\"{{.app.spec.source.repoURL | call .repo.RepoURLToHTTPS}}\"\n      }]\n    }]\n  themeColor: '#000080'\n  title: Application {{.app.metadata.name}} has been successfully synced"
+            },
+            "triggers": {
+              "trigger.on-created": "- description: Application is created.\n  oncePer: app.metadata.name\n  send:\n  - app-created\n  when: \"true\"",
+              "trigger.on-deleted": "- description: Application is deleted.\n  oncePer: app.metadata.name\n  send:\n  - app-deleted\n  when: app.metadata.deletionTimestamp != nil",
+              "trigger.on-deployed": "- description: Application is synced and healthy. Triggered once per commit.\n  oncePer: app.status.operationState.syncResult.revision\n  send:\n  - app-deployed\n  when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status\n      == 'Healthy'",
+              "trigger.on-health-degraded": "- description: Application has degraded\n  send:\n  - app-health-degraded\n  when: app.status.health.status == 'Degraded'",
+              "trigger.on-sync-failed": "- description: Application syncing has failed\n  send:\n  - app-sync-failed\n  when: app.status.operationState.phase in ['Error', 'Failed']",
+              "trigger.on-sync-running": "- description: Application is being synced\n  send:\n  - app-sync-running\n  when: app.status.operationState.phase in ['Running']",
+              "trigger.on-sync-status-unknown": "- description: Application status is 'Unknown'\n  send:\n  - app-sync-status-unknown\n  when: app.status.sync.status == 'Unknown'",
+              "trigger.on-sync-succeeded": "- description: Application syncing has succeeded\n  send:\n  - app-sync-succeeded\n  when: app.status.operationState.phase in ['Succeeded']"
+            }
+          }
+        },
+        {
+          "apiVersion": "argoproj.io/v1alpha1",
+          "kind": "Rollout",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": null
+        },
+        {
+          "apiVersion": "argoproj.io/v1alpha1",
+          "kind": "RolloutManager",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": null
+        },
+        {
+          "apiVersion": "argoproj.io/v1beta1",
+          "kind": "ArgoCD",
+          "metadata": {
+            "name": "argocd"
+          },
+          "spec": {
+            "controller": {
+              "resources": {
+                "limits": {
+                  "cpu": "2000m",
+                  "memory": "2048Mi"
+                },
+                "requests": {
+                  "cpu": "250m",
+                  "memory": "1024Mi"
+                }
+              }
+            },
+            "ha": {
+              "enabled": false,
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "250m",
+                  "memory": "128Mi"
+                }
+              }
+            },
+            "rbac": {
+              "defaultPolicy": "",
+              "policy": "g, system:cluster-admins, role:admin\n",
+              "scopes": "[groups]"
+            },
+            "redis": {
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "250m",
+                  "memory": "128Mi"
+                }
+              }
+            },
+            "repo": {
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1024Mi"
+                },
+                "requests": {
+                  "cpu": "250m",
+                  "memory": "256Mi"
+                }
+              }
+            },
+            "resourceExclusions": "- apiGroups:\n  - \"\"\n  - discovery.k8s.io\n  kinds:\n  - Endpoints\n  - EndpointSlice\n- apiGroups:\n  - apiregistration.k8s.io\n  kinds:\n  - APIService\n- apiGroups:\n  - coordination.k8s.io\n  kinds:\n  - Lease\n- apiGroups:\n  - authentication.k8s.io\n  - authorization.k8s.io\n  kinds:\n  - SelfSubjectReview\n  - TokenReview\n  - LocalSubjectAccessReview\n  - SelfSubjectAccessReview\n  - SelfSubjectRulesReview\n  - SubjectAccessReview\n- apiGroups:\n  - certificates.k8s.io\n  kinds:\n  - CertificateSigningRequest\n- apiGroups:\n  - cert-manager.io\n  kinds:\n  - CertificateRequest\n- apiGroups:\n  - cilium.io\n  kinds:\n  - CiliumIdentity\n  - CiliumEndpoint\n  - CiliumEndpointSlice\n- apiGroups:\n  - kyverno.io\n  - reports.kyverno.io\n  - wgpolicyk8s.io\n  kinds:\n  - PolicyReport\n  - ClusterPolicyReport\n  - EphemeralReport\n  - ClusterEphemeralReport\n  - AdmissionReport\n  - ClusterAdmissionReport\n  - BackgroundScanReport\n  - ClusterBackgroundScanReport\n  - UpdateRequest\n- apiGroups:\n  - tekton.dev\n  clusters:\n  - '*'\n  kinds:\n  - TaskRun\n  - PipelineRun\n",
+            "server": {
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "125m",
+                  "memory": "128Mi"
+                }
+              },
+              "route": {
+                "enabled": true
+              }
+            },
+            "sso": {
+              "dex": {
+                "openShiftOAuth": true,
+                "resources": {
+                  "limits": {
+                    "cpu": "500m",
+                    "memory": "256Mi"
+                  },
+                  "requests": {
+                    "cpu": "250m",
+                    "memory": "128Mi"
+                  }
+                }
+              },
+              "provider": "dex"
+            }
+          }
+        },
+        {
+          "apiVersion": "pipelines.openshift.io/v1alpha1",
+          "kind": "GitopsService",
+          "metadata": {
+            "name": "gitopsservice-sample"
+          },
+          "spec": null
+        }
+      ]
+    capabilities: Deep Insights
+    console.openshift.io/plugins: '["gitops-plugin"]'
+    containerImage: registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+    createdAt: "2026-03-04T06:59:29Z"
+    description: Enables teams to adopt GitOps principles for managing cluster configurations
+      and application delivery across hybrid multi-cluster Kubernetes environments.
+    features.operators.openshift.io/cnf: "false"
+    features.operators.openshift.io/cni: "false"
+    features.operators.openshift.io/csi: "false"
+    features.operators.openshift.io/disconnected: "true"
+    features.operators.openshift.io/fips-compliant: "true"
+    features.operators.openshift.io/proxy-aware: "true"
+    features.operators.openshift.io/tls-profiles: "false"
+    features.operators.openshift.io/token-auth-aws: "false"
+    features.operators.openshift.io/token-auth-azure: "false"
+    features.operators.openshift.io/token-auth-gcp: "false"
+    olm.operatorGroup: gitops-operator-group
+    olm.operatorNamespace: openshift-gitops-operator
+    olm.skipRange: ""
+    olm.targetNamespaces: ""
+    operatorframework.io/cluster-monitoring: "true"
+    operatorframework.io/properties: '{"properties":[{"type":"olm.gvk","value":{"group":"argocd-image-updater.argoproj.io","kind":"ImageUpdater","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"AnalysisRun","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"AnalysisTemplate","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"AppProject","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"Application","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"ApplicationSet","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"ArgoCD","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"ArgoCD","version":"v1beta1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"ClusterAnalysisTemplate","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"Experiment","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"NamespaceManagement","version":"v1beta1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"NotificationsConfiguration","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"Rollout","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"argoproj.io","kind":"RolloutManager","version":"v1alpha1"}},{"type":"olm.gvk","value":{"group":"pipelines.openshift.io","kind":"GitopsService","version":"v1alpha1"}},{"type":"olm.package","value":{"packageName":"openshift-gitops-operator","version":"1.20.3"}}]}'
+    operatorframework.io/suggested-namespace: openshift-gitops-operator
+    operators.openshift.io/infrastructure-features: '["disconnected"]'
+    operators.openshift.io/must-gather-image: registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+    operators.openshift.io/valid-subscription: '["OpenShift Container Platform", "OpenShift
+      Platform Plus"]'
+    operators.operatorframework.io/builder: operator-sdk-v1.35.0
+    operators.operatorframework.io/internal-objects: '["gitopsservices.pipelines.openshift.io"]'
+    operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
+    repository: https://github.com/redhat-developer/gitops-operator
+    support: Red Hat
+  creationTimestamp: "2026-05-11T05:41:15Z"
+  finalizers:
+  - operators.coreos.com/csv-cleanup
+  generation: 1
+  labels:
+    olm.managed: "true"
+    operatorframework.io/arch.amd64: supported
+    operatorframework.io/arch.arm64: supported
+    operatorframework.io/arch.ppc64le: supported
+    operatorframework.io/arch.s390x: supported
+    operatorframework.io/os.linux: supported
+    operators.coreos.com/openshift-gitops-operator.openshift-gitops-operator: ""
+  name: openshift-gitops-operator.v1.20.3
+  namespace: openshift-gitops-operator
+  resourceVersion: "12367"
+  uid: bcf19060-0927-48c7-9169-41a960023402
+spec:
+  apiservicedefinitions: {}
+  cleanup:
+    enabled: false
+  customresourcedefinitions:
+    owned:
+    - description: An AnalysisRun is an instantiation of an AnalysisTemplate. AnalysisRuns
+        are like Jobs in that they eventually complete.
+      displayName: AnalysisRun
+      kind: AnalysisRun
+      name: analysisruns.argoproj.io
+      version: v1alpha1
+    - description: An AnalysisTemplate is a template spec which defines how to perform
+        a canary analysis, such as the metrics, its frequency, and the values which
+        are considered successful or failed.
+      displayName: AnalysisTemplate
+      kind: AnalysisTemplate
+      name: analysistemplates.argoproj.io
+      version: v1alpha1
+    - description: An Application is a group of Kubernetes resources as defined by
+        a manifest.
+      displayName: Application
+      kind: Application
+      name: applications.argoproj.io
+      version: v1alpha1
+    - description: ApplicationSet is the representation of an ApplicationSet controller
+        deployment.
+      displayName: ApplicationSet
+      kind: ApplicationSet
+      name: applicationsets.argoproj.io
+      version: v1alpha1
+    - description: An AppProject is a logical grouping of Argo CD Applications.
+      displayName: AppProject
+      kind: AppProject
+      name: appprojects.argoproj.io
+      version: v1alpha1
+    - kind: ArgoCD
+      name: argocds.argoproj.io
+      version: v1alpha1
+    - description: Argo CD is the representation of an Argo CD deployment.
+      displayName: Argo CD
+      kind: ArgoCD
+      name: argocds.argoproj.io
+      resources:
+      - kind: ArgoCD
+        name: ""
+        version: v1beta1
+      - kind: ConfigMap
+        name: ""
+        version: v1
+      - kind: CronJob
+        name: ""
+        version: v1
+      - kind: Deployment
+        name: ""
+        version: v1
+      - kind: Ingress
+        name: ""
+        version: v1
+      - kind: Job
+        name: ""
+        version: v1
+      - kind: PersistentVolumeClaim
+        name: ""
+        version: v1
+      - kind: Pod
+        name: ""
+        version: v1
+      - kind: Prometheus
+        name: ""
+        version: v1
+      - kind: ReplicaSet
+        name: ""
+        version: v1
+      - kind: Route
+        name: ""
+        version: v1
+      - kind: Secret
+        name: ""
+        version: v1
+      - kind: Service
+        name: ""
+        version: v1
+      - kind: ServiceMonitor
+        name: ""
+        version: v1
+      - kind: StatefulSet
+        name: ""
+        version: v1
+      version: v1beta1
+    - description: A ClusterAnalysisTemplate is like an AnalysisTemplate,but it is
+        not limited to its namespace. It can be used by any Rollout throughout the
+        cluster.
+      displayName: ClusterAnalysisTemplate
+      kind: ClusterAnalysisTemplate
+      name: clusteranalysistemplates.argoproj.io
+      version: v1alpha1
+    - description: An Experiment is limited run of one or more ReplicaSets for the
+        purposes of analysis. Experiments typically run for a pre-determined duration,
+        but can also run indefinitely until stopped.
+      displayName: Experiment
+      kind: Experiment
+      name: experiments.argoproj.io
+      version: v1alpha1
+    - description: GitopsService is the Schema for the gitopsservices API
+      displayName: Gitops Service
+      kind: GitopsService
+      name: gitopsservices.pipelines.openshift.io
+      version: v1alpha1
+    - description: ImageUpdater is the Schema for the imageupdaters API
+      displayName: ImageUpdater
+      kind: ImageUpdater
+      name: imageupdaters.argocd-image-updater.argoproj.io
+      version: v1alpha1
+    - kind: NamespaceManagement
+      name: namespacemanagements.argoproj.io
+      version: v1beta1
+    - description: NotificationsConfigurations contains the notification template
+        used to generate notifications that notify users about important changes in
+        the application state.
+      displayName: NotificationsConfiguration
+      kind: NotificationsConfiguration
+      name: notificationsconfigurations.argoproj.io
+      version: v1alpha1
+    - description: A controller for managing Argo Rollouts
+      displayName: RolloutManager
+      kind: RolloutManager
+      name: rolloutmanagers.argoproj.io
+      version: v1alpha1
+    - kind: Rollout
+      name: rollouts.argoproj.io
+      version: v1alpha1
+  description: "Red Hat OpenShift GitOps is a declarative continuous delivery platform
+    based on [Argo CD](https://argoproj.github.io/argo-cd/). It enables teams to adopt
+    GitOps principles for managing cluster configurations and automating secure and
+    repeatable application delivery across hybrid multi-cluster Kubernetes environments.
+    Following GitOps and infrastructure as code principles, you can store the configuration
+    of clusters and applications in Git repositories and use Git workflows to roll
+    them out to the target clusters.\n\n## Features\n* Automated install and upgrades
+    of Argo CD\n* Manual and automated configuration sync from Git repositories to
+    target OpenShift and Kubernetes clusters\n* Support for the Helm and Kustomize
+    templating tools\n* Configuration drift detection and visualization on live clusters\n*
+    Audit trails of rollouts to the clusters\n* Monitoring and logging integration
+    with OpenShift\n##Components\n* Argo CD v3.3.9\n\n## How to Install \nAfter installing
+    the OpenShift GitOps operator, an instance  of Argo CD is installed in the `openshift-gitops`
+    namespace which has sufficient privileges for managing cluster configurations.
+    You can create additional Argo CD instances using the `ArgoCD` custom resource
+    within the desired namespaces.\n```yaml\napiVersion: argoproj.io/v1beta1\nkind:
+    ArgoCD\nmetadata:\n  name: argocd\nspec:\n  server:\n    route:\n      enabled:
+    true\n```\n\nOpenShift GitOps is a layered product on top of OpenShift that enables
+    teams to adopt GitOps principles for managing cluster configurations and automating
+    secure and repeatable application delivery across hybrid multi-cluster Kubernetes
+    environments. OpenShift GitOps is built around Argo CD as the core upstream project
+    and assists customers to establish an end-to-end application delivery workflow
+    on GitOps principles.\n"
+  displayName: Red Hat OpenShift GitOps
+  icon:
+  - base64data: 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
+    mediatype: image/png
+  install:
+    spec:
+      clusterPermissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          - endpoints
+          - events
+          - namespaces
+          - persistentvolumeclaims
+          - pods
+          - secrets
+          - serviceaccounts
+          - services
+          - services/finalizers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - deployments
+          - podtemplates
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - pods/eviction
+          verbs:
+          - create
+        - apiGroups:
+          - ""
+          resources:
+          - pods/log
+          verbs:
+          - get
+        - apiGroups:
+          - ""
+          resources:
+          - resourcequotas
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - apiextensions.k8s.io
+          resources:
+          - customresourcedefinitions
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - apiregistration.k8s.io
+          resources:
+          - apiservices
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - appmesh.k8s.aws
+          resources:
+          - virtualnodes
+          - virtualrouters
+          verbs:
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - appmesh.k8s.aws
+          resources:
+          - virtualservices
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - daemonsets
+          - deployments
+          - podtemplates
+          - replicasets
+          - statefulsets
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - apps
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - apps
+          resourceNames:
+          - gitops-operator
+          resources:
+          - deployments/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - apps.openshift.io
+          resources:
+          - '*'
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - argoproj.io
+          resources:
+          - analysisruns
+          - analysisruns/finalizers
+          - analysistemplates
+          - clusteranalysistemplates
+          - experiments
+          - experiments/finalizers
+          - namespacemanagements
+          - namespacemanagements/status
+          - rollouts
+          - rollouts/finalizers
+          - rollouts/scale
+          - rollouts/status
+          verbs:
+          - create
+          - delete
+          - deletecollection
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - argoproj.io
+          resources:
+          - applications
+          - appprojects
+          - argocds
+          - argocds/finalizers
+          - argocds/status
+          - rolloutmanagers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - argoproj.io
+          resources:
+          - notificationsconfigurations
+          - notificationsconfigurations/finalizers
+          verbs:
+          - '*'
+        - apiGroups:
+          - argoproj.io
+          resources:
+          - rolloutmanagers/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - argoproj.io
+          resources:
+          - rolloutmanagers/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - autoscaling
+          resources:
+          - horizontalpodautoscalers
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - batch
+          resources:
+          - cronjobs
+          - jobs
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - config.openshift.io
+          resources:
+          - authentications
+          - clusterversions
+          - ingresses
+          verbs:
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - console.openshift.io
+          resources:
+          - consoleclidownloads
+          verbs:
+          - create
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - console.openshift.io
+          resources:
+          - consolelinks
+          - consoleplugins
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - create
+          - get
+          - update
+        - apiGroups:
+          - elbv2.k8s.aws
+          resources:
+          - targetgroupbindings
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - extensions
+          resources:
+          - ingresses
+          verbs:
+          - create
+          - get
+          - list
+          - patch
+          - watch
+        - apiGroups:
+          - getambassador.io
+          - x.getambassador.io
+          resources:
+          - ambassadormappings
+          - mappings
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - update
+          - watch
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - prometheuses
+          - prometheusrules
+          - servicemonitors
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - networking.istio.io
+          resources:
+          - destinationrules
+          - virtualservices
+          verbs:
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - networking.k8s.io
+          resources:
+          - ingresses
+          - networkpolicies
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - oauth.openshift.io
+          resources:
+          - oauthclients
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - operators.coreos.com
+          resources:
+          - clusterserviceversions
+          - operatorgroups
+          - subscriptions
+          verbs:
+          - create
+          - get
+          - list
+          - watch
+        - apiGroups:
+          - pipelines.openshift.io
+          resources:
+          - '*'
+          - gitopsservices
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - pipelines.openshift.io
+          resources:
+          - gitopsservices/finalizers
+          verbs:
+          - update
+        - apiGroups:
+          - pipelines.openshift.io
+          resources:
+          - gitopsservices/status
+          verbs:
+          - get
+          - patch
+          - update
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - '*'
+          - clusterrolebindings
+          - clusterroles
+          verbs:
+          - bind
+          - create
+          - delete
+          - deletecollection
+          - escalate
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - rbac.authorization.k8s.io
+          resources:
+          - rolebindings
+          - roles
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - route.openshift.io
+          resources:
+          - '*'
+          - routes
+          - routes/custom-host
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - split.smi-spec.io
+          resources:
+          - trafficsplits
+          verbs:
+          - create
+          - get
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - template.openshift.io
+          resources:
+          - templateconfigs
+          - templateinstances
+          - templates
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - traefik.containo.us
+          resources:
+          - traefikservices
+          verbs:
+          - get
+          - update
+          - watch
+        - nonResourceURLs:
+          - /metrics
+          verbs:
+          - get
+        - apiGroups:
+          - authentication.k8s.io
+          resources:
+          - tokenreviews
+          verbs:
+          - create
+        - apiGroups:
+          - authorization.k8s.io
+          resources:
+          - subjectaccessreviews
+          verbs:
+          - create
+        serviceAccountName: openshift-gitops-operator-controller-manager
+      deployments:
+      - label:
+          control-plane: gitops-operator
+        name: openshift-gitops-operator-controller-manager
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              control-plane: gitops-operator
+          strategy: {}
+          template:
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/default-container: manager
+              creationTimestamp: null
+              labels:
+                control-plane: gitops-operator
+            spec:
+              containers:
+              - args:
+                - --health-probe-bind-address=:8081
+                - --metrics-bind-address=127.0.0.1:8080
+                - --leader-elect
+                command:
+                - /usr/local/bin/manager
+                env:
+                - name: ARGOCD_CLUSTER_CONFIG_NAMESPACES
+                  value: openshift-gitops
+                - name: CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES
+                  value: openshift-gitops
+                - name: OPERATOR_NAME
+                  value: gitops-operator
+                - name: LABEL_SELECTOR
+                - name: ENABLE_CONVERSION_WEBHOOK
+                  value: "true"
+                - name: RELATED_IMAGE_ARGOCD_DEX_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+                - name: ARGOCD_DEX_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+                - name: RELATED_IMAGE_BACKEND_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+                - name: BACKEND_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+                - name: RELATED_IMAGE_ARGOCD_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+                - name: ARGOCD_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+                - name: ARGOCD_REPOSERVER_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+                - name: RELATED_IMAGE_ARGOCD_REDIS_IMAGE
+                  value: registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+                - name: ARGOCD_REDIS_IMAGE
+                  value: registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+                - name: ARGOCD_REDIS_HA_IMAGE
+                  value: registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+                - name: RELATED_IMAGE_ARGOCD_REDIS_HA_PROXY_IMAGE
+                  value: registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+                - name: ARGOCD_REDIS_HA_PROXY_IMAGE
+                  value: registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+                - name: RELATED_IMAGE_GITOPS_CONSOLE_PLUGIN_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+                - name: GITOPS_CONSOLE_PLUGIN_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+                - name: RELATED_IMAGE_ARGOCD_EXTENSION_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+                - name: ARGOCD_EXTENSION_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+                - name: RELATED_IMAGE_ARGO_ROLLOUTS_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+                - name: ARGO_ROLLOUTS_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+                - name: RELATED_IMAGE_MUST_GATHER_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+                - name: RELATED_IMAGE_KUBE_RBAC_PROXY_IMAGE
+                  value: registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+                - name: ARGOCD_PRINCIPAL_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+                - name: RELATED_IMAGE_ARGOCD_PRINCIPAL_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+                - name: ARGOCD_AGENT_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+                - name: RELATED_IMAGE_ARGOCD_AGENT_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+                - name: ARGOCD_IMAGE_UPDATER_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+                - name: RELATED_IMAGE_ARGOCD_IMAGE_UPDATER_IMAGE
+                  value: registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+                image: registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+                livenessProbe:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+                name: manager
+                ports:
+                - containerPort: 9443
+                  name: webhook-server
+                  protocol: TCP
+                readinessProbe:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                resources: {}
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                  readOnlyRootFilesystem: true
+                  runAsNonRoot: true
+              - args:
+                - --secure-listen-address=0.0.0.0:8443
+                - --upstream=http://127.0.0.1:8080
+                - --tls-cert-file=/etc/tls/private/tls.crt
+                - --tls-private-key-file=/etc/tls/private/tls.key
+                - --logtostderr=true
+                - --allow-paths=/metrics
+                - --http2-disable
+                image: registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+                name: kube-rbac-proxy
+                ports:
+                - containerPort: 8443
+                  name: metrics
+                  protocol: TCP
+                resources:
+                  limits:
+                    cpu: 500m
+                    memory: 128Mi
+                  requests:
+                    cpu: 1m
+                    memory: 15Mi
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                    - ALL
+                volumeMounts:
+                - mountPath: /etc/tls/private
+                  name: kube-rbac-proxy-tls
+                  readOnly: true
+              securityContext:
+                runAsNonRoot: true
+              serviceAccountName: openshift-gitops-operator-controller-manager
+              terminationGracePeriodSeconds: 10
+              volumes:
+              - name: kube-rbac-proxy-tls
+                secret:
+                  secretName: kube-rbac-proxy-tls
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - configmaps
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - coordination.k8s.io
+          resources:
+          - leases
+          verbs:
+          - get
+          - list
+          - watch
+          - create
+          - update
+          - patch
+          - delete
+        - apiGroups:
+          - ""
+          resources:
+          - events
+          verbs:
+          - create
+          - patch
+        serviceAccountName: openshift-gitops-operator-controller-manager
+    strategy: deployment
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - devtools
+  - gitops
+  - pipelines
+  maintainers:
+  - email: team-gitops@redhat.com
+    name: OpenShift GitOps Team
+  maturity: GA
+  provider:
+    name: Red Hat Inc
+  relatedImages:
+  - image: registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+    name: manager
+  - image: registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+    name: kube-rbac-proxy
+  - image: registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+    name: kube_rbac_proxy_image
+  - image: registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+    name: argocd_dex_image
+  - image: registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+    name: backend_image
+  - image: registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+    name: argocd_image
+  - image: registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+    name: argocd_redis_image
+  - image: registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+    name: argocd_redis_ha_proxy_image
+  - image: registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+    name: gitops_console_plugin_image
+  - image: registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+    name: argocd_extension_image
+  - image: registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+    name: argo_rollouts_image
+  - image: registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+    name: must_gather_image
+  - image: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+    name: argocd_principal_image
+  - image: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+    name: argocd_agent_image
+  - image: registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+    name: argocd_image_updater_image
+  replaces: openshift-gitops-operator.v1.20.2
+  version: 1.20.3
+  webhookdefinitions:
+  - admissionReviewVersions:
+    - v1alpha1
+    - v1beta1
+    containerPort: 443
+    conversionCRDs:
+    - argocds.argoproj.io
+    deploymentName: openshift-gitops-operator-controller-manager
+    generateName: cargocds.kb.io
+    sideEffects: None
+    targetPort: 9443
+    type: ConversionWebhook
+    webhookPath: /convert
+status:
+  certsLastUpdated: "2026-05-11T05:41:25Z"
+  certsRotateAt: "2028-05-09T05:41:21Z"
+  cleanup: {}
+  conditions:
+  - lastTransitionTime: "2026-05-11T05:41:16Z"
+    lastUpdateTime: "2026-05-11T05:41:16Z"
+    message: requirements not yet checked
+    phase: Pending
+    reason: RequirementsUnknown
+  - lastTransitionTime: "2026-05-11T05:41:16Z"
+    lastUpdateTime: "2026-05-11T05:41:16Z"
+    message: one or more requirements couldn't be found
+    phase: Pending
+    reason: RequirementsNotMet
+  - lastTransitionTime: "2026-05-11T05:41:20Z"
+    lastUpdateTime: "2026-05-11T05:41:20Z"
+    message: all requirements found, attempting install
+    phase: InstallReady
+    reason: AllRequirementsMet
+  - lastTransitionTime: "2026-05-11T05:41:21Z"
+    lastUpdateTime: "2026-05-11T05:41:21Z"
+    message: waiting for install components to report healthy
+    phase: Installing
+    reason: InstallSucceeded
+  - lastTransitionTime: "2026-05-11T05:41:21Z"
+    lastUpdateTime: "2026-05-11T05:41:25Z"
+    message: 'installing: waiting for deployment openshift-gitops-operator-controller-manager
+      to become ready: deployment "openshift-gitops-operator-controller-manager" not
+      available: Deployment does not have minimum availability.'
+    phase: Installing
+    reason: InstallWaiting
+  - lastTransitionTime: "2026-05-11T05:41:28Z"
+    lastUpdateTime: "2026-05-11T05:41:28Z"
+    message: 'Webhook install failed: conversionWebhook not ready'
+    phase: InstallReady
+    reason: InstallWaiting
+  - lastTransitionTime: "2026-05-11T05:41:29Z"
+    lastUpdateTime: "2026-05-11T05:41:29Z"
+    message: waiting for install components to report healthy
+    phase: Installing
+    reason: InstallSucceeded
+  - lastTransitionTime: "2026-05-11T05:41:29Z"
+    lastUpdateTime: "2026-05-11T05:41:31Z"
+    message: 'installing: waiting for deployment openshift-gitops-operator-controller-manager
+      to become ready: deployment "openshift-gitops-operator-controller-manager" not
+      available: Deployment does not have minimum availability.'
+    phase: Installing
+    reason: InstallWaiting
+  - lastTransitionTime: "2026-05-11T05:41:33Z"
+    lastUpdateTime: "2026-05-11T05:41:33Z"
+    message: install strategy completed with no errors
+    phase: Succeeded
+    reason: InstallSucceeded
+  lastTransitionTime: "2026-05-11T05:41:33Z"
+  lastUpdateTime: "2026-05-11T05:41:33Z"
+  message: install strategy completed with no errors
+  phase: Succeeded
+  reason: InstallSucceeded
+  requirementStatus:
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: analysisruns.argoproj.io
+    status: Present
+    uuid: d16393d4-2c73-44bb-a1c3-177513caaa6c
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: analysistemplates.argoproj.io
+    status: Present
+    uuid: 10526f67-6562-46e3-9e91-3839b51c06b9
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: applications.argoproj.io
+    status: Present
+    uuid: 5a3c2a6c-c057-4bf3-985a-15aa75337b60
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: applicationsets.argoproj.io
+    status: Present
+    uuid: 544ace1e-4b3a-4590-8bda-fc525dc37214
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: appprojects.argoproj.io
+    status: Present
+    uuid: aaa1a0c0-50e2-4aee-be32-1d1a51c6af0a
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: argocds.argoproj.io
+    status: Present
+    uuid: fce446a2-b59b-4ee7-baef-6e599a20fa43
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: clusteranalysistemplates.argoproj.io
+    status: Present
+    uuid: 75cc39a8-d328-446a-9ff2-4944f8b24bb5
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: experiments.argoproj.io
+    status: Present
+    uuid: c61597f1-6eb1-42b4-bae8-f4ef250816de
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: gitopsservices.pipelines.openshift.io
+    status: Present
+    uuid: d424d16d-dccc-4465-8cfb-ee1f6d7b5796
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: imageupdaters.argocd-image-updater.argoproj.io
+    status: Present
+    uuid: c1cc4d84-a8ef-494b-918a-cde15f42d125
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: namespacemanagements.argoproj.io
+    status: Present
+    uuid: d43d4fd2-4f0a-4e86-bb14-f44da81d8215
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: notificationsconfigurations.argoproj.io
+    status: Present
+    uuid: d7be8881-d0e7-4f0f-be65-077ffeafb6fc
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: rolloutmanagers.argoproj.io
+    status: Present
+    uuid: 76ad6670-dde2-4c9a-99c7-743924f36ddf
+    version: v1
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    message: CRD is present and Established condition is true
+    name: rollouts.argoproj.io
+    status: Present
+    uuid: 29b32657-29aa-4660-8194-c6cb69f7eff1
+    version: v1
+  - dependents:
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":[""],"resources":["configmaps","endpoints","events","namespaces","persistentvolumeclaims","pods","secrets","serviceaccounts","services","services/finalizers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list","watch"],"apiGroups":[""],"resources":["deployments","podtemplates"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create"],"apiGroups":[""],"resources":["pods/eviction"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get"],"apiGroups":[""],"resources":["pods/log"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","update","watch"],"apiGroups":[""],"resources":["resourcequotas"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list","watch"],"apiGroups":["apiextensions.k8s.io"],"resources":["customresourcedefinitions"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list"],"apiGroups":["apiregistration.k8s.io"],"resources":["apiservices"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list","patch","update","watch"],"apiGroups":["appmesh.k8s.aws"],"resources":["virtualnodes","virtualrouters"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list","watch"],"apiGroups":["appmesh.k8s.aws"],"resources":["virtualservices"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["apps"],"resources":["daemonsets","deployments","podtemplates","replicasets","statefulsets"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["update"],"apiGroups":["apps"],"resources":["deployments/finalizers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["update"],"apiGroups":["apps"],"resources":["deployments/finalizers"],"resourceNames":["gitops-operator"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["apps.openshift.io"],"resources":["*"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","deletecollection","get","list","patch","update","watch"],"apiGroups":["argoproj.io"],"resources":["analysisruns","analysisruns/finalizers","analysistemplates","clusteranalysistemplates","experiments","experiments/finalizers","namespacemanagements","namespacemanagements/status","rollouts","rollouts/finalizers","rollouts/scale","rollouts/status"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["argoproj.io"],"resources":["applications","appprojects","argocds","argocds/finalizers","argocds/status","rolloutmanagers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["*"],"apiGroups":["argoproj.io"],"resources":["notificationsconfigurations","notificationsconfigurations/finalizers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["update"],"apiGroups":["argoproj.io"],"resources":["rolloutmanagers/finalizers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","patch","update"],"apiGroups":["argoproj.io"],"resources":["rolloutmanagers/status"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["autoscaling"],"resources":["horizontalpodautoscalers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["batch"],"resources":["cronjobs","jobs"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list","watch"],"apiGroups":["config.openshift.io"],"resources":["authentications","clusterversions","ingresses"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","get","list","patch","update","watch"],"apiGroups":["console.openshift.io"],"resources":["consoleclidownloads"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["console.openshift.io"],"resources":["consolelinks","consoleplugins"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","get","update"],"apiGroups":["coordination.k8s.io"],"resources":["leases"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list"],"apiGroups":["elbv2.k8s.aws"],"resources":["targetgroupbindings"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","get","list","patch","watch"],"apiGroups":["extensions"],"resources":["ingresses"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","update","watch"],"apiGroups":["getambassador.io","x.getambassador.io"],"resources":["ambassadormappings","mappings"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["monitoring.coreos.com"],"resources":["prometheuses","prometheusrules","servicemonitors"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","list","patch","update","watch"],"apiGroups":["networking.istio.io"],"resources":["destinationrules","virtualservices"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["networking.k8s.io"],"resources":["ingresses","networkpolicies"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["oauth.openshift.io"],"resources":["oauthclients"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","get","list","watch"],"apiGroups":["operators.coreos.com"],"resources":["clusterserviceversions","operatorgroups","subscriptions"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["pipelines.openshift.io"],"resources":["*","gitopsservices"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["update"],"apiGroups":["pipelines.openshift.io"],"resources":["gitopsservices/finalizers"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","patch","update"],"apiGroups":["pipelines.openshift.io"],"resources":["gitopsservices/status"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["bind","create","delete","deletecollection","escalate","get","list","patch","update","watch"],"apiGroups":["rbac.authorization.k8s.io"],"resources":["*","clusterrolebindings","clusterroles"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["rbac.authorization.k8s.io"],"resources":["rolebindings","roles"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["route.openshift.io"],"resources":["*","routes","routes/custom-host"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","get","patch","update","watch"],"apiGroups":["split.smi-spec.io"],"resources":["trafficsplits"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create","delete","get","list","patch","update","watch"],"apiGroups":["template.openshift.io"],"resources":["templateconfigs","templateinstances","templates"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get","update","watch"],"apiGroups":["traefik.containo.us"],"resources":["traefikservices"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["get"],"nonResourceURLs":["/metrics"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create"],"apiGroups":["authentication.k8s.io"],"resources":["tokenreviews"]}
+      status: Satisfied
+      version: v1
+    - group: rbac.authorization.k8s.io
+      kind: PolicyRule
+      message: cluster rule:{"verbs":["create"],"apiGroups":["authorization.k8s.io"],"resources":["subjectaccessreviews"]}
+      status: Satisfied
+      version: v1
+    group: ""
+    kind: ServiceAccount
+    message: ""
+    name: openshift-gitops-operator-controller-manager
+    status: Present
+    version: v1
++ echo ''
+
++ echo '--- All Pods in openshift-gitops-operator ---'
+--- All Pods in openshift-gitops-operator ---
++ oc get pods -n openshift-gitops-operator -o wide
+NAME                                                            READY   STATUS    RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+openshift-gitops-operator-controller-manager-7745b8b788-ndl5n   2/2     Running   0          19s   10.133.0.27   ip-10-0-143-39.ec2.internal   <none>           <none>
++ echo ''
+
++ echo '--- Events in openshift-gitops-operator ---'
+--- Events in openshift-gitops-operator ---
++ oc get events -n openshift-gitops-operator --sort-by=.lastTimestamp
+LAST SEEN   TYPE      REASON                OBJECT                                                               MESSAGE
+19s         Normal    Scheduled             pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n to ip-10-0-143-39.ec2.internal
+25s         Normal    RequirementsUnknown   clusterserviceversion/openshift-gitops-operator.v1.20.3              requirements not yet checked
+24s         Normal    RequirementsNotMet    clusterserviceversion/openshift-gitops-operator.v1.20.3              one or more requirements couldn't be found
+20s         Normal    AllRequirementsMet    clusterserviceversion/openshift-gitops-operator.v1.20.3              all requirements found, attempting install
+20s         Normal    ScalingReplicaSet     deployment/openshift-gitops-operator-controller-manager              Scaled up replica set openshift-gitops-operator-controller-manager-7745b8b788 from 0 to 1
+19s         Normal    SuccessfulCreate      replicaset/openshift-gitops-operator-controller-manager-7745b8b788   Created pod: openshift-gitops-operator-controller-manager-7745b8b788-ndl5n
+19s         Normal    AddedInterface        pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Add eth0 [10.133.0.27/23] from ovn-kubernetes
+19s         Normal    Pulling               pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Pulling image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e"
+15s         Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Successfully pulled image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" in 3.864s (3.864s including waiting). Image size: 266277892 bytes.
+15s         Normal    Pulling               pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Pulling image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554"
+15s         Normal    Started               pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Started container manager
+15s         Normal    Created               pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Created container: manager
+15s         Normal    LeaderElection        lease/2b63967d.openshift.io                                          openshift-gitops-operator-controller-manager-7745b8b788-ndl5n_ccddba69-8fea-4993-8017-6575455af56e became leader
+12s         Warning   AppliedWithWarnings   installplan/install-hmbc5                                            1 warning(s) generated during installation of operator "openshift-gitops-operator.v1.20.3" (CustomResourceDefinition "argocds.argoproj.io"): ArgoCD v1alpha1 version is deprecated and will be converted to v1beta1 automatically. Moving forward, please use v1beta1 as the ArgoCD API version.
+12s         Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              Webhook install failed: conversionWebhook not ready
+11s         Normal    InstallSucceeded      clusterserviceversion/openshift-gitops-operator.v1.20.3              waiting for install components to report healthy
+10s         Normal    InstallWaiting        clusterserviceversion/openshift-gitops-operator.v1.20.3              installing: waiting for deployment openshift-gitops-operator-controller-manager to become ready: deployment "openshift-gitops-operator-controller-manager" not available: Deployment does not have minimum availability.
+9s          Normal    Pulled                pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Successfully pulled image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" in 5.417s (5.417s including waiting). Image size: 494867321 bytes.
+9s          Normal    Created               pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Created container: kube-rbac-proxy
+9s          Normal    Started               pod/openshift-gitops-operator-controller-manager-7745b8b788-ndl5n    Started container kube-rbac-proxy
+8s          Normal    InstallSucceeded      clusterserviceversion/openshift-gitops-operator.v1.20.3              install strategy completed with no errors
++ echo ''
+
++ echo '--- Operator Deployment ---'
+--- Operator Deployment ---
++ oc get deployments -n openshift-gitops-operator -o wide
+NAME                                           READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS                IMAGES                                                                                                                                                                                                                                                                SELECTOR
+openshift-gitops-operator-controller-manager   1/1     1            1           20s   manager,kube-rbac-proxy   registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e,registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554   control-plane=gitops-operator
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo 'Verifying default ArgoCD instance'
+Verifying default ArgoCD instance
++ echo ==========================================
+==========================================
++ echo 'Waiting for openshift-gitops namespace and ArgoCD deployments to appear...'
+Waiting for openshift-gitops namespace and ArgoCD deployments to appear...
++ for _ in {1..60}
++ oc get deployment openshift-gitops-server -n openshift-gitops
++ break
++ oc get deployment openshift-gitops-server -n openshift-gitops
++ echo 'ArgoCD deployments found, waiting for them to become available...'
+ArgoCD deployments found, waiting for them to become available...
++ for deploy in openshift-gitops-server openshift-gitops-repo-server
++ oc wait --for=condition=Available deployment/openshift-gitops-server -n openshift-gitops --timeout=600s
++ true
++ oc get namespace openshift-gitops
++ oc create secret generic quay-mirror-pull --from-file=.dockerconfigjson=/quay-pull-credentials/.dockerconfigjson --type=kubernetes.io/dockerconfigjson -n openshift-gitops --dry-run=client -o yaml
++ oc apply -f -
+++ oc get sa -n openshift-gitops -o 'jsonpath={.items[*].metadata.name}'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa builder -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa default -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa deployer -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa gitops-service-cluster -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa gitops-service-cluster -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-applicationset-controller -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa openshift-gitops-applicationset-controller -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-application-controller -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa openshift-gitops-argocd-application-controller -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-dex-server -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa openshift-gitops-argocd-dex-server -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-redis -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa openshift-gitops-argocd-redis -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-redis-ha -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa openshift-gitops-argocd-redis-ha -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-server -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ oc patch sa openshift-gitops-argocd-server -n openshift-gitops --type=json -p '[{"op":"add","path":"/imagePullSecrets/-","value":{"name":"quay-mirror-pull"}}]'
+++ oc get pods -n openshift-gitops
+++ awk '{print $1}'
+++ grep -E 'ImagePullBackOff|ErrImagePull'
++ STUCK=
++ sleep 10
++ true
++ oc get namespace openshift-gitops
++ oc create secret generic quay-mirror-pull --from-file=.dockerconfigjson=/quay-pull-credentials/.dockerconfigjson --type=kubernetes.io/dockerconfigjson -n openshift-gitops --dry-run=client -o yaml
++ oc apply -f -
+++ oc get sa -n openshift-gitops -o 'jsonpath={.items[*].metadata.name}'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa builder -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa default -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa deployer -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ grep -q quay-mirror-pull
++ oc get sa gitops-service-cluster -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-applicationset-controller -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-application-controller -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-dex-server -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-redis -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-redis-ha -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-server -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
+++ oc get pods -n openshift-gitops
+++ awk '{print $1}'
+++ grep -E 'ImagePullBackOff|ErrImagePull'
++ STUCK=
++ sleep 10
++ true
++ oc get namespace openshift-gitops
++ oc create secret generic quay-mirror-pull --from-file=.dockerconfigjson=/quay-pull-credentials/.dockerconfigjson --type=kubernetes.io/dockerconfigjson -n openshift-gitops --dry-run=client -o yaml
++ oc apply -f -
+++ oc get sa -n openshift-gitops -o 'jsonpath={.items[*].metadata.name}'
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa builder -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa default -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa deployer -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa gitops-service-cluster -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-applicationset-controller -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-application-controller -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-dex-server -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-redis -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-redis-ha -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
++ for sa in $(oc get sa -n openshift-gitops -o jsonpath='{.items[*].metadata.name}' 2>/dev/null)
++ oc get sa openshift-gitops-argocd-server -n openshift-gitops -o 'jsonpath={.imagePullSecrets[*].name}'
++ grep -q quay-mirror-pull
+++ oc get pods -n openshift-gitops
+++ grep -E 'ImagePullBackOff|ErrImagePull'
+++ awk '{print $1}'
++ STUCK=
++ sleep 10
+deployment.apps/openshift-gitops-server condition met
++ echo 'openshift-gitops-server is ready'
+openshift-gitops-server is ready
++ for deploy in openshift-gitops-server openshift-gitops-repo-server
++ oc wait --for=condition=Available deployment/openshift-gitops-repo-server -n openshift-gitops --timeout=600s
+deployment.apps/openshift-gitops-repo-server condition met
++ echo 'openshift-gitops-repo-server is ready'
+openshift-gitops-repo-server is ready
++ oc get statefulset openshift-gitops-application-controller -n openshift-gitops
++ oc rollout status statefulset/openshift-gitops-application-controller -n openshift-gitops --timeout=600s
+partitioned roll out complete: 1 new pods have been updated...
++ echo 'openshift-gitops-application-controller is ready'
+openshift-gitops-application-controller is ready
++ echo 'ArgoCD instance is ready'
+ArgoCD instance is ready
++ [[ -n 614 ]]
++ kill 614
++ wait 614
++ true
++ echo 'Stopped background pull-secret injection'
+Stopped background pull-secret injection
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo 'DEBUG INFO: Cluster Image Configuration'
+DEBUG INFO: Cluster Image Configuration
++ echo ==========================================
+==========================================
++ echo '--- ImageDigestMirrorSet ---'
+--- ImageDigestMirrorSet ---
++ oc get imagedigestmirrorset -o yaml
+apiVersion: v1
+items:
+- apiVersion: config.openshift.io/v1
+  kind: ImageDigestMirrorSet
+  metadata:
+    creationTimestamp: "2026-05-11T05:31:05Z"
+    generation: 1
+    labels:
+      hypershift.openshift.io/managed: "true"
+      machineconfiguration.openshift.io/role: worker
+    name: cluster
+    resourceVersion: "1452"
+    uid: 2f7d7b63-e580-41bc-83f6-2bc3553c57ff
+  spec:
+    imageDigestMirrors:
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/gitops-rhel8
+      source: registry.redhat.io/openshift-gitops-1/gitops-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/gitops-rhel9
+      source: registry.redhat.io/openshift-gitops-1/gitops-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/console-plugin-rhel8
+      source: registry.redhat.io/openshift-gitops-1/console-plugin-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/console-plugin-rhel9
+      source: registry.redhat.io/openshift-gitops-1/console-plugin-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/dex-rhel8
+      source: registry.redhat.io/openshift-gitops-1/dex-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/dex-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/dex-rhel9
+      source: registry.redhat.io/openshift-gitops-1/dex-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/must-gather-rhel8
+      source: registry.redhat.io/openshift-gitops-1/must-gather-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/must-gather-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/must-gather-rhel9
+      source: registry.redhat.io/openshift-gitops-1/must-gather-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel8
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel8-tmp
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-rhel8
+      source: registry.redhat.io/openshift-gitops-1/argocd-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel9
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-rhel9-tmp
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-rhel9
+      source: registry.redhat.io/openshift-gitops-1/argocd-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-agent-rhel8
+      source: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-agent-rhel9
+      source: registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/argo-rollouts-rhel8
+      source: registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/argo-rollouts-rhel9
+      source: registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle
+      - registry.stage.redhat.io/openshift-gitops-1/gitops-operator-bundle
+      source: registry.redhat.io/openshift-gitops-1/gitops-operator-bundle
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel8-operator
+      - registry.stage.redhat.io/openshift-gitops-1/gitops-rhel8-operator
+      source: registry.redhat.io/openshift-gitops-1/gitops-rhel8-operator
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-rhel9-operator
+      - registry.stage.redhat.io/openshift-gitops-1/gitops-rhel9-operator
+      source: registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-extensions-rhel8
+      source: registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-extensions-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-extensions-rhel9
+      source: registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel8
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-image-updater-rhel8
+      source: registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel8
+    - mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9
+      source: registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9
+kind: List
+metadata:
+  resourceVersion: ""
++ echo ''
+
++ echo '--- ImageContentSourcePolicy ---'
+--- ImageContentSourcePolicy ---
++ oc get imagecontentsourcepolicy -o yaml
+apiVersion: v1
+items: []
+kind: List
+metadata:
+  resourceVersion: ""
++ echo ''
+
++ echo '--- openshift-gitops namespace pods ---'
+--- openshift-gitops namespace pods ---
++ oc get pods -n openshift-gitops -o wide
+NAME                                                          READY   STATUS    RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+cluster-59c5568bdf-r697j                                      1/1     Running   0          45s   10.133.0.28   ip-10-0-143-39.ec2.internal   <none>           <none>
+gitops-plugin-c4947c8d4-8dk2d                                 1/1     Running   0          45s   10.134.0.17   ip-10-0-140-29.ec2.internal   <none>           <none>
+openshift-gitops-application-controller-0                     1/1     Running   0          43s   10.134.0.20   ip-10-0-140-29.ec2.internal   <none>           <none>
+openshift-gitops-applicationset-controller-69c9c64c65-7tnxw   1/1     Running   0          43s   10.132.0.24   ip-10-0-137-53.ec2.internal   <none>           <none>
+openshift-gitops-dex-server-586d94df95-5wv9s                  1/1     Running   0          43s   10.132.0.25   ip-10-0-137-53.ec2.internal   <none>           <none>
+openshift-gitops-redis-68469975f8-sg9w4                       1/1     Running   0          43s   10.134.0.18   ip-10-0-140-29.ec2.internal   <none>           <none>
+openshift-gitops-repo-server-74865656f4-b5flk                 1/1     Running   0          43s   10.134.0.19   ip-10-0-140-29.ec2.internal   <none>           <none>
+openshift-gitops-server-cdcc6676c-clkqs                       1/1     Running   0          43s   10.133.0.30   ip-10-0-143-39.ec2.internal   <none>           <none>
++ echo ''
+
++ echo '--- openshift-gitops namespace events (last 5 min) ---'
+--- openshift-gitops namespace events (last 5 min) ---
++ oc get events -n openshift-gitops --sort-by=.lastTimestamp
++ tail -40
+39s         Normal    Created             pod/cluster-59c5568bdf-r697j                                       Created container: cluster
+38s         Normal    Started             pod/cluster-59c5568bdf-r697j                                       Started container cluster
+35s         Normal    Pulled              pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Successfully pulled image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" in 7.586s (7.586s including waiting). Image size: 589064320 bytes.
+35s         Normal    Pulled              pod/openshift-gitops-applicationset-controller-69c9c64c65-7tnxw    Successfully pulled image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" in 7.861s (7.861s including waiting). Image size: 589064320 bytes.
+34s         Normal    Pulled              pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Successfully pulled image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" in 10.479s (10.479s including waiting). Image size: 589064320 bytes.
+34s         Normal    Pulled              pod/openshift-gitops-server-cdcc6676c-clkqs                        Successfully pulled image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" in 8.836s (8.836s including waiting). Image size: 589064320 bytes.
+34s         Normal    Created             pod/openshift-gitops-applicationset-controller-69c9c64c65-7tnxw    Created container: argocd-applicationset-controller
+34s         Normal    Started             pod/openshift-gitops-applicationset-controller-69c9c64c65-7tnxw    Started container argocd-applicationset-controller
+34s         Normal    Created             pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Created container: copyutil
+34s         Normal    Started             pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Started container copyutil
+34s         Normal    Created             pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Created container: copyutil
+33s         Normal    Started             pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Started container copyutil
+33s         Normal    Pulling             pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Pulling image "registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b"
+33s         Normal    Started             pod/openshift-gitops-server-cdcc6676c-clkqs                        Started container argocd-server
+33s         Normal    Created             pod/openshift-gitops-server-cdcc6676c-clkqs                        Created container: argocd-server
+32s         Normal    Pulling             pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Pulling image "registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b"
+31s         Normal    Pulled              pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Successfully pulled image "registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b" in 1.292s (1.292s including waiting). Image size: 167769605 bytes.
+31s         Normal    SuccessfulDelete    replicaset/openshift-gitops-dex-server-c5f6456f9                   Deleted pod: openshift-gitops-dex-server-c5f6456f9-tzvkp
+31s         Normal    ScalingReplicaSet   deployment/openshift-gitops-dex-server                             Scaled down replica set openshift-gitops-dex-server-c5f6456f9 from 1 to 0
+31s         Normal    Pulled              pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Successfully pulled image "registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b" in 1.209s (1.209s including waiting). Image size: 167769605 bytes.
+31s         Normal    Created             pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Created container: dex
+31s         Normal    Started             pod/openshift-gitops-dex-server-586d94df95-5wv9s                   Started container dex
+30s         Normal    Killing             pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Stopping container dex
+30s         Normal    Started             pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Started container dex
+30s         Normal    Created             pod/openshift-gitops-dex-server-c5f6456f9-tzvkp                    Created container: dex
+22s         Normal    Pulled              pod/openshift-gitops-application-controller-0                      Successfully pulled image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" in 20.581s (20.581s including waiting). Image size: 589064320 bytes.
+22s         Normal    Pulled              pod/openshift-gitops-repo-server-74865656f4-b5flk                  Successfully pulled image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" in 20.282s (20.282s including waiting). Image size: 589064320 bytes.
+22s         Normal    Pulled              pod/gitops-plugin-c4947c8d4-8dk2d                                  Successfully pulled image "registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461" in 21.958s (21.958s including waiting). Image size: 350664966 bytes.
+22s         Normal    Pulled              pod/openshift-gitops-redis-68469975f8-sg9w4                        Successfully pulled image "registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3" in 20.289s (20.289s including waiting). Image size: 332569979 bytes.
+21s         Normal    Started             pod/openshift-gitops-application-controller-0                      Started container argocd-application-controller
+21s         Normal    Created             pod/openshift-gitops-repo-server-74865656f4-b5flk                  Created container: copyutil
+21s         Normal    Started             pod/openshift-gitops-redis-68469975f8-sg9w4                        Started container redis
+21s         Normal    Created             pod/openshift-gitops-redis-68469975f8-sg9w4                        Created container: redis
+21s         Normal    Started             pod/openshift-gitops-repo-server-74865656f4-b5flk                  Started container copyutil
+21s         Normal    Created             pod/openshift-gitops-application-controller-0                      Created container: argocd-application-controller
+21s         Normal    Started             pod/gitops-plugin-c4947c8d4-8dk2d                                  Started container gitops-plugin
+21s         Normal    Created             pod/gitops-plugin-c4947c8d4-8dk2d                                  Created container: gitops-plugin
+21s         Normal    Pulled              pod/openshift-gitops-repo-server-74865656f4-b5flk                  Container image "registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84" already present on machine
+20s         Normal    Started             pod/openshift-gitops-repo-server-74865656f4-b5flk                  Started container argocd-repo-server
+20s         Normal    Created             pod/openshift-gitops-repo-server-74865656f4-b5flk                  Created container: argocd-repo-server
++ echo ''
+
++ echo '--- openshift-gitops pod descriptions (non-Running) ---'
+--- openshift-gitops pod descriptions (non-Running) ---
+++ oc get pods -n openshift-gitops -o 'jsonpath={range .items[?(@.status.phase!="Running")]}{.metadata.name}{"\n"}{end}'
++ echo ==========================================
+==========================================
++ [[ -f /quay-pull-credentials/.dockerconfigjson ]]
++ echo ''
+
++ echo ==========================================
+==========================================
++ echo 'Verifying pull-secret propagation to nodes'
+Verifying pull-secret propagation to nodes
++ echo ==========================================
+==========================================
+++ python3 -c '
+import json
+with open('\''/quay-pull-credentials/.dockerconfigjson'\'') as f:
+    d = json.load(f)
+for k in sorted(d.get('\''auths'\'', {})):
+    print(k)
+'
+++ head -3
++ EXPECTED_REPOS='quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8
+quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9
+quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8'
+++ oc get secret pull-secret -n openshift-config -o 'jsonpath={.data.\.dockerconfigjson}'
+++ base64 -d
++ CLUSTER_SECRET='{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"}}}'
++ MISSING=0
++ IFS=
++ read -r repo
++ echo '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"}}}'
++ python3 -c 'import json,sys; d=json.load(sys.stdin); sys.exit(0 if '\''quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8'\'' in d.get('\''auths'\'',{}) else 1)'
++ echo '  MISS quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8'
+  MISS quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel8
++ MISSING=1
++ IFS=
++ read -r repo
++ echo '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"}}}'
++ python3 -c 'import json,sys; d=json.load(sys.stdin); sys.exit(0 if '\''quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9'\'' in d.get('\''auths'\'',{}) else 1)'
++ echo '  MISS quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9'
+  MISS quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argo-rollouts-rhel9
++ MISSING=2
++ IFS=
++ read -r repo
++ echo '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K29jbV9hY2Nlc3NfNjYyOGVkMTI2MGE1NDhlNTk1ZWUzMmU5ZGUyOGFiYjQ6QThORlYzMUhIM044WUNFSkRGUlFKSzhZNUhaOElSNUJFTFpVQVozWEE1V1VBMVVHRTAyUkROMEtBTU4yN1k5QQ==","email":"konflux-o11y@redhat.com"},"registry.connect.redhat.com":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"},"registry.redhat.io":{"auth":"fHVoYy1wb29sLTg5ODI1ZTAyLTIyODUtNDFhZC05MTc0LTM1YTQ0N2E1ODY0YzpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSmxNemRoWkRJMFpUbGxPR1kwWkdWbU9ERXhOamd3WTJKaE1ERXdaVE0zTnlKOS52bkJ1Q0JsOE56M3BibEZrczBCXzFRYUM3X0RZN2l2SkRUaThIdE9yQnp3ZjE4a3NQTFJzVDlEbnpaRlNaZUZoa1l4em96R0E1NXM2a0dkNWhfRDZ1Z29MZW5kS3ctQmF3eW80aDE1cElzTXlQcm9RNUFad0hWajVTandrdTFVWWJ3SU5BX1JONkJ2MjBaWkZNNzV4MldCQXg3MTZ5WFZ0dmkwMkNxM2JKRXFIcjREQV9JcXBVTllHNVNJN3ItcmtsMXYwZnFtMi1RWXBWYkc1aWxMNVpGYWhOUmtfUjZBWnkzck5FZXJlOS1nT25JZzI1SXFoWVZFUG4wcEhIREV3QUJ4elFXLS1acmNrdV8zMmxGeUU1NVJHMWhndjY3eHNUbHVMdUN1WUlOUnQyOWZtUW9rbjByX2FmQlpjMC1paWlQY09Ib1pPVzdqSEZ1cHE3cktuYWFTdmtiQ1pKbTczNUVaUzhSSFA5LTdvdUVvTFdaSGdqNk1xanAyMDBFS1lPR1prbjdaTG9jemx3RzVtSWtZSlFSekR5NmRkRHNUR0d4RlhRZ1A4SXZ6RGI5VGRLMG1lN1dxd2M2by13TXI1LThsbmlSSFFQYjFVR2I4b2V0ZzlLQjJRWlhpSXNoT1MzXzFmalRmOXpwdTZVLWhILWVYLTZ3akYxMzNDM0oxMGpHNkF4clBoSy1ralNWdnY4ZEtBNUROcUhMX3FfdFVlUGRZSGJXb2ZGYUs4VGphVWloTDNYdV9qZ3hyMEpPOUNMUUlIVE9xeWhhSzlGZEZaRkYwVTJmTVZYdWN1T3RfcmR1dlprZkh6YmJIOG1DeDF6NXhWbGlGYzR3QnBKYVRtVXFyN0dnakt4aUdNOWRlUzh0UU5fSUFyY19vUFFYREZMa0pmbUpPZzNCUQ==","email":"konflux-o11y@redhat.com"}}}'
++ python3 -c 'import json,sys; d=json.load(sys.stdin); sys.exit(0 if '\''quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8'\'' in d.get('\''auths'\'',{}) else 1)'
++ echo '  MISS quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8'
+  MISS quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-agent-rhel8
++ MISSING=3
++ IFS=
++ read -r repo
++ [[ 3 -gt 0 ]]
++ echo 'WARNING: 3 repo(s) missing from cluster pull-secret'
+WARNING: 3 repo(s) missing from cluster pull-secret

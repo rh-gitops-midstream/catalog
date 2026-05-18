@@ -1,0 +1,203 @@
+Pipeline Run Logs - gitops-catalog-operator-e2e-sequential-rrwjq
+Namespace - openshift-gitops-operator
+Collected - 2026-05-11 07:02:51 UTC
+
+Test Summary: Tests: 96 total, 49 passed, 0 failed, 47 skipped, 0 errors
+
+Structure:
+  - tasks/         : stdout/stderr from each pipeline task step
+  - results/       : test result files (JUnit XML, JSON reports)
+  - cluster-pods/  : pod logs from the ephemeral cluster
+  - debug/         : cluster and namespace debug information
+
+Files:
+  - logs/README.txt
+  - logs/cluster-pods/01-openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/debug/catalogsource.txt
+  - logs/debug/cluster-info.txt
+  - logs/debug/events.txt
+  - logs/debug/namespace-resources.txt
+  - logs/results/junit-results.xml
+  - logs/results/test-results.json
+  - logs/tasks/install-operator/install-operator.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/README.txt
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478145/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478176/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478206/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478237/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478268/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478298/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478329/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478360/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478390/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478421/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478453/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478484/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478514/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478545/openshift-gitops-operator-controller-manager-fc7df578-mdm7t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478576/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478606/openshift-gitops-operator-controller-manager-757f6ff866-8bv8x.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478606/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478637/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478668/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478698/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478729/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478761/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478791/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478822/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478853/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478883/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478914/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478945/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778478975/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479006/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479036/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479068/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479099/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479130/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479160/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479191/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479222/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479252/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479283/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479313/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479344/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479376/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479407/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479437/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479468/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479498/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479529/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479560/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479590/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479621/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479652/openshift-gitops-operator-controller-manager-fc7df578-xbq5d.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479683/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479714/openshift-gitops-operator-controller-manager-7fdfd5944c-bdqm2.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479745/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479775/openshift-gitops-operator-controller-manager-7fdfd5944c-s5jfz.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479806/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479806/openshift-gitops-operator-controller-manager-fc7df578-ggftr.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479837/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479867/openshift-gitops-operator-controller-manager-7fdfd5944c-7b8zl.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479867/openshift-gitops-operator-controller-manager-fc7df578-sk7fm.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479898/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479929/openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479929/openshift-gitops-operator-controller-manager-fc7df578-gk8dd.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479960/openshift-gitops-operator-controller-manager-7fdfd5944c-mz7dp.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479992/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778479992/openshift-gitops-operator-controller-manager-fc7df578-wg64h.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480023/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480054/openshift-gitops-operator-controller-manager-7fdfd5944c-qd997.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480054/openshift-gitops-operator-controller-manager-fc7df578-7g9tt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480085/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480115/openshift-gitops-operator-controller-manager-7fdfd5944c-jhnbx.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480115/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480115/openshift-gitops-operator-controller-manager-fc7df578-qhq29.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480146/openshift-gitops-operator-controller-manager-7fdfd5944c-td4rb.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480177/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480177/openshift-gitops-operator-controller-manager-fc7df578-xmb7v.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480208/openshift-gitops-operator-controller-manager-7fdfd5944c-m8hhb.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480239/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480239/openshift-gitops-operator-controller-manager-fc7df578-9js52.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480270/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480302/openshift-gitops-operator-controller-manager-7fdfd5944c-cg4c9.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480302/openshift-gitops-operator-controller-manager-fc7df578-hs9kr.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480333/openshift-gitops-operator-controller-manager-fc7df578-hs9kr.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480363/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480363/openshift-gitops-operator-controller-manager-fc7df578-hs9kr.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480394/openshift-gitops-operator-controller-manager-68c777fc54-gmrdb.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480425/openshift-gitops-operator-controller-manager-84bd9df874-8n9vs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480455/openshift-gitops-operator-controller-manager-586d6ddf9d-p59zt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480486/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480517/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480547/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480578/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480610/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480640/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480671/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480702/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480732/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480763/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480794/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480824/openshift-gitops-operator-controller-manager-fc7df578-8jfk5.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480855/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480885/openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480885/openshift-gitops-operator-controller-manager-fc7df578-xmvmw.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480918/openshift-gitops-operator-controller-manager-667d5cf5b-hsxch.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480918/openshift-gitops-operator-controller-manager-fc7df578-vzn74.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480949/openshift-gitops-operator-controller-manager-667d5cf5b-qv44p.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480949/openshift-gitops-operator-controller-manager-fc7df578-vzn74.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480980/openshift-gitops-operator-controller-manager-667d5cf5b-fnmgg.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778480980/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481011/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481042/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481072/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481103/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481134/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481164/openshift-gitops-operator-controller-manager-fc7df578-4sw9t.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481195/openshift-gitops-operator-controller-manager-68c777fc54-ftb27.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481227/openshift-gitops-operator-controller-manager-68c777fc54-ftb27.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481257/openshift-gitops-operator-controller-manager-68c777fc54-ftb27.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481288/openshift-gitops-operator-controller-manager-68c777fc54-ftb27.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481319/openshift-gitops-operator-controller-manager-68c777fc54-ftb27.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481319/openshift-gitops-operator-controller-manager-fc7df578-495dc.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481350/openshift-gitops-operator-controller-manager-fc7df578-495dc.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481380/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481411/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481442/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481472/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481503/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481535/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481566/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481596/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481627/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481657/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481688/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481718/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481749/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481780/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481810/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481842/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481873/openshift-gitops-operator-controller-manager-5cbbb94947-q27jv.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481903/openshift-gitops-operator-controller-manager-fc7df578-snps6.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481934/openshift-gitops-operator-controller-manager-fc7df578-snps6.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481965/openshift-gitops-operator-controller-manager-fc7df578-snps6.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778481995/openshift-gitops-operator-controller-manager-fc7df578-snps6.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482026/openshift-gitops-operator-controller-manager-fc7df578-snps6.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482056/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482056/openshift-gitops-operator-controller-manager-fc7df578-snps6.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482087/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482118/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482151/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482191/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482232/openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482269/openshift-gitops-operator-controller-manager-fc7df578-zh6bt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482301/openshift-gitops-operator-controller-manager-fc7df578-zh6bt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482332/openshift-gitops-operator-controller-manager-fc7df578-zh6bt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482362/openshift-gitops-operator-controller-manager-fc7df578-zh6bt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482393/openshift-gitops-operator-controller-manager-fc7df578-zh6bt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482424/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482424/openshift-gitops-operator-controller-manager-fc7df578-zh6bt.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482454/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482486/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482517/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482548/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482578/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482609/openshift-gitops-operator-controller-manager-7fc68c9f9b-kd6fs.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482609/openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482640/openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482671/openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482701/openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482732/openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/tasks/logs/gitops-catalog-operator-e2e-sequential-rrwjq-task-logs/snapshot-1778482762/openshift-gitops-operator-controller-manager-fc7df578-t5dzk.log
+  - logs/tasks/test-operator/junit-results.xml
+  - logs/tasks/test-operator/test-operator.log
+  - logs/tasks/test-operator/test-results.json
+
+Collection warnings:
+  - Could not pull logs for task upgrade-operator (may not have uploaded)
+
+To extract these logs:
+  oras pull quay.io/devtools_gitops/test_image:gitops-catalog-operator-e2e-sequential-rrwjq-logs
+  tar xzf gitops-catalog-operator-e2e-sequential-rrwjq-logs.tar.gz

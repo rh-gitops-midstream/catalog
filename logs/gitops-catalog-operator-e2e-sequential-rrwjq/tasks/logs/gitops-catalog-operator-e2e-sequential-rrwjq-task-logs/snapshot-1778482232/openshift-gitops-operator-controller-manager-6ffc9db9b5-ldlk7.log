@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-6ffc9db9b5-ldlk7 ===
+=== Timestamp: 2026-05-11 06:50:34 UTC ===
+
+--- Container: manager ---
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:49:45Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "appset-argocd", "ArgoCD Name": "wildcard-example"}
+2026-05-11T06:49:45Z	INFO	controller_argocd	Creating Role 'appset-argocd/wildcard-example-argocd-application-controller'
+2026-05-11T06:49:45Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "wildcard-example-argocd-application-controller" is forbidden: unable to create new content in namespace appset-argocd because it is being terminated
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:49:45Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "89d1e061-e687-4528-824b-705d919c72e1", "error": "roles.rbac.authorization.k8s.io \"wildcard-example-argocd-application-controller\" is forbidden: unable to create new content in namespace appset-argocd because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "36fd3842-08f1-4cfe-af2e-929713d52192", "namespace": "appset-argocd", "name": "wildcard-example"}
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:49:45Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "appset-argocd", "ArgoCD Name": "wildcard-example"}
+2026-05-11T06:49:45Z	INFO	controller_argocd	Creating Role 'appset-argocd/wildcard-example-argocd-application-controller'
+2026-05-11T06:49:45Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "wildcard-example-argocd-application-controller" is forbidden: unable to create new content in namespace appset-argocd because it is being terminated
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:49:45Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "36fd3842-08f1-4cfe-af2e-929713d52192", "error": "roles.rbac.authorization.k8s.io \"wildcard-example-argocd-application-controller\" is forbidden: unable to create new content in namespace appset-argocd because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "appset-argocd", "Request.Name": "wildcard-example"}
+2026-05-11T06:49:45Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "90e91fd2-5e90-47d3-9d8f-5d50815fc62f", "namespace": "appset-argocd", "name": "wildcard-example"}
+2026-05-11T06:49:45Z	INFO	controller_argocd	removing local user token renewal timers for namespace "appset-argocd"
+2026-05-11T06:49:45Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "appset-argocd", "Request.Name": "wildcard-example", "Namespace": "appset-argocd", "Name": "appset-argocd-read"}
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting ClusterRole 'wildcard-example-appset-argocd-argocd-application-controller' - cleaning up cluster resources
+2026-05-11T06:49:45Z	ERROR	controller_argocd_metrics	Error creating a new read role	{"Request.Namespace": "appset-argocd", "Request.Name": "wildcard-example", "Namespace": "appset-argocd", "Name": "appset-argocd-read", "error": "roles.rbac.authorization.k8s.io \"appset-argocd-read\" is forbidden: unable to create new content in namespace appset-argocd because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createReadRoleIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:279
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:140
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "e55358ab-3581-44be-a9cb-fedda3c5a795", "error": "roles.rbac.authorization.k8s.io \"appset-argocd-read\" is forbidden: unable to create new content in namespace appset-argocd because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting ClusterRole 'wildcard-example-appset-argocd-argocd-server' - cleaning up cluster resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting ClusterRole 'wildcard-example-appset-argocd-argocd-applicationset-controller' - cleaning up cluster resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'wildcard-example-appset-argocd-argocd-server' - cleaning up cluster resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'wildcard-example-appset-argocd-argocd-application-controller' - cleaning up cluster resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'wildcard-example-appset-argocd-argocd-applicationset-controller' - cleaning up cluster resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Updating Namespace 'team-1' - removing 'managed-by-cluster-argocd' label from umanaged source namespace
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting Role 'team-1/wildcard-example_team-1' - cleaning up unmanaged source namespace
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting RoleBinding 'team-1/wildcard-example_team-1' - cleaning up unmanaged source namespace
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting Role 'team-1/wildcard-example-appset-argocd-applicationset' - cleaning up unmanaged application set resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Deleting RoleBinding 'team-1/wildcard-example-appset-argocd-applicationset' - cleaning up unmanaged application set resources
+2026-05-11T06:49:45Z	INFO	controller_argocd	Updating Namespace 'team-1' - removing label argocd.argoproj.io/applicationset-managed-by-cluster-argocd
+2026-05-11T06:49:45Z	INFO	controller_argocd	Updating ArgoCD 'appset-argocd/wildcard-example' - removing deletion finalizer
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:49:45Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "appset-argocd", "Request.Name": "wildcard-example"}
+2026-05-11T06:49:45Z	ERROR	controller_argocd	unable to update ArgoCD status condition	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"wildcard-example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/appset-argocd/wildcard-example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 1b964263-3182-4f77-85c4-4de5f5b48c5b, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.updateStatusAndConditionsOfArgoCD
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/util.go:1695
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:159
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	ERROR	controller_argocd	unable to update status of ArgoCD	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"wildcard-example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/appset-argocd/wildcard-example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 1b964263-3182-4f77-85c4-4de5f5b48c5b, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:160
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "90e91fd2-5e90-47d3-9d8f-5d50815fc62f", "error": "Operation cannot be fulfilled on argocds.argoproj.io \"wildcard-example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/appset-argocd/wildcard-example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 1b964263-3182-4f77-85c4-4de5f5b48c5b, UID in object meta: "}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:49:45Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"wildcard-example","namespace":"appset-argocd"}, "namespace": "appset-argocd", "name": "wildcard-example", "reconcileID": "3853d9a5-a7e6-4f6a-a65c-1657975a323c", "namespace": "appset-argocd", "name": "wildcard-example"}
+2026-05-11T06:49:45Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:49:46Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "appset-argocd", "Request.Name": "wildcard-example"}
+
+--- Container: kube-rbac-proxy ---
+W0511 06:47:26.583940       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:47:26.584626       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:47:26.586973       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:47:26.587455       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:47:26.587663       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

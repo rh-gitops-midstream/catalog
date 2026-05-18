@@ -1,0 +1,444 @@
+=== Pod: openshift-gitops-operator-controller-manager-7745b8b788-wgs5t ===
+=== Namespace: openshift-gitops-operator ===
+=== Collection Time: 2026-05-11 07:04:43 UTC ===
+
+--- Pod Description ---
+Name:             openshift-gitops-operator-controller-manager-7745b8b788-wgs5t
+Namespace:        openshift-gitops-operator
+Priority:         0
+Service Account:  openshift-gitops-operator-controller-manager
+Node:             ip-10-0-143-39.ec2.internal/10.0.143.39
+Start Time:       Mon, 11 May 2026 07:04:33 +0000
+Labels:           control-plane=gitops-operator
+                  pod-template-hash=7745b8b788
+Annotations:      alm-examples:
+                    [
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "AppProject",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "Application",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "ApplicationSet",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "NotificationsConfiguration",
+                        "metadata": {
+                          "name": "default-notifications-configuration"
+                        },
+                        "spec": {
+                          "templates": {
+                            "template.app-created": "email:\n  subject: Application {{.app.metadata.name}} has been created.\nmessage: Application {{.app.meta...
+                            "template.app-deleted": "email:\n  subject: Application {{.app.metadata.name}} has been deleted.\nmessage: Application {{.app.meta...
+                            "template.app-deployed": "email:\n  subject: New version of an application {{.app.metadata.name}} is up and running.\nmessage: |\n...
+                            "template.app-health-degraded": "email:\n  subject: Application {{.app.metadata.name}} has degraded.\nmessage: |\n  {{if eq .servi...
+                            "template.app-sync-failed": "email:\n  subject: Failed to sync application {{.app.metadata.name}}.\nmessage: |\n  {{if eq .service...
+                            "template.app-sync-running": "email:\n  subject: Start syncing application {{.app.metadata.name}}.\nmessage: |\n  The sync operati...
+                            "template.app-sync-status-unknown": "email:\n  subject: Application {{.app.metadata.name}} sync status is 'Unknown'\nmessage: |\n ...
+                            "template.app-sync-succeeded": "email:\n  subject: Application {{.app.metadata.name}} has been successfully synced.\nmessage: |\n ...
+                          },
+                          "triggers": {
+                            "trigger.on-created": "- description: Application is created.\n  oncePer: app.metadata.name\n  send:\n  - app-created\n  when: \"t...
+                            "trigger.on-deleted": "- description: Application is deleted.\n  oncePer: app.metadata.name\n  send:\n  - app-deleted\n  when: app...
+                            "trigger.on-deployed": "- description: Application is synced and healthy. Triggered once per commit.\n  oncePer: app.status.operat...
+                            "trigger.on-health-degraded": "- description: Application has degraded\n  send:\n  - app-health-degraded\n  when: app.status.healt...
+                            "trigger.on-sync-failed": "- description: Application syncing has failed\n  send:\n  - app-sync-failed\n  when: app.status.operati...
+                            "trigger.on-sync-running": "- description: Application is being synced\n  send:\n  - app-sync-running\n  when: app.status.operatio...
+                            "trigger.on-sync-status-unknown": "- description: Application status is 'Unknown'\n  send:\n  - app-sync-status-unknown\n  when: a...
+                            "trigger.on-sync-succeeded": "- description: Application syncing has succeeded\n  send:\n  - app-sync-succeeded\n  when: app.statu...
+                          }
+                        }
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "Rollout",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "RolloutManager",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1beta1",
+                        "kind": "ArgoCD",
+                        "metadata": {
+                          "name": "argocd"
+                        },
+                        "spec": {
+                          "controller": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "2000m",
+                                "memory": "2048Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "1024Mi"
+                              }
+                            }
+                          },
+                          "ha": {
+                            "enabled": false,
+                            "resources": {
+                              "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "128Mi"
+                              }
+                            }
+                          },
+                          "rbac": {
+                            "defaultPolicy": "",
+                            "policy": "g, system:cluster-admins, role:admin\n",
+                            "scopes": "[groups]"
+                          },
+                          "redis": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "128Mi"
+                              }
+                            }
+                          },
+                          "repo": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "1000m",
+                                "memory": "1024Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "256Mi"
+                              }
+                            }
+                          },
+                          "resourceExclusions": "- apiGroups:\n  - \"\"\n  - discovery.k8s.io\n  kinds:\n  - Endpoints\n  - EndpointSlice\n- apiGroups:\n  - a...
+                          "server": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                              },
+                              "requests": {
+                                "cpu": "125m",
+                                "memory": "128Mi"
+                              }
+                            },
+                            "route": {
+                              "enabled": true
+                            }
+                          },
+                          "sso": {
+                            "dex": {
+                              "openShiftOAuth": true,
+                              "resources": {
+                                "limits": {
+                                  "cpu": "500m",
+                                  "memory": "256Mi"
+                                },
+                                "requests": {
+                                  "cpu": "250m",
+                                  "memory": "128Mi"
+                                }
+                              }
+                            },
+                            "provider": "dex"
+                          }
+                        }
+                      },
+                      {
+                        "apiVersion": "pipelines.openshift.io/v1alpha1",
+                        "kind": "GitopsService",
+                        "metadata": {
+                          "name": "gitopsservice-sample"
+                        },
+                        "spec": null
+                      }
+                    ]
+                  capabilities: Deep Insights
+                  console.openshift.io/plugins: ["gitops-plugin"]
+                  containerImage:
+                    registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+                  createdAt: 2026-03-04T06:59:29Z
+                  description:
+                    Enables teams to adopt GitOps principles for managing cluster configurations and application delivery across hybrid multi-cluster Kubernet...
+                  features.operators.openshift.io/cnf: false
+                  features.operators.openshift.io/cni: false
+                  features.operators.openshift.io/csi: false
+                  features.operators.openshift.io/disconnected: true
+                  features.operators.openshift.io/fips-compliant: true
+                  features.operators.openshift.io/proxy-aware: true
+                  features.operators.openshift.io/tls-profiles: false
+                  features.operators.openshift.io/token-auth-aws: false
+                  features.operators.openshift.io/token-auth-azure: false
+                  features.operators.openshift.io/token-auth-gcp: false
+                  k8s.ovn.org/pod-networks:
+                    {"default":{"ip_addresses":["10.133.1.174/23"],"mac_address":"0a:58:0a:85:01:ae","gateway_ips":["10.133.0.1"],"routes":[{"dest":"10.132.0....
+                  k8s.v1.cni.cncf.io/network-status:
+                    [{
+                        "name": "ovn-kubernetes",
+                        "interface": "eth0",
+                        "ips": [
+                            "10.133.1.174"
+                        ],
+                        "mac": "0a:58:0a:85:01:ae",
+                        "default": true,
+                        "dns": {}
+                    }]
+                  kubectl.kubernetes.io/default-container: manager
+                  olm.operatorGroup: gitops-operator-group
+                  olm.operatorNamespace: openshift-gitops-operator
+                  olm.skipRange: 
+                  olm.targetNamespaces: 
+                  olmcahash: fa69c4902d98b7bfd1784f049b1495044b4dd15b65f8492dd143fd848db49133
+                  openshift.io/scc: restricted-v2
+                  operatorframework.io/cluster-monitoring: true
+                  operatorframework.io/properties:
+                    {"properties":[{"type":"olm.gvk","value":{"group":"argocd-image-updater.argoproj.io","kind":"ImageUpdater","version":"v1alpha1"}},{"type":...
+                  operatorframework.io/suggested-namespace: openshift-gitops-operator
+                  operators.openshift.io/infrastructure-features: ["disconnected"]
+                  operators.openshift.io/must-gather-image:
+                    registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+                  operators.openshift.io/valid-subscription: ["OpenShift Container Platform", "OpenShift Platform Plus"]
+                  operators.operatorframework.io/builder: operator-sdk-v1.35.0
+                  operators.operatorframework.io/internal-objects: ["gitopsservices.pipelines.openshift.io"]
+                  operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
+                  repository: https://github.com/redhat-developer/gitops-operator
+                  seccomp.security.alpha.kubernetes.io/pod: runtime/default
+                  security.openshift.io/validated-scc-subject-type: user
+                  support: Red Hat
+Status:           Running
+SeccompProfile:   RuntimeDefault
+IP:               10.133.1.174
+IPs:
+  IP:           10.133.1.174
+Controlled By:  ReplicaSet/openshift-gitops-operator-controller-manager-7745b8b788
+Containers:
+  manager:
+    Container ID:  cri-o://8db2b73bd15cce57c5fad9194092c133ed80781001e4c329795079bc88ec96cb
+    Image:         registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+    Image ID:      registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+    Port:          9443/TCP
+    Host Port:     0/TCP
+    Command:
+      /usr/local/bin/manager
+    Args:
+      --health-probe-bind-address=:8081
+      --metrics-bind-address=127.0.0.1:8080
+      --leader-elect
+    State:          Running
+      Started:      Mon, 11 May 2026 07:04:34 +0000
+    Ready:          False
+    Restart Count:  0
+    Liveness:       http-get http://:8081/healthz delay=15s timeout=1s period=20s #success=1 #failure=3
+    Readiness:      http-get http://:8081/readyz delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      ARGOCD_CLUSTER_CONFIG_NAMESPACES:           openshift-gitops
+      CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES:    openshift-gitops
+      OPERATOR_NAME:                              gitops-operator
+      LABEL_SELECTOR:                             
+      ENABLE_CONVERSION_WEBHOOK:                  true
+      RELATED_IMAGE_ARGOCD_DEX_IMAGE:             registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+      ARGOCD_DEX_IMAGE:                           registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+      RELATED_IMAGE_BACKEND_IMAGE:                registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+      BACKEND_IMAGE:                              registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+      RELATED_IMAGE_ARGOCD_IMAGE:                 registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+      ARGOCD_IMAGE:                               registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+      ARGOCD_REPOSERVER_IMAGE:                    registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+      RELATED_IMAGE_ARGOCD_REDIS_IMAGE:           registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+      ARGOCD_REDIS_IMAGE:                         registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+      ARGOCD_REDIS_HA_IMAGE:                      registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+      RELATED_IMAGE_ARGOCD_REDIS_HA_PROXY_IMAGE:  registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+      ARGOCD_REDIS_HA_PROXY_IMAGE:                registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+      RELATED_IMAGE_GITOPS_CONSOLE_PLUGIN_IMAGE:  registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+      GITOPS_CONSOLE_PLUGIN_IMAGE:                registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+      RELATED_IMAGE_ARGOCD_EXTENSION_IMAGE:       registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+      ARGOCD_EXTENSION_IMAGE:                     registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+      RELATED_IMAGE_ARGO_ROLLOUTS_IMAGE:          registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+      ARGO_ROLLOUTS_IMAGE:                        registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+      RELATED_IMAGE_MUST_GATHER_IMAGE:            registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+      RELATED_IMAGE_KUBE_RBAC_PROXY_IMAGE:        registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+      ARGOCD_PRINCIPAL_IMAGE:                     registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      RELATED_IMAGE_ARGOCD_PRINCIPAL_IMAGE:       registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      ARGOCD_AGENT_IMAGE:                         registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      RELATED_IMAGE_ARGOCD_AGENT_IMAGE:           registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      ARGOCD_IMAGE_UPDATER_IMAGE:                 registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+      RELATED_IMAGE_ARGOCD_IMAGE_UPDATER_IMAGE:   registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+      OPERATOR_CONDITION_NAME:                    openshift-gitops-operator.v1.20.3
+    Mounts:
+      /apiserver.local.config/certificates from apiservice-cert (rw)
+      /tmp/k8s-webhook-server/serving-certs from webhook-cert (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hbww9 (ro)
+  kube-rbac-proxy:
+    Container ID:  cri-o://18f49b16a932e7788f528ddd3528387b8aa606d1eebb96b1d62a94851922985f
+    Image:         registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+    Image ID:      registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:3509c3e8eaea4bd214c01ad94d9f9f7ce342103e2cecbc1badacfe4b968946e5
+    Port:          8443/TCP
+    Host Port:     0/TCP
+    Args:
+      --secure-listen-address=0.0.0.0:8443
+      --upstream=http://127.0.0.1:8080
+      --tls-cert-file=/etc/tls/private/tls.crt
+      --tls-private-key-file=/etc/tls/private/tls.key
+      --logtostderr=true
+      --allow-paths=/metrics
+      --http2-disable
+    State:          Running
+      Started:      Mon, 11 May 2026 07:04:34 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:     1m
+      memory:  15Mi
+    Environment:
+      OPERATOR_CONDITION_NAME:  openshift-gitops-operator.v1.20.3
+    Mounts:
+      /apiserver.local.config/certificates from apiservice-cert (rw)
+      /etc/tls/private from kube-rbac-proxy-tls (ro)
+      /tmp/k8s-webhook-server/serving-certs from webhook-cert (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hbww9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-rbac-proxy-tls:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  kube-rbac-proxy-tls
+    Optional:    false
+  apiservice-cert:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  openshift-gitops-operator-controller-manager-service-cert
+    Optional:    false
+  webhook-cert:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  openshift-gitops-operator-controller-manager-service-cert
+    Optional:    false
+  kube-api-access-hbww9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+    ConfigMapName:           openshift-service-ca.crt
+    ConfigMapOptional:       <nil>
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/memory-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason          Age   From               Message
+  ----    ------          ----  ----               -------
+  Normal  Scheduled       10s   default-scheduler  Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7745b8b788-wgs5t to ip-10-0-143-39.ec2.internal
+  Normal  AddedInterface  10s   multus             Add eth0 [10.133.1.174/23] from ovn-kubernetes
+  Normal  Pulled          9s    kubelet            Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+  Normal  Created         9s    kubelet            Created container: manager
+  Normal  Started         9s    kubelet            Started container manager
+  Normal  Pulled          9s    kubelet            Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+  Normal  Created         9s    kubelet            Created container: kube-rbac-proxy
+  Normal  Started         9s    kubelet            Started container kube-rbac-proxy
+
+--- Container: manager ---
+2026-05-11T07:04:34Z	INFO	argoutil	console.openshift.io/v1 API verified
+2026-05-11T07:04:34Z	INFO	setup	memory optimization is enabled
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T07:04:34Z	INFO	controller-runtime.webhook	Registering webhook	{"path": "/convert"}
+2026-05-11T07:04:34Z	INFO	controller-runtime.builder	Conversion webhook enabled	{"GVK": "argoproj.io/v1beta1, Kind=ArgoCD"}
+2026-05-11T07:04:34Z	INFO	controller_gitopsservice	Watching GitopsService
+2026-05-11T07:04:34Z	ERROR	controller_gitopsservice	Failed to create GitOps service instance	{"error": "gitopsservices.pipelines.openshift.io \"cluster\" already exists"}
+github.com/redhat-developer/gitops-operator/controllers.(*ReconcileGitopsService).SetupWithManager
+	/workspace/controllers/gitopsservice_controller.go:100
+main.main
+	/workspace/cmd/main.go:225
+runtime.main
+	/usr/lib/golang/src/runtime/proc.go:285
+2026-05-11T07:04:34Z	INFO	setup	Watching label-selector ""
+2026-05-11T07:04:34Z	INFO	argoutil	monitoring.coreos.com/v1 API verified
+2026-05-11T07:04:34Z	INFO	argoutil	route.openshift.io/v1 API verified
+2026-05-11T07:04:34Z	INFO	argoutil	argocd-image-updater.argoproj.io/v1alpha1 API verified
+2026-05-11T07:04:34Z	INFO	argoutil	config.openshift.io/v1 API verified
+2026-05-11T07:04:34Z	INFO	argoutil	certificates.k8s.io/v1beta1 API not available, checking if its registered
+2026-05-11T07:04:34Z	INFO	argoutil	certificates.k8s.io/v1beta1 API is not registered
+2026-05-11T07:04:34Z	INFO	openshift_controller_argocd	updating the Argo CD controller to watch for changes to the admin ClusterRole	{"module": "builder-hook"}
+2026-05-11T07:04:34Z	INFO	setup	Argo Rollouts manager running in cluster-scoped mode
+2026-05-11T07:04:34Z	INFO	setup	starting manager
+2026-05-11T07:04:34Z	INFO	controller-runtime.metrics	Starting metrics server
+2026-05-11T07:04:34Z	INFO	starting server	{"name": "health probe", "addr": "[::]:8081"}
+2026-05-11T07:04:34Z	INFO	controller-runtime.metrics	Serving metrics server	{"bindAddress": "127.0.0.1:8080", "secure": false}
+2026-05-11T07:04:34Z	INFO	controller-runtime.webhook	Starting webhook server
+I0511 07:04:34.317915       1 leaderelection.go:257] attempting to acquire leader lease openshift-gitops-operator/2b63967d.openshift.io...
+2026-05-11T07:04:34Z	INFO	controller-runtime.certwatcher	Updated current TLS certificate	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key"}
+2026-05-11T07:04:34Z	INFO	controller-runtime.webhook	Serving webhook server	{"host": "", "port": 9443}
+2026-05-11T07:04:34Z	INFO	controller-runtime.certwatcher	Starting certificate poll+watcher	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key", "interval": "10s"}
+
+--- Container: manager (previous) ---
+Error from server (BadRequest): previous terminated container "manager" in pod "openshift-gitops-operator-controller-manager-7745b8b788-wgs5t" not found
+(no previous logs)
+
+--- Container: kube-rbac-proxy ---
+W0511 07:04:34.226946       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 07:04:34.227733       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 07:04:34.229262       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 07:04:34.229794       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 07:04:34.230040       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+
+--- Container: kube-rbac-proxy (previous) ---
+Error from server (BadRequest): previous terminated container "kube-rbac-proxy" in pod "openshift-gitops-operator-controller-manager-7745b8b788-wgs5t" not found
+(no previous logs)
+

@@ -1,0 +1,61 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-vzn74 ===
+=== Timestamp: 2026-05-11 06:28:39 UTC ===
+
+--- Container: manager ---
+2026-05-11T06:28:29Z	INFO	argoutil	console.openshift.io/v1 API verified
+2026-05-11T06:28:29Z	INFO	setup	memory optimization is enabled
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:28:29Z	INFO	controller-runtime.webhook	Registering webhook	{"path": "/convert"}
+2026-05-11T06:28:29Z	INFO	controller-runtime.builder	Conversion webhook enabled	{"GVK": "argoproj.io/v1beta1, Kind=ArgoCD"}
+2026-05-11T06:28:29Z	INFO	controller_gitopsservice	Watching GitopsService
+2026-05-11T06:28:29Z	ERROR	controller_gitopsservice	Failed to create GitOps service instance	{"error": "gitopsservices.pipelines.openshift.io \"cluster\" already exists"}
+github.com/redhat-developer/gitops-operator/controllers.(*ReconcileGitopsService).SetupWithManager
+	/workspace/controllers/gitopsservice_controller.go:100
+main.main
+	/workspace/cmd/main.go:225
+runtime.main
+	/usr/lib/golang/src/runtime/proc.go:285
+2026-05-11T06:28:29Z	INFO	setup	Watching label-selector ""
+2026-05-11T06:28:29Z	INFO	argoutil	monitoring.coreos.com/v1 API verified
+2026-05-11T06:28:29Z	INFO	argoutil	route.openshift.io/v1 API verified
+2026-05-11T06:28:29Z	INFO	argoutil	argocd-image-updater.argoproj.io/v1alpha1 API verified
+2026-05-11T06:28:29Z	INFO	argoutil	config.openshift.io/v1 API verified
+2026-05-11T06:28:29Z	INFO	argoutil	certificates.k8s.io/v1beta1 API not available, checking if its registered
+2026-05-11T06:28:29Z	INFO	argoutil	certificates.k8s.io/v1beta1 API is not registered
+2026-05-11T06:28:29Z	INFO	openshift_controller_argocd	updating the Argo CD controller to watch for changes to the admin ClusterRole	{"module": "builder-hook"}
+2026-05-11T06:28:29Z	INFO	setup	Argo Rollouts manager running in cluster-scoped mode
+2026-05-11T06:28:29Z	INFO	setup	starting manager
+2026-05-11T06:28:29Z	INFO	controller-runtime.metrics	Starting metrics server
+2026-05-11T06:28:29Z	INFO	starting server	{"name": "health probe", "addr": "[::]:8081"}
+2026-05-11T06:28:29Z	INFO	controller-runtime.metrics	Serving metrics server	{"bindAddress": "127.0.0.1:8080", "secure": false}
+2026-05-11T06:28:29Z	INFO	controller-runtime.webhook	Starting webhook server
+I0511 06:28:29.804867       1 leaderelection.go:257] attempting to acquire leader lease openshift-gitops-operator/2b63967d.openshift.io...
+2026-05-11T06:28:29Z	INFO	controller-runtime.certwatcher	Updated current TLS certificate	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key"}
+2026-05-11T06:28:29Z	INFO	controller-runtime.webhook	Serving webhook server	{"host": "", "port": 9443}
+2026-05-11T06:28:29Z	INFO	controller-runtime.certwatcher	Starting certificate poll+watcher	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key", "interval": "10s"}
+
+--- Container: kube-rbac-proxy ---
+W0511 06:28:29.739514       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:28:29.740000       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:28:29.741392       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:28:29.741701       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:28:29.741935       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

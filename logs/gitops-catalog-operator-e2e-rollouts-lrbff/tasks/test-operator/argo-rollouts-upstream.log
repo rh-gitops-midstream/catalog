@@ -1,0 +1,3228 @@
++ set -e
++ trap cleanup EXIT
++++ dirname -- hack/run-upstream-argo-rollouts-e2e-tests.sh
+++ cd -- hack
+++ pwd
++ SCRIPT_DIR=/tmp/tmp.VblnaxJcuh/argo-rollouts-manager/hack
+++ mktemp -d
++ TMP_DIR=/tmp/tmp.EXIjXYyIHf
++ cd /tmp/tmp.EXIjXYyIHf
++ git clone https://github.com/argoproj/argo-rollouts
+Cloning into 'argo-rollouts'...
++ cd argo-rollouts
++ git checkout v1.8.4
+Note: switching to 'v1.8.4'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 55e89ddc5 fix: bluegreen analysis prematurely succeeds if new ReplicaSet becomes unsaturated (#4604)
++ go mod tidy
+go: downloading github.com/argoproj/pkg v0.13.6
+go: downloading k8s.io/client-go v0.29.3
+go: downloading k8s.io/cli-runtime v0.29.3
+go: downloading github.com/influxdata/influxdb-client-go/v2 v2.14.0
+go: downloading github.com/sirupsen/logrus v1.9.3
+go: downloading k8s.io/klog/v2 v2.110.1
+go: downloading github.com/newrelic/newrelic-client-go/v2 v2.51.3
+go: downloading github.com/spf13/cobra v1.8.1
+go: downloading k8s.io/apimachinery v0.29.3
+go: downloading github.com/prometheus/client_golang v1.18.0
+go: downloading github.com/servicemeshinterface/smi-sdk-go v0.5.0
+go: downloading github.com/stretchr/testify v1.10.0
+go: downloading github.com/golang/protobuf v1.5.4
+go: downloading k8s.io/api v0.29.3
+go: downloading github.com/prometheus/common v0.47.0
+go: downloading github.com/prometheus/common/sigv4 v0.1.0
+go: downloading github.com/grpc-ecosystem/grpc-gateway v1.16.0
+go: downloading golang.org/x/oauth2 v0.29.0
+go: downloading google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1
+go: downloading google.golang.org/grpc v1.68.1
+go: downloading google.golang.org/genproto v0.0.0-20240227224415-6ceb2ff114de
+go: downloading k8s.io/kube-openapi v0.0.0-20231010175941-2dd684a91f00
+go: downloading github.com/machinebox/graphql v0.2.2
+go: downloading github.com/spaceapegames/go-wavefront v1.8.1
+go: downloading github.com/aws/aws-sdk-go-v2/config v1.28.6
+go: downloading github.com/aws/smithy-go v1.22.1
+go: downloading github.com/argoproj/notifications-engine v0.4.1-0.20240219110818-7a069766e954
+go: downloading github.com/blang/semver v3.5.1+incompatible
+go: downloading github.com/hashicorp/go-plugin v1.6.3
+go: downloading github.com/tj/assert v0.0.3
+go: downloading github.com/aws/aws-sdk-go-v2 v1.32.6
+go: downloading github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.43.3
+go: downloading k8s.io/apiextensions-apiserver v0.29.3
+go: downloading k8s.io/utils v0.0.0-20230726121419-3b25d923346b
+go: downloading github.com/juju/ansiterm v1.0.0
+go: downloading k8s.io/code-generator v0.29.3
+go: downloading k8s.io/component-base v0.29.3
+go: downloading k8s.io/kubernetes v1.29.3
+go: downloading google.golang.org/protobuf v1.36.1
+go: downloading k8s.io/kubectl v0.29.3
+go: downloading github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.31.3
+go: downloading k8s.io/apiserver v0.29.3
+go: downloading github.com/evanphx/json-patch/v5 v5.9.0
+go: downloading github.com/mitchellh/mapstructure v1.5.0
+go: downloading github.com/soheilhy/cmux v0.1.5
+go: downloading github.com/valyala/fasttemplate v1.2.2
+go: downloading github.com/antonmedv/expr v1.15.5
+go: downloading github.com/golang/mock v1.6.0
+go: downloading github.com/bombsimon/logrusr/v4 v4.1.0
+go: downloading github.com/felixge/httpsnoop v1.0.4
+go: downloading golang.org/x/net v0.34.0
+go: downloading github.com/go-logr/logr v1.4.1
+go: downloading golang.org/x/sys v0.29.0
+go: downloading github.com/davecgh/go-spew v1.1.1
+go: downloading github.com/pmezard/go-difflib v1.0.0
+go: downloading github.com/inconshreveable/mousetrap v1.1.0
+go: downloading github.com/google/go-cmp v0.6.0
+go: downloading github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf
+go: downloading github.com/oapi-codegen/runtime v1.0.0
+go: downloading github.com/aws/aws-sdk-go v1.44.116
+go: downloading github.com/matryer/is v1.4.0
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1
+go: downloading github.com/stretchr/objx v0.5.2
+go: downloading sigs.k8s.io/structured-merge-diff/v4 v4.4.1
+go: downloading github.com/google/gofuzz v1.2.0
+go: downloading github.com/golang/glog v1.2.2
+go: downloading github.com/prometheus/procfs v0.12.0
+go: downloading github.com/hashicorp/go-hclog v1.6.3
+go: downloading github.com/hashicorp/yamux v0.1.1
+go: downloading github.com/oklog/run v1.0.0
+go: downloading github.com/aws/aws-sdk-go-v2/credentials v1.17.47
+go: downloading github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.21
+go: downloading github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1
+go: downloading github.com/aws/aws-sdk-go-v2/service/sso v1.24.7
+go: downloading github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.6
+go: downloading github.com/aws/aws-sdk-go-v2/service/sts v1.33.2
+go: downloading github.com/mattn/go-colorable v0.1.13
+go: downloading github.com/mattn/go-isatty v0.0.20
+go: downloading github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.25
+go: downloading github.com/jmespath/go-jmespath v0.4.0
+go: downloading github.com/go-openapi/swag v0.22.3
+go: downloading github.com/google/gnostic-models v0.6.8
+go: downloading k8s.io/gengo v0.0.0-20230829151522-9cce18d56c01
+go: downloading github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
+go: downloading golang.org/x/time v0.5.0
+go: downloading github.com/imdario/mergo v0.3.16
+go: downloading golang.org/x/term v0.28.0
+go: downloading github.com/PagerDuty/go-pagerduty v1.7.0
+go: downloading github.com/RocketChat/Rocket.Chat.Go.SDK v0.0.0-20220708192748-b73dcb041214
+go: downloading github.com/aws/aws-sdk-go-v2/service/sqs v1.29.7
+go: downloading github.com/bradleyfalzon/ghinstallation/v2 v2.5.0
+go: downloading github.com/OvyFlash/telegram-bot-api/v5 v5.0.0-20240108230938-63e5c59035bf
+go: downloading github.com/google/go-github/v41 v41.0.0
+go: downloading github.com/gregdel/pushover v1.2.1
+go: downloading github.com/hashicorp/go-retryablehttp v0.7.7
+go: downloading github.com/opsgenie/opsgenie-go-sdk-v2 v1.2.13
+go: downloading github.com/slack-go/slack v0.12.2
+go: downloading github.com/spf13/cast v1.5.1
+go: downloading github.com/whilp/git-urls v0.0.0-20191001220047-6db9661140c0
+go: downloading gomodules.xyz/notify v0.1.1
+go: downloading google.golang.org/api v0.162.0
+go: downloading github.com/valyala/bytebufferpool v1.0.0
+go: downloading github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f
+go: downloading sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd
+go: downloading github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
+go: downloading github.com/moby/term v0.0.0-20221205130635-1aeaba878587
+go: downloading golang.org/x/sync v0.10.0
+go: downloading golang.org/x/text v0.21.0
+go: downloading sigs.k8s.io/kustomize/api v0.13.5-0.20230601165947-6ce0bf390ce3
+go: downloading sigs.k8s.io/kustomize/kyaml v0.14.3-0.20230601165947-6ce0bf390ce3
+go: downloading github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
+go: downloading github.com/peterbourgon/diskv v2.0.1+incompatible
+go: downloading github.com/apapsch/go-jsonmerge/v2 v2.0.0
+go: downloading github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32
+go: downloading github.com/google/go-querystring v1.1.0
+go: downloading github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80
+go: downloading github.com/valyala/fastjson v1.6.4
+go: downloading github.com/Masterminds/sprig/v3 v3.2.3
+go: downloading github.com/fatih/color v1.16.0
+go: downloading github.com/lunixbochs/vtclean v1.0.0
+go: downloading github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.25
+go: downloading github.com/go-openapi/jsonpointer v0.19.6
+go: downloading github.com/blang/semver/v4 v4.0.0
+go: downloading github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.1
+go: downloading github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.6
+go: downloading github.com/elazarl/goproxy v0.0.0-20231117061959-7cc037d33fb5
+go: downloading gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
+go: downloading github.com/jhump/protoreflect v1.15.1
+go: downloading github.com/onsi/ginkgo/v2 v2.13.0
+go: downloading github.com/onsi/gomega v1.29.0
+go: downloading github.com/golang-jwt/jwt/v4 v4.5.2
+go: downloading github.com/google/go-github/v53 v53.0.0
+go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
+go: downloading github.com/frankban/quicktest v1.14.4
+go: downloading github.com/jmespath/go-jmespath/internal/testify v1.5.1
+go: downloading gomodules.xyz/envconfig v1.3.1-0.20190308184047-426f31af0d45
+go: downloading gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
+go: downloading github.com/jpillora/backoff v1.0.0
+go: downloading github.com/creack/pty v1.1.18
+go: downloading github.com/gorilla/websocket v1.5.0
+go: downloading github.com/go-test/deep v1.0.4
+go: downloading github.com/google/btree v1.1.2
+go: downloading golang.org/x/crypto v0.32.0
+go: downloading golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
+go: downloading github.com/Masterminds/goutils v1.1.1
+go: downloading github.com/Masterminds/semver/v3 v3.2.0
+go: downloading github.com/huandu/xstrings v1.3.3
+go: downloading github.com/mitchellh/copystructure v1.2.0
+go: downloading github.com/shopspring/decimal v1.2.0
+go: downloading github.com/Jeffail/gabs v1.4.0
+go: downloading github.com/gopackage/ddp v0.0.0-20170117053602-652027933df4
+go: downloading github.com/sony/sonyflake v1.0.0
+go: downloading github.com/kr/pretty v0.3.1
+go: downloading github.com/exponent-io/jsonpath v0.0.0-20210407135951-1de76d718b3f
+go: downloading github.com/chai2010/gettext-go v1.0.2
+go: downloading github.com/MakeNowJust/heredoc v1.0.0
+go: downloading github.com/mitchellh/go-wordwrap v1.0.1
+go: downloading github.com/russross/blackfriday/v2 v2.1.0
+go: downloading gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc
+go: downloading github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1
+go: downloading github.com/mitchellh/reflectwalk v1.0.2
+go: downloading github.com/kr/text v0.2.0
+go: downloading github.com/rogpeppe/go-internal v1.10.0
+go: downloading github.com/go-errors/errors v1.4.2
+go: downloading github.com/sergi/go-diff v1.1.0
+go: downloading github.com/bufbuild/protocompile v0.4.0
+go: downloading github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00
+go: downloading github.com/xlab/treeprint v1.2.0
+go: downloading github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510
+go: downloading github.com/moby/spdystream v0.2.0
+go: downloading github.com/onsi/ginkgo v1.14.1
+go: downloading github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5
+go: downloading github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8
+go: downloading github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f
+go: downloading go.starlark.net v0.0.0-20230525235612-a134d8f9ddca
+go: downloading github.com/cloudflare/circl v1.3.3
+go: downloading github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572
+go: downloading github.com/google/pprof v0.0.0-20210720184732-4bb14d4b1be1
+go: downloading golang.org/x/mod v0.17.0
+go: downloading k8s.io/cluster-bootstrap v0.25.8
+go: downloading github.com/distribution/reference v0.5.0
+go: downloading k8s.io/kubelet v0.29.3
+go: downloading k8s.io/cloud-provider v0.29.3
+go: downloading k8s.io/component-helpers v0.29.3
+go: downloading k8s.io/controller-manager v0.29.3
+go: downloading github.com/coreos/go-systemd/v22 v22.5.0
+go: downloading go.opentelemetry.io/otel v1.22.0
+go: downloading github.com/google/cel-go v0.17.7
+go: downloading go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.19.0
+go: downloading go.opentelemetry.io/otel/sdk v1.21.0
+go: downloading gopkg.in/natefinch/lumberjack.v2 v2.2.1
+go: downloading go.opentelemetry.io/otel/trace v1.22.0
+go: downloading go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.47.0
+go: downloading go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.19.0
+go: downloading sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.28.0
+go: downloading k8s.io/kms v0.29.3
+go: downloading github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
+go: downloading go.etcd.io/etcd/client/v3 v3.5.10
+go: downloading go.etcd.io/etcd/client/pkg/v3 v3.5.10
+go: downloading go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.47.0
+go: downloading go.uber.org/zap v1.19.0
+go: downloading github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a
+go: downloading go.opentelemetry.io/otel/metric v1.22.0
+go: downloading go.uber.org/goleak v1.2.1
+go: downloading github.com/NYTimes/gziphandler v1.1.1
+go: downloading go.etcd.io/etcd/api/v3 v3.5.10
+go: downloading go.etcd.io/etcd/server/v3 v3.5.10
+go: downloading github.com/go-logr/zapr v1.2.3
+go: downloading github.com/stoewer/go-strcase v1.2.0
+go: downloading github.com/antlr/antlr4/runtime/Go/antlr/v4 v4.0.0-20230305170008-8188dc5388df
+go: downloading github.com/cncf/xds/go v0.0.0-20240905190251-b4127c9b8d78
+go: downloading cloud.google.com/go/compute/metadata v0.5.0
+go: downloading github.com/coreos/go-semver v0.3.1
+go: downloading golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e
+go: downloading go.uber.org/atomic v1.10.0
+go: downloading github.com/benbjohnson/clock v1.1.0
+go: downloading github.com/envoyproxy/protoc-gen-validate v1.1.0
+go: downloading github.com/go-logr/stdr v1.2.2
+go: downloading go.opentelemetry.io/proto/otlp v1.0.0
+go: downloading github.com/cenkalti/backoff/v4 v4.2.1
+go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0
+go: downloading go.etcd.io/bbolt v1.3.8
+go: downloading github.com/tmc/grpc-websocket-proxy v0.0.0-20220101234140-673ab2c3ae75
+go: downloading go.etcd.io/etcd/pkg/v3 v3.5.10
+go: downloading github.com/jonboulle/clockwork v0.2.2
+go: downloading github.com/dustin/go-humanize v1.0.1
+go: downloading github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+go: downloading go.etcd.io/etcd/raft/v3 v3.5.10
+go: downloading github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2
+go: downloading go.etcd.io/etcd/client/v2 v2.305.10
+go: downloading go.opencensus.io v0.24.0
+go: downloading github.com/google/s2a-go v0.1.7
+go: downloading github.com/googleapis/gax-go/v2 v2.12.0
+go: downloading github.com/googleapis/enterprise-certificate-proxy v0.3.2
++ find /tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e -type f
++ xargs sed -i.bak 's/argoproj\/rollouts-demo/quay.io\/jgwest-redhat\/rollouts-demo/g'
++ find /tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e -type f
++ xargs sed -i.bak 's/nginx:1.19-alpine/quay.io\/jgwest-redhat\/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2/g'
++ find /tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e -type f
++ xargs sed -i.bak 's/nginx:1.14.2/quay.io\/jgwest-redhat\/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2/g'
++ find /tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e -type f
++ xargs sed -i.bak s/868d98995b/5496d694d6/g
++ find /tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e -type f
++ xargs sed -i.bak s/66597877b7/6fcb5674b5/g
++ find /tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e -type f -name '*.bak' -delete
++ kubectl delete ns argo-rollouts
+namespace "argo-rollouts" deleted
++ kubectl wait --timeout=5m --for=delete namespace/argo-rollouts
++ kubectl create ns argo-rollouts
+namespace/argo-rollouts created
++ kubectl config set-context --current --namespace=argo-rollouts
+Context "admin" modified.
++ cd /tmp/tmp.VblnaxJcuh/argo-rollouts-manager/hack/..
++ '[' -z true ']'
++ cd /tmp/tmp.EXIjXYyIHf/argo-rollouts
++ cat
++ kubectl apply -f /tmp/tmp.EXIjXYyIHf/rollout-manager.yaml
+rolloutmanager.argoproj.io/argo-rollout created
++ echo '* Waiting for Argo Rollouts Deployment to exist'
+* Waiting for Argo Rollouts Deployment to exist
++ kubectl get -n argo-rollouts deployment/argo-rollouts
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+argo-rollouts   0/1     0            0           0s
++ kubectl wait --for=condition=Available --timeout=10m -n argo-rollouts deployment/argo-rollouts
+deployment.apps/argo-rollouts condition met
++ kubectl apply -f test/e2e/crds
+customresourcedefinition.apiextensions.k8s.io/apisixroutes.apisix.apache.org created
+customresourcedefinition.apiextensions.k8s.io/wasmplugins.extensions.istio.io created
+customresourcedefinition.apiextensions.k8s.io/destinationrules.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/envoyfilters.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/gateways.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/proxyconfigs.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/serviceentries.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/sidecars.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/virtualservices.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/workloadentries.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/workloadgroups.networking.istio.io created
+customresourcedefinition.apiextensions.k8s.io/authorizationpolicies.security.istio.io created
+customresourcedefinition.apiextensions.k8s.io/peerauthentications.security.istio.io created
+customresourcedefinition.apiextensions.k8s.io/requestauthentications.security.istio.io created
+customresourcedefinition.apiextensions.k8s.io/telemetries.telemetry.istio.io created
+customresourcedefinition.apiextensions.k8s.io/trafficsplits.split.smi-spec.io created
++ oc adm policy add-scc-to-user anyuid -z argo-rollouts -n argo-rollouts
+clusterrole.rbac.authorization.k8s.io/system:openshift:scc:anyuid added: "argo-rollouts"
++ oc adm policy add-scc-to-user anyuid -z default -n argo-rollouts
+clusterrole.rbac.authorization.k8s.io/system:openshift:scc:anyuid added: "default"
++ rm -f /tmp/test-e2e.log
++ set +e
++ make test-e2e
++ tee /tmp/test-e2e.log
+./hack/installers/install-dev-tools.sh
++++ dirname ./hack/installers/install-dev-tools.sh
+++ cd ./hack/installers/../..
+++ pwd
++ PROJECT_ROOT=/tmp/tmp.EXIjXYyIHf/argo-rollouts
++ DIST_PATH=/tmp/tmp.EXIjXYyIHf/argo-rollouts/dist
++ PATH=/tmp/tmp.EXIjXYyIHf/argo-rollouts/dist:/tmp/tmp.EXIjXYyIHf/argo-rollouts/dist:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ mkdir -p /tmp/tmp.EXIjXYyIHf/argo-rollouts/dist
++ gotestsum_version=1.11.0
+++ go env GOOS
++ OS=linux
+++ go env GOARCH
++ ARCH=amd64
++ export TARGET_FILE=gotestsum_1.11.0_linux_amd64.tar.gz
++ TARGET_FILE=gotestsum_1.11.0_linux_amd64.tar.gz
++ temp_path=/tmp/gotestsum_1.11.0_linux_amd64.tar.gz
++ url=https://github.com/gotestyourself/gotestsum/releases/download/v1.11.0/gotestsum_1.11.0_linux_amd64.tar.gz
++ '[' -e /tmp/gotestsum_1.11.0_linux_amd64.tar.gz ']'
++ curl -sLf --retry 3 -o /tmp/gotestsum_1.11.0_linux_amd64.tar.gz https://github.com/gotestyourself/gotestsum/releases/download/v1.11.0/gotestsum_1.11.0_linux_amd64.tar.gz
++ mkdir -p /tmp/gotestsum-1.11.0
++ tar -xvzf /tmp/gotestsum_1.11.0_linux_amd64.tar.gz -C /tmp/gotestsum-1.11.0
+LICENSE
+LICENSE.md
+README.md
+gotestsum
++ cp /tmp/gotestsum-1.11.0/gotestsum /tmp/tmp.EXIjXYyIHf/argo-rollouts/dist/gotestsum
++ chmod +x /tmp/tmp.EXIjXYyIHf/argo-rollouts/dist/gotestsum
++ gotestsum --version
+gotestsum version 1.11.0
+/tmp/tmp.EXIjXYyIHf/argo-rollouts/dist/gotestsum --rerun-fails-report=rerunreport.txt --junitfile=junit-e2e-test.xml --format=testname --packages="./test/e2e" --rerun-fails=5 -- -timeout 60m -count 1 --tags e2e -p 1 -parallel 1 -v --short ./test/e2e 
+PASS test/e2e.TestAnalysisSuite/TestAnalysisWithArgs (22.74s)
+PASS test/e2e.TestAnalysisSuite/TestAnalysisWithSecret (10.92s)
+PASS test/e2e.TestAnalysisSuite/TestBackgroundAnalysisWithArgs (8.17s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenAbortAndUpdate (17.16s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenAnalysis (24.42s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenKitchenSink (42.98s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenPostPromotionFail (12.11s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenPrePromotionFail (20.58s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryBackgroundAnalysis (3.30s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryFailInlineMultipleAnalysis (10.02s)
+=== RUN   TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis
+time="2026-05-11T06:23:36Z" level=info msg="Deleting e2e-test-name=TestCanaryInconclusiveBackgroundAnalysis"
+time="2026-05-11T06:23:36Z" level=info msg="rollout.argoproj.io/rollout-background-analysis-inconclusive created\n" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:36Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="Condition 'status=Healthy' met after 1s" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="AnalysisRun expectation 'analysisrun count == 0' met" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="Updated rollout pod spec: 2026-05-11T06:23:38.474434735Z" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="Waiting for condition: status=Paused" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Condition 'status=Paused' met after 1s" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Waiting for AnalysisRun rollout-background-analysis-inconclusive-7dccb97cf6-2 condition: phase=Running" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Condition 'phase=Running' met after 0s" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="AnalysisRun expectation 'analysisrun count == 1' met" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Waiting for AnalysisRun rollout-background-analysis-inconclusive-7dccb97cf6-2 condition: phase=Inconclusive" rollout=rollout-background-analysis-inconclusive
+    when.go:595: timeout after 1m30s waiting for condition phase=Inconclusive
+Name:            rollout-background-analysis-inconclusive
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Healthy
+Strategy:        Canary
+  Step:          2/2
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([32mstable[0m)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                                                  KIND         STATUS        AGE  INFO
+⟳ rollout-background-analysis-inconclusive                            Rollout      [32m✔[0m Healthy     93s  
+├──# revision:2                                                                                       
+│  ├──⧉ [32mrollout-background-analysis-inconclusive-7dccb97cf6[0m           ReplicaSet   [32m✔[0m Healthy     91s  [32mstable[0m
+│  │  ├──□ rollout-background-analysis-inconclusive-7dccb97cf6-6qf94  Pod          [32m✔[0m Running     91s  ready:1/1
+│  │  └──□ rollout-background-analysis-inconclusive-7dccb97cf6-nrjdz  Pod          [32m✔[0m Running     60s  ready:1/1
+│  └──α [0mrollout-background-analysis-inconclusive-7dccb97cf6-2[0m         AnalysisRun  [32m✔[0m Successful  90s  [33m?[0m 3,[31m⚠[0m 1
+└──# revision:1                                                                                       
+   └──⧉ rollout-background-analysis-inconclusive-5bc8c955dc           ReplicaSet   [0m•[0m ScaledDown  93s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    rollout.argoproj.io/revision: "2"
+  creationTimestamp: "2026-05-11T06:23:36Z"
+  generation: 3
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestCanaryInconclusiveBackgroundAnalysis
+  name: rollout-background-analysis-inconclusive
+  namespace: argo-rollouts
+  resourceVersion: "38661"
+  uid: 9a9d1cde-d9fb-4ad6-b3a5-e3289cb65ebd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rollout-background-analysis-inconclusive
+  strategy:
+    canary:
+      analysis:
+        analysisRunMetadata: {}
+        startingStep: 1
+        templates:
+        - templateName: web-background-inconclusive
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 30s
+  template:
+    metadata:
+      annotations:
+        update: "2026-05-11T06:23:38.474434735Z"
+      creationTimestamp: null
+      labels:
+        app: rollout-background-analysis-inconclusive
+    spec:
+      containers:
+      - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+        name: rollouts-demo
+        resources:
+          requests:
+            cpu: 5m
+            memory: 16Mi
+status:
+  HPAReplicas: 2
+  availableReplicas: 2
+  blueGreen: {}
+  canary: {}
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:23:38Z"
+    lastUpdateTime: "2026-05-11T06:23:38Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-05-11T06:24:09Z"
+    lastUpdateTime: "2026-05-11T06:24:09Z"
+    message: Rollout is paused
+    reason: RolloutPaused
+    status: "False"
+    type: Paused
+  - lastTransitionTime: "2026-05-11T06:24:10Z"
+    lastUpdateTime: "2026-05-11T06:24:10Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "True"
+    type: Completed
+  - lastTransitionTime: "2026-05-11T06:24:10Z"
+    lastUpdateTime: "2026-05-11T06:24:10Z"
+    message: Rollout is healthy
+    reason: RolloutHealthy
+    status: "True"
+    type: Healthy
+  - lastTransitionTime: "2026-05-11T06:24:09Z"
+    lastUpdateTime: "2026-05-11T06:24:10Z"
+    message: ReplicaSet "rollout-background-analysis-inconclusive-7dccb97cf6" has
+      successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  currentPodHash: 7dccb97cf6
+  currentStepHash: 7f5ffc686b
+  currentStepIndex: 2
+  observedGeneration: "3"
+  phase: Healthy
+  readyReplicas: 2
+  replicas: 2
+  selector: app=rollout-background-analysis-inconclusive
+  stableRS: 7dccb97cf6
+  updatedReplicas: 2
+
+2026-05-11T06:23:36Z    Normal    RolloutAddedToInformer    Rollout resource added to informer: argo-rollouts/rollout-background-analysis-inconclusive
+2026-05-11T06:23:36Z    Normal    RolloutUpdated            Rollout updated to revision 1
+2026-05-11T06:23:36Z    Normal    NewReplicaSetCreated      Created ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1)
+2026-05-11T06:23:36Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 1 (5bc8c955dc)
+2026-05-11T06:23:36Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1) from 0 to 2
+2026-05-11T06:23:36Z    Normal    RolloutCompleted          Rollout completed update to revision 1 (5bc8c955dc): Initial deploy
+2026-05-11T06:23:38Z    Normal    RolloutUpdated            Rollout updated to revision 2
+2026-05-11T06:23:38Z    Normal    NewReplicaSetCreated      Created ReplicaSet rollout-background-analysis-inconclusive-7dccb97cf6 (revision 2)
+2026-05-11T06:23:38Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 2 (7dccb97cf6)
+2026-05-11T06:23:38Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet rollout-background-analysis-inconclusive-7dccb97cf6 (revision 2) from 0 to 1
+2026-05-11T06:23:39Z    Normal    RolloutStepCompleted      Rollout step 1/2 completed (setWeight: 10)
+2026-05-11T06:23:39Z    Normal    RolloutPaused             Rollout is paused (CanaryPauseStep)
+2026-05-11T06:23:39Z    Normal    AnalysisRunRunning        Background Analysis Run 'rollout-background-analysis-inconclusive-7dccb97cf6-2' Status New: 'Running' Previous: ''
+2026-05-11T06:24:09Z    Normal    RolloutStepCompleted      Rollout step 2/2 completed (pause: 30s)
+2026-05-11T06:24:09Z    Normal    RolloutResumed            Rollout is resumed
+2026-05-11T06:24:09Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1) from 2 to 1
+2026-05-11T06:24:09Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet rollout-background-analysis-inconclusive-7dccb97cf6 (revision 2) from 1 to 2
+2026-05-11T06:24:10Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1) from 1 to 0
+2026-05-11T06:24:10Z    Normal    RolloutCompleted          Rollout completed update to revision 2 (7dccb97cf6): Completed all 2 canary steps
+
+time="2026-05-11T06:25:09Z" level=info msg="Deleting e2e-test-name=TestCanaryInconclusiveBackgroundAnalysis"
+    --- FAIL: TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (93.99s)
+FAIL test/e2e.TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (93.99s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryInlineAnalysis (15.44s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryInlineMultipleAnalysis (16.10s)
+PASS test/e2e.TestAnalysisSuite/TestMultipleAnalysis (3.81s)
+=== RUN   TestAnalysisSuite
+time="2026-05-11T06:20:41Z" level=info msg="analysistemplate.argoproj.io/web-background created\n"
+time="2026-05-11T06:20:42Z" level=info msg="analysistemplate.argoproj.io/web-background-inconclusive created\n"
+time="2026-05-11T06:20:42Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+time="2026-05-11T06:20:43Z" level=info msg="analysistemplate.argoproj.io/multiple-job created\n"
+time="2026-05-11T06:20:43Z" level=info msg="analysistemplate.argoproj.io/multiple-job-fail created\n"
+--- FAIL: TestAnalysisSuite (306.56s)
+FAIL test/e2e.TestAnalysisSuite (306.56s)
+=== RUN   TestAPISIXSuite/TestAPISIXCanarySetHeaderStep
+time="2026-05-11T06:25:45Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:25:46Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:46Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:47Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:47Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:47Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:25:47Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+FAIL test/e2e.TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+PASS test/e2e.TestAPISIXSuite/TestAPISIXCanaryStep (23.48s)
+=== RUN   TestAPISIXSuite
+--- FAIL: TestAPISIXSuite (25.83s)
+FAIL test/e2e.TestAPISIXSuite (25.83s)
+SKIP test/e2e.TestAppMeshSuite (0.01s)
+SKIP test/e2e.TestAWSSuite/TestALBBlueGreenUpdate (0.22s)
+SKIP test/e2e.TestAWSSuite/TestALBCanaryUpdate (0.12s)
+SKIP test/e2e.TestAWSSuite/TestALBCanaryUpdateMultiIngress (0.11s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStep (15.82s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStepMultiIngress (16.17s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStepNoSetWeight (16.97s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStepNoSetWeightMultiIngress (17.29s)
+PASS test/e2e.TestAWSSuite/TestALBMesh_PingPong_StableCanary_Update (17.31s)
+PASS test/e2e.TestAWSSuite/TestALBPingPongUpdate (13.06s)
+PASS test/e2e.TestAWSSuite/TestALBPingPongUpdateMultiIngress (14.07s)
+PASS test/e2e.TestAWSSuite/TestAlbHeaderRoute (8.93s)
+PASS test/e2e.TestAWSSuite/TestAlbHeaderRouteMultiIngress (21.13s)
+PASS test/e2e.TestAWSSuite (141.31s)
+PASS test/e2e.TestBlueGreenSuite/TestBlueGreenPreviewReplicaCount (6.00s)
+PASS test/e2e.TestBlueGreenSuite/TestBlueGreenProgressDeadlineExceededWithPause (68.10s)
+PASS test/e2e.TestBlueGreenSuite/TestBlueGreenProgressDeadlineExceededWithoutPause (68.02s)
+PASS test/e2e.TestBlueGreenSuite/TestEphemeralMetadata (7.50s)
+PASS test/e2e.TestBlueGreenSuite (149.84s)
+PASS test/e2e.TestCanarySuite/TestCanaryDynamicStableScale (20.55s)
+PASS test/e2e.TestCanarySuite/TestCanaryDynamicStableScaleRollbackToStable (13.87s)
+PASS test/e2e.TestCanarySuite/TestCanaryProgressDeadlineExceededWithPause (132.65s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownDelay (9.71s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownDelayWithProgressDeadline (14.96s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownOnAbort (8.16s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownOnAbortNoTrafficRouting (8.10s)
+PASS test/e2e.TestCanarySuite/TestCanaryUnScaleDownOnAbort (9.12s)
+PASS test/e2e.TestCanarySuite/TestCanaryWithPausedRollout (74.03s)
+PASS test/e2e.TestCanarySuite/TestCanaryWithSpecPause (39.32s)
+PASS test/e2e.TestCanarySuite/TestEphemeralMetadata (7.68s)
+PASS test/e2e.TestCanarySuite/TestReduceWeightAndHonorMaxUnavailable (28.31s)
+PASS test/e2e.TestCanarySuite/TestRolloutScalingDuringUpdate (2.34s)
+PASS test/e2e.TestCanarySuite/TestRolloutScalingWhenPaused (5.64s)
+=== RUN   TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate
+time="2026-05-11T06:37:17Z" level=info msg="Deleting e2e-test-name=TestRolloutWithMaxSurgeScalingDuringUpdate"
+time="2026-05-11T06:37:18Z" level=info msg="rollout.argoproj.io/updatescaling created\n" rollout=updatescaling
+time="2026-05-11T06:37:18Z" level=info msg="Waiting for condition: status=Healthy" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Condition 'status=Healthy' met after 1s" rollout=updatescaling
+W0511 06:37:19.668563   91444 warnings.go:70] unknown field "spec.template.metadata.creationTimestamp"
+time="2026-05-11T06:37:19Z" level=info msg="Patched rollout: {\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"updatescaling\",\"resources\":{\"requests\":{\"cpu\":\"2m\",\"memory\":\"16Mi\"}}}]}}}}" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Waiting for condition: status.replicas=7" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Condition 'status.replicas=7' met after 0s" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Pod expectation 'canary pod count == 4' met" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Pod expectation 'stable pod count == 3' met" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Scaled rollout to 8" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Waiting for condition: status.replicas=11" rollout=updatescaling
+    when.go:475: timeout after 1m30s waiting for condition status.replicas=11
+Name:            updatescaling
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Healthy
+Strategy:        Canary
+  Step:          
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([32mstable[0m)
+Replicas:
+  Desired:       8
+  Current:       8
+  Updated:       8
+  Ready:         8
+  Available:     8
+
+NAME                                       KIND        STATUS        AGE  INFO
+⟳ updatescaling                            Rollout     [32m✔[0m Healthy     91s  
+├──# revision:2                                                           
+│  └──⧉ [32mupdatescaling-69fcb449bb[0m           ReplicaSet  [32m✔[0m Healthy     90s  [32mstable[0m
+│     ├──□ updatescaling-69fcb449bb-96xcg  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-9828t  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-9kq79  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-kfqmg  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-ffdzr  Pod         [32m✔[0m Running     89s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-gkh2l  Pod         [32m✔[0m Running     89s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-qjcnj  Pod         [32m✔[0m Running     89s  ready:1/1
+│     └──□ updatescaling-69fcb449bb-r5294  Pod         [32m✔[0m Running     89s  ready:1/1
+└──# revision:1                                                           
+   └──⧉ updatescaling-6bb54685cf           ReplicaSet  [0m•[0m ScaledDown  91s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    rollout.argoproj.io/revision: "2"
+  creationTimestamp: "2026-05-11T06:37:18Z"
+  generation: 3
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestRolloutWithMaxSurgeScalingDuringUpdate
+  name: updatescaling
+  namespace: argo-rollouts
+  resourceVersion: "50459"
+  uid: 07da6da5-ab1e-43b6-a8b9-180ec55ebf44
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: updatescaling
+  strategy:
+    canary:
+      maxSurge: 100%
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: updatescaling
+    spec:
+      containers:
+      - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+        name: updatescaling
+        resources:
+          requests:
+            cpu: 2m
+            memory: 16Mi
+status:
+  HPAReplicas: 8
+  availableReplicas: 8
+  blueGreen: {}
+  canary: {}
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:37:22Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: Rollout is healthy
+    reason: RolloutHealthy
+    status: "True"
+    type: Healthy
+  - lastTransitionTime: "2026-05-11T06:37:18Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: ReplicaSet "updatescaling-69fcb449bb" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2026-05-11T06:37:22Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-05-11T06:37:22Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "True"
+    type: Completed
+  currentPodHash: 69fcb449bb
+  currentStepHash: 5ffbfbbd64
+  observedGeneration: "3"
+  phase: Healthy
+  readyReplicas: 8
+  replicas: 8
+  selector: app=updatescaling
+  stableRS: 69fcb449bb
+  updatedReplicas: 8
+
+2026-05-11T06:37:18Z    Normal    RolloutAddedToInformer    Rollout resource added to informer: argo-rollouts/updatescaling
+2026-05-11T06:37:18Z    Normal    RolloutUpdated            Rollout updated to revision 1
+2026-05-11T06:37:18Z    Normal    NewReplicaSetCreated      Created ReplicaSet updatescaling-6bb54685cf (revision 1)
+2026-05-11T06:37:18Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 1 (6bb54685cf)
+2026-05-11T06:37:18Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet updatescaling-6bb54685cf (revision 1) from 0 to 4
+2026-05-11T06:37:18Z    Normal    RolloutCompleted          Rollout completed update to revision 1 (6bb54685cf): Initial deploy
+2026-05-11T06:37:19Z    Normal    RolloutUpdated            Rollout updated to revision 2
+2026-05-11T06:37:19Z    Normal    NewReplicaSetCreated      Created ReplicaSet updatescaling-69fcb449bb (revision 2)
+2026-05-11T06:37:19Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 2 (69fcb449bb)
+2026-05-11T06:37:19Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 4 to 3
+2026-05-11T06:37:19Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet updatescaling-69fcb449bb (revision 2) from 0 to 4
+2026-05-11T06:37:20Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 3 to 2
+2026-05-11T06:37:20Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet updatescaling-69fcb449bb (revision 2) from 4 to 8
+2026-05-11T06:37:21Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 2 to 1
+2026-05-11T06:37:21Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 1 to 0
+2026-05-11T06:37:22Z    Normal    RolloutCompleted          Rollout completed update to revision 2 (69fcb449bb): Completed all 0 canary steps
+
+time="2026-05-11T06:38:49Z" level=info msg="Deleting e2e-test-name=TestRolloutWithMaxSurgeScalingDuringUpdate"
+time="2026-05-11T06:38:50Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (92.46s)
+FAIL test/e2e.TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (92.46s)
+PASS test/e2e.TestCanarySuite/TestCanarySetCanaryScale (9.11s)
+=== RUN   TestCanarySuite
+time="2026-05-11T06:31:03Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestCanarySuite (467.56s)
+FAIL test/e2e.TestCanarySuite (467.56s)
+=== RUN   TestExperimentSuite/TestExperimentWithDryRunMetrics
+time="2026-05-11T06:38:59Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:38:59Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:39:00Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:39:00Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:39:31Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:39:31Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:39:34Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:39:34Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:39:34Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-xlgd5         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m858f12a2-dff3-4157-a0e6-eca521a84b7d.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:39:00Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "51603"
+  uid: adfafe3b-400f-4392-a816-d6c38d75ff9e
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:39:01Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:39:31Z"
+    lastUpdateTime: "2026-05-11T06:39:31Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:39:31Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:39:00Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:39:00Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:39:00Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:39:01Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:39:01Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:39:01Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:39:30Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:39:31Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:39:31Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:39:31Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:39:34Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.09s)
+FAIL test/e2e.TestExperimentSuite/TestExperimentWithDryRunMetrics (35.09s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithMeasurementRetentionMetrics (34.97s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithMultiportServiceAndScaleDownDelay (17.05s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithServiceAndScaleDownDelay (16.96s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithServiceNameAndScaleDownDelay (17.00s)
+PASS test/e2e.TestExperimentSuite/TestRolloutWithExperimentAndAnalysis (10.03s)
+=== RUN   TestExperimentSuite
+--- FAIL: TestExperimentSuite (121.48s)
+FAIL test/e2e.TestExperimentSuite (121.48s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenExceedProgressDeadlineAbort (9.27s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenPreviewReplicaCountPromoteFull (8.03s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenPromoteFull (7.44s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenScaleDownDelay (8.21s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenScaleDownOnAbort (7.93s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenToCanary (3.94s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenUpdate (4.65s)
+PASS test/e2e.TestFunctionalSuite/TestCanaryPromoteFull (9.26s)
+PASS test/e2e.TestFunctionalSuite/TestCompleteRolloutRestart (22.21s)
+PASS test/e2e.TestFunctionalSuite/TestContainerResourceFormats (1.79s)
+=== RUN   TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:42:33Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:42:33Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 6734 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc001682c40, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc001a1eb00)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc0007fbc00?, 0xc001aa9378?, 0xc001a1eb00?}, {0x3e277ad, 0x4}, {0xc001a2ff28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc0007fbc00?, 0xc001aa9378?, 0xf?}, {0xc001a2ff28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc001682c40)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc001682c40, 0xc000d64ab0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 5767
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.24s)
+FAIL test/e2e.TestFunctionalSuite/TestControllerMetrics (0.24s)
+PASS test/e2e.TestFunctionalSuite/TestFixInvalidSpec (2.93s)
+PASS test/e2e.TestFunctionalSuite/TestKubectlWaitForCompleted (28.13s)
+PASS test/e2e.TestFunctionalSuite/TestKubectlWaitForPaused (5.30s)
+PASS test/e2e.TestFunctionalSuite/TestMalformedRollout (2.85s)
+PASS test/e2e.TestFunctionalSuite/TestMalformedRolloutEphemeralCtr (1.81s)
+PASS test/e2e.TestFunctionalSuite/TestNeverScaleDown (4.18s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutAbortRetryPromote (6.02s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutBadToBadUpdate (21.92s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutBadToGoodSetWeightUpdate (20.27s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutBadToGoodUpdate (17.22s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutGoodToBadUpdate (23.51s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutPDBRestart (46.09s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutPauseDurationGreaterThanProgressDeadlineSeconds (35.00s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutPodVolumesItemsSpec (7.64s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutRestart (17.18s)
+PASS test/e2e.TestFunctionalSuite/TestScaleDownOnSuccess (9.54s)
+PASS test/e2e.TestFunctionalSuite/TestScaleDownProgressively (9.75s)
+PASS test/e2e.TestFunctionalSuite/TestSpecAndReplicaChangeSameTime (21.91s)
+PASS test/e2e.TestFunctionalSuite/TestWorkloadRef (12.68s)
+PASS test/e2e.TestFunctionalSuite/TestWorkloadRefTemplate (1.34s)
+=== RUN   TestFunctionalSuite
+time="2026-05-11T06:41:11Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestFunctionalSuite (378.93s)
+FAIL test/e2e.TestFunctionalSuite (378.93s)
+PASS test/e2e.TestHeaderRoutingSuite/TestIstioHostHeaderRoute (11.34s)
+PASS test/e2e.TestHeaderRoutingSuite (11.45s)
+PASS test/e2e.TestIstioSuite/TestIstioAbortUpdate (4.84s)
+PASS test/e2e.TestIstioSuite/TestIstioAbortUpdateDeleteAllCanaryPods (6.43s)
+PASS test/e2e.TestIstioSuite/TestIstioHostSplit (12.06s)
+PASS test/e2e.TestIstioSuite/TestIstioHostSplitExperimentStep (15.88s)
+PASS test/e2e.TestIstioSuite/TestIstioHostSplitOnlyTls (6.22s)
+PASS test/e2e.TestIstioSuite/TestIstioPingPongUpdate (9.80s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplit (8.11s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplitExperimentStep (15.99s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplitInStableDownscaleAfterCanaryAbort (5.20s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplitSingleRoute (5.87s)
+PASS test/e2e.TestIstioSuite/TestIstioUpdateInMiddleZeroCanaryReplicas (5.93s)
+PASS test/e2e.TestIstioSuite (96.43s)
+PASS test/e2e.TestMirrorRouteSuite/TestIstioHostMirrorRoute (11.91s)
+PASS test/e2e.TestMirrorRouteSuite (12.01s)
+PASS test/e2e.TestRollbackSuite/TestRollbackAnalysisOutsideWindow (33.81s)
+PASS test/e2e.TestRollbackSuite/TestRollbackAnalysisWithinWindow (25.14s)
+PASS test/e2e.TestRollbackSuite (60.14s)
+SKIP test/e2e.TestSMIIngressSuite (0.01s)
+SKIP test/e2e.TestSMISuite (0.01s)
+SKIP test/e2e.TestStepPluginSuite (0.01s)
+FAIL test/e2e
+
+DONE 115 tests, 7 skipped, 10 failures in 2186.382s
+
+PASS test/e2e.TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (re-run 1) (32.68s)
+PASS test/e2e.TestAnalysisSuite (re-run 1) (35.43s)
+PASS test/e2e
+=== RUN   TestAPISIXSuite/TestAPISIXCanarySetHeaderStep
+time="2026-05-11T06:51:30Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:51:30Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:31Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:31Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route configured\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:32Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:32Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:51:32Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:51:32Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.28s)
+FAIL test/e2e.TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 1) (2.28s)
+=== RUN   TestAPISIXSuite
+--- FAIL: TestAPISIXSuite (2.44s)
+FAIL test/e2e.TestAPISIXSuite (re-run 1) (2.44s)
+FAIL test/e2e
+PASS test/e2e.TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (re-run 1) (3.13s)
+PASS test/e2e.TestCanarySuite (re-run 1) (4.00s)
+PASS test/e2e
+=== RUN   TestExperimentSuite/TestExperimentWithDryRunMetrics
+time="2026-05-11T06:51:49Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:51:49Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:51:50Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:51:50Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:52:21Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:52:21Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:52:24Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:52:24Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:52:24Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-n94b5         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0mfd385a9f-47ba-4549-824f-53f515a48ab0.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:51:50Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "65334"
+  uid: 6cad85b0-b3fa-435a-b580-c0d5fe9e73f6
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:51:51Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:52:21Z"
+    lastUpdateTime: "2026-05-11T06:52:21Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:52:21Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:51:50Z (x2)    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:51:50Z (x2)    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:51:50Z         Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:51:51Z         Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:51:51Z         Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:51:51Z         Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:52:20Z         Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:52:21Z         Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:52:21Z         Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:52:21Z         Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:52:24Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:52:24Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.17s)
+FAIL test/e2e.TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 1) (35.17s)
+=== RUN   TestExperimentSuite
+--- FAIL: TestExperimentSuite (35.27s)
+FAIL test/e2e.TestExperimentSuite (re-run 1) (35.27s)
+FAIL test/e2e
+=== RUN   TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:52:31Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:52:31Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 91 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc000b1a000, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc0006d2500)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000af21c0?, 0xc0000cbc58?, 0xc0006d2500?}, {0x3e277ad, 0x4}, {0xc0008cbf28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000af21c0?, 0xc0000cbc58?, 0xf?}, {0xc0008cbf28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc000b1a000)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc000b1a000, 0xc000ba79e0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 155
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:52:31Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.16s)
+FAIL test/e2e.TestFunctionalSuite/TestControllerMetrics (re-run 1) (0.16s)
+=== RUN   TestFunctionalSuite
+time="2026-05-11T06:52:31Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestFunctionalSuite (0.82s)
+FAIL test/e2e.TestFunctionalSuite (re-run 1) (0.82s)
+FAIL test/e2e
+
+DONE 2 runs, 125 tests, 7 skipped, 16 failures in 2307.755s
+
+=== RUN   TestAPISIXSuite/TestAPISIXCanarySetHeaderStep
+time="2026-05-11T06:52:38Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:52:38Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:52:39Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:52:40Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (1.98s)
+FAIL test/e2e.TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 2) (1.98s)
+=== RUN   TestAPISIXSuite
+--- FAIL: TestAPISIXSuite (2.08s)
+FAIL test/e2e.TestAPISIXSuite (re-run 2) (2.08s)
+FAIL test/e2e
+=== RUN   TestExperimentSuite/TestExperimentWithDryRunMetrics
+time="2026-05-11T06:52:46Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:52:46Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:52:47Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:52:47Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:53:18Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:53:18Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:53:21Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:53:21Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:53:21Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-mbtz2         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m304bb5b6-d275-4ff1-ba7f-16f2f6ffd2d6.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:52:47Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "65740"
+  uid: e06331e2-781d-456f-b57b-360867eaf52d
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:52:48Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:53:18Z"
+    lastUpdateTime: "2026-05-11T06:53:18Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:53:18Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:52:47Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:52:47Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:52:47Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:52:48Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:52:48Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:52:48Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:52:48Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:53:18Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:53:18Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:53:18Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:53:21Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:53:21Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.19s)
+FAIL test/e2e.TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 2) (35.19s)
+=== RUN   TestExperimentSuite
+--- FAIL: TestExperimentSuite (35.33s)
+FAIL test/e2e.TestExperimentSuite (re-run 2) (35.33s)
+FAIL test/e2e
+=== RUN   TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:53:27Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:53:28Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 177 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc0009f6fc0, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc00006c800)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000663700?, 0xc000b80778?, 0xc00006c800?}, {0x3e277ad, 0x4}, {0xc00076df28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000663700?, 0xc000b80778?, 0xf?}, {0xc00076df28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc0009f6fc0)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc0009f6fc0, 0xc00087c870)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 144
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:53:28Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.16s)
+FAIL test/e2e.TestFunctionalSuite/TestControllerMetrics (re-run 2) (0.16s)
+=== RUN   TestFunctionalSuite
+time="2026-05-11T06:53:27Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestFunctionalSuite (0.87s)
+FAIL test/e2e.TestFunctionalSuite (re-run 2) (0.87s)
+FAIL test/e2e
+
+DONE 3 runs, 131 tests, 7 skipped, 22 failures in 2364.249s
+
+=== RUN   TestAPISIXSuite/TestAPISIXCanarySetHeaderStep
+time="2026-05-11T06:53:34Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:53:34Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:35Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:35Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:36Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:36Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:53:36Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:53:36Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.05s)
+FAIL test/e2e.TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 3) (2.05s)
+=== RUN   TestAPISIXSuite
+--- FAIL: TestAPISIXSuite (2.22s)
+FAIL test/e2e.TestAPISIXSuite (re-run 3) (2.22s)
+FAIL test/e2e
+=== RUN   TestExperimentSuite/TestExperimentWithDryRunMetrics
+time="2026-05-11T06:53:42Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:53:43Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:53:43Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:53:43Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:54:15Z" level=info msg="Condition 'phase=Successful' met after 31s"
+time="2026-05-11T06:54:15Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:54:18Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:54:18Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:54:18Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  35s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     35s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-ms8t7         Pod          [32m✔[0m Running     35s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0mf9fdc097-806c-48fa-bc68-22873b9a9768.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:53:43Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "66159"
+  uid: 962b17b3-1b8c-47ea-b04b-2d0f2a89e47f
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:53:45Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:54:15Z"
+    lastUpdateTime: "2026-05-11T06:54:15Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:54:15Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:53:43Z (x2)    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:53:43Z (x2)    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:53:43Z         Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:53:45Z         Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:53:45Z         Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:53:45Z         Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:53:45Z         Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:54:15Z         Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:54:15Z         Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:54:15Z         Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:54:18Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:54:18Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.77s)
+FAIL test/e2e.TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 3) (35.77s)
+=== RUN   TestExperimentSuite
+--- FAIL: TestExperimentSuite (35.87s)
+FAIL test/e2e.TestExperimentSuite (re-run 3) (35.87s)
+FAIL test/e2e
+=== RUN   TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:54:25Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:54:25Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 173 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc000bf6700, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc000264b00)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc0000f3040?, 0xc000f021d0?, 0xc000264b00?}, {0x3e277ad, 0x4}, {0xc000979f28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc0000f3040?, 0xc000f021d0?, 0xf?}, {0xc000979f28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc000bf6700)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc000bf6700, 0xc000b4e5a0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 129
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:54:25Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.27s)
+FAIL test/e2e.TestFunctionalSuite/TestControllerMetrics (re-run 3) (0.27s)
+=== RUN   TestFunctionalSuite
+time="2026-05-11T06:54:25Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestFunctionalSuite (0.89s)
+FAIL test/e2e.TestFunctionalSuite (re-run 3) (0.89s)
+FAIL test/e2e
+
+DONE 4 runs, 137 tests, 7 skipped, 28 failures in 2421.450s
+
+=== RUN   TestAPISIXSuite/TestAPISIXCanarySetHeaderStep
+time="2026-05-11T06:54:31Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:54:31Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:32Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:32Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:33Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:33Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:54:33Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:54:33Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+FAIL test/e2e.TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 4) (2.24s)
+=== RUN   TestAPISIXSuite
+--- FAIL: TestAPISIXSuite (2.40s)
+FAIL test/e2e.TestAPISIXSuite (re-run 4) (2.40s)
+FAIL test/e2e
+=== RUN   TestExperimentSuite/TestExperimentWithDryRunMetrics
+time="2026-05-11T06:54:39Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:54:40Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:54:40Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:54:40Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:55:12Z" level=info msg="Condition 'phase=Successful' met after 31s"
+time="2026-05-11T06:55:12Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:55:15Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:55:15Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:55:15Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  35s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     35s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-bw8nw         Pod          [32m✔[0m Running     35s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m6b66f685-667c-4746-af98-2807c9b05722.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:54:40Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "66572"
+  uid: cc6b480d-7d13-4ba1-9ef8-0cf9e0c62af6
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:54:42Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:55:12Z"
+    lastUpdateTime: "2026-05-11T06:55:12Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:55:12Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:54:40Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:54:40Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:54:40Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:54:42Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:54:42Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:54:42Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:54:42Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:55:12Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:55:12Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:55:12Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:55:15Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:55:15Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.76s)
+FAIL test/e2e.TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 4) (35.76s)
+=== RUN   TestExperimentSuite
+--- FAIL: TestExperimentSuite (35.90s)
+FAIL test/e2e.TestExperimentSuite (re-run 4) (35.90s)
+FAIL test/e2e
+=== RUN   TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:55:21Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:55:22Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 120 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc000c60700, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc00099a500)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000c11d40?, 0xc000c260e8?, 0xc00099a500?}, {0x3e277ad, 0x4}, {0xc000a83f28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000c11d40?, 0xc000c260e8?, 0xf?}, {0xc000a83f28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc000c60700)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc000c60700, 0xc000c0a5a0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 151
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:55:22Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.24s)
+FAIL test/e2e.TestFunctionalSuite/TestControllerMetrics (re-run 4) (0.24s)
+=== RUN   TestFunctionalSuite
+time="2026-05-11T06:55:21Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestFunctionalSuite (0.92s)
+FAIL test/e2e.TestFunctionalSuite (re-run 4) (0.92s)
+FAIL test/e2e
+
+DONE 5 runs, 143 tests, 7 skipped, 34 failures in 2478.307s
+
+=== RUN   TestAPISIXSuite/TestAPISIXCanarySetHeaderStep
+time="2026-05-11T06:55:28Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:55:28Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:29Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:29Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:30Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:30Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:55:30Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:55:30Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.11s)
+FAIL test/e2e.TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 5) (2.11s)
+=== RUN   TestAPISIXSuite
+--- FAIL: TestAPISIXSuite (2.35s)
+FAIL test/e2e.TestAPISIXSuite (re-run 5) (2.35s)
+FAIL test/e2e
+=== RUN   TestExperimentSuite/TestExperimentWithDryRunMetrics
+time="2026-05-11T06:55:36Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:55:37Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:55:37Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:55:37Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:56:08Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:56:08Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:56:11Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:56:11Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:56:11Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-756gm         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m87e3c110-4f5a-470a-b36c-08f6a60e4ba9.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:55:37Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "66982"
+  uid: cf8b1f2e-ea3c-4050-838b-8f69675f701e
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:55:38Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:56:08Z"
+    lastUpdateTime: "2026-05-11T06:56:08Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:56:08Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:55:37Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:55:37Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:55:37Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:55:38Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:55:38Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:55:38Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:55:38Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:56:08Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:56:08Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:56:08Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:56:11Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:56:11Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (34.80s)
+FAIL test/e2e.TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 5) (34.80s)
+=== RUN   TestExperimentSuite
+--- FAIL: TestExperimentSuite (34.90s)
+FAIL test/e2e.TestExperimentSuite (re-run 5) (34.90s)
+FAIL test/e2e
+=== RUN   TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:56:18Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:56:18Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 110 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc00082aa80, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc00006c700)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000660d80?, 0xc000e201a8?, 0xc00006c700?}, {0x3e277ad, 0x4}, {0xc000dadf28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000660d80?, 0xc000e201a8?, 0xf?}, {0xc000dadf28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc00082aa80)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc00082aa80, 0xc00075a1b0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 135
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:56:18Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.13s)
+FAIL test/e2e.TestFunctionalSuite/TestControllerMetrics (re-run 5) (0.13s)
+=== RUN   TestFunctionalSuite
+time="2026-05-11T06:56:18Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+--- FAIL: TestFunctionalSuite (0.80s)
+FAIL test/e2e.TestFunctionalSuite (re-run 5) (0.80s)
+FAIL test/e2e
+
+=== Skipped
+=== SKIP: test/e2e TestAppMeshSuite (0.01s)
+
+=== SKIP: test/e2e TestAWSSuite/TestALBBlueGreenUpdate (0.22s)
+time="2026-05-11T06:26:11Z" level=info msg="Deleting e2e-test-name=TestALBBlueGreenUpdate"
+time="2026-05-11T06:26:11Z" level=info msg="Deleting e2e-test-name=TestALBBlueGreenUpdate"
+    --- SKIP: TestAWSSuite/TestALBBlueGreenUpdate (0.22s)
+
+=== SKIP: test/e2e TestAWSSuite/TestALBCanaryUpdate (0.12s)
+time="2026-05-11T06:26:11Z" level=info msg="Deleting e2e-test-name=TestALBCanaryUpdate"
+time="2026-05-11T06:26:11Z" level=info msg="Deleting e2e-test-name=TestALBCanaryUpdate"
+    --- SKIP: TestAWSSuite/TestALBCanaryUpdate (0.12s)
+
+=== SKIP: test/e2e TestAWSSuite/TestALBCanaryUpdateMultiIngress (0.11s)
+time="2026-05-11T06:26:11Z" level=info msg="Deleting e2e-test-name=TestALBCanaryUpdateMultiIngress"
+time="2026-05-11T06:26:11Z" level=info msg="Deleting e2e-test-name=TestALBCanaryUpdateMultiIngress"
+    --- SKIP: TestAWSSuite/TestALBCanaryUpdateMultiIngress (0.11s)
+
+=== SKIP: test/e2e TestSMIIngressSuite (0.01s)
+
+=== SKIP: test/e2e TestSMISuite (0.01s)
+
+=== SKIP: test/e2e TestStepPluginSuite (0.01s)
+
+=== Failed
+=== FAIL: test/e2e TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (93.99s)
+time="2026-05-11T06:23:36Z" level=info msg="Deleting e2e-test-name=TestCanaryInconclusiveBackgroundAnalysis"
+time="2026-05-11T06:23:36Z" level=info msg="rollout.argoproj.io/rollout-background-analysis-inconclusive created\n" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:36Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="Condition 'status=Healthy' met after 1s" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="AnalysisRun expectation 'analysisrun count == 0' met" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="Updated rollout pod spec: 2026-05-11T06:23:38.474434735Z" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:38Z" level=info msg="Waiting for condition: status=Paused" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Condition 'status=Paused' met after 1s" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Waiting for AnalysisRun rollout-background-analysis-inconclusive-7dccb97cf6-2 condition: phase=Running" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Condition 'phase=Running' met after 0s" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="AnalysisRun expectation 'analysisrun count == 1' met" rollout=rollout-background-analysis-inconclusive
+time="2026-05-11T06:23:39Z" level=info msg="Waiting for AnalysisRun rollout-background-analysis-inconclusive-7dccb97cf6-2 condition: phase=Inconclusive" rollout=rollout-background-analysis-inconclusive
+    when.go:595: timeout after 1m30s waiting for condition phase=Inconclusive
+Name:            rollout-background-analysis-inconclusive
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Healthy
+Strategy:        Canary
+  Step:          2/2
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([32mstable[0m)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                                                  KIND         STATUS        AGE  INFO
+⟳ rollout-background-analysis-inconclusive                            Rollout      [32m✔[0m Healthy     93s  
+├──# revision:2                                                                                       
+│  ├──⧉ [32mrollout-background-analysis-inconclusive-7dccb97cf6[0m           ReplicaSet   [32m✔[0m Healthy     91s  [32mstable[0m
+│  │  ├──□ rollout-background-analysis-inconclusive-7dccb97cf6-6qf94  Pod          [32m✔[0m Running     91s  ready:1/1
+│  │  └──□ rollout-background-analysis-inconclusive-7dccb97cf6-nrjdz  Pod          [32m✔[0m Running     60s  ready:1/1
+│  └──α [0mrollout-background-analysis-inconclusive-7dccb97cf6-2[0m         AnalysisRun  [32m✔[0m Successful  90s  [33m?[0m 3,[31m⚠[0m 1
+└──# revision:1                                                                                       
+   └──⧉ rollout-background-analysis-inconclusive-5bc8c955dc           ReplicaSet   [0m•[0m ScaledDown  93s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    rollout.argoproj.io/revision: "2"
+  creationTimestamp: "2026-05-11T06:23:36Z"
+  generation: 3
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestCanaryInconclusiveBackgroundAnalysis
+  name: rollout-background-analysis-inconclusive
+  namespace: argo-rollouts
+  resourceVersion: "38661"
+  uid: 9a9d1cde-d9fb-4ad6-b3a5-e3289cb65ebd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rollout-background-analysis-inconclusive
+  strategy:
+    canary:
+      analysis:
+        analysisRunMetadata: {}
+        startingStep: 1
+        templates:
+        - templateName: web-background-inconclusive
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 30s
+  template:
+    metadata:
+      annotations:
+        update: "2026-05-11T06:23:38.474434735Z"
+      creationTimestamp: null
+      labels:
+        app: rollout-background-analysis-inconclusive
+    spec:
+      containers:
+      - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+        name: rollouts-demo
+        resources:
+          requests:
+            cpu: 5m
+            memory: 16Mi
+status:
+  HPAReplicas: 2
+  availableReplicas: 2
+  blueGreen: {}
+  canary: {}
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:23:38Z"
+    lastUpdateTime: "2026-05-11T06:23:38Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-05-11T06:24:09Z"
+    lastUpdateTime: "2026-05-11T06:24:09Z"
+    message: Rollout is paused
+    reason: RolloutPaused
+    status: "False"
+    type: Paused
+  - lastTransitionTime: "2026-05-11T06:24:10Z"
+    lastUpdateTime: "2026-05-11T06:24:10Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "True"
+    type: Completed
+  - lastTransitionTime: "2026-05-11T06:24:10Z"
+    lastUpdateTime: "2026-05-11T06:24:10Z"
+    message: Rollout is healthy
+    reason: RolloutHealthy
+    status: "True"
+    type: Healthy
+  - lastTransitionTime: "2026-05-11T06:24:09Z"
+    lastUpdateTime: "2026-05-11T06:24:10Z"
+    message: ReplicaSet "rollout-background-analysis-inconclusive-7dccb97cf6" has
+      successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  currentPodHash: 7dccb97cf6
+  currentStepHash: 7f5ffc686b
+  currentStepIndex: 2
+  observedGeneration: "3"
+  phase: Healthy
+  readyReplicas: 2
+  replicas: 2
+  selector: app=rollout-background-analysis-inconclusive
+  stableRS: 7dccb97cf6
+  updatedReplicas: 2
+
+2026-05-11T06:23:36Z    Normal    RolloutAddedToInformer    Rollout resource added to informer: argo-rollouts/rollout-background-analysis-inconclusive
+2026-05-11T06:23:36Z    Normal    RolloutUpdated            Rollout updated to revision 1
+2026-05-11T06:23:36Z    Normal    NewReplicaSetCreated      Created ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1)
+2026-05-11T06:23:36Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 1 (5bc8c955dc)
+2026-05-11T06:23:36Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1) from 0 to 2
+2026-05-11T06:23:36Z    Normal    RolloutCompleted          Rollout completed update to revision 1 (5bc8c955dc): Initial deploy
+2026-05-11T06:23:38Z    Normal    RolloutUpdated            Rollout updated to revision 2
+2026-05-11T06:23:38Z    Normal    NewReplicaSetCreated      Created ReplicaSet rollout-background-analysis-inconclusive-7dccb97cf6 (revision 2)
+2026-05-11T06:23:38Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 2 (7dccb97cf6)
+2026-05-11T06:23:38Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet rollout-background-analysis-inconclusive-7dccb97cf6 (revision 2) from 0 to 1
+2026-05-11T06:23:39Z    Normal    RolloutStepCompleted      Rollout step 1/2 completed (setWeight: 10)
+2026-05-11T06:23:39Z    Normal    RolloutPaused             Rollout is paused (CanaryPauseStep)
+2026-05-11T06:23:39Z    Normal    AnalysisRunRunning        Background Analysis Run 'rollout-background-analysis-inconclusive-7dccb97cf6-2' Status New: 'Running' Previous: ''
+2026-05-11T06:24:09Z    Normal    RolloutStepCompleted      Rollout step 2/2 completed (pause: 30s)
+2026-05-11T06:24:09Z    Normal    RolloutResumed            Rollout is resumed
+2026-05-11T06:24:09Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1) from 2 to 1
+2026-05-11T06:24:09Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet rollout-background-analysis-inconclusive-7dccb97cf6 (revision 2) from 1 to 2
+2026-05-11T06:24:10Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet rollout-background-analysis-inconclusive-5bc8c955dc (revision 1) from 1 to 0
+2026-05-11T06:24:10Z    Normal    RolloutCompleted          Rollout completed update to revision 2 (7dccb97cf6): Completed all 2 canary steps
+
+time="2026-05-11T06:25:09Z" level=info msg="Deleting e2e-test-name=TestCanaryInconclusiveBackgroundAnalysis"
+    --- FAIL: TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (93.99s)
+
+=== FAIL: test/e2e TestAnalysisSuite (306.56s)
+time="2026-05-11T06:20:41Z" level=info msg="analysistemplate.argoproj.io/web-background created\n"
+time="2026-05-11T06:20:42Z" level=info msg="analysistemplate.argoproj.io/web-background-inconclusive created\n"
+time="2026-05-11T06:20:42Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+time="2026-05-11T06:20:43Z" level=info msg="analysistemplate.argoproj.io/multiple-job created\n"
+time="2026-05-11T06:20:43Z" level=info msg="analysistemplate.argoproj.io/multiple-job-fail created\n"
+
+=== FAIL: test/e2e TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+time="2026-05-11T06:25:45Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:25:46Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:46Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:47Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:47Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:25:47Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:25:47Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+
+=== FAIL: test/e2e TestAPISIXSuite (25.83s)
+
+=== FAIL: test/e2e TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (92.46s)
+time="2026-05-11T06:37:17Z" level=info msg="Deleting e2e-test-name=TestRolloutWithMaxSurgeScalingDuringUpdate"
+time="2026-05-11T06:37:18Z" level=info msg="rollout.argoproj.io/updatescaling created\n" rollout=updatescaling
+time="2026-05-11T06:37:18Z" level=info msg="Waiting for condition: status=Healthy" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Condition 'status=Healthy' met after 1s" rollout=updatescaling
+W0511 06:37:19.668563   91444 warnings.go:70] unknown field "spec.template.metadata.creationTimestamp"
+time="2026-05-11T06:37:19Z" level=info msg="Patched rollout: {\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"updatescaling\",\"resources\":{\"requests\":{\"cpu\":\"2m\",\"memory\":\"16Mi\"}}}]}}}}" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Waiting for condition: status.replicas=7" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Condition 'status.replicas=7' met after 0s" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Pod expectation 'canary pod count == 4' met" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Pod expectation 'stable pod count == 3' met" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Scaled rollout to 8" rollout=updatescaling
+time="2026-05-11T06:37:19Z" level=info msg="Waiting for condition: status.replicas=11" rollout=updatescaling
+    when.go:475: timeout after 1m30s waiting for condition status.replicas=11
+Name:            updatescaling
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Healthy
+Strategy:        Canary
+  Step:          
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([32mstable[0m)
+Replicas:
+  Desired:       8
+  Current:       8
+  Updated:       8
+  Ready:         8
+  Available:     8
+
+NAME                                       KIND        STATUS        AGE  INFO
+⟳ updatescaling                            Rollout     [32m✔[0m Healthy     91s  
+├──# revision:2                                                           
+│  └──⧉ [32mupdatescaling-69fcb449bb[0m           ReplicaSet  [32m✔[0m Healthy     90s  [32mstable[0m
+│     ├──□ updatescaling-69fcb449bb-96xcg  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-9828t  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-9kq79  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-kfqmg  Pod         [32m✔[0m Running     90s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-ffdzr  Pod         [32m✔[0m Running     89s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-gkh2l  Pod         [32m✔[0m Running     89s  ready:1/1
+│     ├──□ updatescaling-69fcb449bb-qjcnj  Pod         [32m✔[0m Running     89s  ready:1/1
+│     └──□ updatescaling-69fcb449bb-r5294  Pod         [32m✔[0m Running     89s  ready:1/1
+└──# revision:1                                                           
+   └──⧉ updatescaling-6bb54685cf           ReplicaSet  [0m•[0m ScaledDown  91s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  annotations:
+    rollout.argoproj.io/revision: "2"
+  creationTimestamp: "2026-05-11T06:37:18Z"
+  generation: 3
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestRolloutWithMaxSurgeScalingDuringUpdate
+  name: updatescaling
+  namespace: argo-rollouts
+  resourceVersion: "50459"
+  uid: 07da6da5-ab1e-43b6-a8b9-180ec55ebf44
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: updatescaling
+  strategy:
+    canary:
+      maxSurge: 100%
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: updatescaling
+    spec:
+      containers:
+      - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+        name: updatescaling
+        resources:
+          requests:
+            cpu: 2m
+            memory: 16Mi
+status:
+  HPAReplicas: 8
+  availableReplicas: 8
+  blueGreen: {}
+  canary: {}
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:37:22Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: Rollout is healthy
+    reason: RolloutHealthy
+    status: "True"
+    type: Healthy
+  - lastTransitionTime: "2026-05-11T06:37:18Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: ReplicaSet "updatescaling-69fcb449bb" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2026-05-11T06:37:22Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: Rollout has minimum availability
+    reason: AvailableReason
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2026-05-11T06:37:22Z"
+    lastUpdateTime: "2026-05-11T06:37:22Z"
+    message: RolloutCompleted
+    reason: RolloutCompleted
+    status: "True"
+    type: Completed
+  currentPodHash: 69fcb449bb
+  currentStepHash: 5ffbfbbd64
+  observedGeneration: "3"
+  phase: Healthy
+  readyReplicas: 8
+  replicas: 8
+  selector: app=updatescaling
+  stableRS: 69fcb449bb
+  updatedReplicas: 8
+
+2026-05-11T06:37:18Z    Normal    RolloutAddedToInformer    Rollout resource added to informer: argo-rollouts/updatescaling
+2026-05-11T06:37:18Z    Normal    RolloutUpdated            Rollout updated to revision 1
+2026-05-11T06:37:18Z    Normal    NewReplicaSetCreated      Created ReplicaSet updatescaling-6bb54685cf (revision 1)
+2026-05-11T06:37:18Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 1 (6bb54685cf)
+2026-05-11T06:37:18Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet updatescaling-6bb54685cf (revision 1) from 0 to 4
+2026-05-11T06:37:18Z    Normal    RolloutCompleted          Rollout completed update to revision 1 (6bb54685cf): Initial deploy
+2026-05-11T06:37:19Z    Normal    RolloutUpdated            Rollout updated to revision 2
+2026-05-11T06:37:19Z    Normal    NewReplicaSetCreated      Created ReplicaSet updatescaling-69fcb449bb (revision 2)
+2026-05-11T06:37:19Z    Normal    RolloutNotCompleted       Rollout not completed, started update to revision 2 (69fcb449bb)
+2026-05-11T06:37:19Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 4 to 3
+2026-05-11T06:37:19Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet updatescaling-69fcb449bb (revision 2) from 0 to 4
+2026-05-11T06:37:20Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 3 to 2
+2026-05-11T06:37:20Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet updatescaling-69fcb449bb (revision 2) from 4 to 8
+2026-05-11T06:37:21Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 2 to 1
+2026-05-11T06:37:21Z    Normal    ScalingReplicaSet         Scaled down ReplicaSet updatescaling-6bb54685cf (revision 1) from 1 to 0
+2026-05-11T06:37:22Z    Normal    RolloutCompleted          Rollout completed update to revision 2 (69fcb449bb): Completed all 0 canary steps
+
+time="2026-05-11T06:38:49Z" level=info msg="Deleting e2e-test-name=TestRolloutWithMaxSurgeScalingDuringUpdate"
+time="2026-05-11T06:38:50Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (92.46s)
+
+=== FAIL: test/e2e TestCanarySuite (467.56s)
+time="2026-05-11T06:31:03Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+=== FAIL: test/e2e TestExperimentSuite/TestExperimentWithDryRunMetrics (35.09s)
+time="2026-05-11T06:38:59Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:38:59Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:39:00Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:39:00Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:39:31Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:39:31Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:39:34Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:39:34Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:39:34Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-xlgd5         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m858f12a2-dff3-4157-a0e6-eca521a84b7d.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:39:00Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "51603"
+  uid: adfafe3b-400f-4392-a816-d6c38d75ff9e
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:39:01Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:39:31Z"
+    lastUpdateTime: "2026-05-11T06:39:31Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:39:31Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:39:00Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:39:00Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:39:00Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:39:01Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:39:01Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:39:01Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:39:30Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:39:31Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:39:31Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:39:31Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:39:34Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.09s)
+
+=== FAIL: test/e2e TestExperimentSuite (121.48s)
+
+=== FAIL: test/e2e TestFunctionalSuite/TestControllerMetrics (0.24s)
+time="2026-05-11T06:42:33Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:42:33Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 6734 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc001682c40, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc001a1eb00)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc0007fbc00?, 0xc001aa9378?, 0xc001a1eb00?}, {0x3e277ad, 0x4}, {0xc001a2ff28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc0007fbc00?, 0xc001aa9378?, 0xf?}, {0xc001a2ff28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc001682c40)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc001682c40, 0xc000d64ab0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 5767
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.24s)
+
+=== FAIL: test/e2e TestFunctionalSuite (378.93s)
+time="2026-05-11T06:41:11Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+=== FAIL: test/e2e TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 1) (2.28s)
+time="2026-05-11T06:51:30Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:51:30Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:31Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:31Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route configured\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:32Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:51:32Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:51:32Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:51:32Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.28s)
+
+=== FAIL: test/e2e TestAPISIXSuite (re-run 1) (2.44s)
+
+=== FAIL: test/e2e TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 1) (35.17s)
+time="2026-05-11T06:51:49Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:51:49Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:51:50Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:51:50Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:52:21Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:52:21Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:52:24Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:52:24Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:52:24Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-n94b5         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0mfd385a9f-47ba-4549-824f-53f515a48ab0.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:51:50Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "65334"
+  uid: 6cad85b0-b3fa-435a-b580-c0d5fe9e73f6
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:51:51Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:52:21Z"
+    lastUpdateTime: "2026-05-11T06:52:21Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:52:21Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:51:50Z (x2)    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:51:50Z (x2)    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:51:50Z         Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:51:51Z         Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:51:51Z         Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:51:51Z         Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:52:20Z         Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:52:21Z         Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:52:21Z         Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:52:21Z         Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:52:24Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:52:24Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.17s)
+
+=== FAIL: test/e2e TestExperimentSuite (re-run 1) (35.27s)
+
+=== FAIL: test/e2e TestFunctionalSuite/TestControllerMetrics (re-run 1) (0.16s)
+time="2026-05-11T06:52:31Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:52:31Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 91 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc000b1a000, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc0006d2500)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000af21c0?, 0xc0000cbc58?, 0xc0006d2500?}, {0x3e277ad, 0x4}, {0xc0008cbf28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000af21c0?, 0xc0000cbc58?, 0xf?}, {0xc0008cbf28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc000b1a000)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc000b1a000, 0xc000ba79e0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 155
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:52:31Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.16s)
+
+=== FAIL: test/e2e TestFunctionalSuite (re-run 1) (0.82s)
+time="2026-05-11T06:52:31Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+=== FAIL: test/e2e TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 2) (1.98s)
+time="2026-05-11T06:52:38Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:52:38Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:52:39Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:52:39Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:52:40Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (1.98s)
+
+=== FAIL: test/e2e TestAPISIXSuite (re-run 2) (2.08s)
+
+=== FAIL: test/e2e TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 2) (35.19s)
+time="2026-05-11T06:52:46Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:52:46Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:52:47Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:52:47Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:53:18Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:53:18Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:53:21Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:53:21Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:53:21Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-mbtz2         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m304bb5b6-d275-4ff1-ba7f-16f2f6ffd2d6.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:52:47Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "65740"
+  uid: e06331e2-781d-456f-b57b-360867eaf52d
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:52:48Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:53:18Z"
+    lastUpdateTime: "2026-05-11T06:53:18Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:53:18Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:52:47Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:52:47Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:52:47Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:52:48Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:52:48Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:52:48Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:52:48Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:53:18Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:53:18Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:53:18Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:53:21Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:53:21Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.19s)
+
+=== FAIL: test/e2e TestExperimentSuite (re-run 2) (35.33s)
+
+=== FAIL: test/e2e TestFunctionalSuite/TestControllerMetrics (re-run 2) (0.16s)
+time="2026-05-11T06:53:27Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:53:28Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 177 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc0009f6fc0, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc00006c800)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000663700?, 0xc000b80778?, 0xc00006c800?}, {0x3e277ad, 0x4}, {0xc00076df28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000663700?, 0xc000b80778?, 0xf?}, {0xc00076df28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc0009f6fc0)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc0009f6fc0, 0xc00087c870)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 144
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:53:28Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.16s)
+
+=== FAIL: test/e2e TestFunctionalSuite (re-run 2) (0.87s)
+time="2026-05-11T06:53:27Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+=== FAIL: test/e2e TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 3) (2.05s)
+time="2026-05-11T06:53:34Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:53:34Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:35Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:35Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:36Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:53:36Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:53:36Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:53:36Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.05s)
+
+=== FAIL: test/e2e TestAPISIXSuite (re-run 3) (2.22s)
+
+=== FAIL: test/e2e TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 3) (35.77s)
+time="2026-05-11T06:53:42Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:53:43Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:53:43Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:53:43Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:54:15Z" level=info msg="Condition 'phase=Successful' met after 31s"
+time="2026-05-11T06:54:15Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:54:18Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:54:18Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:54:18Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  35s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     35s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-ms8t7         Pod          [32m✔[0m Running     35s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0mf9fdc097-806c-48fa-bc68-22873b9a9768.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:53:43Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "66159"
+  uid: 962b17b3-1b8c-47ea-b04b-2d0f2a89e47f
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:53:45Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:54:15Z"
+    lastUpdateTime: "2026-05-11T06:54:15Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:54:15Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:53:43Z (x2)    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:53:43Z (x2)    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:53:43Z         Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:53:45Z         Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:53:45Z         Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:53:45Z         Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:53:45Z         Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:54:15Z         Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:54:15Z         Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:54:15Z         Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:54:18Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:54:18Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.77s)
+
+=== FAIL: test/e2e TestExperimentSuite (re-run 3) (35.87s)
+
+=== FAIL: test/e2e TestFunctionalSuite/TestControllerMetrics (re-run 3) (0.27s)
+time="2026-05-11T06:54:25Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:54:25Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 173 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc000bf6700, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc000264b00)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc0000f3040?, 0xc000f021d0?, 0xc000264b00?}, {0x3e277ad, 0x4}, {0xc000979f28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc0000f3040?, 0xc000f021d0?, 0xf?}, {0xc000979f28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc000bf6700)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc000bf6700, 0xc000b4e5a0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 129
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:54:25Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.27s)
+
+=== FAIL: test/e2e TestFunctionalSuite (re-run 3) (0.89s)
+time="2026-05-11T06:54:25Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+=== FAIL: test/e2e TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 4) (2.24s)
+time="2026-05-11T06:54:31Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:54:31Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:32Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:32Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:33Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:54:33Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:54:33Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:54:33Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+
+=== FAIL: test/e2e TestAPISIXSuite (re-run 4) (2.40s)
+
+=== FAIL: test/e2e TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 4) (35.76s)
+time="2026-05-11T06:54:39Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:54:40Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:54:40Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:54:40Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:55:12Z" level=info msg="Condition 'phase=Successful' met after 31s"
+time="2026-05-11T06:55:12Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:55:15Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:55:15Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:55:15Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  35s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     35s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-bw8nw         Pod          [32m✔[0m Running     35s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m6b66f685-667c-4746-af98-2807c9b05722.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:54:40Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "66572"
+  uid: cc6b480d-7d13-4ba1-9ef8-0cf9e0c62af6
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:54:42Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:55:12Z"
+    lastUpdateTime: "2026-05-11T06:55:12Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:55:12Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:54:40Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:54:40Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:54:40Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:54:42Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:54:42Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:54:42Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:54:42Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:55:12Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:55:12Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:55:12Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:55:15Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:55:15Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.76s)
+
+=== FAIL: test/e2e TestExperimentSuite (re-run 4) (35.90s)
+
+=== FAIL: test/e2e TestFunctionalSuite/TestControllerMetrics (re-run 4) (0.24s)
+time="2026-05-11T06:55:21Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:55:22Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 120 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc000c60700, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc00099a500)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000c11d40?, 0xc000c260e8?, 0xc00099a500?}, {0x3e277ad, 0x4}, {0xc000a83f28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000c11d40?, 0xc000c260e8?, 0xf?}, {0xc000a83f28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc000c60700)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc000c60700, 0xc000c0a5a0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 151
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:55:22Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.24s)
+
+=== FAIL: test/e2e TestFunctionalSuite (re-run 4) (0.92s)
+time="2026-05-11T06:55:21Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+=== FAIL: test/e2e TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (re-run 5) (2.11s)
+time="2026-05-11T06:55:28Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:55:28Z" level=info msg="service/rollout-apisix-canary-canary created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:29Z" level=info msg="service/rollout-apisix-canary-stable created\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:29Z" level=info msg="apisixroute.apisix.apache.org/rollouts-apisix-route unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:30Z" level=info msg="rollout.argoproj.io/rollout-apisix-canary unchanged\n" rollout=rollout-apisix-canary
+time="2026-05-11T06:55:30Z" level=info msg="Waiting for condition: status=Healthy" rollout=rollout-apisix-canary
+    when.go:443: rollouts.argoproj.io "rollout-apisix-canary" not found
+time="2026-05-11T06:55:30Z" level=info msg="Deleting e2e-test-name=TestAPISIXCanarySetHeaderStep"
+time="2026-05-11T06:55:30Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.11s)
+
+=== FAIL: test/e2e TestAPISIXSuite (re-run 5) (2.35s)
+
+=== FAIL: test/e2e TestExperimentSuite/TestExperimentWithDryRunMetrics (re-run 5) (34.80s)
+time="2026-05-11T06:55:36Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:55:37Z" level=info msg="analysistemplate.argoproj.io/dry-run-job created\n"
+time="2026-05-11T06:55:37Z" level=info msg="experiment.argoproj.io/experiment-with-dry-run created\n"
+time="2026-05-11T06:55:37Z" level=info msg="Waiting for Experiment experiment-with-dry-run condition: phase=Successful"
+time="2026-05-11T06:56:08Z" level=info msg="Condition 'phase=Successful' met after 30s"
+time="2026-05-11T06:56:08Z" level=info msg="Sleeping 3s"
+time="2026-05-11T06:56:11Z" level=info msg="Expected Dry-Run Summary: Count=1, Successful=0, Failed=1, Error=0, Inconclusive=0"
+time="2026-05-11T06:56:11Z" level=info msg="Analysis Dry-Run Summary: Count=1, Successful=1, Failed=0, Error=0, Inconclusive=0"
+time="2026-05-11T06:56:11Z" level=error msg="Dry-Run Summary of AnalysisRun: 'experiment-with-dry-run-dry-run-job' doesn't match the expectations"
+Name:            experiment-with-dry-run
+Namespace:       argo-rollouts
+Status:          [32m✔[0m Successful
+Images:          quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2 ([0mΣ:baseline[0m)
+
+NAME                                                   KIND         STATUS        AGE  INFO
+Σ [0mexperiment-with-dry-run[0m                              Experiment   [32m✔[0m Successful  34s  
+├──⧉ experiment-with-dry-run-baseline                  ReplicaSet   [32m✔[0m Healthy     34s  delay:26s
+│  └──□ experiment-with-dry-run-baseline-756gm         Pod          [32m✔[0m Running     34s  ready:1/1
+└──α [0mexperiment-with-dry-run-dry-run-job[0m               AnalysisRun  [32m✔[0m Successful  33s  [32m✔[0m 1
+   └──⊞ [0m87e3c110-4f5a-470a-b36c-08f6a60e4ba9.test-1.1[0m  Job          [32m✔[0m Successful  33s  
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Experiment
+metadata:
+  creationTimestamp: "2026-05-11T06:55:37Z"
+  generation: 9
+  labels:
+    argo-rollouts.argoproj.io/controller-instance-id: argo-rollouts-e2e
+    e2e-test-name: TestExperimentWithDryRunMetrics
+  name: experiment-with-dry-run
+  namespace: argo-rollouts
+  resourceVersion: "66982"
+  uid: cf8b1f2e-ea3c-4050-838b-8f69675f701e
+spec:
+  analyses:
+  - name: dry-run-job
+    templateName: dry-run-job
+  analysisRunMetadata: {}
+  dryRun:
+  - metricName: test.*
+  duration: 30s
+  progressDeadlineSeconds: 30
+  templates:
+  - name: baseline
+    replicas: 1
+    selector:
+      matchLabels:
+        app: experiment-with-dry-run
+    service: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: experiment-with-dry-run
+      spec:
+        containers:
+        - image: quay.io/jgwest-redhat/nginx@sha256:07ab71a2c8e4ecb19a5a5abcfb3a4f175946c001c8af288b1aa766d67b0d05d2
+          name: experiment-with-dry-run
+          resources:
+            requests:
+              cpu: 1m
+              memory: 16Mi
+status:
+  analysisRuns:
+  - analysisRun: experiment-with-dry-run-dry-run-job
+    name: dry-run-job
+    phase: Running
+  availableAt: "2026-05-11T06:55:38Z"
+  conditions:
+  - lastTransitionTime: "2026-05-11T06:56:08Z"
+    lastUpdateTime: "2026-05-11T06:56:08Z"
+    message: Experiment "experiment-with-dry-run" has successfully ran and completed.
+    reason: ExperimentCompleted
+    status: "False"
+    type: Progressing
+  phase: Successful
+  templateStatuses:
+  - availableReplicas: 1
+    lastTransitionTime: "2026-05-11T06:56:08Z"
+    name: baseline
+    readyReplicas: 1
+    replicas: 1
+    status: Successful
+    updatedReplicas: 1
+
+2026-05-11T06:55:37Z    Normal    TemplateProgressing       Template 'baseline' transitioned from  -> Progressing
+2026-05-11T06:55:37Z    Normal    ExperimentPending         Experiment transitioned from  -> Pending
+2026-05-11T06:55:37Z    Normal    ScalingReplicaSet         Scaled up ReplicaSet experiment-with-dry-run-baseline from 0 to 1
+2026-05-11T06:55:38Z    Normal    TemplateRunning           Template 'baseline' transitioned from Progressing -> Running
+2026-05-11T06:55:38Z    Normal    ExperimentRunning         Experiment transitioned from Pending -> Running
+2026-05-11T06:55:38Z    Normal    AnalysisRunPending        AnalysisRun 'dry-run-job' transitioned from  -> Pending
+2026-05-11T06:55:38Z    Normal    AnalysisRunRunning        AnalysisRun 'dry-run-job' transitioned from  -> Running
+2026-05-11T06:56:08Z    Normal    TemplateSuccessful        Template 'baseline' transitioned from Running -> Successful
+2026-05-11T06:56:08Z    Normal    ExperimentSuccessful      Experiment transitioned from Running -> Successful
+2026-05-11T06:56:08Z    Normal    AnalysisRunTerminating    Terminating dry-run-job (experiment-with-dry-run-dry-run-job)
+
+time="2026-05-11T06:56:11Z" level=info msg="Deleting e2e-test-name=TestExperimentWithDryRunMetrics"
+time="2026-05-11T06:56:11Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (34.80s)
+
+=== FAIL: test/e2e TestExperimentSuite (re-run 5) (34.90s)
+
+=== FAIL: test/e2e TestFunctionalSuite/TestControllerMetrics (re-run 5) (0.13s)
+time="2026-05-11T06:56:18Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    functional_test.go:1407: 
+        	Error Trace:	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1407
+        	Error:      	Received unexpected error:
+        	            	Get "http://localhost:8090/metrics": dial tcp [::1]:8090: connect: connection refused
+        	Test:       	TestFunctionalSuite/TestControllerMetrics
+time="2026-05-11T06:56:18Z" level=info msg="Deleting e2e-test-name=TestControllerMetrics"
+    panic.go:262: test panicked: runtime error: invalid memory address or nil pointer dereference
+        goroutine 110 [running]:
+        runtime/debug.Stack()
+        	/usr/lib/golang/src/runtime/debug/stack.go:26 +0x5e
+        github.com/stretchr/testify/suite.failOnPanic(0xc00082aa80, {0x39aba60, 0x5cc9350})
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:89 +0x37
+        github.com/stretchr/testify/suite.Run.func1.1()
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:188 +0x293
+        panic({0x39aba60?, 0x5cc9350?})
+        	/usr/lib/golang/src/runtime/panic.go:783 +0x132
+        github.com/argoproj/argo-rollouts/test/e2e.(*FunctionalSuite).TestControllerMetrics(0xc00006c700)
+        	/tmp/tmp.EXIjXYyIHf/argo-rollouts/test/e2e/functional_test.go:1408 +0xbd
+        reflect.Value.call({0xc000660d80?, 0xc000e201a8?, 0xc00006c700?}, {0x3e277ad, 0x4}, {0xc000dadf28, 0x1, 0x4394fc8?})
+        	/usr/lib/golang/src/reflect/value.go:581 +0xcc6
+        reflect.Value.Call({0xc000660d80?, 0xc000e201a8?, 0xf?}, {0xc000dadf28?, 0x15?, 0x0?})
+        	/usr/lib/golang/src/reflect/value.go:365 +0xb9
+        github.com/stretchr/testify/suite.Run.func1(0xc00082aa80)
+        	/tmp/tmp.VblnaxJcuh/go-mod/github.com/stretchr/testify@v1.10.0/suite/suite.go:202 +0x44a
+        testing.tRunner(0xc00082aa80, 0xc00075a1b0)
+        	/usr/lib/golang/src/testing/testing.go:1934 +0xea
+        created by testing.(*T).Run in goroutine 135
+        	/usr/lib/golang/src/testing/testing.go:1997 +0x465
+time="2026-05-11T06:56:18Z" level=info msg="Deleting e2e-test-name"
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.13s)
+
+=== FAIL: test/e2e TestFunctionalSuite (re-run 5) (0.80s)
+time="2026-05-11T06:56:18Z" level=info msg="analysistemplate.argoproj.io/sleep-job created\n"
+
+DONE 6 runs, 149 tests, 7 skipped, 40 failures in 2534.463s
+make: *** [Makefile:261: test-e2e] Error 1
++ set +x
+-----------------------------------------------------------------
+
+These were the tests that succeeded:
+
+PASS test/e2e
+PASS test/e2e
+PASS test/e2e.TestAPISIXSuite/TestAPISIXCanaryStep (23.48s)
+PASS test/e2e.TestAWSSuite (141.31s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStep (15.82s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStepMultiIngress (16.17s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStepNoSetWeight (16.97s)
+PASS test/e2e.TestAWSSuite/TestALBExperimentStepNoSetWeightMultiIngress (17.29s)
+PASS test/e2e.TestAWSSuite/TestALBMesh_PingPong_StableCanary_Update (17.31s)
+PASS test/e2e.TestAWSSuite/TestALBPingPongUpdate (13.06s)
+PASS test/e2e.TestAWSSuite/TestALBPingPongUpdateMultiIngress (14.07s)
+PASS test/e2e.TestAWSSuite/TestAlbHeaderRoute (8.93s)
+PASS test/e2e.TestAWSSuite/TestAlbHeaderRouteMultiIngress (21.13s)
+PASS test/e2e.TestAnalysisSuite (re-run 1) (35.43s)
+PASS test/e2e.TestAnalysisSuite/TestAnalysisWithArgs (22.74s)
+PASS test/e2e.TestAnalysisSuite/TestAnalysisWithSecret (10.92s)
+PASS test/e2e.TestAnalysisSuite/TestBackgroundAnalysisWithArgs (8.17s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenAbortAndUpdate (17.16s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenAnalysis (24.42s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenKitchenSink (42.98s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenPostPromotionFail (12.11s)
+PASS test/e2e.TestAnalysisSuite/TestBlueGreenPrePromotionFail (20.58s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryBackgroundAnalysis (3.30s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryFailInlineMultipleAnalysis (10.02s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (re-run 1) (32.68s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryInlineAnalysis (15.44s)
+PASS test/e2e.TestAnalysisSuite/TestCanaryInlineMultipleAnalysis (16.10s)
+PASS test/e2e.TestAnalysisSuite/TestMultipleAnalysis (3.81s)
+PASS test/e2e.TestBlueGreenSuite (149.84s)
+PASS test/e2e.TestBlueGreenSuite/TestBlueGreenPreviewReplicaCount (6.00s)
+PASS test/e2e.TestBlueGreenSuite/TestBlueGreenProgressDeadlineExceededWithPause (68.10s)
+PASS test/e2e.TestBlueGreenSuite/TestBlueGreenProgressDeadlineExceededWithoutPause (68.02s)
+PASS test/e2e.TestBlueGreenSuite/TestEphemeralMetadata (7.50s)
+PASS test/e2e.TestCanarySuite (re-run 1) (4.00s)
+PASS test/e2e.TestCanarySuite/TestCanaryDynamicStableScale (20.55s)
+PASS test/e2e.TestCanarySuite/TestCanaryDynamicStableScaleRollbackToStable (13.87s)
+PASS test/e2e.TestCanarySuite/TestCanaryProgressDeadlineExceededWithPause (132.65s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownDelay (9.71s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownDelayWithProgressDeadline (14.96s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownOnAbort (8.16s)
+PASS test/e2e.TestCanarySuite/TestCanaryScaleDownOnAbortNoTrafficRouting (8.10s)
+PASS test/e2e.TestCanarySuite/TestCanarySetCanaryScale (9.11s)
+PASS test/e2e.TestCanarySuite/TestCanaryUnScaleDownOnAbort (9.12s)
+PASS test/e2e.TestCanarySuite/TestCanaryWithPausedRollout (74.03s)
+PASS test/e2e.TestCanarySuite/TestCanaryWithSpecPause (39.32s)
+PASS test/e2e.TestCanarySuite/TestEphemeralMetadata (7.68s)
+PASS test/e2e.TestCanarySuite/TestReduceWeightAndHonorMaxUnavailable (28.31s)
+PASS test/e2e.TestCanarySuite/TestRolloutScalingDuringUpdate (2.34s)
+PASS test/e2e.TestCanarySuite/TestRolloutScalingWhenPaused (5.64s)
+PASS test/e2e.TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (re-run 1) (3.13s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithMeasurementRetentionMetrics (34.97s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithMultiportServiceAndScaleDownDelay (17.05s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithServiceAndScaleDownDelay (16.96s)
+PASS test/e2e.TestExperimentSuite/TestExperimentWithServiceNameAndScaleDownDelay (17.00s)
+PASS test/e2e.TestExperimentSuite/TestRolloutWithExperimentAndAnalysis (10.03s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenExceedProgressDeadlineAbort (9.27s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenPreviewReplicaCountPromoteFull (8.03s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenPromoteFull (7.44s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenScaleDownDelay (8.21s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenScaleDownOnAbort (7.93s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenToCanary (3.94s)
+PASS test/e2e.TestFunctionalSuite/TestBlueGreenUpdate (4.65s)
+PASS test/e2e.TestFunctionalSuite/TestCanaryPromoteFull (9.26s)
+PASS test/e2e.TestFunctionalSuite/TestCompleteRolloutRestart (22.21s)
+PASS test/e2e.TestFunctionalSuite/TestContainerResourceFormats (1.79s)
+PASS test/e2e.TestFunctionalSuite/TestFixInvalidSpec (2.93s)
+PASS test/e2e.TestFunctionalSuite/TestKubectlWaitForCompleted (28.13s)
+PASS test/e2e.TestFunctionalSuite/TestKubectlWaitForPaused (5.30s)
+PASS test/e2e.TestFunctionalSuite/TestMalformedRollout (2.85s)
+PASS test/e2e.TestFunctionalSuite/TestMalformedRolloutEphemeralCtr (1.81s)
+PASS test/e2e.TestFunctionalSuite/TestNeverScaleDown (4.18s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutAbortRetryPromote (6.02s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutBadToBadUpdate (21.92s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutBadToGoodSetWeightUpdate (20.27s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutBadToGoodUpdate (17.22s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutGoodToBadUpdate (23.51s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutPDBRestart (46.09s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutPauseDurationGreaterThanProgressDeadlineSeconds (35.00s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutPodVolumesItemsSpec (7.64s)
+PASS test/e2e.TestFunctionalSuite/TestRolloutRestart (17.18s)
+PASS test/e2e.TestFunctionalSuite/TestScaleDownOnSuccess (9.54s)
+PASS test/e2e.TestFunctionalSuite/TestScaleDownProgressively (9.75s)
+PASS test/e2e.TestFunctionalSuite/TestSpecAndReplicaChangeSameTime (21.91s)
+PASS test/e2e.TestFunctionalSuite/TestWorkloadRef (12.68s)
+PASS test/e2e.TestFunctionalSuite/TestWorkloadRefTemplate (1.34s)
+PASS test/e2e.TestHeaderRoutingSuite (11.45s)
+PASS test/e2e.TestHeaderRoutingSuite/TestIstioHostHeaderRoute (11.34s)
+PASS test/e2e.TestIstioSuite (96.43s)
+PASS test/e2e.TestIstioSuite/TestIstioAbortUpdate (4.84s)
+PASS test/e2e.TestIstioSuite/TestIstioAbortUpdateDeleteAllCanaryPods (6.43s)
+PASS test/e2e.TestIstioSuite/TestIstioHostSplit (12.06s)
+PASS test/e2e.TestIstioSuite/TestIstioHostSplitExperimentStep (15.88s)
+PASS test/e2e.TestIstioSuite/TestIstioHostSplitOnlyTls (6.22s)
+PASS test/e2e.TestIstioSuite/TestIstioPingPongUpdate (9.80s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplit (8.11s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplitExperimentStep (15.99s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplitInStableDownscaleAfterCanaryAbort (5.20s)
+PASS test/e2e.TestIstioSuite/TestIstioSubsetSplitSingleRoute (5.87s)
+PASS test/e2e.TestIstioSuite/TestIstioUpdateInMiddleZeroCanaryReplicas (5.93s)
+PASS test/e2e.TestMirrorRouteSuite (12.01s)
+PASS test/e2e.TestMirrorRouteSuite/TestIstioHostMirrorRoute (11.91s)
+PASS test/e2e.TestRollbackSuite (60.14s)
+PASS test/e2e.TestRollbackSuite/TestRollbackAnalysisOutsideWindow (33.81s)
+PASS test/e2e.TestRollbackSuite/TestRollbackAnalysisWithinWindow (25.14s)
+
+These were the tests that failed:
+
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (1.98s)
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.05s)
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.11s)
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.24s)
+    --- FAIL: TestAPISIXSuite/TestAPISIXCanarySetHeaderStep (2.28s)
+    --- FAIL: TestAnalysisSuite/TestCanaryInconclusiveBackgroundAnalysis (93.99s)
+    --- FAIL: TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate (92.46s)
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (34.80s)
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.09s)
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.17s)
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.19s)
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.76s)
+    --- FAIL: TestExperimentSuite/TestExperimentWithDryRunMetrics (35.77s)
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.13s)
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.16s)
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.24s)
+    --- FAIL: TestFunctionalSuite/TestControllerMetrics (0.27s)
+
+
+E2E tests file is complete: DONE 6 runs, 149 tests, 7 skipped, 40 failures in 2534.463s
+
+
+Test passed - TestAPISIXSuite/TestAPISIXCanaryStep
+Test passed - TestAWSSuite/TestALBExperimentStep
+Test passed - TestAWSSuite/TestALBExperimentStepMultiIngress
+Test passed - TestAWSSuite/TestALBExperimentStepNoSetWeight
+Test passed - TestAWSSuite/TestALBExperimentStepNoSetWeightMultiIngress
+Test passed - TestAWSSuite/TestALBMesh_PingPong_StableCanary_Update
+Test passed - TestAWSSuite/TestALBPingPongUpdate
+Test passed - TestAWSSuite/TestALBPingPongUpdateMultiIngress
+Test passed - TestAWSSuite/TestAlbHeaderRoute
+Test passed - TestAWSSuite/TestAlbHeaderRouteMultiIngress
+Test passed - TestAnalysisSuite/TestAnalysisWithArgs
+Test passed - TestAnalysisSuite/TestAnalysisWithSecret
+Test passed - TestAnalysisSuite/TestBackgroundAnalysisWithArgs
+Test passed - TestAnalysisSuite/TestBlueGreenAbortAndUpdate
+Test passed - TestAnalysisSuite/TestBlueGreenAnalysis
+Test passed - TestAnalysisSuite/TestBlueGreenKitchenSink
+Test passed - TestAnalysisSuite/TestBlueGreenPostPromotionFail
+Test passed - TestAnalysisSuite/TestBlueGreenPrePromotionFail
+Test passed - TestAnalysisSuite/TestCanaryBackgroundAnalysis
+Test passed - TestAnalysisSuite/TestCanaryFailInlineMultipleAnalysis
+Test passed - TestAnalysisSuite/TestCanaryInlineAnalysis
+Test passed - TestAnalysisSuite/TestCanaryInlineMultipleAnalysis
+Test passed - TestAnalysisSuite/TestMultipleAnalysis
+Test passed - TestBlueGreenSuite/TestBlueGreenPreviewReplicaCount
+Test passed - TestBlueGreenSuite/TestBlueGreenProgressDeadlineExceededWithPause
+Test passed - TestBlueGreenSuite/TestBlueGreenProgressDeadlineExceededWithoutPause
+Test passed - TestBlueGreenSuite/TestEphemeralMetadata
+Test passed - TestCanarySuite/TestCanaryDynamicStableScale
+Test passed - TestCanarySuite/TestCanaryDynamicStableScaleRollbackToStable
+Test passed - TestCanarySuite/TestCanaryProgressDeadlineExceededWithPause
+Test passed - TestCanarySuite/TestCanaryScaleDownDelay
+Test passed - TestCanarySuite/TestCanaryScaleDownDelayWithProgressDeadline
+Test passed - TestCanarySuite/TestCanaryScaleDownOnAbort
+Test passed - TestCanarySuite/TestCanaryScaleDownOnAbortNoTrafficRouting
+Test passed - TestCanarySuite/TestCanarySetCanaryScale
+Test passed - TestCanarySuite/TestCanaryUnScaleDownOnAbort
+Test passed - TestCanarySuite/TestCanaryWithPausedRollout
+Test passed - TestCanarySuite/TestCanaryWithSpecPause
+Test passed - TestCanarySuite/TestEphemeralMetadata
+Test passed - TestCanarySuite/TestReduceWeightAndHonorMaxUnavailable
+Test passed - TestCanarySuite/TestRolloutScalingDuringUpdate
+Test passed - TestCanarySuite/TestRolloutScalingWhenPaused
+Test passed - TestCanarySuite/TestRolloutWithMaxSurgeScalingDuringUpdate
+Test passed - TestExperimentSuite/TestExperimentWithMeasurementRetentionMetrics
+Test passed - TestExperimentSuite/TestExperimentWithMultiportServiceAndScaleDownDelay
+Test passed - TestExperimentSuite/TestExperimentWithServiceAndScaleDownDelay
+Test passed - TestExperimentSuite/TestExperimentWithServiceNameAndScaleDownDelay
+Test passed - TestExperimentSuite/TestRolloutWithExperimentAndAnalysis
+Test passed - TestFunctionalSuite/TestBlueGreenExceedProgressDeadlineAbort
+Test passed - TestFunctionalSuite/TestBlueGreenPreviewReplicaCountPromoteFull
+Test passed - TestFunctionalSuite/TestBlueGreenScaleDownDelay
+Test passed - TestFunctionalSuite/TestBlueGreenScaleDownOnAbort
+Test passed - TestFunctionalSuite/TestBlueGreenToCanary
+Test passed - TestFunctionalSuite/TestBlueGreenUpdate
+Test passed - TestFunctionalSuite/TestCanaryPromoteFull
+Test passed - TestFunctionalSuite/TestCompleteRolloutRestart
+Test passed - TestFunctionalSuite/TestContainerResourceFormats
+Test passed - TestFunctionalSuite/TestFixInvalidSpec
+Test passed - TestFunctionalSuite/TestKubectlWaitForCompleted
+Test passed - TestFunctionalSuite/TestKubectlWaitForPaused
+Test passed - TestFunctionalSuite/TestMalformedRollout
+Test passed - TestFunctionalSuite/TestMalformedRolloutEphemeralCtr
+Test passed - TestFunctionalSuite/TestNeverScaleDown
+Test passed - TestFunctionalSuite/TestRolloutAbortRetryPromote
+Test passed - TestFunctionalSuite/TestRolloutBadToBadUpdate
+Test passed - TestFunctionalSuite/TestRolloutBadToGoodSetWeightUpdate
+Test passed - TestFunctionalSuite/TestRolloutBadToGoodUpdate
+Test passed - TestFunctionalSuite/TestRolloutGoodToBadUpdate
+Test passed - TestFunctionalSuite/TestRolloutPDBRestart
+Test passed - TestFunctionalSuite/TestRolloutPauseDurationGreaterThanProgressDeadlineSeconds
+Test passed - TestFunctionalSuite/TestRolloutPodVolumesItemsSpec
+Test passed - TestFunctionalSuite/TestRolloutRestart
+Test passed - TestFunctionalSuite/TestScaleDownOnSuccess
+Test passed - TestFunctionalSuite/TestScaleDownProgressively
+Test passed - TestFunctionalSuite/TestSpecAndReplicaChangeSameTime
+Test passed - TestFunctionalSuite/TestWorkloadRef
+Test passed - TestFunctionalSuite/TestWorkloadRefTemplate
+Test passed - TestHeaderRoutingSuite/TestIstioHostHeaderRoute
+Test passed - TestIstioSuite/TestIstioAbortUpdate
+Test passed - TestIstioSuite/TestIstioAbortUpdateDeleteAllCanaryPods
+Test passed - TestIstioSuite/TestIstioHostSplit
+Test passed - TestIstioSuite/TestIstioHostSplitExperimentStep
+Test passed - TestIstioSuite/TestIstioHostSplitOnlyTls
+Test passed - TestIstioSuite/TestIstioPingPongUpdate
+Test passed - TestIstioSuite/TestIstioSubsetSplit
+Test passed - TestIstioSuite/TestIstioSubsetSplitExperimentStep
+Test passed - TestIstioSuite/TestIstioSubsetSplitInStableDownscaleAfterCanaryAbort
+Test passed - TestIstioSuite/TestIstioSubsetSplitSingleRoute
+Test passed - TestIstioSuite/TestIstioUpdateInMiddleZeroCanaryReplicas
+Test passed - TestMirrorRouteSuite/TestIstioHostMirrorRoute
+Test passed - TestRollbackSuite/TestRollbackAnalysisOutsideWindow
+Test passed - TestRollbackSuite/TestRollbackAnalysisWithinWindow
+
+* SUCCESS: No unexpected errors occurred.
+* Cleaning up
+main: no process found

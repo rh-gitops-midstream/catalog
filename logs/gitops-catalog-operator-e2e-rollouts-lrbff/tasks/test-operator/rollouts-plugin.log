@@ -1,0 +1,123 @@
+go test -v -p=1 -timeout=20m -race -count=1 -coverprofile=coverage.out ./tests/e2e
+go: downloading github.com/onsi/gomega v1.33.1
+go: downloading github.com/argoproj/argo-rollouts v1.6.6
+go: downloading github.com/openshift/client-go v0.0.0-20230419131419-497c7032c581
+go: downloading k8s.io/api v0.26.3
+go: downloading github.com/onsi/ginkgo/v2 v2.19.0
+go: downloading github.com/openshift/api v0.0.0-20230417092139-1b2161d23365
+go: downloading k8s.io/apimachinery v0.26.3
+go: downloading k8s.io/client-go v0.26.3
+go: downloading golang.org/x/net v0.25.0
+go: downloading golang.org/x/sys v0.20.0
+go: downloading golang.org/x/text v0.15.0
+go: downloading k8s.io/kube-openapi v0.0.0-20221012153701-172d655c2280
+go: downloading golang.org/x/oauth2 v0.10.0
+go: downloading golang.org/x/time v0.3.0
+go: downloading golang.org/x/term v0.20.0
+go: downloading github.com/imdario/mergo v0.3.13
+go: downloading github.com/golang/protobuf v1.5.3
+go: downloading github.com/google/gnostic v0.6.9
+go: downloading github.com/hashicorp/go-plugin v1.4.10
+go: downloading github.com/spf13/cobra v1.7.0
+go: downloading k8s.io/cli-runtime v0.26.3
+go: downloading k8s.io/kubernetes v1.26.3
+go: downloading github.com/bombsimon/logrusr/v4 v4.0.0
+go: downloading google.golang.org/protobuf v1.33.0
+go: downloading github.com/mitchellh/go-testing-interface v1.0.0
+go: downloading github.com/hashicorp/go-hclog v0.14.1
+go: downloading github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb
+go: downloading google.golang.org/grpc v1.57.1
+go: downloading github.com/fatih/color v1.7.0
+go: downloading github.com/mattn/go-isatty v0.0.14
+go: downloading github.com/google/uuid v1.3.0
+go: downloading sigs.k8s.io/kustomize/api v0.12.1
+go: downloading sigs.k8s.io/kustomize/kyaml v0.13.9
+go: downloading github.com/mattn/go-colorable v0.1.12
+go: downloading go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98
+go: downloading k8s.io/apiserver v0.26.3
+go: downloading github.com/docker/distribution v2.8.1+incompatible
+go: downloading k8s.io/component-helpers v0.26.3
+go: downloading k8s.io/component-base v0.26.3
+go: downloading github.com/prometheus/client_golang v1.16.0
+go: downloading github.com/prometheus/client_model v0.3.0
+go: downloading github.com/prometheus/procfs v0.10.1
+go: downloading github.com/prometheus/common v0.42.0
+go: downloading github.com/cespare/xxhash/v2 v2.2.0
+go: downloading github.com/matttproud/golang_protobuf_extensions v1.0.4
+=== RUN   TestPlugin
+Running Suite: Plugin e2e Tests Suite - /tmp/tmp.VblnaxJcuh/rollouts-plugin-trafficrouter-openshift/tests/e2e
+=============================================================================================================
+Random Seed: [1m1778482750[0m
+
+Will run [1m4[0m of [1m4[0m specs
+service/rollouts-demo-stable created
+service/rollouts-demo-canary created
+route.route.openshift.io/rollouts-demo created
+
+rollout.argoproj.io/rollouts-demo created
+
+Rollout phase mismatch, got , want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+[38;5;10m•[0mservice/rollouts-demo-stable created
+service/rollouts-demo-canary created
+route.route.openshift.io/rollouts-demo created
+rollout.argoproj.io/rollouts-demo created
+
+Rollout phase mismatch, got , want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+W0511 06:59:33.080106  121431 warnings.go:70] unknown field "spec.template.metadata.creationTimestamp"
+Rollout phase mismatch, got Healthy, want Paused
+Rollout phase mismatch, got Progressing, want Paused
+Canary weight mismatch: got 20, want 70
+Canary weight mismatch: got 20, want 70
+Rollout phase mismatch, got Paused, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+[38;5;10m•[0mservice/rollouts-demo-stable created
+service/rollouts-demo-canary created
+route.route.openshift.io/rollouts-demo-prod created
+route.route.openshift.io/rollouts-demo-stage created
+rollout.argoproj.io/rollouts-demo created
+
+Rollout phase mismatch, got , want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+W0511 06:59:54.148555  121431 warnings.go:70] unknown field "spec.template.metadata.creationTimestamp"
+Rollout phase mismatch, got Healthy, want Paused
+Rollout phase mismatch, got Progressing, want Paused
+Rollout phase mismatch, got Progressing, want Paused
+Rollout phase mismatch, got Paused, want Healthy
+[38;5;10m•[0mservice/rollouts-demo-stable created
+service/rollouts-demo-canary created
+route.route.openshift.io/rollouts-demo created
+analysistemplate.argoproj.io/sample-template created
+rollout.argoproj.io/rollouts-demo created
+
+Rollout phase mismatch, got , want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+W0511 07:00:28.160667  121431 warnings.go:70] unknown field "spec.template.metadata.creationTimestamp"
+Rollout phase mismatch, got Healthy, want Paused
+Rollout phase mismatch, got Progressing, want Paused
+Rollout phase mismatch, got Progressing, want Paused
+Rollout phase mismatch, got Progressing, want Paused
+Rollout phase mismatch, got Paused, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+Rollout phase mismatch, got Progressing, want Healthy
+[38;5;10m•[0m
+
+[38;5;10m[1mRan 4 of 4 Specs in 90.340 seconds[0m
+[38;5;10m[1mSUCCESS![0m -- [38;5;10m[1m4 Passed[0m | [38;5;9m[1m0 Failed[0m | [38;5;11m[1m0 Pending[0m | [38;5;14m[1m0 Skipped[0m
+--- PASS: TestPlugin (90.34s)
+PASS
+coverage: [no statements]
+ok  	github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshift/tests/e2e	91.410s	coverage: [no statements]

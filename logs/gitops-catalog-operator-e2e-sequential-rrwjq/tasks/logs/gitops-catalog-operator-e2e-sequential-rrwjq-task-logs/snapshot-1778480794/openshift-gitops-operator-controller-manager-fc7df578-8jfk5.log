@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-8jfk5 ===
+=== Timestamp: 2026-05-11 06:26:34 UTC ===
+
+--- Container: manager ---
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:26:21Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "gitops-e2e-test-246d9720-7f84", "Request.Name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "gitops-e2e-test-246d9720-7f84", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-246d9720-7f84", "Name": "gitops-e2e-test-246d9720-7f84-read"}
+2026-05-11T06:26:21Z	INFO	controller_argocd_metrics	Creating new read role binding	{"Request.Namespace": "gitops-e2e-test-246d9720-7f84", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-246d9720-7f84", "Name": "gitops-e2e-test-246d9720-7f84-prometheus-k8s-read-binding"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "429b03cd-76aa-4068-ad57-3ad6bcb74eeb", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	ERROR	controller_argocd_metrics	Error creating a new read role binding	{"Request.Namespace": "gitops-e2e-test-246d9720-7f84", "Request.Name": "argocd", "Namespace": "gitops-e2e-test-246d9720-7f84", "Name": "gitops-e2e-test-246d9720-7f84-prometheus-k8s-read-binding", "error": "rolebindings.rbac.authorization.k8s.io \"gitops-e2e-test-246d9720-7f84-prometheus-k8s-read-binding\" is forbidden: unable to create new content in namespace gitops-e2e-test-246d9720-7f84 because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createReadRoleBindingIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:313
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:146
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:26:21Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "7848c210-eef6-4916-9db3-e9f982652e98", "error": "rolebindings.rbac.authorization.k8s.io \"gitops-e2e-test-246d9720-7f84-prometheus-k8s-read-binding\" is forbidden: unable to create new content in namespace gitops-e2e-test-246d9720-7f84 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:26:21Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "gitops-e2e-test-246d9720-7f84", "Request.Name": "argocd"}
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "c0a6b2c0-c1b9-4a5d-b833-ccba62c1d047", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "3bf514de-603e-4e58-9e23-320d7c829878", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "gitops-e2e-test-246d9720-7f84", "Request.Name": "argocd"}
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "7b99226f-5c2b-479e-ab8f-d6e8a5b8d7b3", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "8030ed52-9563-4ca4-837b-52436f099b3f", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "22df8c40-7f82-4ecb-beb3-4c00a98e6898", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "dd04a4cf-1eb1-45fe-80d9-1569e23caef0", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "fe806485-384e-48df-83e5-591f1d48076c", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "969c2a77-7d1c-4002-97b3-8604e64f6f04", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "4aba4226-62b3-4096-b5bb-cc9b8e1c6b4a", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "be0e65c0-3b9f-4bc3-a3a0-dc463b509395", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:21Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "99195695-6815-4ffe-9f06-7a3e88c06068", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:21Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "c5415460-0de4-46ea-b1c7-24662c31e5c8", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "8af6094b-f6c9-4d56-8456-60c991dcd9da", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "e4e6940f-9bfe-4ac5-9311-6e14dd0be999", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "c8ae32bd-79fa-4910-9dd4-c0c81e507c30", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "745c50fc-508f-429a-892e-5adc020f7204", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "9d7cc1fa-5871-4b9a-9e36-c3875159a08e", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "1d6e6626-7fb9-4eaa-b14c-be6fbc2e3cf6", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "a121d854-1a8b-49d2-be67-30e664baf984", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "fd0cdc9a-5066-4aa3-b913-3a48c40e6ce6", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "33c178e0-4154-4131-b4f7-dc662c8760e3", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "b929b478-bde8-4a51-93e8-64a11116046b", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "cb3c9eeb-0b08-4023-8ebe-f4a8efd09c3a", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "dd74776d-359c-4a37-af4b-401959a8951f", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "9eef0fea-4783-4270-abd9-b255e9d61bb6", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "f1c44efd-e186-436d-90b1-a89f45b1489b", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "07907358-09ca-40ad-b21a-ef436626a8cd", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "c2182eb0-bb52-4423-a7a2-2178c5dc2eae", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "fcf925e3-afef-4111-b653-2f2d3880a022", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "7efb228e-4612-4693-bcf3-3222fab356a9", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "9cfe0c64-e5f5-49f4-b592-8981ed8b014b", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "f53247b3-d959-411f-b4b8-dd3e741b61ba", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "f71f162c-a0ea-4078-8b5c-21501f236ff5", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:26:22Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"argocd","namespace":"gitops-e2e-test-246d9720-7f84"}, "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd", "reconcileID": "d7540b50-6158-4838-b0dc-7ba40a53e622", "namespace": "gitops-e2e-test-246d9720-7f84", "name": "argocd"}
+2026-05-11T06:26:22Z	INFO	controller_argocd	reconciling status
+
+--- Container: kube-rbac-proxy ---
+W0511 06:21:01.637631       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:21:01.638169       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:21:01.639411       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:21:01.639707       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:21:01.639903       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

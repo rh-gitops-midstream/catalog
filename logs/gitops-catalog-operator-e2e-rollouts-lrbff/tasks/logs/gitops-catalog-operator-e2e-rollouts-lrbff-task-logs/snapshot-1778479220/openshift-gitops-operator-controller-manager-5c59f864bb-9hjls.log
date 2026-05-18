@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-5c59f864bb-9hjls ===
+=== Timestamp: 2026-05-11 06:00:20 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling applicationset clusterrolebindings
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling applicationset roles & rolebindings in source namespaces
+2026-05-11T05:59:45Z	INFO	controller_argocd	performing cleanup for applicationset source namespaces
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling Image Updater controller
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater deployment
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater role binding
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater cluster role binding
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater service account
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater role
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater cluster role
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater secret
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-config
+2026-05-11T05:59:45Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-ssh-config
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling repo-server TLS secret
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling redis-server TLS secret
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent resources
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resources
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service account
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role binding
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role binding
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal metrics service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal redis proxy service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resource proxy service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal healthz service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal network policy
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal route
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal deployment
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent resources
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent service account
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role binding
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role binding
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent metrics service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent healthz service
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent deployment
+2026-05-11T05:59:45Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:59:45Z	INFO	rollouts-controller	Creating a new ServiceMonitor instance	{"Namespace": "test-rom-ns", "Name": "argo-rollouts"}
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:59:45Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "098e6781-c706-4b02-944a-5a539be01690", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T05:59:45Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:59:45Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling Rollouts Roles
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling Rollouts RoleBindings
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:59:45Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:59:45Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:59:45Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "test-rom-ns", "Name": "argo-rollouts"}
+2026-05-11T05:59:45Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:59:56Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "6ae3ceba-1f65-44f9-b801-ced405969f84", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T05:59:56Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:59:56Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Roles
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts RoleBindings
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:59:56Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:59:56Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:59:56Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "test-rom-ns", "Name": "argo-rollouts"}
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:59:56Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "40be3676-4b6a-475f-a708-07fdb41c0530", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T05:59:56Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:59:56Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Roles
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts RoleBindings
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:59:56Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:59:56Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:59:56Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "test-rom-ns", "Name": "argo-rollouts"}
+2026-05-11T05:59:56Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:00:04Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "ac1fbd14-6c8f-4ff8-aee9-76cf5be54708", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T06:00:09Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "8606ef5b-1c84-4e6a-86d7-3817b223653e", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T06:00:09Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "9f63b5c8-1262-4561-a2e6-eba9b95aa7da", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T06:00:09Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "577fda5a-9c44-4b91-9fb6-dc242ab0ca27", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T06:00:09Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "964cfc05-de85-4441-92ce-c0ec75f04473", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T06:00:09Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "a042e9c9-845e-4919-8351-0bc2a2c2d7c8", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+2026-05-11T06:00:09Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"test-rollouts-manager-1","namespace":"test-rom-ns"}, "namespace": "test-rom-ns", "name": "test-rollouts-manager-1", "reconcileID": "b67d3900-0115-4e0d-844b-948eec490c9a", "Request.Namespace": "test-rom-ns", "Request.Name": "test-rollouts-manager-1"}
+
+--- Container: kube-rbac-proxy ---
+W0511 05:59:11.465366       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:59:11.466037       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:59:11.467330       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:59:11.468126       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:59:11.468366       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

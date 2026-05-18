@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-7fdfd5944c-qd997 ===
+=== Timestamp: 2026-05-11 06:14:14 UTC ===
+
+--- Container: manager ---
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "84c7bf61-3ff0-4161-8a32-db19b754c369", "error": "roles.rbac.authorization.k8s.io \"argocd-agent-principal-1-051-read\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "argocd-agent-principal-1-051-read"}
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "047ea3e3-dd1f-4815-8e08-5813b7969feb", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	removing local user token renewal timers for namespace "argocd-agent-principal-1-051"
+2026-05-11T06:14:00Z	INFO	controller_argocd	Deleting ClusterRole 'example-argocd-agent-principal-1-051-agent-principal' - cleaning up cluster resources
+2026-05-11T06:14:00Z	ERROR	controller_argocd_metrics	Error creating a new read role	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "argocd-agent-principal-1-051-read", "error": "roles.rbac.authorization.k8s.io \"argocd-agent-principal-1-051-read\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createReadRoleIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:279
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:140
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "256004bf-b4b2-4b55-a1c5-5ed7a1827566", "error": "roles.rbac.authorization.k8s.io \"argocd-agent-principal-1-051-read\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	INFO	controller_argocd	Deleting ClusterRole 'example-argocd-agent-principal-1-051-argocd-application-controller' - cleaning up cluster resources
+2026-05-11T06:14:00Z	INFO	controller_argocd	Deleting ClusterRole 'example-argocd-agent-principal-1-051-argocd-server' - cleaning up cluster resources
+2026-05-11T06:14:00Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'example-argocd-agent-principal-1-051-agent-principal' - cleaning up cluster resources
+2026-05-11T06:14:00Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'example-argocd-agent-principal-1-051-argocd-server' - cleaning up cluster resources
+2026-05-11T06:14:00Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'example-argocd-agent-principal-1-051-argocd-application-controller' - cleaning up cluster resources
+2026-05-11T06:14:00Z	INFO	controller_argocd	Updating ArgoCD 'argocd-agent-principal-1-051/example' - removing deletion finalizer
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:14:00Z	ERROR	controller_argocd	unable to update ArgoCD status condition	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/argocd-agent-principal-1-051/example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: bd713dea-45f8-474d-b430-6acb7ea9f9ef, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.updateStatusAndConditionsOfArgoCD
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/util.go:1695
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:159
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	ERROR	controller_argocd	unable to update status of ArgoCD	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/argocd-agent-principal-1-051/example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: bd713dea-45f8-474d-b430-6acb7ea9f9ef, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:160
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "047ea3e3-dd1f-4815-8e08-5813b7969feb", "error": "Operation cannot be fulfilled on argocds.argoproj.io \"example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/argocd-agent-principal-1-051/example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: bd713dea-45f8-474d-b430-6acb7ea9f9ef, UID in object meta: "}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "d961ba9b-4716-4249-b138-14e4a50662d0", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "363ca859-6f7a-4e6f-bf54-8a594acf7228", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "d81b9bc3-da8e-4d84-8766-f14ade556ad5", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "de239385-4917-43b9-ab13-d7193a3becba", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "035d3948-4a32-4ca6-81a0-e7ad5c75b6e1", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "9c302e71-a071-48a7-991a-24ce9031761a", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "731d18cc-3ef9-4441-8f8d-8eb0c705c130", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "c0b0309e-6321-4de8-a069-143bd2d1eef8", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "c75e248c-f157-4cd2-b177-126b3268f696", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "8308de86-3e07-4ff5-81ae-4c3ae4e31463", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:00Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:14:00Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:14:09Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "5641ecd4-7429-4b31-9e93-6e82aad428ea", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:14:09Z	INFO	controller_argocd	reconciling status
+
+--- Container: kube-rbac-proxy ---
+W0511 06:13:12.724766       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:13:12.725269       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:13:12.726580       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:13:12.727140       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:13:12.727361       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-snps6 ===
+=== Timestamp: 2026-05-11 06:47:06 UTC ===
+
+--- Container: manager ---
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "feaba80f-c8b5-4b52-b9fe-8a18d1b7c88d", "namespace": "appset-namespace-scoped", "name": "example"}
+2026-05-11T06:47:06Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example"}
+2026-05-11T06:47:06Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example", "Namespace": "appset-namespace-scoped", "Name": "appset-namespace-scoped-read"}
+2026-05-11T06:47:06Z	INFO	controller_argocd	Skipping sourceNamespaces reconciliation for namespace appset-namespace-scoped
+2026-05-11T06:47:06Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:47:06Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:47:06Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "appset-namespace-scoped", "ArgoCD Name": "example"}
+2026-05-11T06:47:06Z	ERROR	controller_argocd_metrics	Error creating a new read role	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example", "Namespace": "appset-namespace-scoped", "Name": "appset-namespace-scoped-read", "error": "roles.rbac.authorization.k8s.io \"appset-namespace-scoped-read\" is forbidden: unable to create new content in namespace appset-namespace-scoped because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createReadRoleIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:279
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:140
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "c0f2f8e3-e64e-41ea-b16b-0758c3f424d2", "error": "roles.rbac.authorization.k8s.io \"appset-namespace-scoped-read\" is forbidden: unable to create new content in namespace appset-namespace-scoped because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	INFO	controller_argocd	Creating Role 'appset-namespace-scoped/example-argocd-application-controller'
+2026-05-11T06:47:06Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "example-argocd-application-controller" is forbidden: unable to create new content in namespace appset-namespace-scoped because it is being terminated
+2026-05-11T06:47:06Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:47:06Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "feaba80f-c8b5-4b52-b9fe-8a18d1b7c88d", "error": "roles.rbac.authorization.k8s.io \"example-argocd-application-controller\" is forbidden: unable to create new content in namespace appset-namespace-scoped because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "10e3ce0e-cec2-4f49-bc25-6b2c0cbc1452", "namespace": "appset-namespace-scoped", "name": "example"}
+2026-05-11T06:47:06Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example"}
+2026-05-11T06:47:06Z	INFO	controller_argocd	removing local user token renewal timers for namespace "appset-namespace-scoped"
+2026-05-11T06:47:06Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example", "Namespace": "appset-namespace-scoped", "Name": "appset-namespace-scoped-read"}
+2026-05-11T06:47:06Z	INFO	controller_argocd	Updating ArgoCD 'appset-namespace-scoped/example' - removing deletion finalizer
+2026-05-11T06:47:06Z	ERROR	controller_argocd_metrics	Error creating a new read role	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example", "Namespace": "appset-namespace-scoped", "Name": "appset-namespace-scoped-read", "error": "roles.rbac.authorization.k8s.io \"appset-namespace-scoped-read\" is forbidden: unable to create new content in namespace appset-namespace-scoped because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createReadRoleIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:279
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:140
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "61d3a73c-079a-4ae7-bbc7-9206d181bd89", "error": "roles.rbac.authorization.k8s.io \"appset-namespace-scoped-read\" is forbidden: unable to create new content in namespace appset-namespace-scoped because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:47:06Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "appset-namespace-scoped", "Request.Name": "example"}
+2026-05-11T06:47:06Z	ERROR	controller_argocd	unable to update ArgoCD status condition	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/appset-namespace-scoped/example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 6fe027cf-6517-4466-803d-e7cdb023727a, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.updateStatusAndConditionsOfArgoCD
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/util.go:1695
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:159
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	ERROR	controller_argocd	unable to update status of ArgoCD	{"error": "Operation cannot be fulfilled on argocds.argoproj.io \"example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/appset-namespace-scoped/example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 6fe027cf-6517-4466-803d-e7cdb023727a, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:160
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "10e3ce0e-cec2-4f49-bc25-6b2c0cbc1452", "error": "Operation cannot be fulfilled on argocds.argoproj.io \"example\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/argoproj.io/argocds/appset-namespace-scoped/example, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: 6fe027cf-6517-4466-803d-e7cdb023727a, UID in object meta: "}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:47:06Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"appset-namespace-scoped"}, "namespace": "appset-namespace-scoped", "name": "example", "reconcileID": "b6077a55-9aa1-42a3-87d6-573151304aa9", "namespace": "appset-namespace-scoped", "name": "example"}
+2026-05-11T06:47:06Z	INFO	controller_argocd	reconciling status
+
+--- Container: kube-rbac-proxy ---
+W0511 06:44:50.732865       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:44:50.733417       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:44:50.734682       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:44:50.734979       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:44:50.735229       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

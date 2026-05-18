@@ -1,0 +1,997 @@
+=== Pod: openshift-gitops-operator-controller-manager-7d96f95d97-zbg4t ===
+=== Namespace: openshift-gitops-operator ===
+=== Collection Time: 2026-05-11 07:04:44 UTC ===
+
+--- Pod Description ---
+Name:             openshift-gitops-operator-controller-manager-7d96f95d97-zbg4t
+Namespace:        openshift-gitops-operator
+Priority:         0
+Service Account:  openshift-gitops-operator-controller-manager
+Node:             ip-10-0-143-39.ec2.internal/10.0.143.39
+Start Time:       Mon, 11 May 2026 06:13:19 +0000
+Labels:           control-plane=gitops-operator
+                  pod-template-hash=7d96f95d97
+Annotations:      alm-examples:
+                    [
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "AppProject",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "Application",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "ApplicationSet",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "NotificationsConfiguration",
+                        "metadata": {
+                          "name": "default-notifications-configuration"
+                        },
+                        "spec": {
+                          "templates": {
+                            "template.app-created": "email:\n  subject: Application {{.app.metadata.name}} has been created.\nmessage: Application {{.app.meta...
+                            "template.app-deleted": "email:\n  subject: Application {{.app.metadata.name}} has been deleted.\nmessage: Application {{.app.meta...
+                            "template.app-deployed": "email:\n  subject: New version of an application {{.app.metadata.name}} is up and running.\nmessage: |\n...
+                            "template.app-health-degraded": "email:\n  subject: Application {{.app.metadata.name}} has degraded.\nmessage: |\n  {{if eq .servi...
+                            "template.app-sync-failed": "email:\n  subject: Failed to sync application {{.app.metadata.name}}.\nmessage: |\n  {{if eq .service...
+                            "template.app-sync-running": "email:\n  subject: Start syncing application {{.app.metadata.name}}.\nmessage: |\n  The sync operati...
+                            "template.app-sync-status-unknown": "email:\n  subject: Application {{.app.metadata.name}} sync status is 'Unknown'\nmessage: |\n ...
+                            "template.app-sync-succeeded": "email:\n  subject: Application {{.app.metadata.name}} has been successfully synced.\nmessage: |\n ...
+                          },
+                          "triggers": {
+                            "trigger.on-created": "- description: Application is created.\n  oncePer: app.metadata.name\n  send:\n  - app-created\n  when: \"t...
+                            "trigger.on-deleted": "- description: Application is deleted.\n  oncePer: app.metadata.name\n  send:\n  - app-deleted\n  when: app...
+                            "trigger.on-deployed": "- description: Application is synced and healthy. Triggered once per commit.\n  oncePer: app.status.operat...
+                            "trigger.on-health-degraded": "- description: Application has degraded\n  send:\n  - app-health-degraded\n  when: app.status.healt...
+                            "trigger.on-sync-failed": "- description: Application syncing has failed\n  send:\n  - app-sync-failed\n  when: app.status.operati...
+                            "trigger.on-sync-running": "- description: Application is being synced\n  send:\n  - app-sync-running\n  when: app.status.operatio...
+                            "trigger.on-sync-status-unknown": "- description: Application status is 'Unknown'\n  send:\n  - app-sync-status-unknown\n  when: a...
+                            "trigger.on-sync-succeeded": "- description: Application syncing has succeeded\n  send:\n  - app-sync-succeeded\n  when: app.statu...
+                          }
+                        }
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "Rollout",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1alpha1",
+                        "kind": "RolloutManager",
+                        "metadata": {
+                          "name": "example"
+                        },
+                        "spec": null
+                      },
+                      {
+                        "apiVersion": "argoproj.io/v1beta1",
+                        "kind": "ArgoCD",
+                        "metadata": {
+                          "name": "argocd"
+                        },
+                        "spec": {
+                          "controller": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "2000m",
+                                "memory": "2048Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "1024Mi"
+                              }
+                            }
+                          },
+                          "ha": {
+                            "enabled": false,
+                            "resources": {
+                              "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "128Mi"
+                              }
+                            }
+                          },
+                          "rbac": {
+                            "defaultPolicy": "",
+                            "policy": "g, system:cluster-admins, role:admin\n",
+                            "scopes": "[groups]"
+                          },
+                          "redis": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "128Mi"
+                              }
+                            }
+                          },
+                          "repo": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "1000m",
+                                "memory": "1024Mi"
+                              },
+                              "requests": {
+                                "cpu": "250m",
+                                "memory": "256Mi"
+                              }
+                            }
+                          },
+                          "resourceExclusions": "- apiGroups:\n  - \"\"\n  - discovery.k8s.io\n  kinds:\n  - Endpoints\n  - EndpointSlice\n- apiGroups:\n  - a...
+                          "server": {
+                            "resources": {
+                              "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                              },
+                              "requests": {
+                                "cpu": "125m",
+                                "memory": "128Mi"
+                              }
+                            },
+                            "route": {
+                              "enabled": true
+                            }
+                          },
+                          "sso": {
+                            "dex": {
+                              "openShiftOAuth": true,
+                              "resources": {
+                                "limits": {
+                                  "cpu": "500m",
+                                  "memory": "256Mi"
+                                },
+                                "requests": {
+                                  "cpu": "250m",
+                                  "memory": "128Mi"
+                                }
+                              }
+                            },
+                            "provider": "dex"
+                          }
+                        }
+                      },
+                      {
+                        "apiVersion": "pipelines.openshift.io/v1alpha1",
+                        "kind": "GitopsService",
+                        "metadata": {
+                          "name": "gitopsservice-sample"
+                        },
+                        "spec": null
+                      }
+                    ]
+                  capabilities: Deep Insights
+                  console.openshift.io/plugins: ["gitops-plugin"]
+                  containerImage:
+                    registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+                  createdAt: 2026-03-04T06:59:29Z
+                  description:
+                    Enables teams to adopt GitOps principles for managing cluster configurations and application delivery across hybrid multi-cluster Kubernet...
+                  features.operators.openshift.io/cnf: false
+                  features.operators.openshift.io/cni: false
+                  features.operators.openshift.io/csi: false
+                  features.operators.openshift.io/disconnected: true
+                  features.operators.openshift.io/fips-compliant: true
+                  features.operators.openshift.io/proxy-aware: true
+                  features.operators.openshift.io/tls-profiles: false
+                  features.operators.openshift.io/token-auth-aws: false
+                  features.operators.openshift.io/token-auth-azure: false
+                  features.operators.openshift.io/token-auth-gcp: false
+                  k8s.ovn.org/pod-networks:
+                    {"default":{"ip_addresses":["10.133.0.109/23"],"mac_address":"0a:58:0a:85:00:6d","gateway_ips":["10.133.0.1"],"routes":[{"dest":"10.132.0....
+                  k8s.v1.cni.cncf.io/network-status:
+                    [{
+                        "name": "ovn-kubernetes",
+                        "interface": "eth0",
+                        "ips": [
+                            "10.133.0.109"
+                        ],
+                        "mac": "0a:58:0a:85:00:6d",
+                        "default": true,
+                        "dns": {}
+                    }]
+                  kubectl.kubernetes.io/default-container: manager
+                  olm.operatorGroup: gitops-operator-group
+                  olm.operatorNamespace: openshift-gitops-operator
+                  olm.skipRange: 
+                  olm.targetNamespaces: 
+                  olmcahash: fa69c4902d98b7bfd1784f049b1495044b4dd15b65f8492dd143fd848db49133
+                  openshift.io/scc: restricted-v2
+                  operatorframework.io/cluster-monitoring: true
+                  operatorframework.io/properties:
+                    {"properties":[{"type":"olm.gvk","value":{"group":"argocd-image-updater.argoproj.io","kind":"ImageUpdater","version":"v1alpha1"}},{"type":...
+                  operatorframework.io/suggested-namespace: openshift-gitops-operator
+                  operators.openshift.io/infrastructure-features: ["disconnected"]
+                  operators.openshift.io/must-gather-image:
+                    registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+                  operators.openshift.io/valid-subscription: ["OpenShift Container Platform", "OpenShift Platform Plus"]
+                  operators.operatorframework.io/builder: operator-sdk-v1.35.0
+                  operators.operatorframework.io/internal-objects: ["gitopsservices.pipelines.openshift.io"]
+                  operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
+                  repository: https://github.com/redhat-developer/gitops-operator
+                  seccomp.security.alpha.kubernetes.io/pod: runtime/default
+                  security.openshift.io/validated-scc-subject-type: user
+                  support: Red Hat
+Status:           Running
+SeccompProfile:   RuntimeDefault
+IP:               10.133.0.109
+IPs:
+  IP:           10.133.0.109
+Controlled By:  ReplicaSet/openshift-gitops-operator-controller-manager-7d96f95d97
+Containers:
+  manager:
+    Container ID:  cri-o://0dac8326dd6aabfc62165801d531e3631caeb5edc47fb2d6eb520a3f6290d9e6
+    Image:         registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+    Image ID:      registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e
+    Port:          9443/TCP
+    Host Port:     0/TCP
+    Command:
+      /usr/local/bin/manager
+    Args:
+      --health-probe-bind-address=:8081
+      --metrics-bind-address=127.0.0.1:8080
+      --leader-elect
+    State:          Running
+      Started:      Mon, 11 May 2026 06:13:19 +0000
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:8081/healthz delay=15s timeout=1s period=20s #success=1 #failure=3
+    Readiness:      http-get http://:8081/readyz delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      ARGOCD_CLUSTER_CONFIG_NAMESPACES:           openshift-gitops
+      CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES:    argo-rollouts,test-rom-ns-1,rom-ns-1
+      OPERATOR_NAME:                              gitops-operator
+      LABEL_SELECTOR:                             
+      ENABLE_CONVERSION_WEBHOOK:                  true
+      RELATED_IMAGE_ARGOCD_DEX_IMAGE:             registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+      ARGOCD_DEX_IMAGE:                           registry.redhat.io/openshift-gitops-1/dex-rhel9@sha256:19bd8a22a9877e1527f8e1ba59d9682aaea3f9b2b7cb4959b4be3f956e19716b
+      RELATED_IMAGE_BACKEND_IMAGE:                registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+      BACKEND_IMAGE:                              registry.redhat.io/openshift-gitops-1/gitops-rhel9@sha256:b99249048d27ba66aeda10386226569f125b88dae577505a474b1b861fe6e3ec
+      RELATED_IMAGE_ARGOCD_IMAGE:                 registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+      ARGOCD_IMAGE:                               registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+      ARGOCD_REPOSERVER_IMAGE:                    registry.redhat.io/openshift-gitops-1/argocd-rhel9@sha256:cf3031bb2ed6b19384e996afe598a002893fd70ac0ce14491ff868069c53fc84
+      RELATED_IMAGE_ARGOCD_REDIS_IMAGE:           registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+      ARGOCD_REDIS_IMAGE:                         registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+      ARGOCD_REDIS_HA_IMAGE:                      registry.redhat.io/rhel9/redis-7@sha256:3d31c0cfaf4219f5bd1c52882b603215d1cb4aaef5b8d1a128d0174e090f96f3
+      RELATED_IMAGE_ARGOCD_REDIS_HA_PROXY_IMAGE:  registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+      ARGOCD_REDIS_HA_PROXY_IMAGE:                registry.redhat.io/openshift4/ose-haproxy-router-rhel9@sha256:f83f1a5094075596f1b02cc8d99baa44be80f69f58864e925ede0b4f63f94fe3
+      RELATED_IMAGE_GITOPS_CONSOLE_PLUGIN_IMAGE:  registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+      GITOPS_CONSOLE_PLUGIN_IMAGE:                registry.redhat.io/openshift-gitops-1/console-plugin-rhel9@sha256:2b96f4a736457f646c6adc457f5679cf2143982dab6929bf695c6e55e40b5461
+      RELATED_IMAGE_ARGOCD_EXTENSION_IMAGE:       registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+      ARGOCD_EXTENSION_IMAGE:                     registry.redhat.io/openshift-gitops-1/argocd-extensions-rhel9@sha256:6280c601c0ddf094c05e6a66163096af7dd20e0800f80ed25ac6c0d93a33fafd
+      RELATED_IMAGE_ARGO_ROLLOUTS_IMAGE:          registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+      ARGO_ROLLOUTS_IMAGE:                        registry.redhat.io/openshift-gitops-1/argo-rollouts-rhel9@sha256:8e8cc0a8ce7d6225374a718b8507e128d78338b5f3db25c741bef7da4a03afcf
+      RELATED_IMAGE_MUST_GATHER_IMAGE:            registry.redhat.io/openshift-gitops-1/must-gather-rhel9@sha256:9c27f8c025b8cb7e22f33537449773286d97c5475d31cefca8559c04a4249c43
+      RELATED_IMAGE_KUBE_RBAC_PROXY_IMAGE:        registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+      ARGOCD_PRINCIPAL_IMAGE:                     registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      RELATED_IMAGE_ARGOCD_PRINCIPAL_IMAGE:       registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      ARGOCD_AGENT_IMAGE:                         registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      RELATED_IMAGE_ARGOCD_AGENT_IMAGE:           registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:6a9128c0407b2d126f2d6aa9ea4854b7ff345fb11099bdb9633cf0686b8060d2
+      ARGOCD_IMAGE_UPDATER_IMAGE:                 registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+      RELATED_IMAGE_ARGOCD_IMAGE_UPDATER_IMAGE:   registry.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9@sha256:c5057bf64edd2461e10aeb8ad71fa12f31d375baabf3ee3fba117a4fc22d91ff
+      OPERATOR_CONDITION_NAME:                    openshift-gitops-operator.v1.20.3
+    Mounts:
+      /apiserver.local.config/certificates from apiservice-cert (rw)
+      /tmp/k8s-webhook-server/serving-certs from webhook-cert (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-rrznn (ro)
+  kube-rbac-proxy:
+    Container ID:  cri-o://8372ee160b3cd805d562313f1c8d8cc11d9162d8d1d668ceab9ffe4ec6968b7f
+    Image:         registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554
+    Image ID:      registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:3509c3e8eaea4bd214c01ad94d9f9f7ce342103e2cecbc1badacfe4b968946e5
+    Port:          8443/TCP
+    Host Port:     0/TCP
+    Args:
+      --secure-listen-address=0.0.0.0:8443
+      --upstream=http://127.0.0.1:8080
+      --tls-cert-file=/etc/tls/private/tls.crt
+      --tls-private-key-file=/etc/tls/private/tls.key
+      --logtostderr=true
+      --allow-paths=/metrics
+      --http2-disable
+    State:          Running
+      Started:      Mon, 11 May 2026 06:13:19 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     500m
+      memory:  128Mi
+    Requests:
+      cpu:     1m
+      memory:  15Mi
+    Environment:
+      CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES:  argo-rollouts,test-rom-ns-1,rom-ns-1
+      OPERATOR_CONDITION_NAME:                  openshift-gitops-operator.v1.20.3
+    Mounts:
+      /apiserver.local.config/certificates from apiservice-cert (rw)
+      /etc/tls/private from kube-rbac-proxy-tls (ro)
+      /tmp/k8s-webhook-server/serving-certs from webhook-cert (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-rrznn (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-rbac-proxy-tls:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  kube-rbac-proxy-tls
+    Optional:    false
+  apiservice-cert:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  openshift-gitops-operator-controller-manager-service-cert
+    Optional:    false
+  webhook-cert:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  openshift-gitops-operator-controller-manager-service-cert
+    Optional:    false
+  kube-api-access-rrznn:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+    ConfigMapName:           openshift-service-ca.crt
+    ConfigMapOptional:       <nil>
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/memory-pressure:NoSchedule op=Exists
+                             node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason          Age   From               Message
+  ----    ------          ----  ----               -------
+  Normal  Scheduled       51m   default-scheduler  Successfully assigned openshift-gitops-operator/openshift-gitops-operator-controller-manager-7d96f95d97-zbg4t to ip-10-0-143-39.ec2.internal
+  Normal  AddedInterface  51m   multus             Add eth0 [10.133.0.109/23] from ovn-kubernetes
+  Normal  Pulled          51m   kubelet            Container image "registry.redhat.io/openshift-gitops-1/gitops-rhel9-operator@sha256:73b844f2dd5f2e2749c66024801ed59539aa363aa18052018b8b80ede0ea544e" already present on machine
+  Normal  Created         51m   kubelet            Created container: manager
+  Normal  Started         51m   kubelet            Started container manager
+  Normal  Pulled          51m   kubelet            Container image "registry.redhat.io/openshift4/ose-kube-rbac-proxy-rhel9@sha256:b473bb5efee9fb78c1e654ef94da9213e29a8eccfda2e8359b7c1b6b4049b554" already present on machine
+  Normal  Created         51m   kubelet            Created container: kube-rbac-proxy
+  Normal  Started         51m   kubelet            Started container kube-rbac-proxy
+
+--- Container: manager ---
+2026-05-11T06:13:19Z	INFO	argoutil	console.openshift.io/v1 API verified
+2026-05-11T06:13:19Z	INFO	setup	memory optimization is enabled
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x2c25ac0
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	setup	Component registered: 0x1e28430
+2026-05-11T06:13:19Z	INFO	controller-runtime.webhook	Registering webhook	{"path": "/convert"}
+2026-05-11T06:13:19Z	INFO	controller-runtime.builder	Conversion webhook enabled	{"GVK": "argoproj.io/v1beta1, Kind=ArgoCD"}
+2026-05-11T06:13:19Z	INFO	controller_gitopsservice	Watching GitopsService
+2026-05-11T06:13:19Z	ERROR	controller_gitopsservice	Failed to create GitOps service instance	{"error": "gitopsservices.pipelines.openshift.io \"cluster\" already exists"}
+github.com/redhat-developer/gitops-operator/controllers.(*ReconcileGitopsService).SetupWithManager
+	/workspace/controllers/gitopsservice_controller.go:100
+main.main
+	/workspace/cmd/main.go:225
+runtime.main
+	/usr/lib/golang/src/runtime/proc.go:285
+2026-05-11T06:13:19Z	INFO	setup	Watching label-selector ""
+2026-05-11T06:13:19Z	INFO	argoutil	monitoring.coreos.com/v1 API verified
+2026-05-11T06:13:19Z	INFO	argoutil	route.openshift.io/v1 API verified
+2026-05-11T06:13:19Z	INFO	argoutil	argocd-image-updater.argoproj.io/v1alpha1 API verified
+2026-05-11T06:13:19Z	INFO	argoutil	config.openshift.io/v1 API verified
+2026-05-11T06:13:19Z	INFO	argoutil	certificates.k8s.io/v1beta1 API not available, checking if its registered
+2026-05-11T06:13:19Z	INFO	argoutil	certificates.k8s.io/v1beta1 API is not registered
+2026-05-11T06:13:19Z	INFO	openshift_controller_argocd	updating the Argo CD controller to watch for changes to the admin ClusterRole	{"module": "builder-hook"}
+2026-05-11T06:13:19Z	INFO	setup	Argo Rollouts manager running in cluster-scoped mode
+2026-05-11T06:13:19Z	INFO	setup	starting manager
+2026-05-11T06:13:19Z	INFO	controller-runtime.metrics	Starting metrics server
+2026-05-11T06:13:19Z	INFO	controller-runtime.metrics	Serving metrics server	{"bindAddress": "127.0.0.1:8080", "secure": false}
+2026-05-11T06:13:19Z	INFO	starting server	{"name": "health probe", "addr": "[::]:8081"}
+2026-05-11T06:13:19Z	INFO	controller-runtime.webhook	Starting webhook server
+2026-05-11T06:13:19Z	INFO	controller-runtime.certwatcher	Updated current TLS certificate	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key"}
+2026-05-11T06:13:19Z	INFO	controller-runtime.webhook	Serving webhook server	{"host": "", "port": 9443}
+2026-05-11T06:13:19Z	INFO	controller-runtime.certwatcher	Starting certificate poll+watcher	{"cert": "/tmp/k8s-webhook-server/serving-certs/tls.crt", "key": "/tmp/k8s-webhook-server/serving-certs/tls.key", "interval": "10s"}
+I0511 06:13:19.952168       1 leaderelection.go:257] attempting to acquire leader lease openshift-gitops-operator/2b63967d.openshift.io...
+I0511 06:13:48.781320       1 leaderelection.go:271] successfully acquired lease openshift-gitops-operator/2b63967d.openshift.io
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1beta1.ArgoCD"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ServiceAccount"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Deployment"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Service"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Route"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.Namespace"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1alpha1.GitopsService"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ClusterRoleBinding"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1beta1.ArgoCD"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.ClusterRoleBinding"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route", "source": "kind source: *v1.Route"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1alpha1.RolloutManager"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Secret"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Service"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Deployment"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.Role"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.RoleBinding"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.RoleBinding"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1alpha1.RolloutManager"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1alpha1.NotificationsConfiguration"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1beta1.ArgoCD"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Route"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Service"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Prometheus"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ServiceMonitor"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Deployment"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1beta1.NamespaceManagement"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Ingress"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ClusterRoleBinding"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.StatefulSet"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Role"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ClusterRole"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.NetworkPolicy"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Namespace"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.ConfigMap"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration", "source": "kind source: *v1alpha1.NotificationsConfiguration"}
+2026-05-11T06:13:48Z	INFO	Starting EventSource	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "source": "kind source: *v1.Secret"}
+2026-05-11T06:13:48Z	INFO	Starting Controller	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T06:13:48Z	INFO	Starting workers	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "worker count": 1}
+2026-05-11T06:13:48Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops"}
+2026-05-11T06:13:48Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-read"}
+2026-05-11T06:13:48Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-prometheus-k8s-read-binding"}
+2026-05-11T06:13:48Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T06:13:48Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-server"}
+2026-05-11T06:13:48Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-repo-server"}
+2026-05-11T06:13:49Z	INFO	Starting Controller	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route"}
+2026-05-11T06:13:49Z	INFO	Starting workers	{"controller": "route", "controllerGroup": "route.openshift.io", "controllerKind": "Route", "worker count": 1}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	An alert rule instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-components.json"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_route	Reconciling ArgoCD Route	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_route	Route found for argocd-server	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server", "Route.Host": "openshift-gitops-server-openshift-gitops.apps.46df40f5-d9c7-4ea9-8f3d-5043a4a4af01.prod.konfluxeaas.com"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-components"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-grpc.json"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-grpc"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T06:13:49Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+2026-05-11T06:13:49Z	INFO	Starting Controller	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager"}
+2026-05-11T06:13:49Z	INFO	Starting Controller	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration"}
+2026-05-11T06:13:49Z	INFO	Starting workers	{"controller": "notificationsconfiguration", "controllerGroup": "argoproj.io", "controllerKind": "NotificationsConfiguration", "worker count": 1}
+2026-05-11T06:13:49Z	INFO	Starting workers	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "worker count": 1}
+2026-05-11T06:13:49Z	INFO	Starting Controller	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService"}
+2026-05-11T06:13:49Z	INFO	Starting workers	{"controller": "gitopsservice", "controllerGroup": "pipelines.openshift.io", "controllerKind": "GitopsService", "worker count": 1}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	Reconciling GitopsService	{"Request.Namespace": "", "Request.Name": "cluster"}
+2026-05-11T06:13:49Z	INFO	Starting Controller	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD"}
+2026-05-11T06:13:49Z	INFO	Starting workers	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "worker count": 1}
+2026-05-11T06:13:49Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "b2f99cea-29f7-466f-a84b-e323e7fb928c", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:13:49Z	INFO	controller_argocd	oauth enabled, configuring dex service account
+2026-05-11T06:13:49Z	INFO	controller_argocd	URI: https://openshift-gitops-server-openshift-gitops.apps.46df40f5-d9c7-4ea9-8f3d-5043a4a4af01.prod.konfluxeaas.com/api/dex/callback
+2026-05-11T06:13:49Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T06:13:49Z	INFO	controller_argocd_route	Skip reconcile: ConsoleLink already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops-server", "ConsoleLink.Name": "argocd"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T06:13:49Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling service accounts
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-application-controller'
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-server'
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling certificate authority
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling CA secret
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling CA config map
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling secrets
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	No ResourceQuota set for namespace	{"Request.Namespace": "", "Request.Name": "cluster", "Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	Reconciling ArgoCD	{"Request.Namespace": "", "Request.Name": "cluster", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling config maps
+2026-05-11T06:13:49Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling local users
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling services
+2026-05-11T06:13:49Z	INFO	controller_argocd	skipping AutoTLS on service openshift-gitops-server since the TLS secret is already present
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling deployments
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring openshift redis	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring openshift redis haproxy	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	Applying ArgoCD Repo Server reconciler hook
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-repo-server' - updating volumes, init containers, replicas, auto-mount service account token, annotations
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-server' - updating volumes, replicas, annotations
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling statefulsets
+2026-05-11T06:13:49Z	INFO	controller_argocd	existing argocd export not found, skipping import
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	Reconciling GitopsService	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	No ResourceQuota set for namespace	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	Reconciling ArgoCD	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	Reconciling GitopsService	{"Request.Namespace": "", "Request.Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	No ResourceQuota set for namespace	{"Request.Namespace": "", "Request.Name": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_gitopsservice	Reconciling ArgoCD	{"Request.Namespace": "", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating StatefulSet 'openshift-gitops/openshift-gitops-application-controller' - updating volumes, annotations
+2026-05-11T06:13:49Z	INFO	openshift_controller_argocd	configuring openshift redis-ha-server stateful set	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling autoscalers
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ingresses
+2026-05-11T06:13:49Z	INFO	controller_argocd	applicationset or applicationset webhook ingress disabled
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling routes
+2026-05-11T06:13:49Z	INFO	controller_argocd	Using reencrypt termination policy for the Server Route
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Route 'openshift-gitops/openshift-gitops-server'
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling prometheus
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ApplicationSet controller
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset serviceaccounts
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset roles
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset role bindings
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating RoleBinding 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset deployments
+2026-05-11T06:13:49Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-applicationset-controller' - due to difference in .Spec.Template.Spec.Containers
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset clusterroles
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset clusterrolebindings
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling applicationset roles & rolebindings in source namespaces
+2026-05-11T06:13:49Z	INFO	controller_argocd	performing cleanup for applicationset source namespaces
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling Image Updater controller
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater deployment
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater role binding
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater cluster role binding
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater service account
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater role
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater cluster role
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater secret
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-config
+2026-05-11T06:13:49Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-ssh-config
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling repo-server TLS secret
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling redis-server TLS secret
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent resources
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resources
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service account
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role binding
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role binding
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal metrics service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal redis proxy service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resource proxy service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal healthz service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal network policy
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal route
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal deployment
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent resources
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent service account
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role binding
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role binding
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent metrics service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent healthz service
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent deployment
+2026-05-11T06:13:49Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:13:50Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "c9dd0929-19a3-4a01-bfcc-ac78b0da4d6e", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:13:50Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:13:50Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating ServiceAccount argo-rollouts
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating ClusterRole argo-rollouts
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating ClusterRoleBinding argo-rollouts
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating Secret argo-rollouts-notification-secret
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:13:50Z	INFO	rollouts-controller	configMap not found, creating default configmap with openshift route plugin information
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating Deployment argo-rollouts
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating Service argo-rollouts-metrics
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Creating a new ServiceMonitor instance	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:13:50Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "ee00620a-6aa7-4f24-b449-30db33321e44", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:13:50Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:13:50Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:13:50Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:13:50Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:13:50Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:13:50Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:14:02Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "0e57289c-83d2-4361-bfc1-e318b6c5c294", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:14:02Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:14:02Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:14:02Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:14:02Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:14:02Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:14:02Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "b1eea210-8d50-4104-ad00-ebf592dc2771", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:14:02Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:14:02Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:14:02Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:14:02Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:14:02Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:14:02Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:56:23Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "792c0e0f-5a0f-4e20-9525-9ab6202abbb5", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:29Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "f2c4fae4-072a-41b4-b1fa-4afb214c6356", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:29Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "12f16639-3801-4dc6-a516-4c27fc4087be", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:29Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "2e4028d4-736f-4ec2-8ab6-d474209cee54", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:29Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "5a0e765e-d1a6-48fe-85f7-db457f26a3af", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:45Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "2a6e8608-60c0-47ef-99be-02b1584e7b73", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:45Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:56:45Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Creating ServiceAccount argo-rollouts
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Creating Secret argo-rollouts-notification-secret
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:56:45Z	INFO	rollouts-controller	configMap not found, creating default configmap with openshift route plugin information
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Creating Deployment argo-rollouts
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Creating Service argo-rollouts-metrics
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Creating a new ServiceMonitor instance	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:56:45Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "8c0d4d7a-a1ea-49c1-b8a2-749796ffe783", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:45Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:56:45Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:56:45Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:56:45Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:56:45Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "65092654-b101-4c0a-93c1-fcd9ad3ffdea", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:45Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:56:45Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:56:45Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:56:45Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:56:46Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:56:46Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:56:46Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:56:46Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:56:46Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:56:46Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:56:58Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "0fe0d0f6-4f89-4c12-877b-f7e96335e4e1", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:58Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:56:58Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:56:58Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:56:58Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:56:58Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T06:56:58Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "a0caa1d6-bf41-4bec-8f08-5cdb4f6f0eb6", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T06:56:58Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T06:56:58Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T06:56:58Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T06:56:58Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T06:56:58Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T06:56:58Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T07:04:33Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "3f3d57d9-74d6-463c-a724-6d8160eb609d", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T07:04:33Z	INFO	rollouts-controller	deleting Rollouts ClusterRole for RolloutManager that no longer exists
+2026-05-11T07:04:33Z	INFO	rollouts-controller	deleting ClusterRole	{"name": "argo-rollouts-aggregate-to-admin"}
+2026-05-11T07:04:33Z	INFO	rollouts-controller	deleting ClusterRole	{"name": "argo-rollouts-aggregate-to-edit"}
+2026-05-11T07:04:33Z	INFO	rollouts-controller	deleting ClusterRole	{"name": "argo-rollouts-aggregate-to-view"}
+2026-05-11T07:04:33Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "e0712c18-6311-4c81-b310-909ab158bf78", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T07:04:33Z	INFO	controller_argocd	oauth enabled, configuring dex service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	URI: https://openshift-gitops-server-openshift-gitops.apps.46df40f5-d9c7-4ea9-8f3d-5043a4a4af01.prod.konfluxeaas.com/api/dex/callback
+2026-05-11T07:04:33Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T07:04:33Z	INFO	rollouts-controller	deleting Rollouts ClusterRoleBinding for RolloutManager that no longer exists
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling roles
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-argocd-application-controller' - updating policy rules
+2026-05-11T07:04:33Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"argo-rollout","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "argo-rollout", "reconcileID": "7e7a80e9-a5ae-4826-9f2c-001203b473c2", "Request.Namespace": "argo-rollouts", "Request.Name": "argo-rollout"}
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-argocd-application-controller' - updating policy rules
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling service accounts
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-argocd-application-controller' - updating policy rules
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-application-controller'
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-server'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling certificate authority
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling CA secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling CA config map
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling secrets
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling config maps
+2026-05-11T07:04:33Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling local users
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling services
+2026-05-11T07:04:33Z	INFO	controller_argocd	skipping AutoTLS on service openshift-gitops-server since the TLS secret is already present
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling deployments
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift redis	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift redis haproxy	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Applying ArgoCD Repo Server reconciler hook
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-repo-server' - updating volumes, init containers, replicas, auto-mount service account token, annotations
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-server' - updating volumes, replicas, annotations
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling statefulsets
+2026-05-11T07:04:33Z	INFO	controller_argocd	existing argocd export not found, skipping import
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating StatefulSet 'openshift-gitops/openshift-gitops-application-controller' - updating volumes, annotations
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift redis-ha-server stateful set	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling autoscalers
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ingresses
+2026-05-11T07:04:33Z	INFO	controller_argocd	applicationset or applicationset webhook ingress disabled
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling routes
+2026-05-11T07:04:33Z	INFO	controller_argocd	Using reencrypt termination policy for the Server Route
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Route 'openshift-gitops/openshift-gitops-server'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling prometheus
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ApplicationSet controller
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset serviceaccounts
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset roles
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset role bindings
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating RoleBinding 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset deployments
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-applicationset-controller' - due to difference in .Spec.Template.Spec.Containers
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset clusterroles
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset clusterrolebindings
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset roles & rolebindings in source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	performing cleanup for applicationset source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling Image Updater controller
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater deployment
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater cluster role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater role
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater cluster role
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-config
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-ssh-config
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling repo-server TLS secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling redis-server TLS secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent resources
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resources
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal metrics service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal redis proxy service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resource proxy service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal healthz service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal network policy
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal route
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal deployment
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent resources
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent metrics service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent healthz service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent deployment
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling status
+2026-05-11T07:04:33Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "12b485f5-50ae-4d81-8720-732d4ace20ec", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T07:04:33Z	INFO	controller_argocd	oauth enabled, configuring dex service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	URI: https://openshift-gitops-server-openshift-gitops.apps.46df40f5-d9c7-4ea9-8f3d-5043a4a4af01.prod.konfluxeaas.com/api/dex/callback
+2026-05-11T07:04:33Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling roles
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling service accounts
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-application-controller'
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-server'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling certificate authority
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling CA secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling CA config map
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling secrets
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling config maps
+2026-05-11T07:04:33Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling local users
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling services
+2026-05-11T07:04:33Z	INFO	controller_argocd	skipping AutoTLS on service openshift-gitops-server since the TLS secret is already present
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling deployments
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift redis	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift redis haproxy	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	Applying ArgoCD Repo Server reconciler hook
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-repo-server' - updating volumes, init containers, replicas, auto-mount service account token, annotations
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-server' - updating volumes, replicas, annotations
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling statefulsets
+2026-05-11T07:04:33Z	INFO	controller_argocd	existing argocd export not found, skipping import
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating StatefulSet 'openshift-gitops/openshift-gitops-application-controller' - updating volumes, annotations
+2026-05-11T07:04:33Z	INFO	openshift_controller_argocd	configuring openshift redis-ha-server stateful set	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling autoscalers
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ingresses
+2026-05-11T07:04:33Z	INFO	controller_argocd	applicationset or applicationset webhook ingress disabled
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling routes
+2026-05-11T07:04:33Z	INFO	controller_argocd	Using reencrypt termination policy for the Server Route
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Route 'openshift-gitops/openshift-gitops-server'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling prometheus
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ApplicationSet controller
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset serviceaccounts
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset roles
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Role 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset role bindings
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating RoleBinding 'openshift-gitops/openshift-gitops-applicationset-controller'
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset deployments
+2026-05-11T07:04:33Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-applicationset-controller' - due to difference in .Spec.Template.Spec.Containers
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset clusterroles
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset clusterrolebindings
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling applicationset roles & rolebindings in source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	performing cleanup for applicationset source namespaces
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling Image Updater controller
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater deployment
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater cluster role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater role
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater cluster role
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-config
+2026-05-11T07:04:33Z	INFO	controller_argocd	deleting image updater configmap argocd-image-updater-ssh-config
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling repo-server TLS secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling redis-server TLS secret
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent resources
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resources
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal cluster role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal metrics service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal redis proxy service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal resource proxy service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal healthz service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal network policy
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal route
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Principal deployment
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent resources
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent service account
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent cluster role binding
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent metrics service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent healthz service
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling ArgoCD Agent's Agent deployment
+2026-05-11T07:04:33Z	INFO	controller_argocd	reconciling status
+
+--- Container: manager (previous) ---
+Error from server (BadRequest): previous terminated container "manager" in pod "openshift-gitops-operator-controller-manager-7d96f95d97-zbg4t" not found
+(no previous logs)
+
+--- Container: kube-rbac-proxy ---
+W0511 06:13:19.896109       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:13:19.896657       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:13:19.898036       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:13:19.898564       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:13:19.898756       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+
+--- Container: kube-rbac-proxy (previous) ---
+Error from server (BadRequest): previous terminated container "kube-rbac-proxy" in pod "openshift-gitops-operator-controller-manager-7d96f95d97-zbg4t" not found
+(no previous logs)
+

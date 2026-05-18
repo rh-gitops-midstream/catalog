@@ -1,0 +1,11 @@
+=== Pod: openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n ===
+=== Timestamp: 2026-05-11 06:28:06 UTC ===
+
+--- Container: manager ---
+Error from server (NotFound): pods "openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n" not found
+(no logs available)
+
+--- Container: kube-rbac-proxy ---
+Error from server (NotFound): pods "openshift-gitops-operator-controller-manager-7d6bf6b8b8-zfc2n" not found
+(no logs available)
+

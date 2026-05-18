@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-7fdfd5944c-mjmhs ===
+=== Timestamp: 2026-05-11 06:12:09 UTC ===
+
+--- Container: manager ---
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:54Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "550bf3f1-d0dc-473e-a579-1bbe00c7e5bc", "error": "roles.rbac.authorization.k8s.io \"example-argocd-server\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "90059367-ff42-4a55-98a4-af6791065545", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:11:54Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-server'
+2026-05-11T06:11:54Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "example-argocd-server" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:54Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "90059367-ff42-4a55-98a4-af6791065545", "error": "roles.rbac.authorization.k8s.io \"example-argocd-server\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "fea7f88b-9cab-4812-810d-c1f184f10971", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:11:54Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-server'
+2026-05-11T06:11:54Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "example-argocd-server" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:54Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "fea7f88b-9cab-4812-810d-c1f184f10971", "error": "roles.rbac.authorization.k8s.io \"example-argocd-server\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "e3b077a1-a202-4c3a-9c14-be40ead83dae", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:11:54Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-server'
+2026-05-11T06:11:54Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "example-argocd-server" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:54Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "e3b077a1-a202-4c3a-9c14-be40ead83dae", "error": "roles.rbac.authorization.k8s.io \"example-argocd-server\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "63fd8381-44f3-4282-ab88-98ff643eedb1", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling roles
+2026-05-11T06:11:54Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "argocd-agent-principal-1-051", "ArgoCD Name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	Creating Role 'argocd-agent-principal-1-051/example-argocd-server'
+2026-05-11T06:11:54Z	INFO	controller_argocd	roles.rbac.authorization.k8s.io "example-argocd-server" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:54Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "63fd8381-44f3-4282-ab88-98ff643eedb1", "error": "roles.rbac.authorization.k8s.io \"example-argocd-server\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:11:54Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "ad8c3e70-2622-451a-861f-c999842fefc0", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd_metrics	Creating new read role	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "argocd-agent-principal-1-051-read"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	removing local user token renewal timers for namespace "argocd-agent-principal-1-051"
+2026-05-11T06:11:54Z	INFO	controller_argocd	Deleting ClusterRole 'example-argocd-agent-principal-1-051-agent-principal' - cleaning up cluster resources
+2026-05-11T06:11:54Z	ERROR	controller_argocd_metrics	Error creating a new read role	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example", "Namespace": "argocd-agent-principal-1-051", "Name": "argocd-agent-principal-1-051-read", "error": "roles.rbac.authorization.k8s.io \"argocd-agent-principal-1-051-read\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).createReadRoleIfAbsent
+	/workspace/controllers/argocd_metrics_controller.go:279
+github.com/redhat-developer/gitops-operator/controllers.(*ArgoCDMetricsReconciler).Reconcile
+	/workspace/controllers/argocd_metrics_controller.go:140
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "950b2ed0-f64b-4ec6-b4a7-d2cf54c73f9a", "error": "roles.rbac.authorization.k8s.io \"argocd-agent-principal-1-051-read\" is forbidden: unable to create new content in namespace argocd-agent-principal-1-051 because it is being terminated"}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T06:11:54Z	INFO	controller_argocd	Deleting ClusterRole 'example-argocd-agent-principal-1-051-argocd-application-controller' - cleaning up cluster resources
+2026-05-11T06:11:54Z	INFO	controller_argocd	Deleting ClusterRole 'example-argocd-agent-principal-1-051-argocd-server' - cleaning up cluster resources
+2026-05-11T06:11:54Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'example-argocd-agent-principal-1-051-agent-principal' - cleaning up cluster resources
+2026-05-11T06:11:54Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'example-argocd-agent-principal-1-051-argocd-server' - cleaning up cluster resources
+2026-05-11T06:11:54Z	INFO	controller_argocd	Deleting ClusterRoleBinding 'example-argocd-agent-principal-1-051-argocd-application-controller' - cleaning up cluster resources
+2026-05-11T06:11:54Z	INFO	controller_argocd	Updating ArgoCD 'argocd-agent-principal-1-051/example' - removing deletion finalizer
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:54Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"example","namespace":"argocd-agent-principal-1-051"}, "namespace": "argocd-agent-principal-1-051", "name": "example", "reconcileID": "0f577063-204a-45ec-8fbd-b04072cdbb1f", "namespace": "argocd-agent-principal-1-051", "name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+2026-05-11T06:11:54Z	INFO	controller_argocd	reconciling status
+2026-05-11T06:11:55Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "argocd-agent-principal-1-051", "Request.Name": "example"}
+
+--- Container: kube-rbac-proxy ---
+W0511 06:11:14.371238       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 06:11:14.371881       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 06:11:14.374016       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 06:11:14.417082       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 06:11:14.417494       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

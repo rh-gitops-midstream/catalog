@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-fc7df578-mdm7t ===
+=== Timestamp: 2026-05-11 05:48:35 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-prometheus-k8s-read-binding"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-server"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-repo-server"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	An alert rule instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-components.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-components"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-grpc.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-grpc"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+2026-05-11T05:48:34Z	INFO	controller_gitopsservice	No ResourceQuota set for namespace	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_gitopsservice	Reconciling ArgoCD	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ConfigMap 'openshift-gitops/argocd-cm'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Updating Deployment 'openshift-gitops/openshift-gitops-dex-server' - updating container env, init container env
+2026-05-11T05:48:34Z	ERROR	controller_argocd	error reconciling dex deployment	{"error": "Operation cannot be fulfilled on deployments.apps \"openshift-gitops-dex-server\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/deployments/openshift-gitops/openshift-gitops-dex-server, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: c5c225fc-b162-4124-9b2c-19c616e29ee9, UID in object meta: "}
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).reconcileDexResources
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/dex.go:600
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).reconcileSSO
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/sso.go:114
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).reconcileResources
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/util.go:787
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).internalReconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:363
+github.com/argoproj-labs/argocd-operator/controllers/argocd.(*ReconcileArgoCD).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/github.com/argoproj-labs/argocd-operator@v0.17.0-rc1.0.20260304133241-fd7fd59a2b0b/controllers/argocd/argocd_controller.go:144
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Reconcile
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:216
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:461
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:48:34Z	INFO	controller_argocd	Operation cannot be fulfilled on deployments.apps "openshift-gitops-dex-server": StorageError: invalid object, Code: 4, Key: /kubernetes.io/deployments/openshift-gitops/openshift-gitops-dex-server, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: c5c225fc-b162-4124-9b2c-19c616e29ee9, UID in object meta: 
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling status
+2026-05-11T05:48:34Z	ERROR	Reconciler error	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "58a1c4d1-e76c-415b-9580-16a35eec9ae1", "error": "Operation cannot be fulfilled on deployments.apps \"openshift-gitops-dex-server\": StorageError: invalid object, Code: 4, Key: /kubernetes.io/deployments/openshift-gitops/openshift-gitops-dex-server, ResourceVersion: 0, AdditionalErrorMsg: Precondition failed: UID in precondition: c5c225fc-b162-4124-9b2c-19c616e29ee9, UID in object meta: "}
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:474
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:421
+sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func1.1
+	/cachi2/output/deps/gomod/pkg/mod/sigs.k8s.io/controller-runtime@v0.22.3/pkg/internal/controller/controller.go:296
+2026-05-11T05:48:34Z	INFO	Reconciling ArgoCD	{"controller": "argocd", "controllerGroup": "argoproj.io", "controllerKind": "ArgoCD", "ArgoCD": {"name":"openshift-gitops","namespace":"openshift-gitops"}, "namespace": "openshift-gitops", "name": "openshift-gitops", "reconcileID": "a85d82e0-c3aa-43af-aeb6-d86c5a93c359", "namespace": "openshift-gitops", "name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling SSO
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating RoleBinding 'openshift-gitops/openshift-gitops-argocd-dex-server'
+2026-05-11T05:48:34Z	INFO	controller_gitopsservice	Reconciling GitopsService	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Reconciling ArgoCD Metrics	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Read role already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-read"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Read role binding already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-prometheus-k8s-read-binding"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_gitopsservice	No ResourceQuota set for namespace	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_gitopsservice	Reconciling ArgoCD	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A ServiceMonitor instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-server"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Creating a new ServiceMonitor instance	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "openshift-gitops-repo-server"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Creating new alert rule	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-gitops", "Name": "gitops-operator-argocd-alerts"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating Role 'openshift-gitops/openshift-gitops-argocd-dex-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	oauth enabled, configuring dex service account
+2026-05-11T05:48:34Z	INFO	controller_argocd	URI: https://openshift-gitops-server/api/dex/callback
+2026-05-11T05:48:34Z	INFO	controller_argocd	Using default resource tracking method 'Annotation'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating Deployment 'openshift-gitops/openshift-gitops-dex-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling roles
+2026-05-11T05:48:34Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-components.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-components"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-grpc.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-grpc"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-overview"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	Processing dashboard	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts.json"}
+2026-05-11T05:48:34Z	INFO	controller_argocd_metrics	A dashboard instance already exists	{"Request.Namespace": "openshift-gitops", "Request.Name": "openshift-gitops", "Namespace": "openshift-config-managed", "Name": "gitops-rollouts"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating Role 'openshift-gitops/openshift-gitops-argocd-application-controller'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating Role 'openshift-gitops/openshift-gitops-argocd-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating Role 'openshift-gitops/openshift-gitops-argocd-redis-ha'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating Role 'openshift-gitops/openshift-gitops-argocd-redis'
+2026-05-11T05:48:34Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ClusterRole 'openshift-gitops-openshift-gitops-argocd-application-controller'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ClusterRole 'openshift-gitops-openshift-gitops-argocd-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling roles for source namespaces
+2026-05-11T05:48:34Z	INFO	controller_argocd	performing cleanup for source namespaces
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling rolebindings
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ServiceAccount 'openshift-gitops/openshift-gitops-argocd-application-controller'
+2026-05-11T05:48:34Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating RoleBinding 'openshift-gitops/openshift-gitops-argocd-application-controller'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ServiceAccount 'openshift-gitops/openshift-gitops-argocd-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating RoleBinding 'openshift-gitops/openshift-gitops-argocd-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ServiceAccount 'openshift-gitops/openshift-gitops-argocd-redis-ha'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating RoleBinding 'openshift-gitops/openshift-gitops-argocd-redis-ha'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ServiceAccount 'openshift-gitops/openshift-gitops-argocd-redis'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating RoleBinding 'openshift-gitops/openshift-gitops-argocd-redis'
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling service accounts
+2026-05-11T05:48:34Z	INFO	openshift_controller_argocd	configuring policy rule for Application Controller	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	openshift_controller_argocd	configuring openshift cluster config policy rules	{"ArgoCD Namespace": "openshift-gitops", "ArgoCD Name": "openshift-gitops"}
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-application-controller'
+2026-05-11T05:48:34Z	INFO	controller_argocd	Creating ClusterRoleBinding 'openshift-gitops-openshift-gitops-argocd-server'
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling certificate authority
+2026-05-11T05:48:34Z	INFO	controller_argocd	reconciling CA secret
+
+--- Container: kube-rbac-proxy ---
+W0511 05:41:11.017371       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:41:11.017923       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:41:11.019202       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:41:11.019507       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:41:11.019717       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+

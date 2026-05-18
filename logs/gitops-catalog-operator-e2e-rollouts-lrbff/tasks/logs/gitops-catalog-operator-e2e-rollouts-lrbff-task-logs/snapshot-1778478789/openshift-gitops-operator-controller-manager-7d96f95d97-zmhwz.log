@@ -1,0 +1,118 @@
+=== Pod: openshift-gitops-operator-controller-manager-7d96f95d97-zmhwz ===
+=== Timestamp: 2026-05-11 05:53:09 UTC ===
+
+--- Container: manager ---
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:52:57Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:52:57Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:52:57Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:52:57Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "4f5020eb-3567-4129-82c4-6a61b726210c", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:52:57Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:52:57Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:52:57Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:52:57Z	INFO	rollouts-controller	updating Deployment due to detected difference: Spec.Template.Spec.Containers
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:52:57Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:52:57Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "9c0fb5d3-5943-49d9-a15c-47d9f8a3853b", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:52:57Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:52:57Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:52:57Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:52:57Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:52:57Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "bf776281-edf6-4dda-bfc4-e3f4f0ead5e2", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:52:57Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:52:57Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:52:57Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:52:57Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:52:57Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "888a6d9d-6b3c-40d1-ad52-e83fde8a6848", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:52:57Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:52:57Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:52:57Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:52:57Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:52:57Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "a6024d26-58a8-4197-8a05-5c826a450d5e", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	validating RolloutManager's scope
+2026-05-11T05:52:57Z	INFO	rollouts-controller	searching for existing RolloutManagers
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ServiceAccount
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoles
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-admin ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-edit ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling aggregate-to-view ClusterRole
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts ClusterRoleBinding
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Secret
+2026-05-11T05:52:57Z	INFO	rollouts-controller	Labels/Annotations of Secret argo-rollouts-notification-secret do not match the expected state, hence updating it
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling ConfigMap for plugins
+2026-05-11T05:52:57Z	INFO	rollouts-controller	No changes detected in ConfigMap, skipping update and pod restart
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Deployment
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling Rollouts Metrics Service
+2026-05-11T05:52:57Z	INFO	rollouts-controller	A ServiceMonitor instance already exists	{"Namespace": "argo-rollouts", "Name": "argo-rollouts"}
+2026-05-11T05:52:57Z	INFO	rollouts-controller	reconciling status of workloads
+2026-05-11T05:53:03Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "4ca62c08-3e4b-4a52-b623-70d099672f9d", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:53:03Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "a49de7fe-4ca7-4843-b0ff-12914860f15e", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:53:08Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "2256da04-f4a4-4d3f-95c0-e571aedceec7", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:53:08Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "214b4ee6-f03a-4b72-b366-e3576daaf554", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:53:08Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "73154c7c-23ce-423c-89b1-3f216d633211", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+2026-05-11T05:53:08Z	INFO	Reconciling RolloutManager	{"controller": "rolloutmanager", "controllerGroup": "argoproj.io", "controllerKind": "RolloutManager", "RolloutManager": {"name":"basic-rollouts-manager","namespace":"argo-rollouts"}, "namespace": "argo-rollouts", "name": "basic-rollouts-manager", "reconcileID": "7193e60b-2a23-48d0-bd48-d708b1a74505", "Request.Namespace": "argo-rollouts", "Request.Name": "basic-rollouts-manager"}
+
+--- Container: kube-rbac-proxy ---
+W0511 05:42:57.298775       1 deprecated.go:66] 
+==== Removed Flag Warning ======================
+
+logtostderr is removed in the k8s upstream and has no effect any more.
+
+===============================================
+		
+I0511 05:42:57.299578       1 kube-rbac-proxy.go:235] Valid token audiences: 
+I0511 05:42:57.301058       1 kube-rbac-proxy.go:349] Reading certificate files
+I0511 05:42:57.301494       1 kube-rbac-proxy.go:397] Starting TCP socket on 0.0.0.0:8443
+I0511 05:42:57.301733       1 kube-rbac-proxy.go:404] Listening securely on 0.0.0.0:8443
+
