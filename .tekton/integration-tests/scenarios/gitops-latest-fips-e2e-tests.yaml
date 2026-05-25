@@ -29,7 +29,7 @@ spec:
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo
@@ -54,14 +54,14 @@ spec:
     value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: ' OPENSHIFT_VERSION'
     value: '4.20'
-  - name: channel
+  - name: OPERATOR_CHANNEL
     value: latest
   - name: FIPS_ENABLED
     value: 'true'
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo
@@ -95,7 +95,7 @@ spec:
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo
@@ -135,7 +135,7 @@ spec:
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo
@@ -175,7 +175,7 @@ spec:
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo
@@ -213,7 +213,7 @@ spec:
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo
@@ -255,7 +255,7 @@ spec:
   resolverRef:
     params:
     - name: url
-      value: https://github.com/AdamSaleh/catalog
+      value: https://github.com/rh-gitops-midstream/catalog
     - name: revision
       value: konflux-integration
     - name: pathInRepo

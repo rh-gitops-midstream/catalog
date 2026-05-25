@@ -15,7 +15,7 @@ spec:
       type: string
     - description: Git URL of catalog repository (for task definitions)
       name: CATALOG_TASK_URL
-      default: "https://github.com/adamsaleh/catalog.git"
+      default: "https://github.com/rh-gitops-midstream/catalog"
       type: string
     - description: Git revision for task definitions
       name: CATALOG_TASK_REVISION
