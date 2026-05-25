@@ -71,6 +71,10 @@ spec:
       name: CLUSTER_INSTANCE_TYPE
       default: "m6g.large"
       type: string
+    - description: Pre-built test runner image. Build locally with .tekton/test-image/build-and-push.sh
+      name: TEST_IMAGE_URL
+      default: "quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb"
+      type: string
 
   finally:
     - name: pipeline-wrapup
@@ -91,7 +95,7 @@ spec:
         - name: pipelineRunName
           value: "$(context.pipelineRun.name)"
         - name: testImageUrl
-          value: "$(tasks.build-ginkgo-test-image.results.IMAGE_URL)"
+          value: "$(params.TEST_IMAGE_URL)"
         - name: aggregateStatus
           value: "$(tasks.status)"
         - name: logUrl
@@ -135,26 +139,6 @@ spec:
       params:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
-
-    - name: build-ginkgo-test-image
-      runAfter:
-        - parse-metadata
-      taskRef:
-        resolver: git
-        params:
-          - name: url
-            value: $(params.CATALOG_TASK_URL)
-          - name: revision
-            value: $(params.CATALOG_TASK_REVISION)
-          - name: pathInRepo
-            value: .tekton/tasks/build-ginkgo-test-image.yaml
-      params:
-        - name: SOURCE_URL
-          value: $(tasks.parse-metadata.results.source-git-url)
-        - name: SOURCE_REVISION
-          value: $(tasks.parse-metadata.results.source-git-revision)
-        - name: IMAGE_EXPIRES_AFTER
-          value: "7d"
 
     - name: provision-eaas-space
       runAfter:
@@ -207,7 +191,6 @@ spec:
     - name: install-operator
       runAfter:
         - provision-cluster
-        - build-ginkgo-test-image
       taskRef:
         resolver: git
         params:
@@ -219,7 +202,7 @@ spec:
             value: .tekton/tasks/install-operator.yaml
       params:
         - name: testImageUrl
-          value: "$(tasks.build-ginkgo-test-image.results.IMAGE_URL)"
+          value: "$(params.TEST_IMAGE_URL)"
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
         - name: clusterName
@@ -255,7 +238,7 @@ spec:
             value: .tekton/tasks/test-operator.yaml
       params:
         - name: testImageUrl
-          value: "$(tasks.build-ginkgo-test-image.results.IMAGE_URL)"
+          value: "$(params.TEST_IMAGE_URL)"
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
         - name: clusterName
