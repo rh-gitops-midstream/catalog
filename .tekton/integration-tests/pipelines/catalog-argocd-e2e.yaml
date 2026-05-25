@@ -13,11 +13,11 @@ spec:
       name: SNAPSHOT
       default: '{"components": [{"name":"catalog-main", "containerImage": "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:latest"}]}'
       type: string
-    - description: Git URL of catalog repository (for task definitions)
+    - description: Git URL of catalog repository (for image content sources extraction)
       name: CATALOG_TASK_URL
-      default: "https://github.com/adamsaleh/catalog.git"
+      default: "https://github.com/AdamSaleh/catalog"
       type: string
-    - description: Git revision for task definitions
+    - description: Git revision for image content sources extraction
       name: CATALOG_TASK_REVISION
       default: "konflux-integration"
       type: string
@@ -51,20 +51,11 @@ spec:
       type: string
     - description: Pre-built test runner image. Build locally with .tekton/test-image/build-and-push.sh
       name: TEST_IMAGE_URL
-      default: "quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb"
+      default: "quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91"
       type: string
 
   finally:
     - name: pipeline-wrapup
-      taskRef:
-        resolver: git
-        params:
-          - name: url
-            value: $(params.CATALOG_TASK_URL)
-          - name: revision
-            value: $(params.CATALOG_TASK_REVISION)
-          - name: pathInRepo
-            value: .tekton/tasks/pipeline-wrapup.yaml
       params:
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
@@ -94,6 +85,201 @@ spec:
           value: "$(params.FIPS_ENABLED)"
         - name: argocdVersion
           value: "$(params.ARGOCD_VERSION)"
+      taskSpec:
+        params:
+          - name: eaasSpaceSecretRef
+            type: string
+          - name: clusterName
+            type: string
+          - name: pipelineRunName
+            type: string
+          - name: testImageUrl
+            type: string
+          - name: aggregateStatus
+            type: string
+          - name: logUrl
+            type: string
+          - name: pipelineName
+            type: string
+          - name: namespace
+            type: string
+          - name: taskNames
+            type: string
+          - name: openshiftVersion
+            type: string
+          - name: resolvedOpenshiftVersion
+            type: string
+          - name: operatorChannel
+            type: string
+          - name: fipsEnabled
+            type: string
+          - name: argocdVersion
+            type: string
+            default: ""
+          - name: installedCSV
+            type: string
+            default: ""
+          - name: testScript
+            type: string
+            default: ""
+          - name: testRepoUrl
+            type: string
+            default: ""
+          - name: testRepoBranch
+            type: string
+            default: ""
+          - name: upgrade
+            type: string
+            default: ""
+          - name: quayRepo
+            type: string
+            default: "quay.io/devtools_gitops/test_image"
+          - name: quayCredentialsPath
+            type: string
+            default: "/quay-credentials/.dockerconfigjson"
+        volumes:
+          - name: credentials
+            emptyDir: {}
+          - name: shared
+            emptyDir: {}
+          - name: quay-credentials
+            secret:
+              secretName: gitops-test-runner-image-push
+          - name: deploy-key
+            secret:
+              secretName: catalog-results-deploy-key
+              defaultMode: 0400
+        steps:
+          - name: get-kubeconfig
+            onError: continue
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
+                value: $(params.eaasSpaceSecretRef)
+              - name: clusterName
+                value: $(params.clusterName)
+              - name: credentials
+                value: credentials
+
+          - name: collect-and-upload-logs
+            onError: continue
+            image: $(params.testImageUrl)
+            env:
+              - name: PIPELINE_RUN_NAME
+                value: $(params.pipelineRunName)
+              - name: NAMESPACE
+                value: $(params.namespace)
+              - name: QUAY_REPO
+                value: $(params.quayRepo)
+              - name: QUAY_CREDENTIALS_PATH
+                value: $(params.quayCredentialsPath)
+              - name: TASK_NAMES
+                value: $(params.taskNames)
+              - name: SHARED_DIR
+                value: /shared
+            command:
+              - /usr/local/bin/collect-and-upload-logs.sh
+            volumeMounts:
+              - name: credentials
+                mountPath: /credentials
+              - name: quay-credentials
+                mountPath: /quay-credentials
+              - name: shared
+                mountPath: /shared
+
+          - name: publish-results
+            onError: continue
+            image: $(params.testImageUrl)
+            env:
+              - name: PIPELINE_NAME
+                value: $(params.pipelineName)
+              - name: PIPELINE_RUN_NAME
+                value: $(params.pipelineRunName)
+              - name: AGGREGATE_STATUS
+                value: $(params.aggregateStatus)
+              - name: OPENSHIFT_VERSION
+                value: $(params.openshiftVersion)
+              - name: RESOLVED_OPENSHIFT_VERSION
+                value: $(params.resolvedOpenshiftVersion)
+              - name: ARGOCD_VERSION
+                value: $(params.argocdVersion)
+              - name: OPERATOR_CHANNEL
+                value: $(params.operatorChannel)
+              - name: INSTALLED_CSV
+                value: $(params.installedCSV)
+              - name: TEST_SCRIPT
+                value: $(params.testScript)
+              - name: FIPS_ENABLED
+                value: $(params.fipsEnabled)
+              - name: UPGRADE
+                value: $(params.upgrade)
+              - name: LOG_URL
+                value: $(params.logUrl)
+              - name: LOGS_ARTIFACT
+                value: "$(params.quayRepo):$(params.pipelineRunName)-logs"
+              - name: SHARED_DIR
+                value: /shared
+            command:
+              - /usr/local/bin/publish-results.sh
+            volumeMounts:
+              - name: deploy-key
+                mountPath: /deploy-key
+                readOnly: true
+              - name: shared
+                mountPath: /shared
+
+          - name: send-slack-notification
+            onError: continue
+            image: $(params.testImageUrl)
+            env:
+              - name: SLACK_WEBHOOK_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: slack-gitops-test-notification-url
+                    key: hook-url
+              - name: PIPELINE_RUN_NAME
+                value: $(params.pipelineRunName)
+              - name: AGGREGATE_STATUS
+                value: $(params.aggregateStatus)
+              - name: LOG_URL
+                value: $(params.logUrl)
+              - name: QUAY_REPO
+                value: $(params.quayRepo)
+              - name: QUAY_CREDENTIALS_PATH
+                value: $(params.quayCredentialsPath)
+              - name: TASK_NAMES
+                value: $(params.taskNames)
+              - name: TEST_SCRIPT
+                value: $(params.testScript)
+              - name: TEST_REPO_URL
+                value: $(params.testRepoUrl)
+              - name: TEST_REPO_BRANCH
+                value: $(params.testRepoBranch)
+              - name: OPENSHIFT_VERSION
+                value: $(params.openshiftVersion)
+              - name: OPERATOR_CHANNEL
+                value: $(params.operatorChannel)
+              - name: FIPS_ENABLED
+                value: $(params.fipsEnabled)
+              - name: SHARED_DIR
+                value: /shared
+            command:
+              - /usr/local/bin/send-slack-message.py
+            volumeMounts:
+              - name: credentials
+                mountPath: /credentials
+              - name: quay-credentials
+                mountPath: /quay-credentials
+              - name: shared
+                mountPath: /shared
 
   results:
     - name: TEST_OUTPUT
@@ -135,15 +321,6 @@ spec:
     - name: provision-cluster
       runAfter:
         - provision-eaas-space
-      taskRef:
-        resolver: git
-        params:
-          - name: url
-            value: $(params.CATALOG_TASK_URL)
-          - name: revision
-            value: $(params.CATALOG_TASK_REVISION)
-          - name: pathInRepo
-            value: .tekton/tasks/provision-cluster.yaml
       params:
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
@@ -151,29 +328,147 @@ spec:
           value: $(params.CATALOG_TASK_URL)
         - name: catalogSourceRevision
           value: $(params.CATALOG_TASK_REVISION)
-        - name: catalogTaskUrl
-          value: $(params.CATALOG_TASK_URL)
-        - name: catalogTaskRevision
-          value: $(params.CATALOG_TASK_REVISION)
         - name: openshiftVersion
           value: $(params.OPENSHIFT_VERSION)
         - name: fipsEnabled
           value: $(params.FIPS_ENABLED)
         - name: clusterInstanceType
           value: $(params.CLUSTER_INSTANCE_TYPE)
+      taskSpec:
+        params:
+          - name: eaasSpaceSecretRef
+            type: string
+          - name: catalogSourceUrl
+            type: string
+          - name: catalogSourceRevision
+            type: string
+          - name: openshiftVersion
+            type: string
+          - name: fipsEnabled
+            type: string
+          - name: clusterInstanceType
+            type: string
+            default: "m6g.xlarge"
+        results:
+          - name: clusterName
+            value: "$(steps.create-cluster.results.clusterName)"
+          - name: resolvedVersion
+            value: "$(steps.resolve-openshift-version.results.resolvedVersion)"
+        steps:
+          - name: get-supported-versions
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-supported-ephemeral-cluster-versions/0.1/eaas-get-supported-ephemeral-cluster-versions.yaml
+            params:
+              - name: eaasSpaceSecretRef
+                value: $(params.eaasSpaceSecretRef)
+          - name: extract-image-content-sources
+            image: docker.io/python:3-alpine
+            env:
+              - name: GIT_URL
+                value: $(params.catalogSourceUrl)
+              - name: GIT_REVISION
+                value: $(params.catalogSourceRevision)
+              - name: MIRROR_SET_PATH
+                value: .tekton/images-mirror-set.yaml
+              - name: OUTPUT_PATH
+                value: /workspace/imageContentSources.json
+            script: |
+              #!/bin/sh
+              set -e
+              apk add --no-cache git >/dev/null 2>&1
+              pip install pyyaml --quiet >/dev/null 2>&1
+
+              WORK=$(mktemp -d)
+              git clone "$GIT_URL" "$WORK/repo"
+              cd "$WORK/repo"
+              git checkout "$GIT_REVISION"
+
+              python3 -c "
+              import yaml, json, sys
+              with open('$MIRROR_SET_PATH') as f:
+                  data = yaml.safe_load(f)
+              json.dump(data['spec']['imageDigestMirrors'], sys.stdout)
+              " > "$OUTPUT_PATH"
+
+              echo "Successfully extracted imageContentSources from $GIT_URL"
+          - name: resolve-openshift-version
+            image: docker.io/python:3-alpine
+            results:
+              - name: resolvedVersion
+                description: Resolved OpenShift version (full x.y.z format)
+            env:
+              - name: OPENSHIFT_VERSION
+                value: $(params.openshiftVersion)
+              - name: RESULT_PATH
+                value: $(step.results.resolvedVersion.path)
+            script: |
+              #!/usr/bin/env python3
+              import urllib.request, json, re, os
+
+              version = os.environ["OPENSHIFT_VERSION"]
+              result_path = os.environ["RESULT_PATH"]
+
+              if re.match(r'^\d+\.\d+\.\d+$', version):
+                  with open(result_path, "w") as f:
+                      f.write(version)
+                  print(f"Using exact version: {version}")
+                  raise SystemExit(0)
+
+              url = f"https://quay.io/api/v1/repository/openshift-release-dev/ocp-release/tag/?filter_tag_name=like:{version}.&limit=100&onlyActiveTags=true"
+              data = json.loads(urllib.request.urlopen(url).read())
+
+              candidates = []
+              for tag in data.get("tags", []):
+                  name = tag["name"]
+                  if name.endswith("-multi"):
+                      bare = name.removesuffix("-multi")
+                      if re.match(rf'^{re.escape(version)}\.\d+$', bare):
+                          candidates.append(bare)
+
+              if not candidates:
+                  print(f"ERROR: Could not resolve minor version {version} to a patch release")
+                  raise SystemExit(1)
+
+              candidates.sort(key=lambda v: list(map(int, v.split("."))))
+              latest = candidates[-1]
+
+              with open(result_path, "w") as f:
+                  f.write(latest)
+              print(f"Resolved {version} -> {latest}")
+          - name: create-cluster
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-create-ephemeral-cluster-hypershift-aws/0.1/eaas-create-ephemeral-cluster-hypershift-aws.yaml
+            params:
+              - name: eaasSpaceSecretRef
+                value: $(params.eaasSpaceSecretRef)
+              - name: imageContentSourcesFile
+                value: "/workspace/imageContentSources.json"
+              - name: timeout
+                value: "60m"
+              - name: version
+                value: "$(steps.resolve-openshift-version.results.resolvedVersion)"
+              - name: fips
+                value: "$(params.fipsEnabled)"
+              - name: instanceType
+                value: "$(params.clusterInstanceType)"
 
     - name: extract-argocd-image
       runAfter:
         - parse-metadata
-      taskRef:
-        resolver: git
-        params:
-          - name: url
-            value: $(params.CATALOG_TASK_URL)
-          - name: revision
-            value: $(params.CATALOG_TASK_REVISION)
-          - name: pathInRepo
-            value: .tekton/tasks/extract-argocd-image.yaml
       params:
         - name: catalogImage
           value: $(tasks.parse-metadata.results.component-container-image)
@@ -183,19 +478,82 @@ spec:
           value: $(params.TEST_IMAGE_URL)
         - name: pipelineRunName
           value: $(context.pipelineRun.name)
+      taskSpec:
+        params:
+          - name: catalogImage
+            type: string
+          - name: operatorChannel
+            type: string
+          - name: testImageUrl
+            type: string
+          - name: pipelineRunName
+            type: string
+          - name: quayRepo
+            type: string
+            default: "quay.io/devtools_gitops/test_image"
+        results:
+          - name: argoCDImage
+            description: ArgoCD server image extracted from catalog
+        volumes:
+          - name: shared-data
+            emptyDir: {}
+          - name: quay-credentials
+            secret:
+              secretName: gitops-test-runner-image-push
+          - name: quay-pull-credentials
+            secret:
+              secretName: gitops-quay-pull-secret-merged
+        steps:
+          - name: extract-image
+            image: $(params.testImageUrl)
+            env:
+              - name: CATALOG_IMAGE
+                value: $(params.catalogImage)
+              - name: OPERATOR_CHANNEL
+                value: $(params.operatorChannel)
+              - name: TASK_LOG_NAME
+                value: extract-argocd-image
+              - name: PIPELINE_RUN_NAME
+                value: $(params.pipelineRunName)
+              - name: QUAY_REPO
+                value: $(params.quayRepo)
+            command:
+              - /usr/local/bin/run-and-save-logs.sh
+              - python3
+              - /usr/local/bin/extract-argocd-image-from-catalog.py
+            volumeMounts:
+              - name: shared-data
+                mountPath: /shared
+              - name: quay-credentials
+                mountPath: /quay-credentials
+              - name: quay-pull-credentials
+                mountPath: /quay-pull-credentials
+                readOnly: true
+          - name: save-result
+            image: $(params.testImageUrl)
+            script: |
+              #!/bin/bash
+              if [ ! -f /shared/argocd-image.txt ]; then
+                echo "ERROR: /shared/argocd-image.txt not found"
+                echo "ArgoCD extraction may have failed"
+                exit 1
+              fi
+
+              ARGOCD_IMAGE=$(cat /shared/argocd-image.txt)
+              if [ -z "$ARGOCD_IMAGE" ]; then
+                echo "ERROR: ArgoCD image is empty"
+                exit 1
+              fi
+
+              echo -n "$ARGOCD_IMAGE" > $(results.argoCDImage.path)
+              echo "ArgoCD image saved: $ARGOCD_IMAGE"
+            volumeMounts:
+              - name: shared-data
+                mountPath: /shared
 
     - name: deploy-argocd
       runAfter:
         - extract-argocd-image
-      taskRef:
-        resolver: git
-        params:
-          - name: url
-            value: $(params.CATALOG_TASK_URL)
-          - name: revision
-            value: $(params.CATALOG_TASK_REVISION)
-          - name: pathInRepo
-            value: .tekton/tasks/deploy-argocd.yaml
       params:
         - name: argoCDImage
           value: $(tasks.extract-argocd-image.results.argoCDImage)
@@ -209,19 +567,91 @@ spec:
           value: $(tasks.provision-cluster.results.clusterName)
         - name: pipelineRunName
           value: $(context.pipelineRun.name)
+      taskSpec:
+        params:
+          - name: argoCDImage
+            type: string
+          - name: argoCDVersion
+            type: string
+          - name: testImageUrl
+            type: string
+          - name: eaasSpaceSecretRef
+            type: string
+          - name: clusterName
+            type: string
+          - name: pipelineRunName
+            type: string
+          - name: quayRepo
+            type: string
+            default: "quay.io/devtools_gitops/test_image"
+        results:
+          - name: namespace
+            description: Namespace where ArgoCD is deployed
+          - name: server
+            description: ArgoCD server service DNS name
+          - name: adminPassword
+            description: ArgoCD admin password
+          - name: serverName
+            description: ArgoCD server deployment name
+          - name: repoServerName
+            description: ArgoCD repo-server deployment name
+          - name: applicationControllerName
+            description: ArgoCD application-controller deployment name
+          - name: redisName
+            description: ArgoCD redis deployment name
+        volumes:
+          - name: credentials
+            emptyDir: {}
+          - name: quay-credentials
+            secret:
+              secretName: gitops-test-runner-image-push
+        steps:
+          - name: get-kubeconfig
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
+                value: $(params.eaasSpaceSecretRef)
+              - name: clusterName
+                value: $(params.clusterName)
+              - name: credentials
+                value: credentials
+          - name: deploy
+            image: $(params.testImageUrl)
+            env:
+              - name: ARGOCD_SERVER_IMAGE
+                value: $(params.argoCDImage)
+              - name: ARGOCD_VERSION
+                value: $(params.argoCDVersion)
+              - name: NAMESPACE
+                value: argocd-e2e
+              - name: KUBECONFIG
+                value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+              - name: TASK_LOG_NAME
+                value: deploy-argocd
+              - name: PIPELINE_RUN_NAME
+                value: $(params.pipelineRunName)
+              - name: QUAY_REPO
+                value: $(params.quayRepo)
+            command:
+              - /usr/local/bin/run-and-save-logs.sh
+              - /usr/local/bin/deploy-argocd-standalone.sh
+            volumeMounts:
+              - name: credentials
+                mountPath: /credentials
+              - name: quay-credentials
+                mountPath: /quay-credentials
 
     - name: test-argocd
       runAfter:
         - deploy-argocd
-      taskRef:
-        resolver: git
-        params:
-          - name: url
-            value: $(params.CATALOG_TASK_URL)
-          - name: revision
-            value: $(params.CATALOG_TASK_REVISION)
-          - name: pathInRepo
-            value: .tekton/tasks/test-argocd.yaml
       params:
         - name: argoCDImage
           value: $(tasks.extract-argocd-image.results.argoCDImage)
@@ -251,3 +681,143 @@ spec:
           value: $(tasks.deploy-argocd.results.applicationControllerName)
         - name: argoCDRedisName
           value: $(tasks.deploy-argocd.results.redisName)
+      taskSpec:
+        params:
+          - name: argoCDImage
+            type: string
+          - name: testRepoUrl
+            type: string
+          - name: testRepoBranch
+            type: string
+          - name: testImageUrl
+            type: string
+          - name: eaasSpaceSecretRef
+            type: string
+          - name: clusterName
+            type: string
+          - name: pipelineRunName
+            type: string
+          - name: argoCDNamespace
+            type: string
+          - name: argoCDServer
+            type: string
+          - name: argoCDAdminPassword
+            type: string
+          - name: argoCDServerName
+            type: string
+          - name: argoCDRepoServerName
+            type: string
+          - name: argoCDApplicationControllerName
+            type: string
+          - name: argoCDRedisName
+            type: string
+          - name: testRunnerImage
+            type: string
+            default: "registry.access.redhat.com/ubi9/go-toolset:latest"
+          - name: quayRepo
+            type: string
+            default: "quay.io/devtools_gitops/test_image"
+        results:
+          - name: TEST_OUTPUT
+            description: Test results in Tekton format
+        volumes:
+          - name: credentials
+            emptyDir: {}
+          - name: quay-credentials
+            secret:
+              secretName: gitops-test-runner-image-push
+        steps:
+          - name: get-kubeconfig
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: https://github.com/konflux-ci/build-definitions.git
+                - name: revision
+                  value: main
+                - name: pathInRepo
+                  value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+            params:
+              - name: eaasSpaceSecretRef
+                value: $(params.eaasSpaceSecretRef)
+              - name: clusterName
+                value: $(params.clusterName)
+              - name: credentials
+                value: credentials
+          - name: run-tests
+            image: $(params.testImageUrl)
+            env:
+              - name: ARGOCD_SERVER_IMAGE
+                value: $(params.argoCDImage)
+              - name: TEST_REPO_URL
+                value: $(params.testRepoUrl)
+              - name: BRANCH
+                value: $(params.testRepoBranch)
+              - name: KUBECONFIG
+                value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+              - name: TASK_LOG_NAME
+                value: test-argocd
+              - name: PIPELINE_RUN_NAME
+                value: $(params.pipelineRunName)
+              - name: QUAY_REPO
+                value: $(params.quayRepo)
+              - name: ARGOCD_NAMESPACE
+                value: $(params.argoCDNamespace)
+              - name: ARGOCD_SERVER
+                value: $(params.argoCDServer)
+              - name: ARGOCD_ADMIN_PASSWORD
+                value: $(params.argoCDAdminPassword)
+              - name: ARGOCD_SERVER_NAME
+                value: $(params.argoCDServerName)
+              - name: ARGOCD_REPO_SERVER_NAME
+                value: $(params.argoCDRepoServerName)
+              - name: ARGOCD_APPLICATION_CONTROLLER_NAME
+                value: $(params.argoCDApplicationControllerName)
+              - name: ARGOCD_REDIS_NAME
+                value: $(params.argoCDRedisName)
+              - name: TEST_RUNNER_IMAGE
+                value: $(params.testRunnerImage)
+            command:
+              - /usr/local/bin/run-and-save-logs.sh
+              - /usr/local/bin/run-argocd-e2e-tests-in-pod.sh
+            volumeMounts:
+              - name: credentials
+                mountPath: /credentials
+              - name: quay-credentials
+                mountPath: /quay-credentials
+          - name: generate-test-output
+            image: $(params.testImageUrl)
+            script: |
+              #!/usr/bin/env python3
+              import json, os, datetime
+
+              junit = "/tmp/task-logs/junit-results.xml"
+              results_json = "/tmp/task-logs/test-results.json"
+
+              if os.path.isfile(junit):
+                  os.system(f"python3 /usr/local/bin/parse-test-results.py {junit} {results_json}")
+
+              if os.path.isfile(results_json):
+                  with open(results_json) as f:
+                      tr = json.load(f)
+                  result = "SUCCESS" if tr["failed"] == 0 and tr["errors"] == 0 else "FAILURE"
+                  output = {
+                      "result": result,
+                      "timestamp": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+                      "successes": tr["passed"],
+                      "failures": tr["failed"] + tr["errors"],
+                      "warnings": 0,
+                  }
+              else:
+                  output = {
+                      "result": "ERROR",
+                      "timestamp": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
+                      "successes": 0,
+                      "failures": 1,
+                      "warnings": 0,
+                  }
+
+              with open("$(results.TEST_OUTPUT.path)", "w") as f:
+                  json.dump(output, f)
+
+              print(json.dumps(output, indent=2))
