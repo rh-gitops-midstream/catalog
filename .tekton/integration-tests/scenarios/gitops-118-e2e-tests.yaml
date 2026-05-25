@@ -1,0 +1,236 @@
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-catalog-operator-e2e
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+  params:
+  - name: TEST_SCRIPT
+    value: run-parallel-tests.sh
+  - name: TEST_REPO_URL
+    value: https://github.com/redhat-developer/gitops-operator
+  - name: TEST_REPO_BRANCH
+    value: v1.18
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: OPERATOR_CHANNEL
+    value: gitops-1.18
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-catalog-operator-e2e-argocd
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-argocd-e2e.yaml
+  params:
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: channel
+    value: gitops-1.18
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-catalog-operator-e2e-rollouts
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+  params:
+  - name: TEST_SCRIPT
+    value: run-rollouts-tests.sh
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: OPERATOR_CHANNEL
+    value: gitops-1.18
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-catalog-operator-e2e-sequential
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+  params:
+  - name: TEST_SCRIPT
+    value: run-sequential-tests-shard1.sh
+  - name: TEST_REPO_URL
+    value: https://github.com/redhat-developer/gitops-operator
+  - name: TEST_REPO_BRANCH
+    value: v1.18
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: OPERATOR_CHANNEL
+    value: gitops-1.18
+  - name: CLUSTER_INSTANCE_TYPE
+    value: m6g.2xlarge
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-catalog-operator-e2e-sequential-2
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+  params:
+  - name: TEST_SCRIPT
+    value: run-sequential-tests-shard2.sh
+  - name: TEST_REPO_URL
+    value: https://github.com/redhat-developer/gitops-operator
+  - name: TEST_REPO_BRANCH
+    value: v1.18
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: OPERATOR_CHANNEL
+    value: gitops-1.18
+  - name: CLUSTER_INSTANCE_TYPE
+    value: m6g.2xlarge
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-catalog-operator-e2e-ui
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+  params:
+  - name: TEST_SCRIPT
+    value: run-ui-e2e-tests.sh
+  - name: TEST_REPO_URL
+    value: https://github.com/trdoyle81/gitops-operator
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: OPERATOR_CHANNEL
+    value: gitops-1.18
+  - name: TEST_REPO_BRANCH
+    value: GITOPS-9589-Automate-Login-Via-Openshift
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-118-upgrade-catalog-operator-e2e-ui
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: 'true'
+spec:
+  application: catalog-4-20
+  contexts:
+  - description: execute the integration test when component catalog-4-20 updates
+    name: component_catalog-4-20
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+    - name: url
+      value: https://github.com/AdamSaleh/catalog
+    - name: revision
+      value: konflux-integration
+    - name: pathInRepo
+      value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+  params:
+  - name: TEST_SCRIPT
+    value: run-ui-e2e-tests.sh
+  - name: TEST_REPO_URL
+    value: https://github.com/trdoyle81/gitops-operator
+  - name: OPENSHIFT_VERSION
+    value: '4.20'
+  - name: OPERATOR_CHANNEL
+    value: gitops-1.17
+  - name: TEST_REPO_BRANCH
+    value: GITOPS-9589-Automate-Login-Via-Openshift
+  - name: UPGRADE_TO_CHANNEL
+    value: gitops-1.18
+  - name: UPGRADE
+    value: 'true'
