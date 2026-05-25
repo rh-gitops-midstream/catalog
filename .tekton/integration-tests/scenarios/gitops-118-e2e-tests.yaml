@@ -22,6 +22,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: TEST_SCRIPT
     value: run-parallel-tests.sh
   - name: TEST_REPO_URL
@@ -56,6 +58,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-argocd-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: OPENSHIFT_VERSION
     value: '4.20'
   - name: channel
@@ -84,6 +88,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: TEST_SCRIPT
     value: run-rollouts-tests.sh
   - name: OPENSHIFT_VERSION
@@ -114,6 +120,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: TEST_SCRIPT
     value: run-sequential-tests-shard1.sh
   - name: TEST_REPO_URL
@@ -150,6 +158,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: TEST_SCRIPT
     value: run-sequential-tests-shard2.sh
   - name: TEST_REPO_URL
@@ -186,6 +196,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: TEST_SCRIPT
     value: run-ui-e2e-tests.sh
   - name: TEST_REPO_URL
@@ -220,6 +232,8 @@ spec:
     - name: pathInRepo
       value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
   params:
+  - name: TEST_IMAGE_URL
+    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
   - name: TEST_SCRIPT
     value: run-ui-e2e-tests.sh
   - name: TEST_REPO_URL
