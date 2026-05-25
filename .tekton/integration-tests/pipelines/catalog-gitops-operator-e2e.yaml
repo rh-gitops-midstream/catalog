@@ -73,7 +73,7 @@ spec:
       type: string
     - description: Pre-built test runner image. Build locally with .tekton/test-image/build-and-push.sh
       name: TEST_IMAGE_URL
-      default: "quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb"
+      default: "quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91"
       type: string
 
   finally:

@@ -13,7 +13,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: TEST_SCRIPT
     value: run-parallel-tests.sh
   - name: TEST_REPO_URL
@@ -49,7 +49,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: ' OPENSHIFT_VERSION'
     value: '4.20'
   - name: OPERATOR_CHANNEL
@@ -79,7 +79,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: TEST_SCRIPT
     value: run-rollouts-tests.sh
   - name: OPENSHIFT_VERSION
@@ -111,7 +111,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: TEST_SCRIPT
     value: run-sequential-tests-shard1.sh
   - name: TEST_REPO_URL
@@ -149,7 +149,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: TEST_SCRIPT
     value: run-sequential-tests-shard2.sh
   - name: TEST_REPO_URL
@@ -187,7 +187,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: TEST_SCRIPT
     value: run-ui-e2e-tests.sh
   - name: TEST_REPO_URL
@@ -223,7 +223,7 @@ spec:
     name: component_catalog-4-20
   params:
   - name: TEST_IMAGE_URL
-    value: quay.io/devtools_gitops/test_image:final-amd64-bca2620ea0cb
+    value: quay.io/devtools_gitops/test_image:final-amd64-a46d5ef84d91
   - name: TEST_SCRIPT
     value: run-ui-e2e-tests.sh
   - name: TEST_REPO_URL
