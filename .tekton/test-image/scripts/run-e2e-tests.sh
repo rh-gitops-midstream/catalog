@@ -58,22 +58,73 @@ if ! command -v argocd &>/dev/null; then
     echo "openshift-gitops-repo-server deployment not found"
   fi
 
-  # Fallback: download upstream release binary matching the installed operator version
+  # Fallback 2: oc cp from running argocd-server pod (works when same arch)
   if [[ "$ARGOCD_EXTRACTED" != "true" ]]; then
-    INSTALLED_CSV=$(oc get csv -n openshift-gitops-operator \
-      -o jsonpath='{.items[0].spec.version}' 2>/dev/null || true)
-    if [[ -n "$INSTALLED_CSV" ]]; then
-      echo "Image extraction failed, downloading argocd v${INSTALLED_CSV} from GitHub releases..."
-      if curl -sSL --fail -o "${ARGOCD_BIN_DIR}/argocd" \
-          "https://github.com/argoproj/argo-cd/releases/download/v${INSTALLED_CSV}/argocd-linux-amd64" 2>&1; then
-        chmod +x "${ARGOCD_BIN_DIR}/argocd"
-        if "${ARGOCD_BIN_DIR}/argocd" version --client --short 2>/dev/null; then
-          ARGOCD_EXTRACTED=true
-        else
-          rm -f "${ARGOCD_BIN_DIR}/argocd"
-        fi
-      fi
+    echo "oc image extract failed, trying oc cp from argocd-server pod..."
+    ARGOCD_SERVER_POD=$(oc get pods -n openshift-gitops \
+      -l app.kubernetes.io/name=openshift-gitops-server \
+      -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
+    if [[ -z "$ARGOCD_SERVER_POD" ]]; then
+      ARGOCD_SERVER_POD=$(oc get pods -n openshift-gitops \
+        -l app.kubernetes.io/part-of=argocd \
+        -l app.kubernetes.io/component=server \
+        -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
     fi
+    if [[ -n "$ARGOCD_SERVER_POD" ]]; then
+      for bin_path in /usr/local/bin/argocd /usr/bin/argocd; do
+        if oc cp "openshift-gitops/${ARGOCD_SERVER_POD}:${bin_path}" \
+            "${ARGOCD_BIN_DIR}/argocd" 2>&1; then
+          if [[ -f "${ARGOCD_BIN_DIR}/argocd" ]]; then
+            chmod +x "${ARGOCD_BIN_DIR}/argocd"
+            if "${ARGOCD_BIN_DIR}/argocd" version --client --short 2>/dev/null; then
+              ARGOCD_EXTRACTED=true
+              break
+            else
+              echo "Copied binary not executable on this arch"
+              file "${ARGOCD_BIN_DIR}/argocd" 2>/dev/null || true
+              rm -f "${ARGOCD_BIN_DIR}/argocd"
+            fi
+          fi
+        fi
+      done
+    fi
+  fi
+
+  # Fallback 3: skopeo copy with --override-arch to local OCI layout, then extract
+  if [[ "$ARGOCD_EXTRACTED" != "true" && -n "${ARGOCD_IMAGE:-}" ]] && command -v skopeo &>/dev/null; then
+    echo "Trying skopeo to copy image and extract argocd binary..."
+    SKOPEO_DIR=$(mktemp -d)
+    SKOPEO_AUTH_DIR=$(mktemp -d)
+    oc get secret pull-secret -n openshift-config \
+      -o jsonpath='{.data.\.dockerconfigjson}' | \
+      base64 -d > "${SKOPEO_AUTH_DIR}/auth.json" 2>/dev/null || true
+
+    if skopeo copy --override-arch amd64 --override-os linux \
+        --authfile "${SKOPEO_AUTH_DIR}/auth.json" \
+        "docker://${ARGOCD_IMAGE}" \
+        "dir:${SKOPEO_DIR}/image" 2>&1; then
+      # Use skopeo's dir output — the layer tarballs are in the directory.
+      # Extract argocd binary by searching through layers.
+      for layer in "${SKOPEO_DIR}"/image/*.tar "${SKOPEO_DIR}"/image/*.tar.gz; do
+        [[ -f "$layer" ]] || continue
+        if tar -tf "$layer" 2>/dev/null | grep -qE '(usr/local/bin/argocd|usr/bin/argocd)$'; then
+          tar -xf "$layer" -C "${ARGOCD_BIN_DIR}/" --strip-components=3 \
+            usr/local/bin/argocd 2>/dev/null || \
+          tar -xf "$layer" -C "${ARGOCD_BIN_DIR}/" --strip-components=2 \
+            usr/bin/argocd 2>/dev/null || true
+          if [[ -f "${ARGOCD_BIN_DIR}/argocd" ]]; then
+            chmod +x "${ARGOCD_BIN_DIR}/argocd"
+            if "${ARGOCD_BIN_DIR}/argocd" version --client --short 2>/dev/null; then
+              ARGOCD_EXTRACTED=true
+              break
+            else
+              rm -f "${ARGOCD_BIN_DIR}/argocd"
+            fi
+          fi
+        fi
+      done
+    fi
+    rm -rf "${SKOPEO_DIR}" "${SKOPEO_AUTH_DIR}"
   fi
 
   if [[ "$ARGOCD_EXTRACTED" == "true" ]]; then
