@@ -9,27 +9,27 @@ channels:
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:8546401f9a96b0c397da8ab26306cca412e6fa6d11471c739177a5f533ba6f11
       - name: openshift-gitops-operator.v1.18.1
         replaces: openshift-gitops-operator.v1.18.0
-        skipRange: ""
+        skipRange: '>=1.18.0 <1.18.1'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:a27b8dd047e10fbbd6fc49176036c9b5178a1d2841e26719bfde23239ede157d
       - name: openshift-gitops-operator.v1.18.2
         replaces: openshift-gitops-operator.v1.18.1
-        skipRange: ''
+        skipRange: '>=1.18.0 <1.18.2'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b4d6b30d562e1cacbb1ca461e8c14b95c0d42be1baf876599c446669f2584feb
       - name: openshift-gitops-operator.v1.18.3
         replaces: openshift-gitops-operator.v1.18.2
-        skipRange: ''
+        skipRange: '>=1.18.0 <1.18.3'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:a4e9887db8647c4e958df4725f08340a9c6a462cd18fd2bf9c9f1fc939649740
       - name: openshift-gitops-operator.v1.18.4
         replaces: openshift-gitops-operator.v1.18.3
-        skipRange: ''
+        skipRange: '>=1.18.0 <1.18.4'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:6fc4720fce99dc2d20d5d30e153c01754937dd7aca0a6697e0ecb16c16cab2ac
       - name: openshift-gitops-operator.v1.18.5
         replaces: openshift-gitops-operator.v1.18.4
-        skipRange: ''
+        skipRange: '>=1.18.0 <1.18.5'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:e8a5213454b71e952de52bd448d5f52e6de868821a23c15b71c2b46809bdd570
       - name: openshift-gitops-operator.v1.18.6
         replaces: openshift-gitops-operator.v1.18.5
-        skipRange: ''
+        skipRange: '>=1.18.0 <1.18.6'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:cf81d0157a9065d04ab880096a613e0400c4bcda36f01eeb94879389cec30159
   - name: gitops-1.19
     versions:
@@ -39,19 +39,19 @@ channels:
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:5e78b9e6a98218c209af1d85e60c2000172a90f178f32f06f0e3b6bc11f33cce
       - name: openshift-gitops-operator.v1.19.1
         replaces: openshift-gitops-operator.v1.19.0
-        skipRange: '>=1.0.0 <1.19.0'
+        skipRange: '>=1.0.0 <1.19.1'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b5429c67a872f0d75e927339451bff0a646f55f3cf0ab98f68c1da2cd610fbc7
       - name: openshift-gitops-operator.v1.19.2
         replaces: openshift-gitops-operator.v1.19.1
-        skipRange: '>=1.0.0 <1.19.0'
+        skipRange: '>=1.0.0 <1.19.2'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:00e866aafc577f084f3bc233becd9dac15404831189a122c362112791411a796
       - name: openshift-gitops-operator.v1.19.3
         replaces: openshift-gitops-operator.v1.19.2
-        skipRange: ''
+        skipRange: '>=1.19.0 <1.19.3'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:9d16d9f172618c8f03b2b5b930220761ed97faa90ebd38f570d60bed5216b433
       - name: openshift-gitops-operator.v1.19.4
         replaces: openshift-gitops-operator.v1.19.3
-        skipRange: ''
+        skipRange: '>=1.19.0 <1.19.4'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:c41e74df4743068317457d2db0209e08be023758add611f49769900e58299a93
   - name: gitops-1.20
     versions:
@@ -61,19 +61,19 @@ channels:
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:2aca0e62daad8644afb8725504ad0e20c55a7cf960841c9ec793904adedaf4fd
       - name: openshift-gitops-operator.v1.20.1
         replaces: openshift-gitops-operator.v1.20.0
-        skipRange: ''
+        skipRange: '>=1.20.0 <1.20.1'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:f8301c386f55405c5933470d4034332b44559e59d4d99c2d70db0133551f9b73
       - name: openshift-gitops-operator.v1.20.2
         replaces: openshift-gitops-operator.v1.20.1
-        skipRange: ''
+        skipRange: '>=1.20.0 <1.20.2'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:247a54db35e184702d9c1d6f83cd9e3669f8aae48bd0eeaecdbeeda6176c525f
       - name: openshift-gitops-operator.v1.20.3
         replaces: openshift-gitops-operator.v1.20.2
-        skipRange: ''
+        skipRange: '>=1.20.0 <1.20.3'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:407b2310e342ddde5229624bac66ec364840c368f36e4831502a8ce4e45d972b
       - name: openshift-gitops-operator.v1.20.4
         replaces: openshift-gitops-operator.v1.20.3
-        skipRange: ''
+        skipRange: '>=1.20.0 <1.20.4'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b89210f76c58360210437f48dbde51d298ab1eb30cd2b77fb93c0e84dc8740c1
   - name: gitops-1.21
     versions:
