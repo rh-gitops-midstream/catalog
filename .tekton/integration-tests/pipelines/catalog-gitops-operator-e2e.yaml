@@ -73,7 +73,15 @@ spec:
       type: string
     - description: Pre-built test runner image. Build locally with .tekton/test-image/build-and-push.sh
       name: TEST_IMAGE_URL
-      default: "quay.io/devtools_gitops/test_image:final-amd64-c1bd193939ae"
+      default: "quay.io/devtools_gitops/test_image:konflux_v1.21.0"
+      type: string
+    - description: PR label required to run tests (empty = no gating, always run). When set, push events always proceed but pull_request events require this label on the PR.
+      name: GATE_LABEL
+      default: ""
+      type: string
+    - description: Build the test runner image from source instead of using TEST_IMAGE_URL
+      name: BUILD_TEST_IMAGE
+      default: "false"
       type: string
 
   finally:
@@ -95,7 +103,7 @@ spec:
         - name: pipelineRunName
           value: "$(context.pipelineRun.name)"
         - name: testImageUrl
-          value: "$(params.TEST_IMAGE_URL)"
+          value: "$(tasks.resolve-test-image.results.image-url)"
         - name: aggregateStatus
           value: "$(tasks.status)"
         - name: logUrl
@@ -140,9 +148,150 @@ spec:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
 
-    - name: provision-eaas-space
+    - name: check-gate
       runAfter:
         - parse-metadata
+      taskSpec:
+        params:
+          - name: event-type
+            type: string
+          - name: pull-request-number
+            type: string
+          - name: source-git-url
+            type: string
+          - name: gate-label
+            type: string
+        results:
+          - name: proceed
+            description: "true if tests should run, false to skip"
+        steps:
+          - name: check
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            env:
+              - name: EVENT_TYPE
+                value: $(params.event-type)
+              - name: PR_NUMBER
+                value: $(params.pull-request-number)
+              - name: SOURCE_GIT_URL
+                value: $(params.source-git-url)
+              - name: GATE_LABEL
+                value: $(params.gate-label)
+            script: |
+              #!/bin/sh
+              set -eu
+
+              if [ -z "${GATE_LABEL}" ]; then
+                echo "No gate label configured, proceeding"
+                echo -n "true" > $(results.proceed.path)
+                exit 0
+              fi
+
+              if [ "${EVENT_TYPE}" = "push" ]; then
+                echo "Push event, proceeding"
+                echo -n "true" > $(results.proceed.path)
+                exit 0
+              fi
+
+              if [ "${EVENT_TYPE}" != "pull_request" ] || [ -z "${PR_NUMBER}" ]; then
+                echo "Not a pull_request event or no PR number, proceeding"
+                echo -n "true" > $(results.proceed.path)
+                exit 0
+              fi
+
+              # Extract owner/repo from git URL
+              REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
+              echo "Checking PR #${PR_NUMBER} on ${REPO_SLUG} for label '${GATE_LABEL}'..."
+
+              LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
+                | grep -o '"name":"[^"]*"' | sed 's/"name":"//;s/"$//' || true)
+
+              echo "PR labels: ${LABELS:-none}"
+
+              if echo "${LABELS}" | grep -qx "${GATE_LABEL}"; then
+                echo "Label '${GATE_LABEL}' found, proceeding"
+                echo -n "true" > $(results.proceed.path)
+              else
+                echo "Label '${GATE_LABEL}' NOT found, skipping tests"
+                echo -n "false" > $(results.proceed.path)
+              fi
+      params:
+        - name: event-type
+          value: $(tasks.parse-metadata.results.test-event-type)
+        - name: pull-request-number
+          value: $(tasks.parse-metadata.results.pull-request-number)
+        - name: source-git-url
+          value: $(tasks.parse-metadata.results.source-git-url)
+        - name: gate-label
+          value: $(params.GATE_LABEL)
+
+    - name: build-test-image
+      runAfter:
+        - check-gate
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+        - input: $(params.BUILD_TEST_IMAGE)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/build-ginkgo-test-image.yaml
+      params:
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+        - name: IMAGE_EXPIRES_AFTER
+          value: "7d"
+
+    - name: resolve-test-image
+      runAfter:
+        - check-gate
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskSpec:
+        params:
+          - name: build-image-url
+            type: string
+          - name: fallback-image-url
+            type: string
+        results:
+          - name: image-url
+            description: Resolved test image URL
+        steps:
+          - name: resolve
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            script: |
+              #!/bin/sh
+              if [ -n "$(params.build-image-url)" ]; then
+                echo "Using built image: $(params.build-image-url)"
+                echo -n "$(params.build-image-url)" > $(results.image-url.path)
+              else
+                echo "Using pre-built image: $(params.fallback-image-url)"
+                echo -n "$(params.fallback-image-url)" > $(results.image-url.path)
+              fi
+      params:
+        - name: build-image-url
+          value: $(tasks.build-test-image.results.IMAGE_URL)
+        - name: fallback-image-url
+          value: $(params.TEST_IMAGE_URL)
+
+    - name: provision-eaas-space
+      runAfter:
+        - resolve-test-image
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
       taskRef:
         resolver: git
         params:
@@ -202,7 +351,7 @@ spec:
             value: .tekton/tasks/install-operator.yaml
       params:
         - name: testImageUrl
-          value: "$(params.TEST_IMAGE_URL)"
+          value: "$(tasks.resolve-test-image.results.image-url)"
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
         - name: clusterName
@@ -238,7 +387,7 @@ spec:
             value: .tekton/tasks/test-operator.yaml
       params:
         - name: testImageUrl
-          value: "$(params.TEST_IMAGE_URL)"
+          value: "$(tasks.resolve-test-image.results.image-url)"
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
         - name: clusterName
