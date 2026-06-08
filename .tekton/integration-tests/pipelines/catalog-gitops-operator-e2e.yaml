@@ -161,6 +161,8 @@ spec:
             type: string
           - name: gate-label
             type: string
+          - name: pipelinerun-name
+            type: string
         results:
           - name: proceed
             description: "true if tests should run, false to skip"
@@ -176,14 +178,48 @@ spec:
                 value: $(params.source-git-url)
               - name: GATE_LABEL
                 value: $(params.gate-label)
+              - name: PIPELINERUN_NAME
+                value: $(params.pipelinerun-name)
             script: |
               #!/bin/sh
               set -eu
+
+              echo "Gate check inputs:"
+              echo "  EVENT_TYPE=${EVENT_TYPE:-<empty>}"
+              echo "  PR_NUMBER=${PR_NUMBER:-<empty>}"
+              echo "  SOURCE_GIT_URL=${SOURCE_GIT_URL:-<empty>}"
+              echo "  GATE_LABEL=${GATE_LABEL:-<empty>}"
 
               if [ -z "${GATE_LABEL}" ]; then
                 echo "No gate label configured, proceeding"
                 echo -n "true" > $(results.proceed.path)
                 exit 0
+              fi
+
+              # If event type is empty, try reading PipelineRun labels via Kubernetes API
+              if [ -z "${EVENT_TYPE}" ] && [ -n "${PIPELINERUN_NAME}" ]; then
+                echo "Event type empty from parse-metadata, checking PipelineRun labels..."
+                SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token 2>/dev/null || true)
+                SA_NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2>/dev/null || true)
+                if [ -n "${SA_TOKEN}" ] && [ -n "${SA_NS}" ]; then
+                  PR_JSON=$(curl -sf \
+                    -H "Authorization: Bearer ${SA_TOKEN}" \
+                    --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+                    "https://kubernetes.default.svc/apis/tekton.dev/v1/namespaces/${SA_NS}/pipelineruns/${PIPELINERUN_NAME}" 2>/dev/null || true)
+                  if [ -n "${PR_JSON}" ]; then
+                    for prefix in "pac.test.appstudio.openshift.io" "pipelinesascode.tekton.dev"; do
+                      if [ -z "${EVENT_TYPE}" ]; then
+                        EVENT_TYPE=$(echo "${PR_JSON}" | grep -o "\"${prefix}/event-type\":\"[^\"]*\"" | head -1 | sed 's/.*:"//' | tr -d '"' || true)
+                      fi
+                      if [ -z "${PR_NUMBER}" ]; then
+                        PR_NUMBER=$(echo "${PR_JSON}" | grep -o "\"${prefix}/pull-request\":\"[^\"]*\"" | head -1 | sed 's/.*:"//' | tr -d '"' || true)
+                      fi
+                    done
+                    echo "  From PipelineRun API: EVENT_TYPE=${EVENT_TYPE:-<empty>} PR_NUMBER=${PR_NUMBER:-<empty>}"
+                  else
+                    echo "  Could not read PipelineRun from API (may lack RBAC)"
+                  fi
+                fi
               fi
 
               if [ "${EVENT_TYPE}" = "push" ]; then
@@ -223,6 +259,8 @@ spec:
           value: $(tasks.parse-metadata.results.source-git-url)
         - name: gate-label
           value: $(params.GATE_LABEL)
+        - name: pipelinerun-name
+          value: $(context.pipelineRun.name)
 
     - name: build-test-image
       runAfter:
