@@ -21,7 +21,7 @@ spec:
     - name: OPERATOR_CHANNEL
       value: latest
     - name: GATE_LABEL
-      value: release-candidate
+      value: rc-sanity-check
   resolverRef:
     resolver: git
     resourceKind: pipeline
@@ -57,7 +57,7 @@ spec:
     - name: FIPS_ENABLED
       value: "true"
     - name: GATE_LABEL
-      value: release-candidate
+      value: rc-sanity-check
   resolverRef:
     resolver: git
     resourceKind: pipeline
@@ -95,7 +95,7 @@ spec:
     - name: UPGRADE
       value: "true"
     - name: GATE_LABEL
-      value: release-candidate
+      value: rc-sanity-check
   resolverRef:
     resolver: git
     resourceKind: pipeline
@@ -135,7 +135,7 @@ spec:
     - name: FIPS_ENABLED
       value: "true"
     - name: GATE_LABEL
-      value: release-candidate
+      value: rc-sanity-check
   resolverRef:
     resolver: git
     resourceKind: pipeline
