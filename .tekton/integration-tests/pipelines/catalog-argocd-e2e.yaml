@@ -293,7 +293,7 @@ spec:
               fi
       params:
         - name: build-image-url
-          value: $(tasks.build-test-image.results.IMAGE_URL)
+          value: ""
         - name: fallback-image-url
           value: $(params.TEST_IMAGE_URL)
 

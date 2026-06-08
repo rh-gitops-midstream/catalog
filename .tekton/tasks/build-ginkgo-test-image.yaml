@@ -34,13 +34,10 @@ spec:
   results:
     - name: IMAGE_DIGEST
       description: Digest of the built image
-      default: ""
     - name: IMAGE_URL
       description: Full image reference with tag (repo:tag)
-      default: ""
     - name: IMAGE_TAG
       description: Just the tag portion (short SHA)
-      default: ""
   volumes:
     - name: source
       emptyDir: {}
