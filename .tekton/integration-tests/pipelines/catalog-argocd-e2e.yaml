@@ -270,32 +270,22 @@ spec:
         - input: $(tasks.check-gate.results.proceed)
           operator: in
           values: ["true"]
-      taskSpec:
+      taskRef:
+        resolver: git
         params:
-          - name: build-image-url
-            type: string
-          - name: fallback-image-url
-            type: string
-        results:
-          - name: image-url
-            description: Resolved test image URL
-        steps:
-          - name: resolve
-            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
-            script: |
-              #!/bin/sh
-              if [ -n "$(params.build-image-url)" ]; then
-                echo "Using built image: $(params.build-image-url)"
-                echo -n "$(params.build-image-url)" > $(results.image-url.path)
-              else
-                echo "Using pre-built image: $(params.fallback-image-url)"
-                echo -n "$(params.fallback-image-url)" > $(results.image-url.path)
-              fi
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/overlay-test-scripts.yaml
       params:
-        - name: build-image-url
-          value: ""
-        - name: fallback-image-url
+        - name: BASE_IMAGE_URL
           value: $(params.TEST_IMAGE_URL)
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
 
     - name: provision-eaas-space
       runAfter:
