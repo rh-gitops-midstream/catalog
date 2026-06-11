@@ -342,6 +342,16 @@ cleanup_smoke_test() {
 trap cleanup_smoke_test EXIT
 
 oc create namespace "${TEST_APP_NS}" --dry-run=client -o yaml | oc apply -f - 2>/dev/null
+oc label namespace "${TEST_APP_NS}" "argocd.argoproj.io/managed-by=${GITOPS_NS}" --overwrite
+
+echo "Waiting for operator to create RBAC in ${TEST_APP_NS}..."
+for _rbac_wait in $(seq 1 30); do
+  if oc get rolebinding -n "${TEST_APP_NS}" 2>/dev/null | grep -q "${GITOPS_NS}"; then
+    echo "RBAC ready in ${TEST_APP_NS}"
+    break
+  fi
+  sleep 2
+done
 
 cat <<EOF | oc apply -f -
 apiVersion: argoproj.io/v1alpha1
