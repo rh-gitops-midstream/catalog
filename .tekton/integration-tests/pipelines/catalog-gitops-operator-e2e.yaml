@@ -239,7 +239,7 @@ spec:
               echo "Checking PR #${PR_NUMBER} on ${REPO_SLUG} for label '${GATE_LABEL}'..."
 
               LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
-                | grep -o '"name":"[^"]*"' | sed 's/"name":"//;s/"$//' || true)
+                | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
 
               echo "PR labels: ${LABELS:-none}"
 
