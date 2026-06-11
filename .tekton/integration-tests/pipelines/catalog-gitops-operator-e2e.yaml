@@ -103,7 +103,7 @@ spec:
         - name: pipelineRunName
           value: "$(context.pipelineRun.name)"
         - name: testImageUrl
-          value: "$(tasks.resolve-test-image.results.image-url)"
+          value: "$(tasks.overlay-test-scripts.results.image-url)"
         - name: aggregateStatus
           value: "$(tasks.status)"
         - name: logUrl
@@ -292,6 +292,73 @@ spec:
     - name: resolve-test-image
       runAfter:
         - check-gate
+        - build-test-image
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskSpec:
+        params:
+          - name: test-image-url
+            type: string
+          - name: build-test-image-flag
+            type: string
+          - name: pipelinerun-name
+            type: string
+        results:
+          - name: image-url
+            description: Resolved base image URL for overlay
+        steps:
+          - name: resolve
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            env:
+              - name: TEST_IMAGE_URL
+                value: $(params.test-image-url)
+              - name: BUILD_TEST_IMAGE
+                value: $(params.build-test-image-flag)
+              - name: PIPELINERUN_NAME
+                value: $(params.pipelinerun-name)
+            script: |
+              #!/bin/sh
+              set -eu
+
+              if [ "${BUILD_TEST_IMAGE}" = "true" ]; then
+                echo "BUILD_TEST_IMAGE=true, looking up build-test-image result..."
+                SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token 2>/dev/null || true)
+                SA_NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace 2>/dev/null || true)
+                TASKRUN_NAME="${PIPELINERUN_NAME}-build-test-image"
+
+                if [ -n "${SA_TOKEN}" ] && [ -n "${SA_NS}" ]; then
+                  TR_JSON=$(curl -sf \
+                    -H "Authorization: Bearer ${SA_TOKEN}" \
+                    --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+                    "https://kubernetes.default.svc/apis/tekton.dev/v1/namespaces/${SA_NS}/taskruns/${TASKRUN_NAME}" 2>/dev/null || true)
+
+                  if [ -n "${TR_JSON}" ]; then
+                    BUILD_URL=$(echo "${TR_JSON}" | grep -o '"IMAGE_URL","value":"[^"]*"' | head -1 | sed 's/.*"value":"//;s/"$//' || true)
+                    if [ -n "${BUILD_URL}" ]; then
+                      echo "Found build image: ${BUILD_URL}"
+                      echo -n "${BUILD_URL}" > $(results.image-url.path)
+                      exit 0
+                    fi
+                  fi
+                fi
+                echo "WARNING: Could not retrieve build-test-image result, falling back to TEST_IMAGE_URL"
+              fi
+
+              echo "Using pre-built image: ${TEST_IMAGE_URL}"
+              echo -n "${TEST_IMAGE_URL}" > $(results.image-url.path)
+      params:
+        - name: test-image-url
+          value: $(params.TEST_IMAGE_URL)
+        - name: build-test-image-flag
+          value: $(params.BUILD_TEST_IMAGE)
+        - name: pipelinerun-name
+          value: $(context.pipelineRun.name)
+
+    - name: overlay-test-scripts
+      runAfter:
+        - resolve-test-image
       when:
         - input: $(tasks.check-gate.results.proceed)
           operator: in
@@ -307,7 +374,7 @@ spec:
             value: .tekton/tasks/overlay-test-scripts.yaml
       params:
         - name: BASE_IMAGE_URL
-          value: $(params.TEST_IMAGE_URL)
+          value: $(tasks.resolve-test-image.results.image-url)
         - name: SOURCE_URL
           value: $(params.CATALOG_TASK_URL)
         - name: SOURCE_REVISION
@@ -315,7 +382,7 @@ spec:
 
     - name: provision-eaas-space
       runAfter:
-        - resolve-test-image
+        - overlay-test-scripts
       when:
         - input: $(tasks.check-gate.results.proceed)
           operator: in
@@ -379,7 +446,7 @@ spec:
             value: .tekton/tasks/install-operator.yaml
       params:
         - name: testImageUrl
-          value: "$(tasks.resolve-test-image.results.image-url)"
+          value: "$(tasks.overlay-test-scripts.results.image-url)"
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
         - name: clusterName
@@ -415,7 +482,7 @@ spec:
             value: .tekton/tasks/test-operator.yaml
       params:
         - name: testImageUrl
-          value: "$(tasks.resolve-test-image.results.image-url)"
+          value: "$(tasks.overlay-test-scripts.results.image-url)"
         - name: eaasSpaceSecretRef
           value: $(tasks.provision-eaas-space.results.secretRef)
         - name: clusterName
