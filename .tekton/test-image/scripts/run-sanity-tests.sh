@@ -332,8 +332,10 @@ echo "=========================================="
 echo "5. App Sync Smoke Test"
 echo "=========================================="
 
-TEST_APP_NS="sanity-test-guestbook"
-TEST_APP_NAME="sanity-guestbook"
+TEST_APP_NS="sanity-test-smoke"
+TEST_APP_NAME="sanity-smoke"
+TEST_APP_REPO="https://github.com/rh-gitops-midstream/catalog.git"
+TEST_APP_PATH=".tekton/test-image/config/smoke-app"
 
 cleanup_smoke_test() {
   oc delete application "${TEST_APP_NAME}" -n "${GITOPS_NS}" --ignore-not-found 2>/dev/null || true
@@ -362,9 +364,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    repoURL: ${TEST_APP_REPO}
     targetRevision: HEAD
-    path: guestbook
+    path: ${TEST_APP_PATH}
   destination:
     server: https://kubernetes.default.svc
     namespace: ${TEST_APP_NS}
@@ -382,21 +384,17 @@ for _attempt in $(seq 1 60); do
   HEALTH_STATUS=$(oc get application "${TEST_APP_NAME}" -n "${GITOPS_NS}" \
     -o jsonpath='{.status.health.status}' 2>/dev/null || true)
 
-  if [[ "$SYNC_STATUS" == "Synced" ]]; then
+  if [[ "$SYNC_STATUS" == "Synced" && "$HEALTH_STATUS" == "Healthy" ]]; then
     SYNC_OK=true
-    [[ "$HEALTH_STATUS" == "Healthy" ]] && break
+    break
   fi
   sleep 5
 done
 
 if [[ "$SYNC_OK" == "true" ]]; then
-  if [[ "$HEALTH_STATUS" == "Healthy" ]]; then
-    pass "Guestbook app synced and healthy"
-  else
-    pass "Guestbook app synced (health=${HEALTH_STATUS:-unknown}, may still be rolling out)"
-  fi
+  pass "Smoke app synced and healthy"
 else
-  fail "Guestbook app did not reach Synced state (sync=${SYNC_STATUS:-unknown}, health=${HEALTH_STATUS:-unknown})"
+  fail "Smoke app did not reach Synced/Healthy (sync=${SYNC_STATUS:-unknown}, health=${HEALTH_STATUS:-unknown})"
   oc get application "${TEST_APP_NAME}" -n "${GITOPS_NS}" -o yaml 2>/dev/null || true
 fi
 
