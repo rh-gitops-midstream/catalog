@@ -334,7 +334,8 @@ echo "=========================================="
 
 TEST_APP_NS="sanity-test-smoke"
 TEST_APP_NAME="sanity-smoke"
-TEST_APP_REPO="https://github.com/rh-gitops-midstream/catalog.git"
+TEST_APP_REPO="${CATALOG_URL:-https://github.com/rh-gitops-midstream/catalog.git}"
+TEST_APP_REVISION="${CATALOG_REVISION:-HEAD}"
 TEST_APP_PATH=".tekton/test-image/config/smoke-app"
 
 cleanup_smoke_test() {
@@ -365,7 +366,7 @@ spec:
   project: default
   source:
     repoURL: ${TEST_APP_REPO}
-    targetRevision: HEAD
+    targetRevision: ${TEST_APP_REVISION}
     path: ${TEST_APP_PATH}
   destination:
     server: https://kubernetes.default.svc

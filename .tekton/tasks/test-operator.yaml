@@ -30,6 +30,14 @@ spec:
     - name: namespace
       type: string
       default: "openshift-gitops-operator"
+    - name: catalogUrl
+      type: string
+      default: ""
+      description: "Catalog repo URL (for smoke test app source)"
+    - name: catalogRevision
+      type: string
+      default: ""
+      description: "Catalog repo revision (for smoke test app source)"
   results:
     - name: LOG_ARTIFACT_TAG
       description: Tag of uploaded log artifact from sidecar
@@ -90,6 +98,10 @@ spec:
           value: $(params.openshiftVersion)
         - name: TEST_SCRIPT
           value: $(params.testScript)
+        - name: CATALOG_URL
+          value: $(params.catalogUrl)
+        - name: CATALOG_REVISION
+          value: $(params.catalogRevision)
       computeResources:
         requests:
           memory: "4Gi"
