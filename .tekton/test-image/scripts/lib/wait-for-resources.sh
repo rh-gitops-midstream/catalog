@@ -197,3 +197,66 @@ wait_for_csv() {
     echo "CSV $CSV_NAME is in Succeeded phase"
     return 0
 }
+
+# Wait for ArgoCD workloads to be updated after an operator upgrade.
+# Polls until the ArgoCD server container image changes (indicating
+# the new operator has reconciled), then waits for all workload
+# rollouts to complete.
+#
+# Args:
+#   $1 - operator_ns: Operator namespace (default: openshift-gitops-operator)
+#   $2 - gitops_ns: ArgoCD instance namespace (default: openshift-gitops)
+#   $3 - timeout: Max seconds to wait for image change (default: 300)
+#
+# Returns:
+#   0 on success, 1 on rollout failure
+#
+# Example:
+#   wait_for_argocd_reconciliation openshift-gitops-operator openshift-gitops
+wait_for_argocd_reconciliation() {
+    local operator_ns=${1:-openshift-gitops-operator}
+    local gitops_ns=${2:-openshift-gitops}
+    local timeout=${3:-300}
+
+    local old_image
+    old_image=$(oc get deployment openshift-gitops-server -n "$gitops_ns" \
+      -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || true)
+    echo "Current ArgoCD server image: ${old_image:-unknown}"
+
+    echo "Waiting for operator controller pod to restart..."
+    wait_for_operator_pods "$operator_ns"
+
+    echo "Waiting for operator to reconcile ArgoCD workloads..."
+    local deadline=$(($(date +%s) + timeout))
+    while [[ -n "$old_image" ]]; do
+        local new_image
+        new_image=$(oc get deployment openshift-gitops-server -n "$gitops_ns" \
+          -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || true)
+        if [[ "$new_image" != "$old_image" ]]; then
+            echo "ArgoCD server image updated: ${new_image}"
+            break
+        fi
+        if [[ $(date +%s) -ge "$deadline" ]]; then
+            echo "WARNING: ArgoCD server image unchanged after ${timeout}s — operator may not need to update workloads"
+            break
+        fi
+        sleep 10
+    done
+
+    local deployments="openshift-gitops-server openshift-gitops-repo-server openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-dex-server"
+    for deploy in $deployments; do
+        if oc get deployment "$deploy" -n "$gitops_ns" &>/dev/null; then
+            echo "  Waiting for $deploy..."
+            wait_for_deployment "$deploy" "$gitops_ns" 300s || return 1
+        fi
+    done
+
+    local statefulset="openshift-gitops-application-controller"
+    if oc get statefulset "$statefulset" -n "$gitops_ns" &>/dev/null; then
+        echo "  Waiting for $statefulset..."
+        wait_for_statefulset "$statefulset" "$gitops_ns" 300s || return 1
+    fi
+
+    echo "All ArgoCD workloads reconciled after upgrade"
+    return 0
+}

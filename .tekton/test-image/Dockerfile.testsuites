@@ -5,7 +5,7 @@ LABEL name="gitops-ginkgo-test-runner-testsuites" \
       description="Base image with pre-compiled Ginkgo test suites" \
       maintainer="GitOps Team"
 
-ARG TEST_REPO_URL=https://github.com/rh-gitops-release-qa/gitops-operator.git
+ARG TEST_REPO_URL=https://github.com/redhat-developer/gitops-operator.git
 ARG TEST_REPO_BRANCH=master
 
 WORKDIR /testsuites

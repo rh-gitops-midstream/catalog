@@ -57,7 +57,7 @@ spec:
       type: string
     - description: Git URL of the test repository
       name: TEST_REPO_URL
-      default: "https://github.com/rh-gitops-release-qa/gitops-operator.git"
+      default: "https://github.com/redhat-developer/gitops-operator.git"
       type: string
     - description: Git branch or revision of the test repository
       name: TEST_REPO_BRANCH

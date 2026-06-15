@@ -78,7 +78,7 @@ trap cleanup EXIT
 ROLLOUTS_TMP_DIR=$(mktemp -d)
 cd "$ROLLOUTS_TMP_DIR"
 
-TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/rh-gitops-release-qa/gitops-operator.git}"
+TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/redhat-developer/gitops-operator.git}"
 BRANCH="${BRANCH:-master}"
 
 echo "Resolving rollouts commit pins from ${TEST_REPO_URL} @ ${BRANCH}"

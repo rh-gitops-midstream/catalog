@@ -127,6 +127,19 @@ if ! command -v argocd &>/dev/null; then
     rm -rf "${SKOPEO_DIR}" "${SKOPEO_AUTH_DIR}"
   fi
 
+  # Fallback 4: pre-compiled argocd from test image (may be older than deployed version)
+  if [[ "$ARGOCD_EXTRACTED" != "true" ]]; then
+    echo "Trying pre-compiled argocd from test image..."
+    for pre_built in /testsuites/argocd/*/dist/argocd; do
+      if [[ -x "$pre_built" ]] && "$pre_built" version --client --short 2>/dev/null; then
+        ARGOCD_BIN_DIR=$(dirname "$pre_built")
+        ARGOCD_EXTRACTED=true
+        echo "Using pre-compiled argocd from test image (version may differ from deployed)"
+        break
+      fi
+    done
+  fi
+
   if [[ "$ARGOCD_EXTRACTED" == "true" ]]; then
     export PATH="${ARGOCD_BIN_DIR}:${PATH}"
     echo "argocd CLI available: $(argocd version --client --short)"
@@ -137,7 +150,7 @@ if ! command -v argocd &>/dev/null; then
 fi
 
 cd /testsuites/gitops-operator/ || exit 1
-TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/rh-gitops-release-qa/gitops-operator.git}"
+TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/redhat-developer/gitops-operator.git}"
 git remote set-url origin "${TEST_REPO_URL}" 2>/dev/null || git remote add origin "${TEST_REPO_URL}"
 git fetch origin
 git clean -fd

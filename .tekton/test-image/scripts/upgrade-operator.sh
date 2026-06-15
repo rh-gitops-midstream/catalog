@@ -52,6 +52,10 @@ while true; do
     echo "CSV: $CSV, Phase: $PHASE"
     if [[ "$PHASE" == "Succeeded" ]]; then
       echo "Upgrade completed successfully: ${PRE_UPGRADE_CSV} -> ${CSV}"
+
+      GITOPS_NS="${GITOPS_NS:-openshift-gitops}"
+      echo "Waiting for ArgoCD workloads to reconcile after upgrade..."
+      wait_for_argocd_reconciliation "$NAMESPACE" "$GITOPS_NS" 300
       break
     fi
   else
