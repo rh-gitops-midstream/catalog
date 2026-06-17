@@ -199,6 +199,14 @@ def build_blocks(
     pipeline_run_name, aggregate_status, log_url, quay_repo, task_runs, loggable_tasks
 ):
     """Build Slack Block Kit blocks for the notification."""
+    # Derive status from actual test results when available, not pipeline aggregate
+    test_data = get_test_results()
+    if test_data is not None:
+        if test_data.get("failed", 0) == 0 and test_data.get("errors", 0) == 0:
+            aggregate_status = "Succeeded"
+        else:
+            aggregate_status = "Failed"
+
     status_emoji = (
         ":white_check_mark:" if aggregate_status == "Succeeded" else ":x:"
     )
@@ -221,7 +229,6 @@ def build_blocks(
     ]
 
     # Add test summary from shared volume
-    test_data = get_test_results()
     if test_data:
         summary = test_data.get("summary", "")
         if summary:

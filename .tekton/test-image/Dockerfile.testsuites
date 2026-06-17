@@ -54,8 +54,7 @@ RUN git clone --depth 1 --branch ${ARGOCD_VERSION_2_14} https://github.com/argop
     rm -rf .git /root/.cache/go-build /root/go/pkg/mod/cache
 
 # ArgoCD master (latest)
-# Note: Skipped for now as master requires Go 1.26.1+ (base image has 1.25.9)
-# Will compile from source at runtime if master branch is requested
+# Note: Skipped for now — will compile from source at runtime if master branch is requested
 
 WORKDIR /workspace
 ENTRYPOINT ["/bin/bash"]

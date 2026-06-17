@@ -83,6 +83,14 @@ spec:
       name: BUILD_TEST_IMAGE
       default: "false"
       type: string
+    - description: PR label that triggers building the test image from source (e.g., build-test-image). Empty disables label-based triggering.
+      name: BUILD_IMAGE_LABEL
+      default: "build-test-image"
+      type: string
+    - description: Base Dockerfile name for building the test image (e.g., Dockerfile.base-v1.21). Different operator versions may need different Go toolchains.
+      name: BASE_DOCKERFILE
+      default: "Dockerfile.base-v1.21"
+      type: string
 
   finally:
     - name: pipeline-wrapup
@@ -161,11 +169,17 @@ spec:
             type: string
           - name: gate-label
             type: string
+          - name: build-image-label
+            type: string
+          - name: build-test-image-flag
+            type: string
           - name: pipelinerun-name
             type: string
         results:
           - name: proceed
             description: "true if tests should run, false to skip"
+          - name: build-image
+            description: "true if test image should be built from source"
         steps:
           - name: check
             image: registry.access.redhat.com/ubi9/ubi-minimal:latest
@@ -178,6 +192,10 @@ spec:
                 value: $(params.source-git-url)
               - name: GATE_LABEL
                 value: $(params.gate-label)
+              - name: BUILD_IMAGE_LABEL
+                value: $(params.build-image-label)
+              - name: BUILD_TEST_IMAGE
+                value: $(params.build-test-image-flag)
               - name: PIPELINERUN_NAME
                 value: $(params.pipelinerun-name)
             script: |
@@ -189,12 +207,11 @@ spec:
               echo "  PR_NUMBER=${PR_NUMBER:-<empty>}"
               echo "  SOURCE_GIT_URL=${SOURCE_GIT_URL:-<empty>}"
               echo "  GATE_LABEL=${GATE_LABEL:-<empty>}"
+              echo "  BUILD_IMAGE_LABEL=${BUILD_IMAGE_LABEL:-<empty>}"
+              echo "  BUILD_TEST_IMAGE=${BUILD_TEST_IMAGE:-false}"
 
-              if [ -z "${GATE_LABEL}" ]; then
-                echo "No gate label configured, proceeding"
-                echo -n "true" > $(results.proceed.path)
-                exit 0
-              fi
+              PROCEED=true
+              BUILD_IMAGE=${BUILD_TEST_IMAGE:-false}
 
               # If event type is empty, try reading PipelineRun labels via Kubernetes API
               if [ -z "${EVENT_TYPE}" ] && [ -n "${PIPELINERUN_NAME}" ]; then
@@ -222,34 +239,50 @@ spec:
                 fi
               fi
 
-              if [ "${EVENT_TYPE}" = "push" ]; then
-                echo "Push event, proceeding"
-                echo -n "true" > $(results.proceed.path)
-                exit 0
+              # Fetch PR labels if this is a pull_request event
+              LABELS=""
+              IS_PR=false
+              if [ "${EVENT_TYPE}" = "pull_request" ] && [ -n "${PR_NUMBER}" ]; then
+                IS_PR=true
+                REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
+                echo "Fetching labels for PR #${PR_NUMBER} on ${REPO_SLUG}..."
+                LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
+                  | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
+                echo "PR labels: ${LABELS:-none}"
               fi
 
-              if [ "${EVENT_TYPE}" != "pull_request" ] || [ -z "${PR_NUMBER}" ]; then
-                echo "Not a pull_request event or no PR number, proceeding"
-                echo -n "true" > $(results.proceed.path)
-                exit 0
-              fi
-
-              # Extract owner/repo from git URL
-              REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
-              echo "Checking PR #${PR_NUMBER} on ${REPO_SLUG} for label '${GATE_LABEL}'..."
-
-              LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
-                | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
-
-              echo "PR labels: ${LABELS:-none}"
-
-              if echo "${LABELS}" | grep -qx "${GATE_LABEL}"; then
-                echo "Label '${GATE_LABEL}' found, proceeding"
-                echo -n "true" > $(results.proceed.path)
+              # Gate check
+              if [ -n "${GATE_LABEL}" ]; then
+                if [ "${EVENT_TYPE}" = "push" ]; then
+                  echo "Push event, gate passes"
+                elif [ "${IS_PR}" = "true" ]; then
+                  if echo "${LABELS}" | grep -qx "${GATE_LABEL}"; then
+                    echo "Label '${GATE_LABEL}' found, gate passes"
+                  else
+                    echo "Label '${GATE_LABEL}' NOT found, skipping tests"
+                    PROCEED=false
+                  fi
+                else
+                  echo "Not a gated event type, gate passes"
+                fi
               else
-                echo "Label '${GATE_LABEL}' NOT found, skipping tests"
-                echo -n "false" > $(results.proceed.path)
+                echo "No gate label configured, proceeding"
               fi
+
+              # Build-image check
+              if [ "${BUILD_TEST_IMAGE}" = "true" ]; then
+                echo "BUILD_TEST_IMAGE=true, will build test image"
+                BUILD_IMAGE=true
+              elif [ -n "${BUILD_IMAGE_LABEL}" ] && [ "${IS_PR}" = "true" ]; then
+                if echo "${LABELS}" | grep -qx "${BUILD_IMAGE_LABEL}"; then
+                  echo "Label '${BUILD_IMAGE_LABEL}' found, will build test image"
+                  BUILD_IMAGE=true
+                fi
+              fi
+
+              echo -n "${PROCEED}" > $(results.proceed.path)
+              echo -n "${BUILD_IMAGE}" > $(results.build-image.path)
+              echo "Results: proceed=${PROCEED} build-image=${BUILD_IMAGE}"
       params:
         - name: event-type
           value: $(tasks.parse-metadata.results.test-event-type)
@@ -259,6 +292,10 @@ spec:
           value: $(tasks.parse-metadata.results.source-git-url)
         - name: gate-label
           value: $(params.GATE_LABEL)
+        - name: build-image-label
+          value: $(params.BUILD_IMAGE_LABEL)
+        - name: build-test-image-flag
+          value: $(params.BUILD_TEST_IMAGE)
         - name: pipelinerun-name
           value: $(context.pipelineRun.name)
 
@@ -269,7 +306,7 @@ spec:
         - input: $(tasks.check-gate.results.proceed)
           operator: in
           values: ["true"]
-        - input: $(params.BUILD_TEST_IMAGE)
+        - input: $(tasks.check-gate.results.build-image)
           operator: in
           values: ["true"]
       taskRef:
@@ -286,6 +323,8 @@ spec:
           value: $(params.CATALOG_TASK_URL)
         - name: SOURCE_REVISION
           value: $(params.CATALOG_TASK_REVISION)
+        - name: BASE_DOCKERFILE
+          value: $(params.BASE_DOCKERFILE)
         - name: IMAGE_EXPIRES_AFTER
           value: "7d"
 
@@ -352,7 +391,7 @@ spec:
         - name: test-image-url
           value: $(params.TEST_IMAGE_URL)
         - name: build-test-image-flag
-          value: $(params.BUILD_TEST_IMAGE)
+          value: $(tasks.check-gate.results.build-image)
         - name: pipelinerun-name
           value: $(context.pipelineRun.name)
 

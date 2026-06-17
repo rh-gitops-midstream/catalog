@@ -4,6 +4,7 @@ LABEL name="gitops-ginkgo-test-runner-base" \
       description="Base image with CLI tools and Go toolchain" \
       maintainer="GitOps Team"
 
+ARG GO_VERSION=1.26.2
 ARG OC_VERSION=4.14
 ARG ORAS_VERSION=1.2.0
 ARG YQ_VERSION=4.44.3
@@ -11,7 +12,6 @@ ARG YQ_VERSION=4.44.3
 RUN dnf -y install \
     jq \
     git \
-    golang \
     python3-pyyaml \
     skopeo \
     make \
@@ -20,6 +20,16 @@ RUN dnf -y install \
     file \
     && dnf clean all \
     && rm -rf /var/cache/dnf
+
+# Install Go from official tarball (UBI9 dnf only provides older versions)
+RUN ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n arm64 ;; *) echo -n $(uname -m) ;; esac) \
+    && curl -Lo /tmp/go.tar.gz \
+    "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz" \
+    && tar -xzf /tmp/go.tar.gz -C /usr/local \
+    && rm /tmp/go.tar.gz \
+    && ln -s /usr/local/go/bin/go /usr/local/bin/go \
+    && ln -s /usr/local/go/bin/gofmt /usr/local/bin/gofmt \
+    && go version
 
 # Install OpenShift CLI (oc)
 RUN curl -Lo /tmp/openshift-client.tar.gz \
