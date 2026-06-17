@@ -202,9 +202,9 @@ def build_blocks(
     # Derive status from actual test results when available, not pipeline aggregate
     test_data = get_test_results()
     if test_data is not None:
-        if test_data.get("failed", 0) == 0 and test_data.get("errors", 0) == 0:
+        if test_data.get("total", 0) > 0 and test_data.get("failed", 0) == 0 and test_data.get("errors", 0) == 0:
             aggregate_status = "Succeeded"
-        else:
+        elif test_data.get("failed", 0) > 0 or test_data.get("errors", 0) > 0:
             aggregate_status = "Failed"
 
     status_emoji = (

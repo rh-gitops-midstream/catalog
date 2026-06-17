@@ -51,9 +51,9 @@ if os.path.isfile(test_results):
     record["testsErrors"] = tr.get("errors", 0)
     record["failedTests"] = tr.get("failedTests", [])
     # Derive status from actual test results, not pipeline aggregate
-    if tr.get("failed", 0) == 0 and tr.get("errors", 0) == 0:
+    if tr.get("total", 0) > 0 and tr.get("failed", 0) == 0 and tr.get("errors", 0) == 0:
         record["status"] = "Succeeded"
-    else:
+    elif tr.get("failed", 0) > 0 or tr.get("errors", 0) > 0:
         record["status"] = "Failed"
 
 build_metadata = os.path.join(os.environ.get("SHARED_DIR", "/shared"), "build-metadata.json")
