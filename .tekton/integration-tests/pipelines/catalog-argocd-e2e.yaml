@@ -147,6 +147,8 @@ spec:
             type: string
           - name: build-test-image-flag
             type: string
+          - name: source-git-revision
+            type: string
           - name: pipelinerun-name
             type: string
         results:
@@ -170,6 +172,8 @@ spec:
                 value: $(params.build-image-label)
               - name: BUILD_TEST_IMAGE
                 value: $(params.build-test-image-flag)
+              - name: SOURCE_GIT_REVISION
+                value: $(params.source-git-revision)
               - name: PIPELINERUN_NAME
                 value: $(params.pipelinerun-name)
             script: |
@@ -180,6 +184,7 @@ spec:
               echo "  EVENT_TYPE=${EVENT_TYPE:-<empty>}"
               echo "  PR_NUMBER=${PR_NUMBER:-<empty>}"
               echo "  SOURCE_GIT_URL=${SOURCE_GIT_URL:-<empty>}"
+              echo "  SOURCE_GIT_REVISION=${SOURCE_GIT_REVISION:-<empty>}"
               echo "  GATE_LABEL=${GATE_LABEL:-<empty>}"
               echo "  BUILD_IMAGE_LABEL=${BUILD_IMAGE_LABEL:-<empty>}"
               echo "  BUILD_TEST_IMAGE=${BUILD_TEST_IMAGE:-false}"
@@ -216,9 +221,29 @@ spec:
               # Fetch PR labels if this is a pull_request event
               LABELS=""
               IS_PR=false
+              REPO_SLUG=""
+              if [ -n "${SOURCE_GIT_URL}" ]; then
+                REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
+              fi
               if [ "${EVENT_TYPE}" = "pull_request" ] && [ -n "${PR_NUMBER}" ]; then
                 IS_PR=true
-                REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
+              fi
+
+              # GitHub API fallback: if PAC labels are missing, find PR by commit SHA
+              if [ "${IS_PR}" = "false" ] && [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
+                echo "PAC labels unavailable, checking GitHub for PRs containing commit ${SOURCE_GIT_REVISION}..."
+                COMMIT_PRS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
+                if [ -n "${COMMIT_PRS}" ] && echo "${COMMIT_PRS}" | grep -q '"number"'; then
+                  PR_NUMBER=$(echo "${COMMIT_PRS}" | grep -o '"number": *[0-9]*' | head -1 | grep -o '[0-9]*' || true)
+                  if [ -n "${PR_NUMBER}" ]; then
+                    IS_PR=true
+                    EVENT_TYPE=pull_request
+                    echo "  Found PR #${PR_NUMBER} for commit"
+                  fi
+                fi
+              fi
+
+              if [ "${IS_PR}" = "true" ] && [ -n "${REPO_SLUG}" ] && [ -n "${PR_NUMBER}" ]; then
                 echo "Fetching labels for PR #${PR_NUMBER} on ${REPO_SLUG}..."
                 LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
                   | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
@@ -270,6 +295,8 @@ spec:
           value: $(params.BUILD_IMAGE_LABEL)
         - name: build-test-image-flag
           value: $(params.BUILD_TEST_IMAGE)
+        - name: source-git-revision
+          value: $(tasks.parse-metadata.results.source-git-revision)
         - name: pipelinerun-name
           value: $(context.pipelineRun.name)
 
