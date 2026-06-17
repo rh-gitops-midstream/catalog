@@ -1,11 +1,11 @@
-FROM registry.access.redhat.com/ubi9/ubi:latest
+FROM registry.access.redhat.com/ubi9/ubi:9.8
 
 LABEL name="gitops-ginkgo-test-runner-base" \
       description="Base image with CLI tools and Go toolchain" \
       maintainer="GitOps Team"
 
 ARG GO_VERSION=1.26.2
-ARG OC_VERSION=4.14
+ARG OC_VERSION=4.14.67
 ARG ORAS_VERSION=1.2.0
 ARG YQ_VERSION=4.44.3
 
@@ -33,7 +33,7 @@ RUN ARCH=$(case $(uname -m) in x86_64) echo -n amd64 ;; aarch64) echo -n arm64 ;
 
 # Install OpenShift CLI (oc)
 RUN curl -Lo /tmp/openshift-client.tar.gz \
-    https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${OC_VERSION}/openshift-client-linux.tar.gz \
+    https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${OC_VERSION}/openshift-client-linux.tar.gz \
     && tar -xzf /tmp/openshift-client.tar.gz -C /usr/local/bin/ oc kubectl \
     && rm /tmp/openshift-client.tar.gz \
     && oc version --client
