@@ -74,9 +74,13 @@ spec:
 
         SCRIPTS_HASH=$(find "${CONTEXT}/scripts" "${CONTEXT}/config" \
           -type f -exec sha256sum {} \; | sort | sha256sum | cut -c1-12)
-        DESTINATION="$(params.IMAGE_DESTINATION):scripts-${BUILD_ARCH}-${SCRIPTS_HASH}"
+        BASE_IMAGE_URL="$(params.BASE_IMAGE_URL)"
+        BASE_TAG="${BASE_IMAGE_URL##*:}"
+        COMBINED_HASH=$(echo "${SCRIPTS_HASH}${BASE_TAG}" | sha256sum | cut -c1-12)
+        DESTINATION="$(params.IMAGE_DESTINATION):scripts-${BUILD_ARCH}-${COMBINED_HASH}"
 
         echo "Scripts hash: ${SCRIPTS_HASH}"
+        echo "Base image tag: ${BASE_TAG}"
         echo "Overlay image: ${DESTINATION}"
         echo -n "${DESTINATION}" > /cache-state/destination
 
