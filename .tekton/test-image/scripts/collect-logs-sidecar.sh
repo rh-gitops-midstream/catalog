@@ -92,7 +92,7 @@ generate_readme() {
         find "${LOGS_DIR}/" -type f -name "*.log" 2>/dev/null | sort | sed 's/^/  - /'
         echo ""
         echo "To extract these logs:"
-        echo "  oras pull ${QUAY_REPO}:${IMAGE_TAG}"
+        echo "  oras pull ${QUAY_REPO}:${PIPELINE_RUN_NAME}-task-${BRANCH_NAME}"
         echo "  tar xzf ${PIPELINE_RUN_NAME}-task-${BRANCH_NAME}-logs.tar.gz"
     } > "${LOGS_DIR}/README.txt"
 }
