@@ -1,0 +1,281 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: test-dast
+spec:
+  description: |
+    Runs a DAST (Dynamic Application Security Testing) scan against the
+    ArgoCD REST API deployed by the GitOps operator on an ephemeral cluster.
+
+    Steps:
+      1. get-kubeconfig  — fetch EaaS cluster credentials
+      2. get-cluster-info — extract API URL, apps domain, kubeadmin password;
+                            wait for ArgoCD server to be Available
+      3. run-dast        — authenticate to ArgoCD via OC OAuth, run RapidAST/ZAP
+      4. collect-results — parse ZAP JSON to JUnit XML, upload task artifact
+
+    The scan result is determined by dast-false-positives.json (baked into
+    the overlay image at /usr/local/config/dast-false-positives.json).
+    Alerts exceeding their configured threshold → JUnit failure → task fails.
+
+    GCP credentials (for uploading raw findings to GCS) must be in a secret
+    named gitops-dast-gcp-key with key gcp-key.json.
+  params:
+    - name: testImageUrl
+      type: string
+    - name: eaasSpaceSecretRef
+      type: string
+    - name: clusterName
+      type: string
+    - name: pipelineRunName
+      type: string
+    - name: rapidastImage
+      type: string
+      default: "quay.io/redhatproductsecurity/rapidast@sha256:b6eba7ca96e4c775f965e12eebd2853e8aa11d5894eb0867aba94d436789604d"
+    - name: quayRepo
+      type: string
+      default: "quay.io/devtools_gitops/test_image"
+    - name: namespace
+      type: string
+      default: "openshift-gitops-operator"
+  results:
+    - name: LOG_ARTIFACT_TAG
+      description: Tag of the uploaded log artifact
+  volumes:
+    - name: credentials
+      emptyDir: {}
+    - name: dast-data
+      emptyDir: {}
+    - name: quay-credentials
+      secret:
+        secretName: gitops-test-runner-image-push
+    - name: gcp-key
+      secret:
+        # Secret must contain key: gcp-key.json
+        secretName: gitops-dast-gcp-key
+  steps:
+    - name: get-kubeconfig
+      onError: continue
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/build-definitions.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+      params:
+        - name: eaasSpaceSecretRef
+          value: $(params.eaasSpaceSecretRef)
+        - name: clusterName
+          value: $(params.clusterName)
+        - name: credentials
+          value: credentials
+
+    - name: get-cluster-info
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+        - name: dast-data
+          mountPath: /dast-data
+      script: |
+        #!/bin/bash
+        set -euo pipefail
+
+        KUBECONFIG=$(find /credentials -name "*kubeconfig" -type f 2>/dev/null | head -1)
+        if [[ -z "${KUBECONFIG:-}" ]]; then
+          echo "ERROR: no kubeconfig found in /credentials"
+          ls -la /credentials/ 2>/dev/null || true
+          exit 1
+        fi
+        export KUBECONFIG
+
+        echo "Cluster: $(oc whoami --show-server)"
+
+        APIURL=$(oc whoami --show-server)
+        CONSOLE_HOST=$(oc get route console -n openshift-console \
+          -o jsonpath='{.spec.host}' 2>/dev/null)
+        APPSURL="${CONSOLE_HOST#console-openshift-console.}"
+        echo "Apps domain: ${APPSURL}"
+
+        KPWD=$(oc get secret kubeadmin -n kube-system \
+          -o jsonpath='{.data.kubeadmin}' | base64 -d)
+
+        echo "Waiting for ArgoCD server to be Available (timeout 5m)..."
+        oc wait deployment/openshift-gitops-server \
+          -n openshift-gitops \
+          --for=condition=Available \
+          --timeout=5m || {
+            echo "WARNING: ArgoCD server not Available after 5m, proceeding anyway"
+            oc get pods -n openshift-gitops || true
+          }
+
+        cat > /dast-data/cluster-info.env << EOF
+        export APIURL="${APIURL}"
+        export APPSURL="${APPSURL}"
+        export KPWD="${KPWD}"
+        EOF
+        echo "Cluster info written to /dast-data/cluster-info.env"
+
+    - name: run-dast
+      image: $(params.rapidastImage)
+      workingDir: /dast-data
+      volumeMounts:
+        - name: dast-data
+          mountPath: /dast-data
+        - name: gcp-key
+          mountPath: /gcp
+          readOnly: true
+      env:
+        - name: _JAVA_OPTIONS
+          value: "-DmaxYamlCodePoints=99999999"
+      script: |
+        #!/bin/bash
+        set -euo pipefail
+
+        source /dast-data/cluster-info.env
+
+        echo "Authenticating to cluster at ${APIURL}..."
+        OC_TOKEN=$(curl -u kubeadmin:"${KPWD}" -k -s -i \
+          "https://oauth-openshift.${APPSURL}/oauth/authorize?client_id=openshift-challenging-client&response_type=token" \
+          | grep -oP "access_token=\K[^&]*")
+        if [[ -z "${OC_TOKEN}" ]]; then
+          echo "ERROR: failed to obtain OC OAuth token"
+          exit 1
+        fi
+
+        echo "Fetching ArgoCD admin password from cluster secret..."
+        ARGO_PWD=$(curl -sk -H "Authorization: Bearer ${OC_TOKEN}" \
+          "${APIURL}/api/v1/namespaces/openshift-gitops/secrets/openshift-gitops-cluster" \
+          | grep -oP '"admin\.password": "\K[^"]*' | base64 -d)
+        if [[ -z "${ARGO_PWD}" ]]; then
+          echo "ERROR: failed to read ArgoCD admin password"
+          exit 1
+        fi
+
+        ARGO_URL="https://openshift-gitops-server-openshift-gitops.${APPSURL}"
+        echo "ArgoCD server: ${ARGO_URL}"
+
+        echo "Obtaining ArgoCD session token..."
+        ARGO_TOKEN=$(curl -sk -H "Content-Type: application/json" \
+          "${ARGO_URL}/api/v1/session" \
+          -d "{\"username\":\"admin\",\"password\":\"${ARGO_PWD}\"}" \
+          | grep -oP '"token":"\K[^"]*')
+        if [[ -z "${ARGO_TOKEN}" ]]; then
+          echo "ERROR: failed to obtain ArgoCD session token"
+          exit 1
+        fi
+
+        cat > /tmp/rapidast-config.yaml << RAPIDASTEOF
+        config:
+          configVersion: 6
+        googleCloudStorage:
+          keyFile: "/gcp/gcp-key.json"
+          bucketName: "gitops-results"
+        application:
+          shortName: "gitops"
+          url: "${ARGO_URL}"
+        general:
+          authentication:
+            type: http_header
+            parameters:
+              name: "Authorization"
+              value: "Bearer ${ARGO_TOKEN}"
+        scanners:
+          zap:
+            apiScan:
+              apis:
+                apiUrl: "${ARGO_URL}/swagger.json"
+            report:
+              format: ["json", "html", "xml"]
+            activeScan:
+              policy: "API-scan-minimal"
+            passiveScan: {}
+            miscOptions:
+              additionalAddons: "ascanrulesBeta"
+              zapPort: 8080
+              memMaxHeap: "2048m"
+        RAPIDASTEOF
+
+        echo "Starting RapidAST scan..."
+        rapidast.py --log-level info --config /tmp/rapidast-config.yaml 2>&1 | tee /dast-data/dast.log
+        echo "RapidAST scan complete"
+
+    - name: collect-results
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: dast-data
+          mountPath: /dast-data
+        - name: quay-credentials
+          mountPath: /quay-credentials
+          readOnly: true
+      env:
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+        - name: QUAY_CREDENTIALS_PATH
+          value: /quay-credentials/.dockerconfigjson
+      script: |
+        #!/bin/bash
+        set -euo pipefail
+
+        # shellcheck source=./lib/oras-helpers.sh
+        source /usr/local/bin/lib/oras-helpers.sh
+
+        LOG_DIR="/tmp/dast-logs"
+        mkdir -p "${LOG_DIR}"
+
+        # Copy ZAP results and the rapidast run log
+        cp /dast-data/dast.log "${LOG_DIR}/" 2>/dev/null || echo "WARNING: dast.log not found"
+        cp -r /dast-data/results/ "${LOG_DIR}/" 2>/dev/null || echo "WARNING: results/ not found"
+
+        # Parse ZAP output → JUnit XML
+        echo "Parsing ZAP results..."
+        JUNIT="${LOG_DIR}/junit-dast.xml"
+        python3 /usr/local/bin/parse-dast-results.py /dast-data/results/ "${JUNIT}"
+        PARSE_EXIT=$?
+
+        # Upload task artifact regardless of parse outcome
+        echo "Uploading task artifact..."
+        if setup_oras_auth "${QUAY_CREDENTIALS_PATH}"; then
+          ARTIFACT_TAG="${PIPELINE_RUN_NAME}-task-dast"
+          if oras_push_tarball "${LOG_DIR}" "${QUAY_REPO}" "${ARTIFACT_TAG}" \
+              "application/vnd.konflux.logs.v1+tar" "dast-logs"; then
+            echo "Artifact pushed: ${QUAY_REPO}:${ARTIFACT_TAG}"
+            # shellcheck disable=SC2046  # Tekton substitutes $(results.X.path) before bash sees it
+            echo -n "${ARTIFACT_TAG}" > $(results.LOG_ARTIFACT_TAG.path)
+          else
+            echo "WARNING: artifact upload failed"
+          fi
+        else
+          echo "WARNING: Quay credentials not found, skipping artifact upload"
+        fi
+
+        exit "${PARSE_EXIT}"
+
+  sidecars:
+    - name: log-collector
+      image: $(params.testImageUrl)
+      workingDir: /var/log-workspace
+      env:
+        - name: KUBECONFIG_NAME
+          value: "auto"
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: BRANCH_NAME
+          value: "logs"
+        - name: NAMESPACE
+          value: $(params.namespace)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+        - name: quay-credentials
+          mountPath: /quay-credentials
+          readOnly: true
+      command: ["/bin/bash", "-c", "/usr/local/bin/collect-logs-sidecar.sh"]
