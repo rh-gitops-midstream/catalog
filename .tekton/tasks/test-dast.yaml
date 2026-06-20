@@ -56,23 +56,33 @@ spec:
         secretName: gitops-dast-gcp-key
   steps:
     - name: get-kubeconfig
+      image: $(params.testImageUrl)
       onError: continue
-      ref:
-        resolver: git
-        params:
-          - name: url
-            value: https://github.com/konflux-ci/build-definitions.git
-          - name: revision
-            value: main
-          - name: pathInRepo
-            value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
-      params:
-        - name: eaasSpaceSecretRef
-          value: $(params.eaasSpaceSecretRef)
-        - name: clusterName
+      env:
+        - name: CLUSTER_NAME
           value: $(params.clusterName)
+        - name: KUBECONFIG_VALUE
+          valueFrom:
+            secretKeyRef:
+              name: $(params.eaasSpaceSecretRef)
+              key: kubeconfig
+      volumeMounts:
         - name: credentials
-          value: credentials
+          mountPath: /credentials
+      script: |
+        #!/bin/bash
+        set -eo pipefail
+
+        echo "${KUBECONFIG_VALUE}" > /tmp/eaas-kubeconfig
+        export KUBECONFIG=/tmp/eaas-kubeconfig
+
+        CLUSTER_KUBECONFIG="/credentials/${CLUSTER_NAME}-kubeconfig"
+
+        SECRET=$(oc get cti "${CLUSTER_NAME}" -o=jsonpath='{.status.kubeconfig.name}')
+        echo "Found kubeconfig secret: ${SECRET}"
+        oc get secret "${SECRET}" -o go-template --template='{{.data.kubeconfig|base64decode}}' \
+          > "${CLUSTER_KUBECONFIG}"
+        echo "Wrote kubeconfig to ${CLUSTER_KUBECONFIG}"
 
     - name: get-cluster-info
       image: $(params.testImageUrl)
