@@ -246,8 +246,7 @@ spec:
           if oras_push_tarball "${LOG_DIR}" "${QUAY_REPO}" "${ARTIFACT_TAG}" \
               "application/vnd.konflux.logs.v1+tar" "dast-logs"; then
             echo "Artifact pushed: ${QUAY_REPO}:${ARTIFACT_TAG}"
-            # shellcheck disable=SC2046  # Tekton substitutes $(results.X.path) before bash sees it
-            echo -n "${ARTIFACT_TAG}" > $(results.LOG_ARTIFACT_TAG.path)
+            echo -n "${ARTIFACT_TAG}" > /tekton/results/LOG_ARTIFACT_TAG
           else
             echo "WARNING: artifact upload failed"
           fi
