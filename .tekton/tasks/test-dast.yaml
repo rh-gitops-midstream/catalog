@@ -20,7 +20,7 @@ spec:
     Alerts exceeding their configured threshold → JUnit failure → task fails.
 
     GCP credentials (for uploading raw findings to GCS) must be in a secret
-    named gitops-dast-gcp-key with key gcp-key.json.
+    named gcp with key key.json.
   params:
     - name: testImageUrl
       type: string
@@ -52,8 +52,7 @@ spec:
         secretName: gitops-test-runner-image-push
     - name: gcp-key
       secret:
-        # Secret must contain key: gcp-key.json
-        secretName: gitops-dast-gcp-key
+        secretName: gcp
   steps:
     - name: get-kubeconfig
       image: $(params.testImageUrl)
@@ -183,7 +182,7 @@ spec:
         config:
           configVersion: 6
         googleCloudStorage:
-          keyFile: "/gcp/gcp-key.json"
+          keyFile: "/gcp/key.json"
           bucketName: "gitops-results"
         application:
           shortName: "gitops"
