@@ -203,11 +203,13 @@ spec:
               format: ["json", "html", "xml"]
             activeScan:
               policy: "API-scan-minimal"
+              maxScanDurationInMins: 30
             passiveScan: {}
             miscOptions:
               additionalAddons: "ascanrulesBeta"
               zapPort: 8080
               memMaxHeap: "2048m"
+              maxRuleDurationInMins: 5
         RAPIDASTEOF
 
         echo "Starting RapidAST scan..."

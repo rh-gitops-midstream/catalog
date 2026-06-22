@@ -320,6 +320,7 @@ spec:
           value: "$(params.OPERATOR_VERSION)"
 
     - name: test-dast
+      timeout: "1h30m"
       runAfter:
         - install-operator
       taskRef:
