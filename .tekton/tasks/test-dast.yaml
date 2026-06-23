@@ -122,11 +122,8 @@ spec:
             oc get pods -n openshift-gitops || true
           }
 
-        cat > /dast-data/cluster-info.env << EOF
-        export APIURL="${APIURL}"
-        export APPSURL="${APPSURL}"
-        export KPWD="${KPWD}"
-        EOF
+        printf 'export APIURL=%q\nexport APPSURL=%q\nexport KPWD=%q\n' \
+          "${APIURL}" "${APPSURL}" "${KPWD}" > /dast-data/cluster-info.env
         echo "Cluster info written to /dast-data/cluster-info.env"
 
     - name: run-dast
