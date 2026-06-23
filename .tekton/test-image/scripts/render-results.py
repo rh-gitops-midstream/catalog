@@ -94,10 +94,19 @@ def group_records(records):
 # ── Status helpers ────────────────────────────────────────────────────────────
 
 def short_test_name(full_name):
-    """Extract a compact identifier from a long Ginkgo test name."""
+    """Extract a compact identifier from a long test name."""
+    # Ginkgo: extract 1-031_validate_toolchain style ID
     m = re.search(r"(\d+-\d+[a-zA-Z0-9_]+)", full_name)
     if m:
         return m.group(1)
+    # DAST: "classname/[RISK] Alert Name (alertRef=NNN)" → "[RISK] Alert Name"
+    m = re.search(
+        r"(\[(?:HIGH|MEDIUM|LOW|INFORMATIONAL)\]\s+[^(]+?)(?:\s+\(alertRef=|\s*$)",
+        full_name,
+    )
+    if m:
+        name = m.group(1).strip()
+        return (name[:40] + "…") if len(name) > 40 else name
     parts = re.split(r"[/: ]+", full_name)
     last = parts[-1].strip()
     return (last[:35] + "…") if len(last) > 35 else last
