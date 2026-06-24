@@ -172,6 +172,19 @@ spec:
           exit 1
         fi
 
+        echo "Downloading and filtering ArgoCD swagger.json..."
+        curl -sk -H "Authorization: Bearer ${ARGO_TOKEN}" \
+          "${ARGO_URL}/swagger.json" \
+          | python3 -c "
+import json, sys
+s = json.load(sys.stdin)
+before = len(s.get('paths', {}))
+s['paths'] = {p: v for p, v in s['paths'].items() if '/stream/' not in p}
+after = len(s['paths'])
+print(f'swagger: {before} paths -> {after} (removed {before-after} SSE streaming endpoints)', file=sys.stderr)
+json.dump(s, sys.stdout)
+" > /dast-data/swagger-filtered.json
+
         cat > /tmp/rapidast-config.yaml << RAPIDASTEOF
         config:
           configVersion: 6
@@ -191,7 +204,7 @@ spec:
           zap:
             apiScan:
               apis:
-                apiUrl: "${ARGO_URL}/swagger.json"
+                apiFile: "/dast-data/swagger-filtered.json"
             report:
               format: ["json", "html", "xml"]
             activeScan:

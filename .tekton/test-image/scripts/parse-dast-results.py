@@ -61,7 +61,9 @@ def is_false_positive(alert, fp_rules):
 
 
 def find_zap_json(results_dir):
+    # RapidAST writes to {results_dir}/{shortName}/DAST-{date}-RapiDAST-{shortName}/zap/zap-report.json
     for pattern in [
+        os.path.join(results_dir, "*", "*", "zap", "zap-report.json"),
         os.path.join(results_dir, "rapidast-*", "zap", "zap-report.json"),
         os.path.join(results_dir, "*", "zap-report.json"),
         os.path.join(results_dir, "zap-report.json"),
