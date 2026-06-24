@@ -36,9 +36,6 @@ spec:
     - name: quayRepo
       type: string
       default: "quay.io/devtools_gitops/test_image"
-    - name: namespace
-      type: string
-      default: "openshift-gitops-operator"
   results:
     - name: LOG_ARTIFACT_TAG
       description: Tag of the uploaded log artifact
@@ -264,25 +261,3 @@ spec:
 
         exit "${PARSE_EXIT}"
 
-  sidecars:
-    - name: log-collector
-      image: $(params.testImageUrl)
-      workingDir: /var/log-workspace
-      env:
-        - name: KUBECONFIG_NAME
-          value: "auto"
-        - name: PIPELINE_RUN_NAME
-          value: $(params.pipelineRunName)
-        - name: BRANCH_NAME
-          value: "logs"
-        - name: NAMESPACE
-          value: $(params.namespace)
-        - name: QUAY_REPO
-          value: $(params.quayRepo)
-      volumeMounts:
-        - name: credentials
-          mountPath: /credentials
-        - name: quay-credentials
-          mountPath: /quay-credentials
-          readOnly: true
-      command: ["/bin/bash", "-c", "/usr/local/bin/collect-logs-sidecar.sh"]
