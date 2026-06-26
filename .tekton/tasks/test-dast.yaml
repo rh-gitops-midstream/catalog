@@ -172,18 +172,11 @@ spec:
           exit 1
         fi
 
-        echo "Downloading and filtering ArgoCD swagger.json..."
-        curl -sk -H "Authorization: Bearer ${ARGO_TOKEN}" \
-          "${ARGO_URL}/swagger.json" \
-          | python3 -c "
-import json, sys
-s = json.load(sys.stdin)
-before = len(s.get('paths', {}))
-s['paths'] = {p: v for p, v in s['paths'].items() if '/stream/' not in p}
-after = len(s['paths'])
-print(f'swagger: {before} paths -> {after} (removed {before-after} SSE streaming endpoints)', file=sys.stderr)
-json.dump(s, sys.stdout)
-" > /dast-data/swagger-filtered.json
+        echo "Downloading and filtering ArgoCD swagger.json (removing SSE streaming endpoints)..."
+        curl -sk -H "Authorization: Bearer ${ARGO_TOKEN}" "${ARGO_URL}/swagger.json" \
+          | python3 -c "import json,sys;s=json.load(sys.stdin);[s['paths'].pop(k) for k in list(s['paths']) if '/stream/' in k];json.dump(s,sys.stdout)" \
+          > /dast-data/swagger-filtered.json
+        echo "swagger-filtered.json: $(python3 -c "import json;print(len(json.load(open('/dast-data/swagger-filtered.json'))['paths']),'paths')")"
 
         cat > /tmp/rapidast-config.yaml << RAPIDASTEOF
         config:
