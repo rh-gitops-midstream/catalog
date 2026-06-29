@@ -136,8 +136,24 @@ spec:
             oc get pods -n openshift-gitops || true
           }
 
-        printf 'export APIURL=%q\nexport APPSURL=%q\nexport KPWD=%q\n' \
-          "${APIURL}" "${APPSURL}" "${KPWD}" > /dast-data/cluster-info.env
+        echo "Fetching ArgoCD admin password from cluster secret..."
+        ARGO_PWD=""
+        for i in 1 2 3 4 5; do
+          ARGO_PWD=$(oc get secret openshift-gitops-cluster -n openshift-gitops \
+            -o jsonpath='{.data.admin\.password}' 2>/dev/null | base64 -d 2>/dev/null || true)
+          if [[ -n "${ARGO_PWD}" ]]; then
+            break
+          fi
+          echo "ArgoCD cluster secret not ready yet (attempt ${i}/5), waiting 15s..."
+          sleep 15
+        done
+        if [[ -z "${ARGO_PWD}" ]]; then
+          echo "ERROR: could not read ArgoCD admin password from openshift-gitops-cluster secret"
+          exit 1
+        fi
+
+        printf 'export APIURL=%q\nexport APPSURL=%q\nexport ARGO_PWD=%q\n' \
+          "${APIURL}" "${APPSURL}" "${ARGO_PWD}" > /dast-data/cluster-info.env
         echo "Cluster info written to /dast-data/cluster-info.env"
 
     - name: run-dast
@@ -157,43 +173,6 @@ spec:
         set -euo pipefail
 
         source /dast-data/cluster-info.env
-
-        echo "Authenticating to cluster at ${APIURL}..."
-        OAUTH_URL="https://oauth-openshift.${APPSURL}/oauth/authorize?client_id=openshift-challenging-client&response_type=token"
-        OC_TOKEN=""
-        OAUTH_RESPONSE=""
-        for attempt in 1 2 3 4 5; do
-          echo "OAuth token attempt ${attempt}/5..."
-          OAUTH_RESPONSE=$(curl --max-time 30 -u kubeadmin:"${KPWD}" -k -s -i "${OAUTH_URL}" || true)
-          OC_TOKEN=$(echo "${OAUTH_RESPONSE}" | grep -oP "access_token=\K[^&]*" || true)
-          if [[ -n "${OC_TOKEN}" ]]; then
-            break
-          fi
-          HTTP_STATUS=$(echo "${OAUTH_RESPONSE}" | head -1 | grep -oP "HTTP/[0-9.]+ \K[0-9]+" || true)
-          if [[ "${HTTP_STATUS}" == "503" || "${HTTP_STATUS}" == "502" ]]; then
-            echo "OAuth router not ready (${HTTP_STATUS}), waiting 30s before retry..."
-            sleep 30
-          else
-            break
-          fi
-        done
-        if [[ -z "${OC_TOKEN}" ]]; then
-          echo "ERROR: failed to obtain OC OAuth token"
-          echo "OAuth URL: ${OAUTH_URL}"
-          echo "OAuth response (first 20 lines, token redacted):"
-          echo "${OAUTH_RESPONSE}" | head -20
-          exit 1
-        fi
-
-        echo "Fetching ArgoCD admin password from cluster secret..."
-        ARGO_PWD=$(curl --max-time 30 -sk -H "Authorization: Bearer ${OC_TOKEN}" \
-          "${APIURL}/api/v1/namespaces/openshift-gitops/secrets/openshift-gitops-cluster" \
-          | grep -oP '"admin\.password": "\K[^"]*' || true)
-        ARGO_PWD=$(echo "${ARGO_PWD}" | base64 -d 2>/dev/null || true)
-        if [[ -z "${ARGO_PWD}" ]]; then
-          echo "ERROR: failed to read ArgoCD admin password"
-          exit 1
-        fi
 
         ARGO_URL="https://openshift-gitops-server-openshift-gitops.${APPSURL}"
         echo "ArgoCD server: ${ARGO_URL}"
