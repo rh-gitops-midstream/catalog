@@ -154,7 +154,41 @@ for dir in playwright-report test-results; do
   fi
 done
 
-if [[ "$TEST_EXIT_CODE" -ne 0 ]]; then
+# Ensure JUnit always has data when tests failed.
+# Synthesize a minimal failure entry if Playwright wrote nothing (e.g. setup crash before output).
+JUNIT_FILE="${RESULTS_DIR}/junit-results.xml"
+if [[ "${TEST_EXIT_CODE}" -ne 0 ]]; then
+  JUNIT_TESTS=$(python3 -c "
+import xml.etree.ElementTree as ET, sys
+try:
+    root = ET.parse('${JUNIT_FILE}').getroot()
+    print(root.get('tests', '0'))
+except Exception:
+    print('0')
+" 2>/dev/null || echo "0")
+
+  if [[ "${JUNIT_TESTS}" == "0" ]]; then
+    FAIL_MSG=$(grep -i "error\|Error\|FAIL" "${RESULTS_DIR}/ui-e2e.log" 2>/dev/null | tail -1 \
+               || echo "UI tests failed with exit code ${TEST_EXIT_CODE}")
+    python3 -c "
+import xml.etree.ElementTree as ET, sys
+msg = sys.argv[1]
+root = ET.Element('testsuites', tests='1', failures='1', errors='0', skipped='0')
+suite = ET.SubElement(root, 'testsuite', name='ui-e2e', tests='1', failures='1', errors='0', skipped='0')
+tc = ET.SubElement(suite, 'testcase', name='ui-e2e setup', classname='ui-e2e')
+ET.SubElement(tc, 'failure', message=msg).text = msg
+ET.ElementTree(root).write(sys.argv[2], encoding='unicode', xml_declaration=True)
+" "${FAIL_MSG}" "${JUNIT_FILE}"
+    echo "Synthesized fallback JUnit (Playwright produced no test output)"
+  fi
+
+  # Copy JUnit to shared workspace so the wrapup task can find it even if ORAS pull fails
+  SHARED_DIR="${SHARED_DIR:-/shared}"
+  mkdir -p "${SHARED_DIR}/results"
+  cp "${JUNIT_FILE}" "${SHARED_DIR}/results/junit-ui-e2e.xml" 2>/dev/null || true
+fi
+
+if [[ "${TEST_EXIT_CODE}" -ne 0 ]]; then
   echo "UI E2E tests failed (exit code ${TEST_EXIT_CODE})"
   exit 1
 fi

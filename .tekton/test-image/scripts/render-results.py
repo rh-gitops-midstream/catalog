@@ -4,11 +4,11 @@
 Four levels of README are generated so any directory in GitHub shows a
 useful at-a-glance summary:
 
-    README.md                                           top-level overview
-    {product}/README.md                                 per-version summary
-    {product}/{version}/README.md                       per-OCP summary
-    {product}/{version}/ocp-{ocp}/README.md             per-config summary
-    {product}/{version}/ocp-{ocp}/{variant}/README.md   full run history (leaf)
+    README.md                                                  top-level overview
+    {product}/README.md                                        per-version summary
+    {product}/{version}/README.md                              per-OCP summary
+    {product}/{version}/ocp-{ocp}/README.md                   per-config matrix
+    {product}/{version}/ocp-{ocp}/{variant}/{script}/README.md full run history (leaf)
 """
 import json
 import os
@@ -28,6 +28,25 @@ PRODUCT_DIRS = {
 }
 
 VARIANTS = ["default", "upgrade", "fips", "fips-upgrade"]
+
+# Canonical order for test-type columns; unknown scripts appear after in alphabetical order
+SCRIPT_LABELS = {
+    "run-sanity-tests.sh": "sanity",
+    "run-sequential-tests-shard1.sh": "sequential-s1",
+    "run-sequential-tests-shard2.sh": "sequential-s2",
+    "run-parallel-tests.sh": "parallel",
+    "run-rollouts-tests.sh": "rollouts",
+    "run-ui-e2e-tests.sh": "ui",
+    "dast-scan": "dast",
+}
+SCRIPT_LABEL_ORDER = ["e2e", "sanity", "sequential-s1", "sequential-s2", "parallel", "rollouts", "ui", "dast"]
+
+
+def get_script_label(script):
+    if not script:
+        return "e2e"
+    basename = os.path.basename(script)
+    return SCRIPT_LABELS.get(basename, basename.replace(".sh", ""))
 
 
 # ── Data loading and grouping ─────────────────────────────────────────────────
@@ -76,14 +95,16 @@ def get_product_dir(record):
 
 
 def group_records(records):
-    """Return dict (product, version, ocp, variant) -> [records newest-first]."""
+    """Return dict (product, version, ocp, variant, script_label) -> [records newest-first]."""
     groups = defaultdict(list)
     for r in records:
+        script_label = get_script_label(r.get("testScript", ""))
         key = (
             get_product_dir(r),
             get_version(r),
             r.get("openshiftVersion", "unknown"),
             get_variant(r),
+            script_label,
         )
         groups[key].append(r)
     for key in groups:
@@ -132,6 +153,24 @@ def status_cell(record):
     return f"❌ {failed_count} fail"
 
 
+def worst_status_cell(records_list):
+    """Pick the worst-status record from a list and return its cell string."""
+    if not records_list:
+        return "—"
+    # Failed > ERROR > Succeeded
+    for r in records_list:
+        if r.get("status") != "Succeeded":
+            return status_cell(r)
+    return status_cell(records_list[0])
+
+
+def linked_status_cell(record):
+    """status_cell() wrapped in a markdown link to logUrl when available."""
+    cell = status_cell(record)
+    url = record.get("logUrl", "")
+    return f"[{cell}]({url})" if url else cell
+
+
 def status_icon(record):
     """Single icon for history sparklines."""
     return "✅" if record.get("status") == "Succeeded" else "❌"
@@ -159,12 +198,21 @@ def version_sort_key(v):
     return [int(x) if x.isdigit() else x for x in re.split(r"[.\-]", v.lstrip("v"))]
 
 
-# ── Leaf README (full run history) ───────────────────────────────────────────
+def ordered_script_labels(label_set):
+    """Return labels in canonical order (SCRIPT_LABEL_ORDER first, then extras alphabetically)."""
+    known = [l for l in SCRIPT_LABEL_ORDER if l in label_set]
+    extras = sorted(l for l in label_set if l not in SCRIPT_LABEL_ORDER)
+    return known + extras
 
-def render_leaf_readme(records, product, version, ocp, variant):
+
+# ── Leaf README (full run history for one variant+testScript) ─────────────────
+
+def render_leaf_readme(records, product, version, ocp, variant, script_label):
     parts = [product, version, f"OCP {ocp}"]
     if variant != "default":
         parts.append(variant.upper())
+    if script_label:
+        parts.append(script_label)
 
     lines = [f"# {' / '.join(parts)}", ""]
     lines += [
@@ -196,34 +244,63 @@ def render_leaf_readme(records, product, version, ocp, variant):
     return "\n".join(lines)
 
 
-# ── OCP-level README (config summary for one OCP version) ────────────────────
+# ── OCP-level README (variant × test-type matrix) ────────────────────────────
 
-def render_ocp_readme(variant_map, product, version, ocp):
-    """variant_map: {variant: [records newest-first]}"""
+def render_ocp_readme(cell_map, product, version, ocp, all_records):
+    """cell_map: {(variant, script_label): [records newest-first]}
+
+    all_records: full record list used to derive expected columns (historical runs).
+    """
     lines = [f"# {product} / {version} / OCP {ocp}", ""]
 
+    # Emit component versions from first available record
     for v in VARIANTS:
-        if variant_map.get(v):
-            meta = build_meta_line(variant_map[v][0])
-            if meta:
-                lines += [meta, ""]
-            break
-
-    lines += [
-        "| Config | Channel | Updated | Latest Result | History |",
-        "|--------|---------|---------|---------------|---------|",
-    ]
-    for variant in VARIANTS:
-        recs = variant_map.get(variant, [])
-        if not recs:
-            lines.append(f"| [{variant}](./{variant}/) | — | — | — | — |")
+        for label in SCRIPT_LABEL_ORDER:
+            recs = cell_map.get((v, label), [])
+            if recs:
+                meta = build_meta_line(recs[0])
+                if meta:
+                    lines += [meta, ""]
+                break
+        else:
             continue
-        latest = recs[0]
-        ts = latest.get("timestamp", "")[:10]
-        channel = latest.get("operatorChannel", "")
-        st = status_cell(latest)
-        hist = history_icons(recs)
-        lines.append(f"| [{variant}](./{variant}/) | {channel} | {ts} | {st} | {hist} |")
+        break
+
+    # Determine expected test-type columns from all historical runs for this (product, ocp)
+    historical_labels = set()
+    for r in all_records:
+        if get_product_dir(r) == product and r.get("openshiftVersion", "unknown") == ocp:
+            historical_labels.add(get_script_label(r.get("testScript", "")))
+    script_cols = ordered_script_labels(historical_labels)
+
+    if not script_cols:
+        script_cols = ["sanity"]
+
+    col_hdr = " | ".join(f"**{c}**" for c in script_cols)
+    sep = " | ".join(["---"] * (2 + len(script_cols)))
+    lines += [f"| Config | {col_hdr} | Updated |", f"| {sep} |"]
+
+    for variant in VARIANTS:
+        cells = []
+        latest_ts = ""
+        has_any = False
+        for label in script_cols:
+            recs = cell_map.get((variant, label), [])
+            if not recs:
+                cells.append("—")
+            else:
+                has_any = True
+                cells.append(linked_status_cell(recs[0]))
+                ts = recs[0].get("timestamp", "")
+                if ts > latest_ts:
+                    latest_ts = ts
+        updated = latest_ts[:10] if latest_ts else "—"
+        # Link to variant dir (which now contains per-script subdirs)
+        cells_str = " | ".join(cells)
+        if has_any:
+            lines.append(f"| [{variant}](./{variant}/) | {cells_str} | {updated} |")
+        else:
+            lines.append(f"| {variant} | {cells_str} | {updated} |")
 
     lines.append("")
     return "\n".join(lines)
@@ -231,19 +308,59 @@ def render_ocp_readme(variant_map, product, version, ocp):
 
 # ── Version-level README (OCP summary for one operator version) ───────────────
 
-def render_version_readme(ocp_variant_map, product, version):
-    """ocp_variant_map: {(ocp, variant): [records newest-first]}"""
+def _version_cell(ocp_var_script_map, ocp, variant, script_cols):
+    """Build a per-test-type breakdown cell for the version README.
+
+    Returns (cell_markdown, latest_ts) where cell_markdown is a markdown link
+    to the OCP README whose text is one line per test type with p/f/s counts.
+    """
+    type_lines = []
+    latest_ts = ""
+    for label in script_cols:
+        recs = ocp_var_script_map.get((ocp, variant, label), [])
+        if not recs:
+            continue
+        r = recs[0]
+        icon = status_icon(r)
+        passed  = r.get("testsPassed")
+        failed  = (r.get("testsFailed") or 0) + (r.get("testsErrors") or 0)
+        skipped = r.get("testsSkipped")
+        if passed is not None or failed or skipped is not None:
+            p = str(passed)  if passed  is not None else "?"
+            s = str(skipped) if skipped is not None else "?"
+            text = f"{label} {icon} {p}p/{failed}f/{s}s"
+        else:
+            text = f"{label} {icon}"
+        type_lines.append(f"[{text}](./ocp-{ocp}/{variant}/{label}/)")
+        ts = r.get("timestamp", "")
+        if ts > latest_ts:
+            latest_ts = ts
+
+    if not type_lines:
+        return "—", ""
+    return "<br>".join(type_lines), latest_ts
+
+
+def render_version_readme(ocp_var_script_map, product, version):
+    """ocp_var_script_map: {(ocp, variant, script_label): [records newest-first]}"""
     lines = [f"# {product} / {version}", ""]
 
-    for recs in ocp_variant_map.values():
+    # Component versions meta from first available record
+    for recs in ocp_var_script_map.values():
         if recs:
             meta = build_meta_line(recs[0])
             if meta:
                 lines += [meta, ""]
             break
 
-    ocps = sorted({ocp for ocp, _ in ocp_variant_map}, reverse=True)
-    present_variants = [v for v in VARIANTS if any((ocp, v) in ocp_variant_map for ocp in ocps)]
+    ocps = sorted({ocp for ocp, _, _ in ocp_var_script_map}, reverse=True)
+    present_variants = [
+        v for v in VARIANTS
+        if any((ocp, v, sl) in ocp_var_script_map for ocp in ocps for sl in SCRIPT_LABEL_ORDER)
+    ]
+    script_cols = ordered_script_labels(
+        {sl for _, _, sl in ocp_var_script_map}
+    )
 
     col_hdr = " | ".join(f"**{v}**" for v in present_variants)
     sep = " | ".join(["---"] * (2 + len(present_variants)))
@@ -252,14 +369,10 @@ def render_version_readme(ocp_variant_map, product, version):
     for ocp in ocps:
         cells, latest_ts = [], ""
         for variant in present_variants:
-            recs = ocp_variant_map.get((ocp, variant), [])
-            if not recs:
-                cells.append("—")
-            else:
-                cells.append(status_cell(recs[0]))
-                ts = recs[0].get("timestamp", "")
-                if ts > latest_ts:
-                    latest_ts = ts
+            cell, ts = _version_cell(ocp_var_script_map, ocp, variant, script_cols)
+            cells.append(cell)
+            if ts > latest_ts:
+                latest_ts = ts
         lines.append(f"| [{ocp}](./ocp-{ocp}/) | {' | '.join(cells)} | {latest_ts[:10]} |")
 
     lines.append("")
@@ -269,7 +382,9 @@ def render_version_readme(ocp_variant_map, product, version):
 # ── Product-level README (version summary) ────────────────────────────────────
 
 def render_product_readme(prod_groups, product):
-    """prod_groups: {(version, ocp, variant): [records newest-first]}"""
+    """prod_groups: {(version, ocp, variant): [records newest-first]}
+    Records here are already collapsed across testScript (worst status).
+    """
     lines = [f"# {product}", ""]
 
     versions = sorted(
@@ -305,7 +420,8 @@ def render_product_readme(prod_groups, product):
                 if not recs:
                     cells.append("—")
                 else:
-                    cells.append(status_cell(recs[0]))
+                    st = status_cell(recs[0])
+                    cells.append(f"[{st}](./{version}/ocp-{ocp}/)")
                     ts = recs[0].get("timestamp", "")
                     if ts > latest_ts:
                         latest_ts = ts
@@ -326,7 +442,7 @@ def render_product_readme(prod_groups, product):
 def render_top_readme(all_groups):
     lines = ["# Catalog Test Results", ""]
 
-    # Nest: product -> version -> ocp -> variant -> records
+    # Nest: product -> version -> ocp -> variant -> [records] (collapsed across testScript)
     tree = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
     for (product, version, ocp, variant), recs in all_groups.items():
         tree[product][version][ocp][variant] = recs
@@ -366,6 +482,22 @@ def clean_generated_dirs(repo_dir):
             shutil.rmtree(path)
 
 
+def collapse_by_variant(script_variant_groups):
+    """Collapse a {(variant, script_label): records} dict into {variant: worst_record}.
+
+    Used for version/product/top READMEs which only need one status per variant.
+    """
+    result = defaultdict(list)
+    for (variant, _label), recs in script_variant_groups.items():
+        result[variant].extend(recs)
+    # Sort by timestamp descending; prefer failed records to surface failures
+    collapsed = {}
+    for variant, recs in result.items():
+        recs.sort(key=lambda r: (r.get("status") != "Succeeded", r.get("timestamp", "")), reverse=True)
+        collapsed[variant] = recs
+    return collapsed
+
+
 def main():
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} <repo-dir>")
@@ -380,46 +512,68 @@ def main():
     all_groups = group_records(records)
     clean_generated_dirs(repo_dir)
 
+    # all_groups key: (product, version, ocp, variant, script_label)
     by_product = defaultdict(dict)
-    for (product, version, ocp, variant), recs in all_groups.items():
-        by_product[product][(version, ocp, variant)] = recs
+    for (product, version, ocp, variant, script_label), recs in all_groups.items():
+        by_product[product][(version, ocp, variant, script_label)] = recs
 
     total_groups = 0
-    for product, prod_groups in by_product.items():
-        # Leaf READMEs
-        for (version, ocp, variant), recs in prod_groups.items():
-            leaf_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}", variant)
+    for product, prod_groups_full in by_product.items():
+
+        # ── Leaf READMEs ──────────────────────────────────────────────────────
+        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+            leaf_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}", variant, script_label)
             os.makedirs(leaf_dir, exist_ok=True)
             with open(os.path.join(leaf_dir, "README.md"), "w") as f:
-                f.write(render_leaf_readme(recs, product, version, ocp, variant))
+                f.write(render_leaf_readme(recs, product, version, ocp, variant, script_label))
             total_groups += 1
 
-        # OCP-level READMEs
-        ocp_buckets = defaultdict(dict)
-        for (version, ocp, variant), recs in prod_groups.items():
-            ocp_buckets[(version, ocp)][variant] = recs
-        for (version, ocp), variant_map in ocp_buckets.items():
+        # ── OCP-level READMEs ─────────────────────────────────────────────────
+        ocp_buckets = defaultdict(dict)  # (version, ocp) -> {(variant, script_label): records}
+        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+            ocp_buckets[(version, ocp)][(variant, script_label)] = recs
+        for (version, ocp), cell_map in ocp_buckets.items():
             ocp_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}")
+            os.makedirs(ocp_dir, exist_ok=True)
             with open(os.path.join(ocp_dir, "README.md"), "w") as f:
-                f.write(render_ocp_readme(variant_map, product, version, ocp))
+                f.write(render_ocp_readme(cell_map, product, version, ocp, records))
 
-        # Version-level READMEs
-        ver_buckets = defaultdict(dict)
-        for (version, ocp, variant), recs in prod_groups.items():
-            ver_buckets[version][(ocp, variant)] = recs
-        for version, ocp_variant_map in ver_buckets.items():
+        # ── Version-level READMEs ────────────────────────────────────────────
+        ver_buckets = defaultdict(dict)  # version -> {(ocp, variant, script_label): records}
+        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+            ver_buckets[version][(ocp, variant, script_label)] = recs
+        for version, ocp_var_script_map in ver_buckets.items():
             ver_dir = os.path.join(repo_dir, product, version)
+            os.makedirs(ver_dir, exist_ok=True)
             with open(os.path.join(ver_dir, "README.md"), "w") as f:
-                f.write(render_version_readme(ocp_variant_map, product, version))
+                f.write(render_version_readme(ocp_var_script_map, product, version))
 
-        # Product-level README
+        # ── Product-level README ─────────────────────────────────────────────
+        # Collapse across script_label: worst status per (version, ocp, variant)
+        prod_groups_collapsed = defaultdict(list)
+        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+            prod_groups_collapsed[(version, ocp, variant)].extend(recs)
+        prod_groups_final = {}
+        for key, recs in prod_groups_collapsed.items():
+            recs.sort(key=lambda r: (r.get("status") != "Succeeded", r.get("timestamp", "")), reverse=True)
+            prod_groups_final[key] = recs
         prod_dir = os.path.join(repo_dir, product)
+        os.makedirs(prod_dir, exist_ok=True)
         with open(os.path.join(prod_dir, "README.md"), "w") as f:
-            f.write(render_product_readme(prod_groups, product))
+            f.write(render_product_readme(prod_groups_final, product))
 
-    # Top-level README
+    # ── Top-level README ──────────────────────────────────────────────────────
+    # Build collapsed groups: (product, version, ocp, variant) -> worst-status records
+    top_groups_raw = defaultdict(list)
+    for (product, version, ocp, variant, script_label), recs in all_groups.items():
+        top_groups_raw[(product, version, ocp, variant)].extend(recs)
+    top_groups = {}
+    for key, recs in top_groups_raw.items():
+        recs.sort(key=lambda r: (r.get("status") != "Succeeded", r.get("timestamp", "")), reverse=True)
+        top_groups[key] = recs
+
     with open(os.path.join(repo_dir, "README.md"), "w") as f:
-        f.write(render_top_readme(all_groups))
+        f.write(render_top_readme(top_groups))
 
     print(f"Rendered {total_groups} result groups from {len(records)} records")
 

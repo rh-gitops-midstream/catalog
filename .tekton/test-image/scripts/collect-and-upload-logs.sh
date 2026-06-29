@@ -150,7 +150,7 @@ fi
 # 5. Parse JUnit test results (if available)
 # -----------------------------------------------------------
 TEST_SUMMARY=""
-JUNIT_FILE=$(find "${LOGS_DIR}/results" -name "*.xml" -type f 2>/dev/null | head -1)
+JUNIT_FILE=$(find "${LOGS_DIR}/results" "${SHARED_DIR}/results" -name "*.xml" -type f 2>/dev/null | head -1)
 if [ -f "${JUNIT_FILE:-}" ]; then
     echo "Parsing test results from ${JUNIT_FILE}..."
     if python3 /usr/local/bin/parse-test-results.py \
