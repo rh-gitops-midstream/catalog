@@ -160,8 +160,23 @@ spec:
 
         echo "Authenticating to cluster at ${APIURL}..."
         OAUTH_URL="https://oauth-openshift.${APPSURL}/oauth/authorize?client_id=openshift-challenging-client&response_type=token"
-        OAUTH_RESPONSE=$(curl --max-time 30 -u kubeadmin:"${KPWD}" -k -s -i "${OAUTH_URL}" || true)
-        OC_TOKEN=$(echo "${OAUTH_RESPONSE}" | grep -oP "access_token=\K[^&]*" || true)
+        OC_TOKEN=""
+        OAUTH_RESPONSE=""
+        for attempt in 1 2 3 4 5; do
+          echo "OAuth token attempt ${attempt}/5..."
+          OAUTH_RESPONSE=$(curl --max-time 30 -u kubeadmin:"${KPWD}" -k -s -i "${OAUTH_URL}" || true)
+          OC_TOKEN=$(echo "${OAUTH_RESPONSE}" | grep -oP "access_token=\K[^&]*" || true)
+          if [[ -n "${OC_TOKEN}" ]]; then
+            break
+          fi
+          HTTP_STATUS=$(echo "${OAUTH_RESPONSE}" | head -1 | grep -oP "HTTP/[0-9.]+ \K[0-9]+" || true)
+          if [[ "${HTTP_STATUS}" == "503" || "${HTTP_STATUS}" == "502" ]]; then
+            echo "OAuth router not ready (${HTTP_STATUS}), waiting 30s before retry..."
+            sleep 30
+          else
+            break
+          fi
+        done
         if [[ -z "${OC_TOKEN}" ]]; then
           echo "ERROR: failed to obtain OC OAuth token"
           echo "OAuth URL: ${OAUTH_URL}"
