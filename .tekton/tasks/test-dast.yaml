@@ -142,11 +142,14 @@ spec:
         source /dast-data/cluster-info.env
 
         echo "Authenticating to cluster at ${APIURL}..."
-        OC_TOKEN=$(curl --max-time 30 -u kubeadmin:"${KPWD}" -k -s -i \
-          "https://oauth-openshift.${APPSURL}/oauth/authorize?client_id=openshift-challenging-client&response_type=token" \
-          | grep -oP "access_token=\K[^&]*" || true)
+        OAUTH_URL="https://oauth-openshift.${APPSURL}/oauth/authorize?client_id=openshift-challenging-client&response_type=token"
+        OAUTH_RESPONSE=$(curl --max-time 30 -u kubeadmin:"${KPWD}" -k -s -i "${OAUTH_URL}" || true)
+        OC_TOKEN=$(echo "${OAUTH_RESPONSE}" | grep -oP "access_token=\K[^&]*" || true)
         if [[ -z "${OC_TOKEN}" ]]; then
-          echo "ERROR: failed to obtain OC OAuth token (check OAuth endpoint and kubeadmin credentials)"
+          echo "ERROR: failed to obtain OC OAuth token"
+          echo "OAuth URL: ${OAUTH_URL}"
+          echo "OAuth response (first 20 lines, token redacted):"
+          echo "${OAUTH_RESPONSE}" | head -20
           exit 1
         fi
 
