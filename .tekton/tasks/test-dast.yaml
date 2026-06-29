@@ -142,18 +142,19 @@ spec:
         source /dast-data/cluster-info.env
 
         echo "Authenticating to cluster at ${APIURL}..."
-        OC_TOKEN=$(curl -u kubeadmin:"${KPWD}" -k -s -i \
+        OC_TOKEN=$(curl --max-time 30 -u kubeadmin:"${KPWD}" -k -s -i \
           "https://oauth-openshift.${APPSURL}/oauth/authorize?client_id=openshift-challenging-client&response_type=token" \
-          | grep -oP "access_token=\K[^&]*")
+          | grep -oP "access_token=\K[^&]*" || true)
         if [[ -z "${OC_TOKEN}" ]]; then
-          echo "ERROR: failed to obtain OC OAuth token"
+          echo "ERROR: failed to obtain OC OAuth token (check OAuth endpoint and kubeadmin credentials)"
           exit 1
         fi
 
         echo "Fetching ArgoCD admin password from cluster secret..."
-        ARGO_PWD=$(curl -sk -H "Authorization: Bearer ${OC_TOKEN}" \
+        ARGO_PWD=$(curl --max-time 30 -sk -H "Authorization: Bearer ${OC_TOKEN}" \
           "${APIURL}/api/v1/namespaces/openshift-gitops/secrets/openshift-gitops-cluster" \
-          | grep -oP '"admin\.password": "\K[^"]*' | base64 -d)
+          | grep -oP '"admin\.password": "\K[^"]*' || true)
+        ARGO_PWD=$(echo "${ARGO_PWD}" | base64 -d 2>/dev/null || true)
         if [[ -z "${ARGO_PWD}" ]]; then
           echo "ERROR: failed to read ArgoCD admin password"
           exit 1
@@ -163,10 +164,10 @@ spec:
         echo "ArgoCD server: ${ARGO_URL}"
 
         echo "Obtaining ArgoCD session token..."
-        ARGO_TOKEN=$(curl -sk -H "Content-Type: application/json" \
+        ARGO_TOKEN=$(curl --max-time 30 -sk -H "Content-Type: application/json" \
           "${ARGO_URL}/api/v1/session" \
           -d "{\"username\":\"admin\",\"password\":\"${ARGO_PWD}\"}" \
-          | grep -oP '"token":"\K[^"]*')
+          | grep -oP '"token":"\K[^"]*' || true)
         if [[ -z "${ARGO_TOKEN}" ]]; then
           echo "ERROR: failed to obtain ArgoCD session token"
           exit 1
