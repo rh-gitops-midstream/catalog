@@ -80,6 +80,12 @@ spec:
           > "${CLUSTER_KUBECONFIG}"
         echo "Wrote kubeconfig to ${CLUSTER_KUBECONFIG}"
 
+        PWD_SECRET=$(oc get cti "${CLUSTER_NAME}" -o=jsonpath='{.status.adminPassword.name}')
+        echo "Found admin password secret: ${PWD_SECRET}"
+        oc get secret "${PWD_SECRET}" -o jsonpath='{.data.password}' | base64 -d \
+          > "/credentials/${CLUSTER_NAME}-password"
+        echo "Wrote admin password to /credentials/${CLUSTER_NAME}-password"
+
     - name: get-cluster-info
       image: $(params.testImageUrl)
       volumeMounts:
@@ -107,8 +113,19 @@ spec:
         APPSURL="${CONSOLE_HOST#console-openshift-console.}"
         echo "Apps domain: ${APPSURL}"
 
-        KPWD=$(oc get secret kubeadmin -n kube-system \
-          -o jsonpath='{.data.kubeadmin}' | base64 -d)
+        PASS_FILE=$(find /credentials -name "*password" -type f 2>/dev/null | head -1)
+        if [[ -n "${PASS_FILE}" ]]; then
+          KPWD=$(cat "${PASS_FILE}")
+          echo "Loaded kubeadmin password from ${PASS_FILE}"
+        else
+          KPWD=$(oc get secret kubeadmin -n kube-system \
+            -o jsonpath='{.data.password}' 2>/dev/null | base64 -d || true)
+          echo "Loaded kubeadmin password from kube-system secret"
+        fi
+        if [[ -z "${KPWD}" ]]; then
+          echo "ERROR: could not obtain kubeadmin password"
+          exit 1
+        fi
 
         echo "Waiting for ArgoCD server to be Available (timeout 5m)..."
         oc wait deployment/openshift-gitops-server \
