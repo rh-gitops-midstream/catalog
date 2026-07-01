@@ -145,81 +145,48 @@ spec:
         - parse-metadata
       taskSpec:
         params:
-          - name: gate-label
+          - name: gate-labels
             type: string
           - name: source-git-url
             type: string
           - name: source-git-revision
+            type: string
+          - name: catalog-task-url
+            type: string
+          - name: catalog-task-revision
             type: string
         results:
           - name: proceed
             description: "true if tests should run, false to skip"
         steps:
           - name: check
-            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
-            env:
-              - name: GATE_LABEL
-                value: $(params.gate-label)
-              - name: SOURCE_GIT_URL
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: $(params.catalog-task-url)
+                - name: revision
+                  value: $(params.catalog-task-revision)
+                - name: pathInRepo
+                  value: .tekton/stepactions/check-gate-labels.yaml
+            params:
+              - name: gate-labels
+                value: $(params.gate-labels)
+              - name: source-git-url
                 value: $(params.source-git-url)
-              - name: SOURCE_GIT_REVISION
+              - name: source-git-revision
                 value: $(params.source-git-revision)
-            script: |
-              #!/bin/sh
-              set -eu
-
-              PROCEED=true
-
-              if [ -z "${GATE_LABEL}" ]; then
-                echo "No gate label configured, proceeding"
-                echo -n "${PROCEED}" > $(results.proceed.path)
-                exit 0
-              fi
-
-              echo "Gate label: ${GATE_LABEL}"
-
-              REPO_SLUG=""
-              if [ -n "${SOURCE_GIT_URL}" ]; then
-                REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
-              fi
-
-              # Find PR by commit SHA via GitHub API
-              PR_NUMBER=""
-              if [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
-                echo "Looking up PRs for commit ${SOURCE_GIT_REVISION}..."
-                COMMIT_PRS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
-                if [ -n "${COMMIT_PRS}" ] && echo "${COMMIT_PRS}" | grep -q '"number"'; then
-                  PR_NUMBER=$(echo "${COMMIT_PRS}" | grep -o '"number": *[0-9]*' | head -1 | grep -o '[0-9]*' || true)
-                fi
-              fi
-
-              if [ -z "${PR_NUMBER}" ]; then
-                echo "No PR found for this commit, proceeding (push event)"
-                echo -n "${PROCEED}" > $(results.proceed.path)
-                exit 0
-              fi
-
-              echo "Found PR #${PR_NUMBER}, checking labels..."
-              LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
-                | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
-              echo "PR labels: ${LABELS:-none}"
-
-              if echo "${LABELS}" | grep -qx "${GATE_LABEL}"; then
-                echo "Label '${GATE_LABEL}' found, proceeding"
-              else
-                echo "Label '${GATE_LABEL}' NOT found, skipping tests"
-                PROCEED=false
-              fi
-
-              echo -n "${PROCEED}" > $(results.proceed.path)
-              echo "Result: proceed=${PROCEED}"
       params:
-        - name: gate-label
+        - name: gate-labels
           value: $(params.GATE_LABEL)
         - name: source-git-url
           value: $(tasks.parse-metadata.results.source-git-url)
         - name: source-git-revision
           value: $(tasks.parse-metadata.results.source-git-revision)
+        - name: catalog-task-url
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalog-task-revision
+          value: $(params.CATALOG_TASK_REVISION)
 
     - name: build-test-image
       runAfter:
