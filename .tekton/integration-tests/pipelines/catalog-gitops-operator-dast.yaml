@@ -1,0 +1,316 @@
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: gitops-catalog-operator-dast
+spec:
+  description: |
+    DAST (Dynamic Application Security Testing) pipeline for the GitOps operator.
+    Provisions an ephemeral HyperShift cluster, installs the GitOps operator from
+    catalog, then runs RapidAST/ZAP against the deployed ArgoCD REST API.
+
+    Alert thresholds and false-positive suppression rules are configured in
+    .tekton/test-image/config/dast-false-positives.json in this repo.
+  params:
+    - name: SNAPSHOT
+      description: Snapshot of the application
+      default: '{"components": [{"name":"gitops-operator-bundle-main", "containerImage": "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle:latest"}]}'
+      type: string
+    - name: CATALOG_TASK_URL
+      description: Git URL of catalog repository (used to resolve task definitions)
+      default: "https://github.com/rh-gitops-midstream/catalog"
+      type: string
+    - name: CATALOG_TASK_REVISION
+      description: Git revision for task definitions
+      default: "konflux-integration"
+      type: string
+    - name: OPENSHIFT_VERSION
+      description: OpenShift version to provision (e.g. "4.20")
+      default: "4.20"
+      type: string
+    - name: OPERATOR_CHANNEL
+      description: OLM channel to install the operator from
+      default: "latest"
+      type: string
+    - name: OPERATOR_VERSION
+      description: Specific operator version to install (empty = latest on channel)
+      default: ""
+      type: string
+    - name: INSTALL_TIMEOUT
+      description: Duration to wait for operator installation to complete
+      default: "25m"
+      type: string
+    - name: CLUSTER_INSTANCE_TYPE
+      description: AWS instance type for the ephemeral cluster
+      default: "m6g.large"
+      type: string
+    - name: GATE_LABEL
+      description: PR label required to run this pipeline (empty = always run)
+      default: ""
+      type: string
+
+  finally:
+    - name: pipeline-wrapup
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/pipeline-wrapup.yaml
+      params:
+        - name: eaasSpaceSecretRef
+          value: $(tasks.provision-eaas-space.results.secretRef)
+        - name: clusterName
+          value: "$(tasks.provision-cluster.results.clusterName)"
+        - name: pipelineRunName
+          value: "$(context.pipelineRun.name)"
+        - name: testImageUrl
+          value: "$(tasks.overlay-test-scripts.results.image-url)"
+        - name: aggregateStatus
+          value: "$(tasks.status)"
+        - name: logUrl
+          value: "https://konflux-ui.apps.stone-prd-rh01.pg1f.p1.openshiftapps.com/ns/rh-openshift-gitops-tenant/applications/gitops-main/pipelineruns/$(context.pipelineRun.name)"
+        - name: pipelineName
+          value: "gitops-operator-dast"
+        - name: namespace
+          value: "openshift-gitops-operator"
+        - name: taskNames
+          value: "install-operator dast"
+        - name: openshiftVersion
+          value: "$(params.OPENSHIFT_VERSION)"
+        - name: resolvedOpenshiftVersion
+          value: "$(tasks.provision-cluster.results.resolvedVersion)"
+        - name: operatorChannel
+          value: "$(params.OPERATOR_CHANNEL)"
+        - name: fipsEnabled
+          value: "false"
+        - name: installedCSV
+          value: "$(tasks.install-operator.results.installedCSV)"
+        - name: testScript
+          value: "dast-scan"
+        - name: upgrade
+          value: "false"
+
+  tasks:
+    - name: parse-metadata
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/integration-examples
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: tasks/test_metadata.yaml
+      params:
+        - name: SNAPSHOT
+          value: $(params.SNAPSHOT)
+
+    - name: check-gate
+      runAfter:
+        - parse-metadata
+      taskSpec:
+        params:
+          - name: gate-labels
+            type: string
+          - name: source-git-url
+            type: string
+          - name: source-git-revision
+            type: string
+          - name: catalog-task-url
+            type: string
+          - name: catalog-task-revision
+            type: string
+        results:
+          - name: proceed
+            description: "true if tests should run, false to skip"
+        steps:
+          - name: check
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: $(params.catalog-task-url)
+                - name: revision
+                  value: $(params.catalog-task-revision)
+                - name: pathInRepo
+                  value: .tekton/stepactions/check-gate-labels.yaml
+            params:
+              - name: gate-labels
+                value: $(params.gate-labels)
+              - name: source-git-url
+                value: $(params.source-git-url)
+              - name: source-git-revision
+                value: $(params.source-git-revision)
+          - name: propagate-result
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            script: |
+              #!/bin/sh
+              cat /tekton/steps/check/results/proceed > $(results.proceed.path)
+      params:
+        - name: gate-labels
+          value: $(params.GATE_LABEL)
+        - name: source-git-url
+          value: $(tasks.parse-metadata.results.source-git-url)
+        - name: source-git-revision
+          value: $(tasks.parse-metadata.results.source-git-revision)
+        - name: catalog-task-url
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalog-task-revision
+          value: $(params.CATALOG_TASK_REVISION)
+
+    - name: build-test-image
+      runAfter:
+        - check-gate
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/build-ginkgo-test-image.yaml
+      params:
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+        - name: IMAGE_EXPIRES_AFTER
+          value: "7d"
+
+    - name: overlay-test-scripts
+      runAfter:
+        - build-test-image
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/overlay-test-scripts.yaml
+      params:
+        - name: BASE_IMAGE_URL
+          value: $(tasks.build-test-image.results.IMAGE_URL)
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+
+    - name: provision-eaas-space
+      runAfter:
+        - overlay-test-scripts
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/build-definitions.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: task/eaas-provision-space/0.1/eaas-provision-space.yaml
+      params:
+        - name: ownerName
+          value: $(context.pipelineRun.name)
+        - name: ownerUid
+          value: $(context.pipelineRun.uid)
+
+    - name: provision-cluster
+      runAfter:
+        - provision-eaas-space
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/provision-cluster.yaml
+      params:
+        - name: eaasSpaceSecretRef
+          value: $(tasks.provision-eaas-space.results.secretRef)
+        - name: catalogSourceUrl
+          value: $(tasks.parse-metadata.results.source-git-url)
+        - name: catalogSourceRevision
+          value: $(tasks.parse-metadata.results.source-git-revision)
+        - name: catalogTaskUrl
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalogTaskRevision
+          value: $(params.CATALOG_TASK_REVISION)
+        - name: openshiftVersion
+          value: $(params.OPENSHIFT_VERSION)
+        - name: fipsEnabled
+          value: "false"
+        - name: clusterInstanceType
+          value: $(params.CLUSTER_INSTANCE_TYPE)
+
+    - name: install-operator
+      runAfter:
+        - provision-cluster
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/install-operator.yaml
+      params:
+        - name: testImageUrl
+          value: "$(tasks.overlay-test-scripts.results.image-url)"
+        - name: eaasSpaceSecretRef
+          value: $(tasks.provision-eaas-space.results.secretRef)
+        - name: clusterName
+          value: "$(tasks.provision-cluster.results.clusterName)"
+        - name: pipelineRunName
+          value: "$(context.pipelineRun.name)"
+        - name: openshiftVersion
+          value: "$(params.OPENSHIFT_VERSION)"
+        - name: installTimeout
+          value: "$(params.INSTALL_TIMEOUT)"
+        - name: operatorChannel
+          value: "$(params.OPERATOR_CHANNEL)"
+        - name: operatorVersion
+          value: "$(params.OPERATOR_VERSION)"
+
+    - name: test-dast
+      timeout: "1h30m"
+      runAfter:
+        - install-operator
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/test-dast.yaml
+      params:
+        - name: testImageUrl
+          value: "$(tasks.overlay-test-scripts.results.image-url)"
+        - name: eaasSpaceSecretRef
+          value: $(tasks.provision-eaas-space.results.secretRef)
+        - name: clusterName
+          value: "$(tasks.provision-cluster.results.clusterName)"
+        - name: pipelineRunName
+          value: "$(context.pipelineRun.name)"

@@ -1,0 +1,66 @@
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-catalog-argocd-e2e
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: "true"
+spec:
+  application: catalog-4-20
+  contexts:
+    - description: execute on component build
+      name: component_catalog-4-20
+  params:
+    - name: TEST_IMAGE_URL
+      value: quay.io/devtools_gitops/test_image:konflux_v1.21.0
+    - name: OPENSHIFT_VERSION
+      value: "4.20"
+    - name: OPERATOR_CHANNEL
+      value: latest
+    - name: GATE_LABEL
+      value: rc-argocd-check
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+      - name: url
+        value: https://github.com/rh-gitops-midstream/catalog
+      - name: revision
+        value: konflux-integration
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/catalog-argocd-e2e.yaml
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-catalog-argocd-e2e-fips
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: "true"
+spec:
+  application: catalog-4-20
+  contexts:
+    - description: execute on component build
+      name: component_catalog-4-20
+  params:
+    - name: TEST_IMAGE_URL
+      value: quay.io/devtools_gitops/test_image:konflux_v1.21.0
+    - name: OPENSHIFT_VERSION
+      value: "4.20"
+    - name: OPERATOR_CHANNEL
+      value: latest
+    - name: FIPS_ENABLED
+      value: "true"
+    - name: GATE_LABEL
+      value: rc-argocd-check
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+      - name: url
+        value: https://github.com/rh-gitops-midstream/catalog
+      - name: revision
+        value: konflux-integration
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/catalog-argocd-e2e.yaml

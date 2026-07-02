@@ -1,0 +1,101 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: StepAction
+metadata:
+  name: check-gate-labels
+spec:
+  description: |
+    Checks whether all required gate labels are present on the GitHub PR
+    associated with the triggering commit.
+
+    GATE_LABELS is a comma-separated list of label names (e.g.
+    "rc-sanity-check,channel-1.19"). All listed labels must be present
+    for the step to emit proceed=true.
+
+    Push events (no PR found for the commit) always proceed regardless
+    of labels. An empty GATE_LABELS value also always proceeds.
+  params:
+    - name: gate-labels
+      type: string
+      description: >
+        Comma-separated list of PR labels that must ALL be present to
+        proceed. Empty string means no gating (always proceed).
+    - name: source-git-url
+      type: string
+      description: Source repository URL (used to derive the GitHub repo slug).
+    - name: source-git-revision
+      type: string
+      description: Commit SHA used to look up the associated pull request.
+  results:
+    - name: proceed
+      description: "true if tests should run, false to skip"
+  image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+  env:
+    - name: GATE_LABELS
+      value: $(params.gate-labels)
+    - name: SOURCE_GIT_URL
+      value: $(params.source-git-url)
+    - name: SOURCE_GIT_REVISION
+      value: $(params.source-git-revision)
+  script: |
+    #!/bin/sh
+    set -eu
+
+    PROCEED=true
+
+    if [ -z "${GATE_LABELS}" ]; then
+      echo "No gate labels configured, proceeding"
+      echo -n "${PROCEED}" > $(step.results.proceed.path)
+      exit 0
+    fi
+
+    echo "Gate labels required: ${GATE_LABELS}"
+
+    REPO_SLUG=""
+    if [ -n "${SOURCE_GIT_URL}" ]; then
+      REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
+    fi
+
+    PR_NUMBER=""
+    if [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
+      echo "Looking up PRs for commit ${SOURCE_GIT_REVISION}..."
+      COMMIT_PRS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
+      if [ -n "${COMMIT_PRS}" ] && echo "${COMMIT_PRS}" | grep -q '"number"'; then
+        PR_NUMBER=$(echo "${COMMIT_PRS}" | grep -o '"number": *[0-9]*' | head -1 | grep -o '[0-9]*' || true)
+      fi
+    fi
+
+    if [ -z "${PR_NUMBER}" ]; then
+      echo "No PR found for this commit, proceeding (push event)"
+      echo -n "${PROCEED}" > $(step.results.proceed.path)
+      exit 0
+    fi
+
+    echo "Found PR #${PR_NUMBER}, checking labels..."
+    LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
+      | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
+    echo "PR labels: ${LABELS:-none}"
+
+    # All required labels must be present
+    OLD_IFS="$IFS"
+    IFS=','
+    for required in ${GATE_LABELS}; do
+      IFS="$OLD_IFS"
+      required=$(echo "$required" | tr -d ' ')
+      if [ -z "$required" ]; then
+        IFS=','
+        continue
+      fi
+      if echo "${LABELS}" | grep -qx "$required"; then
+        echo "Label '$required' found"
+      else
+        echo "Label '$required' NOT found, skipping tests"
+        PROCEED=false
+        break
+      fi
+      IFS=','
+    done
+    IFS="$OLD_IFS"
+
+    echo -n "${PROCEED}" > $(step.results.proceed.path)
+    echo "Result: proceed=${PROCEED}"

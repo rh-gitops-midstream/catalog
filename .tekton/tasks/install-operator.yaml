@@ -1,0 +1,156 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: install-operator
+spec:
+  description: |
+    Installs the GitOps operator from the catalog on an ephemeral cluster,
+    optionally performs an upgrade, and reports the installed CSV.
+  params:
+    - name: testImageUrl
+      type: string
+    - name: eaasSpaceSecretRef
+      type: string
+    - name: clusterName
+      type: string
+    - name: pipelineRunName
+      type: string
+    - name: openshiftVersion
+      type: string
+    - name: namespace
+      type: string
+      default: "openshift-gitops-operator"
+    - name: installTimeout
+      type: string
+      default: "25m"
+    - name: operatorChannel
+      type: string
+    - name: operatorVersion
+      type: string
+      default: ""
+    - name: autoUpgrade
+      type: string
+      default: "false"
+    - name: upgrade
+      type: string
+      default: "false"
+    - name: upgradeToChannel
+      type: string
+      default: "latest"
+    - name: quayRepo
+      type: string
+      default: "quay.io/devtools_gitops/test_image"
+  results:
+    - name: installedCSV
+      value: "$(steps.get-installed-version.results.installedCSV)"
+  volumes:
+    - name: credentials
+      emptyDir: {}
+    - name: quay-credentials
+      secret:
+        secretName: gitops-test-runner-image-push
+    - name: quay-pull-credentials
+      secret:
+        secretName: gitops-quay-pull-secret-merged
+  steps:
+    - name: get-kubeconfig
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/build-definitions.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: stepactions/eaas-get-ephemeral-cluster-credentials/0.1/eaas-get-ephemeral-cluster-credentials.yaml
+      params:
+        - name: eaasSpaceSecretRef
+          value: $(params.eaasSpaceSecretRef)
+        - name: clusterName
+          value: $(params.clusterName)
+        - name: credentials
+          value: credentials
+    - name: install-operator
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+        - name: quay-credentials
+          mountPath: /quay-credentials
+          readOnly: true
+        - name: quay-pull-credentials
+          mountPath: /quay-pull-credentials
+          readOnly: true
+      env:
+        - name: OPENSHIFT_VERSION
+          value: $(params.openshiftVersion)
+        - name: NAMESPACE
+          value: $(params.namespace)
+        - name: INSTALL_TIMEOUT
+          value: $(params.installTimeout)
+        - name: OPERATOR_CHANNEL
+          value: $(params.operatorChannel)
+        - name: OPERATOR_VERSION
+          value: $(params.operatorVersion)
+        - name: AUTO_UPGRADE
+          value: $(params.autoUpgrade)
+        - name: KUBECONFIG
+          value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+        - name: TASK_LOG_NAME
+          value: "install-operator"
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      command:
+        - /bin/bash
+        - -c
+        - |
+          /usr/local/bin/print-cluster-login-info.sh
+          /usr/local/bin/run-and-save-logs.sh /usr/local/bin/install-operator.sh
+    - name: upgrade-operator
+      onError: continue
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+        - name: quay-credentials
+          mountPath: /quay-credentials
+          readOnly: true
+      env:
+        - name: NAMESPACE
+          value: $(params.namespace)
+        - name: INSTALL_TIMEOUT
+          value: $(params.installTimeout)
+        - name: UPGRADE
+          value: $(params.upgrade)
+        - name: UPGRADE_TO_CHANNEL
+          value: $(params.upgradeToChannel)
+        - name: KUBECONFIG
+          value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+        - name: TASK_LOG_NAME
+          value: "upgrade-operator"
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      command:
+        - /usr/local/bin/run-and-save-logs.sh
+        - /usr/local/bin/upgrade-operator.sh
+    - name: get-installed-version
+      image: $(params.testImageUrl)
+      results:
+        - name: installedCSV
+      volumeMounts:
+        - name: credentials
+          mountPath: /credentials
+      env:
+        - name: KUBECONFIG
+          value: "/credentials/$(steps.get-kubeconfig.results.kubeconfig)"
+        - name: NAMESPACE
+          value: $(params.namespace)
+        - name: RESULT_PATH
+          value: "$(step.results.installedCSV.path)"
+      command:
+        - /usr/local/bin/get-installed-version.sh
