@@ -176,6 +176,11 @@ spec:
                 value: $(params.source-git-url)
               - name: source-git-revision
                 value: $(params.source-git-revision)
+          - name: propagate-result
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            script: |
+              #!/bin/sh
+              cat /tekton/steps/check/results/proceed > $(results.proceed.path)
       params:
         - name: gate-labels
           value: $(params.GATE_LABEL)
