@@ -149,7 +149,7 @@ spec:
             image: registry.access.redhat.com/ubi9/ubi-minimal:latest
             script: |
               #!/bin/sh
-              cat /tekton/steps/check/results/proceed > $(results.proceed.path)
+              cat /tekton/steps/step-check/results/proceed > $(results.proceed.path)
       params:
         - name: gate-labels
           value: $(params.GATE_LABEL)
