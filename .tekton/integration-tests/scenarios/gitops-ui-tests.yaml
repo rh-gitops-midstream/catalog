@@ -20,6 +20,10 @@ spec:
       value: "4.20"
     - name: OPERATOR_CHANNEL
       value: latest
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-latest
     - name: GATE_LABEL
       value: rc-ui-check
   resolverRef:

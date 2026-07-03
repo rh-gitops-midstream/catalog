@@ -20,6 +20,10 @@ spec:
       value: "4.20"
     - name: OPERATOR_CHANNEL
       value: latest
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-latest
     - name: GATE_LABEL
       value: rc-sanity-check
   resolverRef:
@@ -56,6 +60,10 @@ spec:
       value: latest
     - name: FIPS_ENABLED
       value: "true"
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-latest
     - name: GATE_LABEL
       value: rc-sanity-check
   resolverRef:
@@ -94,6 +102,10 @@ spec:
       value: latest
     - name: UPGRADE
       value: "true"
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-latest
     - name: GATE_LABEL
       value: rc-sanity-check
   resolverRef:
@@ -134,6 +146,10 @@ spec:
       value: "true"
     - name: FIPS_ENABLED
       value: "true"
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-latest
     - name: GATE_LABEL
       value: rc-sanity-check
   resolverRef:

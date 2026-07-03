@@ -14,8 +14,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sanity-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -48,8 +50,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sanity-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -84,8 +88,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sanity-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -122,8 +128,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sanity-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -162,8 +170,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sequential-tests-shard1.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -196,8 +206,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sequential-tests-shard1.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -234,8 +246,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-sequential-tests-shard2.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -268,8 +282,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-parallel-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -302,8 +318,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-parallel-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -338,8 +356,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-parallel-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -376,8 +396,10 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-rollouts-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.19
+      value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
@@ -410,6 +432,8 @@ spec:
   params:
     - name: TEST_SCRIPT
       value: run-ui-e2e-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
       value: konflux-integration-1.19
     - name: OPENSHIFT_VERSION
