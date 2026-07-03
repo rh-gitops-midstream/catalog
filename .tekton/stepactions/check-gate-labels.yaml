@@ -103,9 +103,10 @@ spec:
     echo "PR labels: ${LABELS:-none}"
 
     # All required labels must be present.
-    # Use a here-string redirect with IFS scoped to the read builtin so that
-    # IFS is never left in a modified state after a break or continue.
-    while IFS=',' read -r required; do
+    # Convert the comma-separated list to newlines so each label becomes its
+    # own input line; with a single 'read' variable, IFS splitting does not
+    # distribute across commas — the whole string would land in $required.
+    while IFS= read -r required; do
       required=$(echo "$required" | tr -d ' ')
       if [ -z "$required" ]; then
         continue
@@ -117,7 +118,7 @@ spec:
         PROCEED=false
         break
       fi
-    done <<< "${GATE_LABELS}"
+    done <<< "$(printf '%s' "${GATE_LABELS}" | tr ',' '\n')"
 
     echo -n "${PROCEED}" > $(step.results.proceed.path)
     echo "Result: proceed=${PROCEED}"
