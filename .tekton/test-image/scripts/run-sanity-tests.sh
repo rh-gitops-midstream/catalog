@@ -410,24 +410,38 @@ echo "=========================================="
 echo "Sanity Test Summary"
 echo "=========================================="
 
-cat > "${RESULTS_DIR}/sanity-results.json" <<ENDJSON
-{
-  "csv": "${CSV_NAME:-unknown}",
-  "csvPhase": "${CSV_PHASE:-unknown}",
-  "relatedImages": ${RELATED_COUNT:-0},
-  "versions": {
-    "kustomize": "${versions[kustomize]}",
-    "helm": "${versions[helm]}",
-    "argocd": "${versions[argocd]}",
-    "dex": "${versions[dex]}",
-    "redis": "${versions[redis]}"
-  },
-  "loginApi": "${LOGIN_RESPONSE:-untested}",
-  "dexEndpoint": "${DEX_RESPONSE:-untested}",
-  "appSyncSmoke": ${SYNC_OK},
-  "failures": ${failures}
+CSV_NAME_VAL="${CSV_NAME:-unknown}" \
+CSV_PHASE_VAL="${CSV_PHASE:-unknown}" \
+RELATED_COUNT_VAL="${RELATED_COUNT:-0}" \
+VERSION_KUSTOMIZE="${versions[kustomize]}" \
+VERSION_HELM="${versions[helm]}" \
+VERSION_ARGOCD="${versions[argocd]}" \
+VERSION_DEX="${versions[dex]}" \
+VERSION_REDIS="${versions[redis]}" \
+LOGIN_RESPONSE_VAL="${LOGIN_RESPONSE:-untested}" \
+DEX_RESPONSE_VAL="${DEX_RESPONSE:-untested}" \
+SYNC_OK_VAL="${SYNC_OK}" \
+FAILURES_VAL="${failures}" \
+python3 -c "
+import json, os
+data = {
+    'csv': os.environ['CSV_NAME_VAL'],
+    'csvPhase': os.environ['CSV_PHASE_VAL'],
+    'relatedImages': int(os.environ['RELATED_COUNT_VAL']),
+    'versions': {
+        'kustomize': os.environ['VERSION_KUSTOMIZE'],
+        'helm':      os.environ['VERSION_HELM'],
+        'argocd':    os.environ['VERSION_ARGOCD'],
+        'dex':       os.environ['VERSION_DEX'],
+        'redis':     os.environ['VERSION_REDIS'],
+    },
+    'loginApi':    os.environ['LOGIN_RESPONSE_VAL'],
+    'dexEndpoint': os.environ['DEX_RESPONSE_VAL'],
+    'appSyncSmoke': os.environ['SYNC_OK_VAL'] == 'true',
+    'failures':    int(os.environ['FAILURES_VAL']),
 }
-ENDJSON
+print(json.dumps(data, indent=2))
+" > "${RESULTS_DIR}/sanity-results.json"
 
 if [[ "$failures" -eq 0 ]]; then
   echo "All sanity checks PASSED"

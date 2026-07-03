@@ -14,6 +14,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 from collections import defaultdict
 
@@ -510,70 +511,92 @@ def main():
         return
 
     all_groups = group_records(records)
-    clean_generated_dirs(repo_dir)
 
-    # all_groups key: (product, version, ocp, variant, script_label)
-    by_product = defaultdict(dict)
-    for (product, version, ocp, variant, script_label), recs in all_groups.items():
-        by_product[product][(version, ocp, variant, script_label)] = recs
+    # Wrap the destructive clean + full render in a try/except so that if
+    # anything goes wrong after the directories are deleted (mid-render failure,
+    # unexpected exception, etc.) we restore the repo to a known-good state via
+    # git before propagating the error.  This prevents a corrupt partial state
+    # from being committed and pushed.
+    try:
+        clean_generated_dirs(repo_dir)
 
-    total_groups = 0
-    for product, prod_groups_full in by_product.items():
+        # all_groups key: (product, version, ocp, variant, script_label)
+        by_product = defaultdict(dict)
+        for (product, version, ocp, variant, script_label), recs in all_groups.items():
+            by_product[product][(version, ocp, variant, script_label)] = recs
 
-        # ── Leaf READMEs ──────────────────────────────────────────────────────
-        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
-            leaf_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}", variant, script_label)
-            os.makedirs(leaf_dir, exist_ok=True)
-            with open(os.path.join(leaf_dir, "README.md"), "w") as f:
-                f.write(render_leaf_readme(recs, product, version, ocp, variant, script_label))
-            total_groups += 1
+        total_groups = 0
+        for product, prod_groups_full in by_product.items():
 
-        # ── OCP-level READMEs ─────────────────────────────────────────────────
-        ocp_buckets = defaultdict(dict)  # (version, ocp) -> {(variant, script_label): records}
-        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
-            ocp_buckets[(version, ocp)][(variant, script_label)] = recs
-        for (version, ocp), cell_map in ocp_buckets.items():
-            ocp_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}")
-            os.makedirs(ocp_dir, exist_ok=True)
-            with open(os.path.join(ocp_dir, "README.md"), "w") as f:
-                f.write(render_ocp_readme(cell_map, product, version, ocp, records))
+            # ── Leaf READMEs ──────────────────────────────────────────────────────
+            for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+                leaf_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}", variant, script_label)
+                os.makedirs(leaf_dir, exist_ok=True)
+                with open(os.path.join(leaf_dir, "README.md"), "w") as f:
+                    f.write(render_leaf_readme(recs, product, version, ocp, variant, script_label))
+                total_groups += 1
 
-        # ── Version-level READMEs ────────────────────────────────────────────
-        ver_buckets = defaultdict(dict)  # version -> {(ocp, variant, script_label): records}
-        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
-            ver_buckets[version][(ocp, variant, script_label)] = recs
-        for version, ocp_var_script_map in ver_buckets.items():
-            ver_dir = os.path.join(repo_dir, product, version)
-            os.makedirs(ver_dir, exist_ok=True)
-            with open(os.path.join(ver_dir, "README.md"), "w") as f:
-                f.write(render_version_readme(ocp_var_script_map, product, version))
+            # ── OCP-level READMEs ─────────────────────────────────────────────────
+            ocp_buckets = defaultdict(dict)  # (version, ocp) -> {(variant, script_label): records}
+            for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+                ocp_buckets[(version, ocp)][(variant, script_label)] = recs
+            for (version, ocp), cell_map in ocp_buckets.items():
+                ocp_dir = os.path.join(repo_dir, product, version, f"ocp-{ocp}")
+                os.makedirs(ocp_dir, exist_ok=True)
+                with open(os.path.join(ocp_dir, "README.md"), "w") as f:
+                    f.write(render_ocp_readme(cell_map, product, version, ocp, records))
 
-        # ── Product-level README ─────────────────────────────────────────────
-        # Collapse across script_label: worst status per (version, ocp, variant)
-        prod_groups_collapsed = defaultdict(list)
-        for (version, ocp, variant, script_label), recs in prod_groups_full.items():
-            prod_groups_collapsed[(version, ocp, variant)].extend(recs)
-        prod_groups_final = {}
-        for key, recs in prod_groups_collapsed.items():
+            # ── Version-level READMEs ────────────────────────────────────────────
+            ver_buckets = defaultdict(dict)  # version -> {(ocp, variant, script_label): records}
+            for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+                ver_buckets[version][(ocp, variant, script_label)] = recs
+            for version, ocp_var_script_map in ver_buckets.items():
+                ver_dir = os.path.join(repo_dir, product, version)
+                os.makedirs(ver_dir, exist_ok=True)
+                with open(os.path.join(ver_dir, "README.md"), "w") as f:
+                    f.write(render_version_readme(ocp_var_script_map, product, version))
+
+            # ── Product-level README ─────────────────────────────────────────────
+            # Collapse across script_label: worst status per (version, ocp, variant)
+            prod_groups_collapsed = defaultdict(list)
+            for (version, ocp, variant, script_label), recs in prod_groups_full.items():
+                prod_groups_collapsed[(version, ocp, variant)].extend(recs)
+            prod_groups_final = {}
+            for key, recs in prod_groups_collapsed.items():
+                recs.sort(key=lambda r: (r.get("status") != "Succeeded", r.get("timestamp", "")), reverse=True)
+                prod_groups_final[key] = recs
+            prod_dir = os.path.join(repo_dir, product)
+            os.makedirs(prod_dir, exist_ok=True)
+            with open(os.path.join(prod_dir, "README.md"), "w") as f:
+                f.write(render_product_readme(prod_groups_final, product))
+
+        # ── Top-level README ──────────────────────────────────────────────────
+        # Build collapsed groups: (product, version, ocp, variant) -> worst-status records
+        top_groups_raw = defaultdict(list)
+        for (product, version, ocp, variant, script_label), recs in all_groups.items():
+            top_groups_raw[(product, version, ocp, variant)].extend(recs)
+        top_groups = {}
+        for key, recs in top_groups_raw.items():
             recs.sort(key=lambda r: (r.get("status") != "Succeeded", r.get("timestamp", "")), reverse=True)
-            prod_groups_final[key] = recs
-        prod_dir = os.path.join(repo_dir, product)
-        os.makedirs(prod_dir, exist_ok=True)
-        with open(os.path.join(prod_dir, "README.md"), "w") as f:
-            f.write(render_product_readme(prod_groups_final, product))
+            top_groups[key] = recs
 
-    # ── Top-level README ──────────────────────────────────────────────────────
-    # Build collapsed groups: (product, version, ocp, variant) -> worst-status records
-    top_groups_raw = defaultdict(list)
-    for (product, version, ocp, variant, script_label), recs in all_groups.items():
-        top_groups_raw[(product, version, ocp, variant)].extend(recs)
-    top_groups = {}
-    for key, recs in top_groups_raw.items():
-        recs.sort(key=lambda r: (r.get("status") != "Succeeded", r.get("timestamp", "")), reverse=True)
-        top_groups[key] = recs
+        with open(os.path.join(repo_dir, "README.md"), "w") as f:
+            f.write(render_top_readme(top_groups))
 
-    with open(os.path.join(repo_dir, "README.md"), "w") as f:
-        f.write(render_top_readme(top_groups))
+    except Exception:
+        # Rendering failed after the product directories were already deleted.
+        # Restore the repo to its last committed state so nothing broken gets pushed.
+        print("ERROR: rendering failed; restoring repo from git...", file=sys.stderr)
+        try:
+            subprocess.run(
+                ["git", "checkout", "--", "."],
+                cwd=repo_dir,
+                check=True,
+            )
+            print("Repo restored via 'git checkout -- .'", file=sys.stderr)
+        except subprocess.CalledProcessError as restore_err:
+            print(f"WARNING: git restore also failed: {restore_err}", file=sys.stderr)
+        raise
 
     print(f"Rendered {total_groups} result groups from {len(records)} records")
 

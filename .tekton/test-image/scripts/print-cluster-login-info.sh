@@ -7,6 +7,6 @@ PASS_FILE=$(find /credentials -name "*password" -type f 2>/dev/null | head -1)
 if [[ -n "$API_SERVER" && -n "$PASS_FILE" ]]; then
   echo "========================================"
   echo "DEBUG: To log in to the test cluster:"
-  echo "  oc login $API_SERVER -u kubeadmin -p $(cat "$PASS_FILE") --insecure-skip-tls-verify"
+  echo "  oc login $API_SERVER -u kubeadmin -p <REDACTED> --insecure-skip-tls-verify"
   echo "========================================"
 fi

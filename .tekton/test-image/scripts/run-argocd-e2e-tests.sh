@@ -107,6 +107,8 @@ if [[ "${TAG}" =~ ^v2\.14 ]]; then
   PREBUILT_DIR="${PREBUILT_BASE}/v2.14"
   echo "  Looking for pre-built v2.14 tests at: ${PREBUILT_DIR}"
 fi
+# TODO: add pre-built entry for v3.x (v3.4 for channel 1.21, v3.3 for 1.20, v3.1 for 1.19)
+# Currently all v3.x runs fall through to go test -c compilation (~10-15 min penalty)
 
 # Verify pre-built binaries exist and match target architecture
 if [[ -n "${PREBUILT_DIR}" ]]; then
@@ -283,7 +285,8 @@ spec:
   serviceAccountName: default
   containers:
   - name: git-server
-    image: bitnami/git:latest
+    # TODO: replace bitnami/git:latest with a pinned internal image (Docker Hub rate-limited)
+    image: bitnami/git:latest  # FIXME: unpinned Docker Hub image
     command: ["/bin/sh", "-c"]
     args:
       - |
@@ -398,6 +401,12 @@ export KUBECONFIG="${KUBECONFIG:-${HOME}/.kube/config}"
 cp "$KUBECONFIG" "${RESULTS_DIR}/kubeconfig" 2>/dev/null || true
 
 # Run tests
+# NOTE: go-junit-report is not installed in this image, so no JUnit XML is produced here.
+# The dashboard will show no per-test counts for ArgoCD e2e results until go-junit-report
+# is added to the Dockerfile (e.g. RUN go install github.com/jstemmer/go-junit-report/v2@latest)
+# and the invocation is changed to:
+#   ./../../e2e.test -test.v ... 2>&1 | tee "${RESULTS_DIR}/test.log" \
+#     | go-junit-report -set-exit-code > "${RESULTS_DIR}/junit-results.xml" || TEST_EXIT_CODE=$?
 ./../../e2e.test -test.v -test.timeout 60m \
   ${ARGOCD_E2E_SKIP:+-test.skip "$ARGOCD_E2E_SKIP"} 2>&1 | tee "${RESULTS_DIR}/test.log"
 

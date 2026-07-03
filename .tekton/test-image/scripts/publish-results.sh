@@ -77,13 +77,19 @@ git config user.name "Konflux Pipeline"
 git config user.email "noreply@konflux-ci.dev"
 git commit -m "Add results: ${PIPELINE_RUN_NAME:-unknown}"
 
+PUBLISHED=false
 for attempt in 1 2 3; do
   if git push; then
     echo "Results published successfully"
+    PUBLISHED=true
     break
   fi
   echo "Push failed (attempt ${attempt}/3), rebasing and retrying..."
-  git pull --rebase
+  git pull --rebase || true
 done
+if [[ "$PUBLISHED" != "true" ]]; then
+  echo "ERROR: Failed to publish results after 3 attempts"
+  exit 1
+fi
 
 rm -rf "${REPO_DIR}"

@@ -63,20 +63,24 @@ if [ -n "$AGENT_IMAGE" ]; then
   AGENT=$(echo "$AGENT_IMAGE" | grep -oP ':\K.*' || true)
 fi
 
-python3 -c "
+BUILD="${BUILD}" ARGOCD="${ARGOCD}" DEX="${DEX}" REDIS="${REDIS}" \
+  KUSTOMIZE="${KUSTOMIZE}" HELM="${HELM}" GIT_LFS="${GIT_LFS}" \
+  AGENT="${AGENT}" OUTPUT="${OUTPUT}" python3 <<'EOF'
 import json
+import os
 data = {
-    'build': '''${BUILD}''',
-    'argocd': '''${ARGOCD}''',
-    'dex': '''${DEX}''',
-    'redis': '''${REDIS}''',
-    'kustomize': '''${KUSTOMIZE}''',
-    'helm': '''${HELM}''',
-    'gitLfs': '''${GIT_LFS}''',
-    'agent': '''${AGENT}''',
+    'build':     os.environ.get('BUILD', ''),
+    'argocd':    os.environ.get('ARGOCD', ''),
+    'dex':       os.environ.get('DEX', ''),
+    'redis':     os.environ.get('REDIS', ''),
+    'kustomize': os.environ.get('KUSTOMIZE', ''),
+    'helm':      os.environ.get('HELM', ''),
+    'gitLfs':    os.environ.get('GIT_LFS', ''),
+    'agent':     os.environ.get('AGENT', ''),
 }
 data = {k: v for k, v in data.items() if v}
-with open('''${OUTPUT}''', 'w') as f:
+output = os.environ.get('OUTPUT', '/shared/build-metadata.json')
+with open(output, 'w') as f:
     json.dump(data, f, indent=2)
 print('Build metadata:', json.dumps(data, separators=(', ', ': ')))
-"
+EOF

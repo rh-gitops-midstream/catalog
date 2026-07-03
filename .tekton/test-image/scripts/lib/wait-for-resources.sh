@@ -169,7 +169,6 @@ wait_for_csv() {
     local max_poll_attempts=${4:-30}
 
     echo "Waiting for ClusterServiceVersion from subscription $subscription_name..."
-    sleep 30
 
     CSV_NAME=""
     for attempt in $(seq 1 "$max_poll_attempts"); do

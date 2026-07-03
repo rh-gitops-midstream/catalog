@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # Environment variables expected:
 # - UPGRADE (true/false)
@@ -7,6 +7,8 @@ set -e
 # - NAMESPACE (default: openshift-gitops-operator)
 # - INSTALL_TIMEOUT (e.g., "25m")
 # - KUBECONFIG
+
+NAMESPACE="${NAMESPACE:-openshift-gitops-operator}"
 
 # shellcheck source=./lib/wait-for-resources.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib/wait-for-resources.sh"

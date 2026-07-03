@@ -27,17 +27,18 @@ spec:
       value: $(params.mirrorSetPath)
     - name: OUTPUT_PATH
       value: $(params.outputPath)
-  image: docker.io/python:3-alpine
+  image: registry.access.redhat.com/ubi9/python-311:latest
   script: |
     #!/bin/sh
     set -e
-    apk add --no-cache git >/dev/null 2>&1
     pip install pyyaml --quiet >/dev/null 2>&1
 
     WORK=$(mktemp -d)
-    git clone "$GIT_URL" "$WORK/repo"
+    git clone --depth=1 "$GIT_URL" "$WORK/repo"
     cd "$WORK/repo"
-    git checkout "$GIT_REVISION"
+    # GIT_REVISION may be a branch (already present) or a specific commit SHA.
+    # Try a shallow fetch of the exact revision first; fall back to a local checkout.
+    git fetch --depth=1 origin "$GIT_REVISION" 2>/dev/null && git checkout FETCH_HEAD || git checkout "$GIT_REVISION"
 
     python3 -c "
     import yaml, json, sys

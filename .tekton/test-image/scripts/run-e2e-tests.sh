@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -exo pipefail
 
 # Environment variables expected:
 # - TEST_REPO_URL (optional, defaults to the pre-baked repo remote)
@@ -152,7 +152,7 @@ fi
 cd /testsuites/gitops-operator/ || exit 1
 TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/redhat-developer/gitops-operator.git}"
 git remote set-url origin "${TEST_REPO_URL}" 2>/dev/null || git remote add origin "${TEST_REPO_URL}"
-git fetch origin
+git fetch --depth=1 origin "${BRANCH}"
 git clean -fd
 git checkout -B "${BRANCH}" "origin/${BRANCH}"
 

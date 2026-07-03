@@ -26,6 +26,14 @@ spec:
     - name: source-git-revision
       type: string
       description: Commit SHA used to look up the associated pull request.
+    - name: github-token
+      type: string
+      description: >
+        GitHub personal access token (or app token) used to authenticate
+        GitHub API requests. Prevents anonymous rate-limiting (60 req/hour
+        per IP) in shared Konflux environments. Pass an empty string to
+        fall back to unauthenticated requests.
+      default: ""
   results:
     - name: proceed
       description: "true if tests should run, false to skip"
@@ -37,6 +45,8 @@ spec:
       value: $(params.source-git-url)
     - name: SOURCE_GIT_REVISION
       value: $(params.source-git-revision)
+    - name: GITHUB_TOKEN
+      value: $(params.github-token)
   script: |
     #!/bin/sh
     set -eu
@@ -51,6 +61,13 @@ spec:
 
     echo "Gate labels required: ${GATE_LABELS}"
 
+    # Build Authorization header for GitHub API calls; fall back to no header
+    # when no token is provided so the stepaction still works unauthenticated.
+    GITHUB_AUTH_HEADER=""
+    if [ -n "${GITHUB_TOKEN}" ]; then
+      GITHUB_AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
+    fi
+
     REPO_SLUG=""
     if [ -n "${SOURCE_GIT_URL}" ]; then
       REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
@@ -59,7 +76,11 @@ spec:
     PR_NUMBER=""
     if [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
       echo "Looking up PRs for commit ${SOURCE_GIT_REVISION}..."
-      COMMIT_PRS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
+      if [ -n "${GITHUB_AUTH_HEADER}" ]; then
+        COMMIT_PRS=$(curl -sf -H "${GITHUB_AUTH_HEADER}" "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
+      else
+        COMMIT_PRS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
+      fi
       if [ -n "${COMMIT_PRS}" ] && echo "${COMMIT_PRS}" | grep -q '"number"'; then
         PR_NUMBER=$(echo "${COMMIT_PRS}" | grep -o '"number": *[0-9]*' | head -1 | grep -o '[0-9]*' || true)
       fi
@@ -72,18 +93,21 @@ spec:
     fi
 
     echo "Found PR #${PR_NUMBER}, checking labels..."
-    LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
-      | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
+    if [ -n "${GITHUB_AUTH_HEADER}" ]; then
+      LABELS=$(curl -sf -H "${GITHUB_AUTH_HEADER}" "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
+        | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
+    else
+      LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
+        | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
+    fi
     echo "PR labels: ${LABELS:-none}"
 
-    # All required labels must be present
-    OLD_IFS="$IFS"
-    IFS=','
-    for required in ${GATE_LABELS}; do
-      IFS="$OLD_IFS"
+    # All required labels must be present.
+    # Use a here-string redirect with IFS scoped to the read builtin so that
+    # IFS is never left in a modified state after a break or continue.
+    while IFS=',' read -r required; do
       required=$(echo "$required" | tr -d ' ')
       if [ -z "$required" ]; then
-        IFS=','
         continue
       fi
       if echo "${LABELS}" | grep -qx "$required"; then
@@ -93,9 +117,7 @@ spec:
         PROCEED=false
         break
       fi
-      IFS=','
-    done
-    IFS="$OLD_IFS"
+    done <<< "${GATE_LABELS}"
 
     echo -n "${PROCEED}" > $(step.results.proceed.path)
     echo "Result: proceed=${PROCEED}"

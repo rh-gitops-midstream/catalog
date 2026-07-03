@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -u -o pipefail
+set -euo pipefail
 
 # Playwright UI E2E tests for the gitops-operator.
 # Runs browser-based tests that verify ArgoCD login via OpenShift SSO.
@@ -57,7 +57,7 @@ elif command -v apt-get &>/dev/null; then
 fi
 
 echo "Installing Playwright Chromium..."
-npx playwright install chromium 2>&1
+npx playwright install chromium 2>&1 || true
 
 # --- Discover cluster URLs ---
 

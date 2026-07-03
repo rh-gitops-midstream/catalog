@@ -19,14 +19,14 @@ import urllib.request
 from datetime import datetime
 
 
-def run_cmd(cmd, timeout=30, verbose=False):
-    """Run a shell command and return stdout, or None on failure."""
+def run_cmd(args, timeout=30, verbose=False):
+    """Run a command (as an argument list) and return stdout, or None on failure."""
     try:
         result = subprocess.run(
-            cmd, shell=True, capture_output=True, text=True, timeout=timeout
+            args, shell=False, capture_output=True, text=True, timeout=timeout
         )
         if verbose or result.returncode != 0:
-            logging.info(f"CMD: {cmd}")
+            logging.info(f"CMD: {args}")
             logging.info(f"  RC: {result.returncode}")
             if result.stdout:
                 logging.info(f"  STDOUT: {result.stdout[:500]}")
@@ -34,7 +34,7 @@ def run_cmd(cmd, timeout=30, verbose=False):
                 logging.info(f"  STDERR: {result.stderr[:500]}")
         return result.stdout.strip() if result.returncode == 0 else None
     except Exception as e:
-        logging.error(f"CMD exception: {cmd}: {e}")
+        logging.error(f"CMD exception: {args}: {e}")
         return None
 
 
@@ -69,7 +69,7 @@ def get_build_metadata():
 def get_task_runs(pipeline_run_name):
     """Query TaskRuns for timing, status, and result information."""
     raw = run_cmd(
-        f"oc get taskruns -l tekton.dev/pipelineRun={pipeline_run_name} -o json"
+        ["oc", "get", "taskruns", "-l", f"tekton.dev/pipelineRun={pipeline_run_name}", "-o", "json"]
     )
     if not raw:
         return {}
@@ -134,19 +134,21 @@ def get_failed_task_log_tail(quay_repo, pipeline_run_name, task_name, lines=20):
     """Pull a failed task's log artifact and return the tail."""
     ref = f"{quay_repo}:{pipeline_run_name}-task-{task_name}"
     tmpdir = f"/tmp/slack-logs-{task_name}"
-    run_cmd(f"mkdir -p {tmpdir}")
+    run_cmd(["mkdir", "-p", tmpdir])
 
-    if run_cmd(f"oras pull --no-tty -o {tmpdir} {ref} 2>/dev/null") is None:
-        run_cmd(f"rm -rf {tmpdir}")
+    if run_cmd(["oras", "pull", "--no-tty", "-o", tmpdir, ref]) is None:
+        run_cmd(["rm", "-rf", tmpdir])
         return None
 
-    log_file = run_cmd(f"find {tmpdir} -name '*.log' -type f 2>/dev/null | head -1")
+    log_file = run_cmd(["find", tmpdir, "-name", "*.log", "-type", "f"])
     if not log_file:
-        run_cmd(f"rm -rf {tmpdir}")
+        run_cmd(["rm", "-rf", tmpdir])
         return None
+    # When find returns multiple matches take only the first one
+    log_file = log_file.splitlines()[0]
 
-    tail = run_cmd(f"tail -n {lines} {log_file}")
-    run_cmd(f"rm -rf {tmpdir}")
+    tail = run_cmd(["tail", "-n", str(lines), log_file])
+    run_cmd(["rm", "-rf", tmpdir])
     return tail
 
 

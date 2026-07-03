@@ -15,7 +15,7 @@ spec:
       value: $(params.version)
     - name: RESULT_PATH
       value: $(step.results.resolvedVersion.path)
-  image: docker.io/python:3-alpine
+  image: registry.access.redhat.com/ubi9/python-311:latest
   script: |
     #!/usr/bin/env python3
     import urllib.request, json, re, os

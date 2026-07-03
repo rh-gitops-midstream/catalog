@@ -51,7 +51,7 @@ print(json.dumps(existing))
   SYNC_START=$(date +%s)
   while true; do
     DS_NAME=$(oc get daemonset -n kube-system -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' 2>/dev/null \
-      | grep -i 'pull-secret' || true)
+      | grep -i 'pull-secret' | head -1 || true)
 
     if [[ -n "$DS_NAME" ]]; then
       DESIRED=$(oc get ds "$DS_NAME" -n kube-system -o jsonpath='{.status.desiredNumberScheduled}' 2>/dev/null || echo "0")
@@ -176,6 +176,7 @@ if [[ -f "/quay-pull-credentials/.dockerconfigjson" ]]; then
     done
   ) &
   SA_PATCH_PID=$!
+  trap 'kill "${SA_PATCH_PID:-}" 2>/dev/null || true' EXIT
   echo "Background pull-secret injection started (PID: $SA_PATCH_PID)"
 fi
 
@@ -318,7 +319,7 @@ with open('/quay-pull-credentials/.dockerconfigjson') as f:
     d = json.load(f)
 for k in sorted(d.get('auths', {})):
     print(k)
-" 2>/dev/null | head -3)
+" 2>/dev/null)
   CLUSTER_SECRET=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null | base64 -d)
   MISSING=0
   while IFS= read -r repo; do
