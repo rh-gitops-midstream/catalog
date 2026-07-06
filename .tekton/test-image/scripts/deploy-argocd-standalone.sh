@@ -34,9 +34,10 @@ curl -sSL --fail "$UPSTREAM_URL" -o /tmp/argocd-upstream.yaml
 # Replace hardcoded namespace in ClusterRoleBinding subjects
 sed "s/namespace: argocd/namespace: ${NAMESPACE}/g" /tmp/argocd-upstream.yaml > /tmp/argocd-install.yaml
 
-# Apply manifests
+# Apply manifests — use server-side apply to avoid the 256KB annotation limit
+# on large CRDs like applicationsets.argoproj.io (hit with ArgoCD >= v3.x).
 echo "Applying ArgoCD manifests to namespace ${NAMESPACE}..."
-oc apply -n "$NAMESPACE" -f /tmp/argocd-install.yaml
+oc apply --server-side --force-conflicts -n "$NAMESPACE" -f /tmp/argocd-install.yaml
 
 # OpenShift-specific fixes
 echo "Applying OpenShift-specific patches..."
