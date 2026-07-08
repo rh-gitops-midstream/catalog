@@ -34,16 +34,13 @@ spec:
     - name: output-image
       value: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:on-pr-{{revision}}
     - name: image-expires-after
-      value: 5d
+      value: 10d
     - name: dockerfile
       value: Dockerfile
     - name: path-context
       value: catalog/v4.19
     - name: ocp-version
       value: "v4.19"
-    - name: build-platforms
-      value:
-      - linux/x86_64
     - name: catalog-template-path
       value: "catalog/v4.19/template.yaml"
     - name: catalog-output-path
