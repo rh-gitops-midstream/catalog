@@ -1,0 +1,4 @@
+# Tests to skip when running parallel e2e tests.
+# One regex pattern per line. Blank lines and lines starting with # are ignored.
+# These are passed to ginkgo --skip via a combined '|' regex.
+

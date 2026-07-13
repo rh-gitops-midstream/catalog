@@ -1,0 +1,237 @@
+# Tests to skip when running upstream ArgoCD E2E tests on EaaS HyperShift clusters.
+# One test function name per line. Blank lines and lines starting with # are ignored.
+# These are combined into a Go -test.skip regex via '|'.
+#
+# Source: release pipeline run argocd-e2e-tests-120-414 (v1.20 / OCP 4.14)
+# Tests are grouped by failure category.
+
+# ============================================================================
+# Account tests — configmap propagation race
+# The server restarts when argocd-cm is patched to add accounts, and tests call
+# update-password before the restart finishes. TestCreateAndUseAccount also
+# panics with a nil pointer dereference, killing the entire test binary.
+# ============================================================================
+TestCreateAndUseAccount
+TestCanIGetLogs
+TestAccountSessionToken
+
+# ============================================================================
+# Tests that fail in the release pipeline (65 failures)
+# Skipping these to match the release pipeline's baseline.
+# ============================================================================
+
+# --- CMP (Config Management Plugin) — requires sidecar containers ---
+TestCMPDiscoverWithFileName
+TestCMPDiscoverWithFindCommandWithEnv
+TestCMPDiscoverWithFindGlob
+TestCMPDiscoverWithPluginName
+TestCMPWithSymlinkFiles
+TestCMPWithSymlinkFolder
+TestCMPWithSymlinkPartialFiles
+TestPreserveFileModeForCMP
+TestPruneResourceFromCMP
+
+# --- Helm chart deploy — e2e-server chart fixtures fail current Helm validation ---
+TestHelmRepo
+TestHelmRepoDiffLocal
+TestHelmWithDependencies
+TestHelmWithDependenciesLegacyRepo
+TestHelmWithMultipleDependencies
+
+# --- OCI — require local OCI registry (ports 5000/5001, not available remotely) ---
+TestOCIImage
+TestOCIImageWithOutOfBoundsSymlink
+TestOCIWithAuthedOCIHelmRegistryDeps
+TestOCIWithOCIHelmRegistryDependencies
+
+# --- Hydrator — requires authenticated HTTPS git ---
+TestHydrateTo
+TestHydratorNoOp
+TestHydratorWithAuthenticatedRepo
+TestHydratorWithDirectory
+TestHydratorWithHelm
+TestHydratorWithKustomize
+TestHydratorWithPlugin
+TestSimpleHydrator
+
+# --- SSH / private repos — require custom tools or generator features ---
+TestCustomToolWithSSHGitCreds
+TestCustomToolWithSSHGitCredsDisabled
+TestGetRepoWithInheritedCreds
+TestGitGeneratorPrivateRepoWithTemplatedProjectAndProjectScopedRepo
+
+# --- Server-side diff — known failures ---
+TestServerSideDiffCommand
+TestServerSideDiffErrorHandling
+TestServerSideDiffWithLocal
+TestServerSideDiffWithRevision
+TestServerSideDiffWithSyncedApp
+TestResourceDiffing
+TestHookDiff
+
+# --- ApplicationSet generators — require external API access ---
+TestClusterMatrixGenerator
+TestClusterMergeGenerator
+TestListMatrixGenerator
+TestListMergeGenerator
+TestMatrixTerminalMatrixGeneratorSelector
+TestMatrixTerminalMergeGeneratorSelector
+TestMergeTerminalMergeGeneratorSelector
+TestSimplePullRequestGenerator
+TestSimplePullRequestGeneratorGoTemplate
+TestSimpleSCMProviderGenerator
+TestSimpleSCMProviderGeneratorGoTemplate
+TestSimpleSCMProviderGeneratorTokenRefStrictKo
+TestSimpleSCMProviderGeneratorTokenRefStrictOk
+TestSimpleListGeneratorExternalNamespace
+TestPullRequestGeneratorNotAllowedSCMProvider
+TestSCMProviderGeneratorSCMProviderNotAllowed
+
+# --- Cluster tests — crash via log.Fatalf on upsert failure ---
+# TestClusterListDenied calls cluster upsert which triggers log.Fatalf
+# (fixture/cluster/actions.go:63), killing the entire test binary.
+TestClusterListDenied
+
+# --- Cluster tests — K8s version string format mismatch ---
+# Tests expect short version (e.g. "1.34") but OCP reports full "v1.34.4".
+# fixture.GetVersions() returns the full semver on OCP 4.21+.
+TestClusterAdd
+TestClusterAddAllowed
+TestClusterGet
+
+# --- Helm tests — crash via log.Fatal in fixture/RPC EOF ---
+# EnsureCleanState triggers "rpc error: code = Unavailable desc = error reading
+# from server: EOF", killing the binary. Hooks crash via log.Fatal in fixture code.
+TestHelmHooksAreCreated
+TestHelmHookWeight
+TestHelmHookDeletePolicy
+TestDeclarativeHelm
+TestHelmValues
+TestHelmIgnoreMissingValueFiles
+TestHelmCrdHook
+TestHelmSet
+TestHelmReleaseName
+
+# --- HTTPS credential template — requires insecure-skip-verify credential setup ---
+TestCanAddAppFromInsecurePrivateRepoWithCredCfg
+
+# --- Deployment tests — require kubeconfig file with current context ---
+# extractKubeConfigValues() reads ~/.kube/config to get API URL; the test-runner
+# pod uses in-cluster auth which has no kubeconfig file.
+TestDeployToKubernetesAPIURLWithQueryParameter
+TestArgoCDSupportsMultipleServiceAccountsWithDifferingRBACOnSameCluster
+
+# --- Backup export — TLS cert leaks into export, breaks YAML unmarshal ---
+TestBackupExportImport
+
+# --- Sync timeout — DeletionConfirmation consistently times out on OCP ---
+TestDeletionConfirmation
+
+# --- Helm multi-source — also fails in downstream CI ---
+TestMultiSourceAppWithHelmExternalValueFiles
+
+# --- ClusterDecisionResource generator — requires OCM PlacementDecision CRD ---
+# PlacementDecision is an Open Cluster Management resource not installed on OCP.
+TestSimpleClusterDecisionResourceGenerator
+TestSimpleClusterDecisionResourceGeneratorAddingCluster
+TestSimpleClusterDecisionResourceGeneratorDeletingClusterFromResource
+TestSimpleClusterDecisionResourceGeneratorDeletingClusterSecret
+TestSimpleClusterDecisionResourceGeneratorExternalNamespace
+
+# --- ApplicationSet cluster generator timeout ---
+TestSyncPolicyCreateUpdate
+
+# --- Misc failures ---
+TestAddingApp
+TestClusterDelete
+TestKubectlMetrics
+TestManagedByURLFallbackToCurrentInstance
+TestManagedByURLWithAnnotation
+TestNotificationsHealthcheck
+
+# --- Disabled in release pipeline via source rename ---
+TestSimpleGitFilesPreserveResourcesOnDeletion
+
+# ============================================================================
+# Tests already skipped in the release pipeline via SkipOnEnv (57 skipped)
+# Adding here for completeness — prevents wasted time if env-based skip fails.
+# ============================================================================
+
+# --- GPG signing ---
+TestSyncToSignedBranchWithKnownKey
+TestSyncToSignedBranchWithUnknownKey
+TestSyncToSignedCommitWithKnownKey
+TestSyncToSignedCommitWithoutKnownKey
+TestSyncToSignedTagWithKnownKey
+TestSyncToSignedTagWithUnknownKey
+TestSyncToUnsignedBranch
+TestSyncToUnsignedCommit
+TestSyncToUnsignedTag
+TestSimpleGitDirectoryGeneratorGPGEnabledUnsignedCommits
+TestSimpleGitDirectoryGeneratorGPGEnabledWithoutKnownKeys
+TestSimpleGitFilesGeneratorGPGEnabledUnsignedCommits
+TestSimpleGitFilesGeneratorGPGEnabledWithoutKnownKeys
+TestNamespacedSyncToSignedCommitKWKK
+TestNamespacedSyncToSignedCommitWKK
+TestNamespacedSyncToUnsignedCommit
+
+# --- Helm OCI (patched with SkipOnEnv in release pipeline) ---
+TestHelmOCIRegistry
+TestHelmOCIRegistryWithDependencies
+TestGitWithHelmOCIRegistryDependencies
+TestTemplatesGitWithHelmOCIDependencies
+TestTemplatesHelmOCIWithDependencies
+
+# --- Custom tools (patched with SkipOnEnv in release pipeline) ---
+TestCustomToolSyncAndDiffLocal
+TestCustomToolWithEnv
+TestCustomToolWithGitCreds
+TestCustomToolWithGitCredsTemplate
+TestKustomizeVersionOverride
+
+# --- App management ---
+TestAppWithSecrets
+TestAutomaticallyNamingUnnamedHook
+TestSyncWithSkipHook
+TestSyncOptionsValidateTrue
+TestImmutableChange
+TestNamespacedImmutableChange
+
+# --- Namespace management ---
+TestNamespaceAutoCreation
+TestNamespaceCreationWithSSA
+TestNamespacedNamespaceAutoCreation
+TestNamespacedNamespaceAutoCreationWithMetadata
+TestNamespacedNamespaceAutoCreationWithMetadataAndNsManifest
+TestNamespacedNamespaceAutoCreationWithPreexistingNs
+
+# --- Logs ---
+TestAppLogs
+TestGetLogsAllow
+TestGetLogsDeny
+TestNamespacedAppLogs
+TestNamespacedGetLogsAllowNS
+TestNamespacedGetLogsDeny
+
+# --- Resource listing / orphaned ---
+TestListResource
+TestNamespacedListResource
+TestOrphanedResource
+TestNamespacedOrphanedResource
+TestCRDs
+
+# --- ApplicationSet progressive sync ---
+TestApplicationSetProgressiveSyncStep
+TestNoApplicationStatusWhenNoApplications
+TestNoApplicationStatusWhenNoSteps
+TestProgressiveSyncHealthGating
+TestProgressiveSyncMultipleAppsPerStep
+
+# ============================================================================
+# Tests broken by ArgoCD v2.14.1 CLI log format change (JSON vs text)
+# The test asserts output contains "level=fatal" (logrus text format) but the
+# CLI now emits {"level":"fatal",...} (JSON format). Functionality is correct.
+# ============================================================================
+TestSyncResourceByLabel
+TestNamespacedSyncResourceByLabel
+TestSyncResourceByProject

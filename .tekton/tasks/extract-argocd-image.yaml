@@ -1,0 +1,79 @@
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: extract-argocd-image
+spec:
+  description: |
+    Extracts the ArgoCD server image from the operator catalog for a given channel.
+  params:
+    - name: catalogImage
+      type: string
+    - name: operatorChannel
+      type: string
+    - name: testImageUrl
+      type: string
+    - name: pipelineRunName
+      type: string
+    - name: quayRepo
+      type: string
+      default: "quay.io/devtools_gitops/test_image"
+  results:
+    - name: argoCDImage
+      description: ArgoCD server image extracted from catalog
+  volumes:
+    - name: shared-data
+      emptyDir: {}
+    - name: quay-credentials
+      secret:
+        secretName: gitops-test-runner-image-push
+    - name: quay-pull-credentials
+      secret:
+        secretName: gitops-quay-pull-secret-merged
+  steps:
+    - name: extract-image
+      image: $(params.testImageUrl)
+      env:
+        - name: CATALOG_IMAGE
+          value: $(params.catalogImage)
+        - name: OPERATOR_CHANNEL
+          value: $(params.operatorChannel)
+        - name: TASK_LOG_NAME
+          value: extract-argocd-image
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      command:
+        - /usr/local/bin/run-and-save-logs.sh
+        - python3
+        - /usr/local/bin/extract-argocd-image-from-catalog.py
+      volumeMounts:
+        - name: shared-data
+          mountPath: /shared
+        - name: quay-credentials
+          mountPath: /quay-credentials
+        - name: quay-pull-credentials
+          mountPath: /quay-pull-credentials
+          readOnly: true
+    - name: save-result
+      image: $(params.testImageUrl)
+      script: |
+        #!/bin/bash
+        if [ ! -f /shared/argocd-image.txt ]; then
+          echo "ERROR: /shared/argocd-image.txt not found"
+          echo "ArgoCD extraction may have failed"
+          exit 1
+        fi
+
+        ARGOCD_IMAGE=$(cat /shared/argocd-image.txt)
+        if [ -z "$ARGOCD_IMAGE" ]; then
+          echo "ERROR: ArgoCD image is empty"
+          exit 1
+        fi
+
+        echo -n "$ARGOCD_IMAGE" > $(results.argoCDImage.path)
+        echo "ArgoCD image saved: $ARGOCD_IMAGE"
+      volumeMounts:
+        - name: shared-data
+          mountPath: /shared

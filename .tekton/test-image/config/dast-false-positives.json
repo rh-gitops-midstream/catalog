@@ -1,0 +1,41 @@
+{
+  "_description": "DAST scan suppression rules and alert thresholds. Edit this file to tune what the pipeline reports as FAIL vs. suppressed. Restart a scan to pick up changes (the file is baked into the overlay image).",
+
+  "thresholds": {
+    "high":          0,
+    "medium":       10,
+    "low":        9999,
+    "informational": 9999
+  },
+
+  "falsePositives": [
+    {
+      "alertRef": "10015",
+      "reason": "ArgoCD REST API endpoints intentionally omit Cache-Control — API clients must not cache by convention"
+    },
+    {
+      "alertRef": "10024",
+      "reason": "OAuth authorize endpoint encodes the access_token in the redirect URI — this is per-spec and expected"
+    },
+    {
+      "alertRef": "10027",
+      "reason": "Information disclosure via URL is expected for REST API path segments"
+    },
+    {
+      "alertRef": "10054",
+      "reason": "ArgoCD session cookie lacks SameSite — known upstream limitation, tracked separately"
+    },
+    {
+      "alertRef": "10096",
+      "reason": "Timestamp disclosure in API responses is not sensitive in this context"
+    },
+    {
+      "alertRef": "10109",
+      "reason": "Modern web application heuristic does not apply to ArgoCD's REST API"
+    },
+    {
+      "alertRef": "10112",
+      "reason": "Session management rule not applicable to token-based API authentication"
+    }
+  ]
+}
