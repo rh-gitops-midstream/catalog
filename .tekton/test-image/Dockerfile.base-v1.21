@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.8-1786631889
+FROM registry.access.redhat.com/ubi9/ubi:9.8-1786985871
 
 LABEL name="gitops-ginkgo-test-runner-base" \
       description="Base image with CLI tools and Go toolchain" \
