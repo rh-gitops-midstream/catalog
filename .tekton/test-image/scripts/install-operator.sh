@@ -20,11 +20,41 @@ echo "OpenShift version: ${OPENSHIFT_VERSION} (minor: ${MINOR_VERSION})"
 echo "Target namespace: ${NAMESPACE}"
 
 # 1. Inject quay pull credentials into cluster
+#
+# Skipped entirely when the cluster already has them. On a hosted (HyperShift) cluster
+# it never does, so this runs as before. On a standalone cluster — e.g. one leased from
+# a Hive ClusterPool whose install-config already carried these credentials — patching
+# openshift-config/pull-secret is node-level configuration, so the Machine Config
+# Operator would roll every node: roughly 10-15 minutes on a 6-node cluster, paid on
+# every single test run, for no change in content.
+#
+# The check is on content rather than on cluster topology, so it stays correct for any
+# provisioner that pre-loads the credentials.
 if [[ -f "/quay-pull-credentials/.dockerconfigjson" ]]; then
-  # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
-  echo "Injecting quay pull credentials into cluster global pull-secret..."
+  # External control plane means a hosted cluster (HyperShift); Standalone/HighlyAvailable
+  # means the control plane runs on the cluster's own nodes.
+  CONTROL_PLANE_TOPOLOGY=$(oc get infrastructure cluster -o jsonpath='{.status.controlPlaneTopology}' 2>/dev/null || echo "Unknown")
+  echo "Control plane topology: ${CONTROL_PLANE_TOPOLOGY}"
+
   EXISTING=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d)
-  MERGED=$(echo "$EXISTING" | python3 -c "
+  PULL_SECRET_UP_TO_DATE=$(echo "$EXISTING" | python3 -c "
+import json, sys
+existing = json.load(sys.stdin).get('auths', {})
+with open('/quay-pull-credentials/.dockerconfigjson') as f:
+    extra = json.load(f).get('auths', {})
+missing = [r for r, v in extra.items() if existing.get(r) != v]
+print('no' if missing else 'yes')
+if missing:
+    print('missing/stale registries: ' + ', '.join(sorted(missing)), file=sys.stderr)
+")
+
+  if [[ "$PULL_SECRET_UP_TO_DATE" == "yes" ]]; then
+    echo "Cluster pull-secret already carries all required registry credentials — skipping injection."
+    echo "(avoids an unnecessary MachineConfig rollout on standalone clusters)"
+  else
+    # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
+    echo "Injecting quay pull credentials into cluster global pull-secret..."
+    MERGED=$(echo "$EXISTING" | python3 -c "
 import json, sys
 existing = json.load(sys.stdin)
 with open('/quay-pull-credentials/.dockerconfigjson') as f:
@@ -32,12 +62,24 @@ with open('/quay-pull-credentials/.dockerconfigjson') as f:
 existing.setdefault('auths', {}).update(extra.get('auths', {}))
 print(json.dumps(existing))
 ")
-  oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
-  echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+    oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
+    echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+
+    if [[ "$CONTROL_PLANE_TOPOLOGY" != "External" ]]; then
+      echo "Standalone control plane: the Machine Config Operator will now roll the nodes."
+      echo "Consider baking these credentials into the cluster's install-config instead."
+    fi
+  fi
 
   # 1b. Create additional-pull-secret in kube-system (HyperShift-native mechanism).
   # The Hosted Cluster Config Operator detects this secret and deploys a DaemonSet
   # that writes credentials to /var/lib/kubelet/config.json on each node.
+  #
+  # Hosted clusters only. On a standalone cluster nothing reconciles this secret, no
+  # syncer DaemonSet is ever created, and the wait below would burn its full 300s
+  # timeout before warning and continuing. The MachineConfig rollout from 1a is what
+  # delivers credentials to nodes there.
+  if [[ "$CONTROL_PLANE_TOPOLOGY" == "External" ]]; then
   echo "Creating additional-pull-secret in kube-system for HyperShift node credential injection..."
   oc create secret generic additional-pull-secret \
     -n kube-system \
@@ -71,6 +113,9 @@ print(json.dumps(existing))
     fi
     sleep 15
   done
+  else
+    echo "Standalone control plane — skipping HyperShift additional-pull-secret and syncer wait."
+  fi
 else
   echo "WARNING: No quay pull credentials found at /quay-pull-credentials/.dockerconfigjson"
 fi
