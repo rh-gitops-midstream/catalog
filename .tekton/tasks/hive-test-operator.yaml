@@ -61,9 +61,6 @@ spec:
       secret:
         secretName: confluence-api-credentials
         optional: true
-    - name: hub-kubeconfig
-      secret:
-        secretName: $(params.hubSecretRef)
   steps:
     - name: get-kubeconfig
       ref:

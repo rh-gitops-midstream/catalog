@@ -63,9 +63,6 @@ spec:
     - name: quay-pull-credentials
       secret:
         secretName: gitops-quay-pull-secret-merged
-    - name: hub-kubeconfig
-      secret:
-        secretName: $(params.hubSecretRef)
   steps:
     - name: get-kubeconfig
       ref:
