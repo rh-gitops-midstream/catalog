@@ -186,6 +186,45 @@ spec:
         KUBECONFIG=/shared/kubeconfig oc config set-context --current --namespace=default >/dev/null
         echo "claimed $CD ($(KUBECONFIG=/shared/kubeconfig oc whoami --show-server))"
 
+        # powerState: Running is Hive's view — the EC2 instances are up. It is not the
+        # same as the cluster being ready to install an operator on. A pool cluster that
+        # was hibernating has only just resumed, and its marketplace and OLM operators
+        # are still reconciling; a CatalogSource created into that window never gets
+        # served, and the Subscription sits with an empty installedCSV until the install
+        # times out.
+        #
+        # That is not hypothetical: with runningCount 1 and two legs claiming at once,
+        # one leg gets the running cluster and succeeds while the other gets a resumed
+        # one and fails the install every time.
+        echo "--- waiting for the cluster to actually be ready to install onto ---"
+        export KUBECONFIG=/shared/kubeconfig
+        READY=no
+        for i in $(seq 1 60); do
+          NOTREADY=$(oc get clusteroperators -o json 2>/dev/null | python3 -c '
+          import json,sys
+          try:
+              items = json.load(sys.stdin)["items"]
+          except Exception:
+              print("api-unavailable"); raise SystemExit
+          bad = []
+          for co in items:
+              c = {x["type"]: x["status"] for x in co.get("status", {}).get("conditions", [])}
+              if c.get("Available") != "True" or c.get("Degraded") == "True":
+                  bad.append(co["metadata"]["name"])
+          print(",".join(sorted(bad)))
+          ' 2>/dev/null)
+          if [[ -z "$NOTREADY" ]]; then READY=yes; break; fi
+          echo "  [$i/60] not ready: ${NOTREADY:0:120}"
+          sleep 15
+        done
+        export KUBECONFIG=/hub/kubeconfig
+        if [[ "$READY" != "yes" ]]; then
+          echo "::error::cluster operators did not settle within 15m"
+          echo "claim" >> /shared/failed
+          exit 0
+        fi
+        echo "cluster operators settled — safe to install"
+
     # ------------------------------------------------------------- install -------
     - name: install-operator
       image: $(params.testImageUrl)
