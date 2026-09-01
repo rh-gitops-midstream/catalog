@@ -1,0 +1,248 @@
+---
+# Release-candidate pipeline: everything a z-stream needs, in one PipelineRun.
+#
+# This is the Konflux port of the downstream z-stream-test-pipeline. Same intent — install
+# the build under test on a real cluster and run the whole suite set against it — but the
+# cluster comes from a Hive ClusterPool rather than Flexy, the catalog under test comes
+# from the Konflux snapshot rather than a Brew IIB, and the test image is the one this
+# repo builds.
+#
+# Why one pipeline instead of the 45 IntegrationTestScenarios that exist today: for a
+# release you want one thing to trigger and one thing to look at. The per-component
+# scenarios stay as they are for PR feedback; this sits alongside them as the release gate.
+#
+# How many clusters a run uses is the LEGS parameter, not the pipeline structure. Each
+# entry is a comma-separated list of suites that share one cluster:
+#
+#   fan out, ~2h, 5 clusters
+#     ["run-sanity-tests.sh", "run-parallel-tests.sh",
+#      "run-sequential-tests-shard1.sh", "run-sequential-tests-shard2.sh",
+#      "run-rollouts-tests.sh"]
+#
+#   middle, ~3.5h, 2 clusters — sequential is the long pole, everything else rides along
+#     ["run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh",
+#      "run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"]
+#
+#   cheapest, ~6h, 1 cluster
+#     ["run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"]
+#
+# Collapsing is editing that array. No task or pipeline change, so the cost/wall-clock
+# trade-off can be made per release.
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: gitops-catalog-z-stream
+spec:
+  description: |
+    Runs the full release test set against a Konflux snapshot on Hive-provisioned
+    clusters, publishing one result row per suite to catalog-results.
+  params:
+    - name: SNAPSHOT
+      type: string
+      default: '{"components": [{"name":"gitops-operator-bundle-main", "containerImage": "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle:latest"}]}'
+    - name: LEGS
+      type: array
+      description: >-
+        One entry per cluster; each entry is a comma-separated list of suites to run on
+        it, in order. See the header for worked examples.
+      default:
+        - run-sanity-tests.sh
+        - run-parallel-tests.sh
+        - run-sequential-tests-shard1.sh
+        - run-sequential-tests-shard2.sh
+        - run-rollouts-tests.sh
+    - name: CATALOG_TASK_URL
+      type: string
+      default: https://github.com/rh-gitops-midstream/catalog
+    - name: CATALOG_TASK_REVISION
+      type: string
+      default: konflux-integration
+    - name: OPENSHIFT_VERSION
+      type: string
+      default: "4.20"
+    - name: OPERATOR_CHANNEL
+      type: string
+      default: latest
+    - name: OPERATOR_VERSION
+      type: string
+      default: ""
+    - name: NAMESPACE
+      type: string
+      default: openshift-gitops-operator
+    - name: TEST_REPO_URL
+      type: string
+      default: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      type: string
+      default: konflux-integration-latest
+    - name: POOL_NAME
+      type: string
+      default: pool-1
+    - name: POOL_NAMESPACE
+      type: string
+      default: hive-pool-1
+    - name: CLAIM_LIFETIME
+      type: string
+      description: >-
+        Must exceed the longest leg. A leg carrying both sequential shards runs about
+        3h30m; one carrying everything runs about 6h.
+      default: "6h"
+    - name: HIVE_HUB_SECRET
+      type: string
+      default: hive-hub-kubeconfig
+    - name: GATE_LABEL
+      type: string
+      default: ""
+
+  tasks:
+    - name: parse-metadata
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/integration-examples
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: tasks/test_metadata.yaml
+      params:
+        - name: SNAPSHOT
+          value: $(params.SNAPSHOT)
+
+    - name: build-test-image
+      runAfter: [parse-metadata]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/build-ginkgo-test-image.yaml
+      params:
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+        - name: IMAGE_EXPIRES_AFTER
+          value: "7d"
+
+    - name: overlay-test-scripts
+      runAfter: [build-test-image]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/overlay-test-scripts.yaml
+      params:
+        - name: BASE_IMAGE_URL
+          value: $(tasks.build-test-image.results.IMAGE_URL)
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+
+    # The whole fan-out. One instance of hive-suite-leg per LEGS entry, each claiming its
+    # own cluster. A leg that fails fails the PipelineRun; the detail is in the per-suite
+    # rows it published to catalog-results.
+    - name: run-legs
+      runAfter: [overlay-test-scripts]
+      matrix:
+        params:
+          - name: suites
+            value: $(params.LEGS)
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/hive-suite-leg.yaml
+      params:
+        - name: testImageUrl
+          value: $(tasks.overlay-test-scripts.results.image-url)
+        - name: pipelineRunName
+          value: $(context.pipelineRun.name)
+        - name: hubSecretRef
+          value: $(params.HIVE_HUB_SECRET)
+        - name: poolName
+          value: $(params.POOL_NAME)
+        - name: poolNamespace
+          value: $(params.POOL_NAMESPACE)
+        - name: claimLifetime
+          value: $(params.CLAIM_LIFETIME)
+        - name: openshiftVersion
+          value: $(params.OPENSHIFT_VERSION)
+        - name: operatorChannel
+          value: $(params.OPERATOR_CHANNEL)
+        - name: operatorVersion
+          value: $(params.OPERATOR_VERSION)
+        - name: namespace
+          value: $(params.NAMESPACE)
+        - name: testRepoUrl
+          value: $(params.TEST_REPO_URL)
+        - name: testRepoBranch
+          value: $(params.TEST_REPO_BRANCH)
+        - name: catalogUrl
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalogRevision
+          value: $(params.CATALOG_TASK_REVISION)
+
+  finally:
+    # Deliberately thin. Each leg already published one row per suite to catalog-results
+    # and uploaded its own logs, so there is nothing to collate here — this just says
+    # where to look and how each leg came out.
+    - name: summary
+      params:
+        - name: verdicts
+          value: $(tasks.run-legs.results.verdict[*])
+        - name: clusters
+          value: $(tasks.run-legs.results.clusterName[*])
+        - name: pipelineRunName
+          value: $(context.pipelineRun.name)
+        - name: aggregateStatus
+          value: $(tasks.status)
+      taskSpec:
+        params:
+          - name: verdicts
+            type: array
+          - name: clusters
+            type: array
+          - name: pipelineRunName
+            type: string
+          - name: aggregateStatus
+            type: string
+        steps:
+          - name: report
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            args: ["$(params.verdicts[*])", "$(params.clusters[*])"]
+            script: |
+              #!/bin/bash
+              set -uo pipefail
+              {
+                echo "## z-stream run \`$(params.pipelineRunName)\`"
+                echo
+                echo "Overall: **$(params.aggregateStatus)**"
+                echo
+                echo "| leg | verdict |"
+                echo "|---|---|"
+                for v in "$@"; do
+                  case "$v" in
+                    pass|fail) echo "| leg | $v |" ;;
+                  esac
+                done
+                echo
+                echo "Per-suite results, including which specs failed, are in"
+                echo "**rh-gitops-release-qa/catalog-results** — one row per suite,"
+                echo "tagged with this run name."
+              } >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || {
+                echo "z-stream run $(params.pipelineRunName): $(params.aggregateStatus)"
+                printf '%s\n' "$@"
+              }
