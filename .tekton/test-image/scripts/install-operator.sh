@@ -42,10 +42,22 @@ import json, sys
 existing = json.load(sys.stdin).get('auths', {})
 with open('/quay-pull-credentials/.dockerconfigjson') as f:
     extra = json.load(f).get('auths', {})
-missing = [r for r, v in extra.items() if existing.get(r) != v]
+
+def covered(repo):
+    # Container runtimes resolve registry auth by longest path prefix, so a credential
+    # for quay.io/redhat-user-workloads/rh-openshift-gitops-tenant already grants access
+    # to every repository beneath it. Comparing keys exactly reports those children as
+    # missing and patches the cluster pull-secret for no reason — which on a standalone
+    # cluster rolls every node through the MCO, on every run.
+    if repo in existing:
+        return True
+    parts = repo.split('/')
+    return any('/'.join(parts[:i]) in existing for i in range(len(parts) - 1, 0, -1))
+
+missing = [r for r in extra if not covered(r)]
 print('no' if missing else 'yes')
 if missing:
-    print('missing/stale registries: ' + ', '.join(sorted(missing)), file=sys.stderr)
+    print('missing registries: ' + ', '.join(sorted(missing)), file=sys.stderr)
 ")
 
   if [[ "$PULL_SECRET_UP_TO_DATE" == "yes" ]]; then
