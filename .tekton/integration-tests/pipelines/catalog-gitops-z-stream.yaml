@@ -222,27 +222,23 @@ spec:
         steps:
           - name: report
             image: registry.access.redhat.com/ubi9/ubi-minimal:latest
-            args: ["$(params.verdicts[*])", "$(params.clusters[*])"]
+            args: ["$(params.verdicts[*])"]
             script: |
               #!/bin/bash
+              # Plain stdout. This is a Tekton task, not a GitHub Actions step — there is
+              # no $GITHUB_STEP_SUMMARY here, and referencing one under `set -u` is an
+              # unbound variable that fails the step.
               set -uo pipefail
-              {
-                echo "## z-stream run \`$(params.pipelineRunName)\`"
-                echo
-                echo "Overall: **$(params.aggregateStatus)**"
-                echo
-                echo "| leg | verdict |"
-                echo "|---|---|"
-                for v in "$@"; do
-                  case "$v" in
-                    pass|fail) echo "| leg | $v |" ;;
-                  esac
-                done
-                echo
-                echo "Per-suite results, including which specs failed, are in"
-                echo "**rh-gitops-release-qa/catalog-results** — one row per suite,"
-                echo "tagged with this run name."
-              } >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || {
-                echo "z-stream run $(params.pipelineRunName): $(params.aggregateStatus)"
-                printf '%s\n' "$@"
-              }
+              echo "=========================================================="
+              echo " z-stream run $(params.pipelineRunName)"
+              echo " overall: $(params.aggregateStatus)"
+              echo "=========================================================="
+              i=0
+              for v in "$@"; do
+                echo "  leg $i: $v"
+                i=$((i+1))
+              done
+              echo
+              echo "Per-suite results, including which specs failed, are in"
+              echo "rh-gitops-release-qa/catalog-results — one row per suite, tagged"
+              echo "with this run name."
