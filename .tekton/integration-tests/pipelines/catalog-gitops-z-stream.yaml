@@ -14,10 +14,10 @@
 # How many clusters a run uses is the LEGS parameter, not the pipeline structure. Each
 # entry is a comma-separated list of suites that share one cluster:
 #
-#   fan out, ~2h, 5 clusters
+#   fan out, 6 clusters — wall clock is the longest leg, which is now argocd-e2e
 #     ["run-sanity-tests.sh", "run-parallel-tests.sh",
 #      "run-sequential-tests-shard1.sh", "run-sequential-tests-shard2.sh",
-#      "run-rollouts-tests.sh"]
+#      "run-rollouts-tests.sh", "run-argocd-e2e-operator.sh"]
 #
 #   middle, ~3.5h, 2 clusters — sequential is the long pole, everything else rides along
 #     ["run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh",
@@ -51,6 +51,7 @@ spec:
         - run-sequential-tests-shard1.sh
         - run-sequential-tests-shard2.sh
         - run-rollouts-tests.sh
+        - run-argocd-e2e-operator.sh
     - name: CATALOG_TASK_URL
       type: string
       default: https://github.com/rh-gitops-midstream/catalog
@@ -84,8 +85,11 @@ spec:
     - name: CLAIM_LIFETIME
       type: string
       description: >-
-        Must exceed the longest leg. A leg carrying both sequential shards runs about
-        3h30m; one carrying everything runs about 6h.
+        Must exceed the longest leg, and it applies to every leg — Hive takes one lifetime
+        per claim, so this is sized for the worst case rather than per suite. argocd-e2e
+        is now that worst case; the downstream z-stream task allows it 4h30m. A leg
+        carrying both sequential shards runs about 3h30m; one carrying everything, about
+        6h. The pool caps claims at 8h.
       default: "6h"
     - name: HIVE_HUB_SECRET
       type: string
