@@ -52,6 +52,15 @@ spec:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 
     serviceAccountName: build-pipeline-catalog-5-0
+  taskRunSpecs:
+    - pipelineTaskName: run-opm-command
+      computeResources:
+        requests:
+          memory: 1Gi
+          cpu: 500m
+        limits:
+          memory: 4Gi
+          cpu: "1"
   workspaces:
     - name: git-auth
       secret:

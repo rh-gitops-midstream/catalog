@@ -183,6 +183,7 @@ spec:
         value: ".tekton/images-mirror-set.yaml"
       - name: FILE_TO_UPDATE_PULLSPEC
         value: $(params.catalog-output-path)
+    retries: 2
     runAfter:
       - fbc-inject-lifecycle
     taskRef:
