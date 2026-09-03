@@ -380,7 +380,24 @@ for k in sorted(d.get('auths', {})):
   CLUSTER_SECRET=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null | base64 -d)
   MISSING=0
   while IFS= read -r repo; do
-    if echo "$CLUSTER_SECRET" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if '$repo' in d.get('auths',{}) else 1)" 2>/dev/null; then
+    # Match by longest path prefix, the way container runtimes resolve registry auth. A
+    # credential for quay.io/redhat-user-workloads/rh-openshift-gitops-tenant already
+    # grants access to every repository beneath it, so exact key lookup reports all 21
+    # children as missing on a cluster seeded with the parent — which is exactly what a
+    # Hive pool cluster looks like. That produced a warning directly contradicting the
+    # skip decision made earlier in this same script.
+    #
+    # $repo is passed as an argument rather than interpolated into the program text, so
+    # a repository name containing a quote cannot break the check.
+    if echo "$CLUSTER_SECRET" | python3 -c '
+import json, sys
+auths = json.load(sys.stdin).get("auths", {})
+repo = sys.argv[1]
+if repo in auths:
+    sys.exit(0)
+parts = repo.split("/")
+sys.exit(0 if any("/".join(parts[:i]) in auths for i in range(len(parts) - 1, 0, -1)) else 1)
+' "$repo" 2>/dev/null; then
       echo "  OK   $repo"
     else
       echo "  MISS $repo"
