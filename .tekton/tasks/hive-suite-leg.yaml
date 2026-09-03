@@ -196,34 +196,69 @@ spec:
         # That is not hypothetical: with runningCount 1 and two legs claiming at once,
         # one leg gets the running cluster and succeeds while the other gets a resumed
         # one and fails the install every time.
+        # Checking ClusterOperator conditions is NOT enough, and the first version of this
+        # gate did exactly that and let four legs through onto clusters that could not
+        # install anything. ClusterOperators are CRD-backed: the kube-apiserver serves
+        # them, so they stay readable and keep reporting Available=True from before
+        # hibernation while the *aggregation layer* is still starting. The gate passed on
+        # its first check, with zero retries, onto a cluster where 13 aggregated API
+        # groups were dead.
+        #
+        # What actually has to be true is that the aggregated APIs are serving, because
+        # one of them is packages.operators.coreos.com — OLM's package server. Without it
+        # OLM cannot enumerate the catalog, so a Subscription never resolves, installedCSV
+        # stays empty, and the install times out five minutes later with no clue as to why.
+        #
+        # So: check the APIServices, and then prove the thing we actually need by listing
+        # packagemanifests. The functional probe is the one that matters — an APIService
+        # can report Available a moment before it serves.
         echo "--- waiting for the cluster to actually be ready to install onto ---"
         export KUBECONFIG=/shared/kubeconfig
         READY=no
         for i in $(seq 1 60); do
-          NOTREADY=$(oc get clusteroperators -o json 2>/dev/null | python3 -c '
-          import json,sys
-          try:
-              items = json.load(sys.stdin)["items"]
-          except Exception:
-              print("api-unavailable"); raise SystemExit
-          bad = []
-          for co in items:
-              c = {x["type"]: x["status"] for x in co.get("status", {}).get("conditions", [])}
-              if c.get("Available") != "True" or c.get("Degraded") == "True":
-                  bad.append(co["metadata"]["name"])
-          print(",".join(sorted(bad)))
-          ' 2>/dev/null)
-          if [[ -z "$NOTREADY" ]]; then READY=yes; break; fi
-          echo "  [$i/60] not ready: ${NOTREADY:0:120}"
+          WHY=""
+
+          # 1. Cluster operators. Kept because it catches degraded clusters that the
+          #    aggregation checks below would happily pass.
+          CO=$(oc get clusteroperators -o json 2>/dev/null \
+                | jq -r '[.items[]
+                          | . as $co
+                          | ([$co.status.conditions[]?|select(.type=="Available" and .status=="True")]|length) as $up
+                          | ([$co.status.conditions[]?|select(.type=="Degraded"  and .status=="True")]|length) as $bad
+                          | select($up == 0 or $bad > 0)
+                          | .metadata.name] | join(",")' 2>/dev/null)
+          # An unreadable API is not the same as a healthy one; treat it as not ready.
+          if [[ -z "$CO" ]] && ! oc get clusteroperators >/dev/null 2>&1; then
+            WHY="cannot read clusteroperators"
+          elif [[ -n "$CO" ]]; then
+            WHY="degraded operators: $CO"
+          fi
+
+          # 2. The aggregation layer, which is what was actually broken.
+          if [[ -z "$WHY" ]]; then
+            AS=$(oc get apiservices -o json 2>/dev/null \
+                  | jq -r '[.items[] | select([.status.conditions[]?|select(.type=="Available" and .status!="True")]|length>0)
+                            | .metadata.name] | join(",")' 2>/dev/null)
+            [[ -n "$AS" ]] && WHY="unavailable APIServices: $AS"
+          fi
+
+          # 3. The functional probe: can OLM's package server actually answer? This is
+          #    precisely what the Subscription needs and what silently was not true.
+          if [[ -z "$WHY" ]] && ! oc get packagemanifests -n openshift-marketplace >/dev/null 2>&1; then
+            WHY="OLM package server not serving packagemanifests"
+          fi
+
+          if [[ -z "$WHY" ]]; then READY=yes; break; fi
+          echo "  [$i/60] not ready: ${WHY:0:160}"
           sleep 15
         done
         export KUBECONFIG=/hub/kubeconfig
         if [[ "$READY" != "yes" ]]; then
-          echo "::error::cluster operators did not settle within 15m"
+          echo "::error::cluster did not become ready to install onto within 15m"
           echo "claim" >> /shared/failed
           exit 0
         fi
-        echo "cluster operators settled — safe to install"
+        echo "cluster ready — operators settled and OLM package server serving"
 
     # ------------------------------------------------------------- install -------
     - name: install-operator
