@@ -11,18 +11,18 @@ metadata:
       event == "push" && 
       target_branch == "main" && 
       (
-        "catalog/v4.14/***".pathChanged() ||
-        ".tekton/catalog-4-14-push.yaml".pathChanged() ||
+        "catalog/v5.0/***".pathChanged() ||
+        ".tekton/catalog-5-0-push.yaml".pathChanged() ||
         ".tekton/images-mirror-set.yaml".pathChanged() ||
         ".tekton/multi-platform-fbc-image-build.yaml".pathChanged() ||
         ".tekton/tasks/***".pathChanged()
       )
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: catalog-4-14
-    appstudio.openshift.io/component: catalog-4-14
+    appstudio.openshift.io/application: catalog-5-0
+    appstudio.openshift.io/component: catalog-5-0
     pipelines.appstudio.openshift.io/type: build
-  name: catalog-4-14-on-push
+  name: catalog-5-0-on-push
   namespace: rh-openshift-gitops-tenant
 spec:
   params:
@@ -35,20 +35,23 @@ spec:
     - name: dockerfile
       value: Dockerfile
     - name: path-context
-      value: catalog/v4.14
+      value: catalog/v5.0
+    - name: ocp-version
+      value: "v5.0"
     - name: additional-tags
       value:
-      - v4.14
-    - name: ocp-version
-      value: "v4.14"
+      - v5.0
     - name: catalog-template-path
-      value: "catalog/v4.14/template.yaml"
+      value: "catalog/v5.0/template.yaml"
     - name: catalog-output-path
-      value: "catalog/v4.14/openshift-gitops-operator/catalog.json"
+      value: "catalog/v5.0/openshift-gitops-operator/catalog.json"
+    - name: opm-args
+      value:
+      - "--migrate-level=bundle-object-to-csv-metadata"
   pipelineRef:
     name: multi-platform-fbc-image-build
   taskRunTemplate: 
-    serviceAccountName: build-pipeline-catalog-4-14
+    serviceAccountName: build-pipeline-catalog-5-0
   taskRunSpecs:
     - pipelineTaskName: run-opm-command
       computeResources:
