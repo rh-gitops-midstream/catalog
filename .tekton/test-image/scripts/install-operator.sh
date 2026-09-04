@@ -20,11 +20,53 @@ echo "OpenShift version: ${OPENSHIFT_VERSION} (minor: ${MINOR_VERSION})"
 echo "Target namespace: ${NAMESPACE}"
 
 # 1. Inject quay pull credentials into cluster
+#
+# Skipped entirely when the cluster already has them. On a hosted (HyperShift) cluster
+# it never does, so this runs as before. On a standalone cluster — e.g. one leased from
+# a Hive ClusterPool whose install-config already carried these credentials — patching
+# openshift-config/pull-secret is node-level configuration, so the Machine Config
+# Operator would roll every node: roughly 10-15 minutes on a 6-node cluster, paid on
+# every single test run, for no change in content.
+#
+# The check is on content rather than on cluster topology, so it stays correct for any
+# provisioner that pre-loads the credentials.
 if [[ -f "/quay-pull-credentials/.dockerconfigjson" ]]; then
-  # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
-  echo "Injecting quay pull credentials into cluster global pull-secret..."
+  # External control plane means a hosted cluster (HyperShift); Standalone/HighlyAvailable
+  # means the control plane runs on the cluster's own nodes.
+  CONTROL_PLANE_TOPOLOGY=$(oc get infrastructure cluster -o jsonpath='{.status.controlPlaneTopology}' 2>/dev/null || echo "Unknown")
+  echo "Control plane topology: ${CONTROL_PLANE_TOPOLOGY}"
+
   EXISTING=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d)
-  MERGED=$(echo "$EXISTING" | python3 -c "
+  PULL_SECRET_UP_TO_DATE=$(echo "$EXISTING" | python3 -c "
+import json, sys
+existing = json.load(sys.stdin).get('auths', {})
+with open('/quay-pull-credentials/.dockerconfigjson') as f:
+    extra = json.load(f).get('auths', {})
+
+def covered(repo):
+    # Container runtimes resolve registry auth by longest path prefix, so a credential
+    # for quay.io/redhat-user-workloads/rh-openshift-gitops-tenant already grants access
+    # to every repository beneath it. Comparing keys exactly reports those children as
+    # missing and patches the cluster pull-secret for no reason — which on a standalone
+    # cluster rolls every node through the MCO, on every run.
+    if repo in existing:
+        return True
+    parts = repo.split('/')
+    return any('/'.join(parts[:i]) in existing for i in range(len(parts) - 1, 0, -1))
+
+missing = [r for r in extra if not covered(r)]
+print('no' if missing else 'yes')
+if missing:
+    print('missing registries: ' + ', '.join(sorted(missing)), file=sys.stderr)
+")
+
+  if [[ "$PULL_SECRET_UP_TO_DATE" == "yes" ]]; then
+    echo "Cluster pull-secret already carries all required registry credentials — skipping injection."
+    echo "(avoids an unnecessary MachineConfig rollout on standalone clusters)"
+  else
+    # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
+    echo "Injecting quay pull credentials into cluster global pull-secret..."
+    MERGED=$(echo "$EXISTING" | python3 -c "
 import json, sys
 existing = json.load(sys.stdin)
 with open('/quay-pull-credentials/.dockerconfigjson') as f:
@@ -32,12 +74,24 @@ with open('/quay-pull-credentials/.dockerconfigjson') as f:
 existing.setdefault('auths', {}).update(extra.get('auths', {}))
 print(json.dumps(existing))
 ")
-  oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
-  echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+    oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
+    echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+
+    if [[ "$CONTROL_PLANE_TOPOLOGY" != "External" ]]; then
+      echo "Standalone control plane: the Machine Config Operator will now roll the nodes."
+      echo "Consider baking these credentials into the cluster's install-config instead."
+    fi
+  fi
 
   # 1b. Create additional-pull-secret in kube-system (HyperShift-native mechanism).
   # The Hosted Cluster Config Operator detects this secret and deploys a DaemonSet
   # that writes credentials to /var/lib/kubelet/config.json on each node.
+  #
+  # Hosted clusters only. On a standalone cluster nothing reconciles this secret, no
+  # syncer DaemonSet is ever created, and the wait below would burn its full 300s
+  # timeout before warning and continuing. The MachineConfig rollout from 1a is what
+  # delivers credentials to nodes there.
+  if [[ "$CONTROL_PLANE_TOPOLOGY" == "External" ]]; then
   echo "Creating additional-pull-secret in kube-system for HyperShift node credential injection..."
   oc create secret generic additional-pull-secret \
     -n kube-system \
@@ -71,6 +125,9 @@ print(json.dumps(existing))
     fi
     sleep 15
   done
+  else
+    echo "Standalone control plane — skipping HyperShift additional-pull-secret and syncer wait."
+  fi
 else
   echo "WARNING: No quay pull credentials found at /quay-pull-credentials/.dockerconfigjson"
 fi
@@ -323,7 +380,24 @@ for k in sorted(d.get('auths', {})):
   CLUSTER_SECRET=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null | base64 -d)
   MISSING=0
   while IFS= read -r repo; do
-    if echo "$CLUSTER_SECRET" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if '$repo' in d.get('auths',{}) else 1)" 2>/dev/null; then
+    # Match by longest path prefix, the way container runtimes resolve registry auth. A
+    # credential for quay.io/redhat-user-workloads/rh-openshift-gitops-tenant already
+    # grants access to every repository beneath it, so exact key lookup reports all 21
+    # children as missing on a cluster seeded with the parent — which is exactly what a
+    # Hive pool cluster looks like. That produced a warning directly contradicting the
+    # skip decision made earlier in this same script.
+    #
+    # $repo is passed as an argument rather than interpolated into the program text, so
+    # a repository name containing a quote cannot break the check.
+    if echo "$CLUSTER_SECRET" | python3 -c '
+import json, sys
+auths = json.load(sys.stdin).get("auths", {})
+repo = sys.argv[1]
+if repo in auths:
+    sys.exit(0)
+parts = repo.split("/")
+sys.exit(0 if any("/".join(parts[:i]) in auths for i in range(len(parts) - 1, 0, -1)) else 1)
+' "$repo" 2>/dev/null; then
       echo "  OK   $repo"
     else
       echo "  MISS $repo"
