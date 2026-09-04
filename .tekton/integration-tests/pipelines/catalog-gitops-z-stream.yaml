@@ -17,7 +17,7 @@
 #   fan out, 6 clusters — wall clock is the longest leg, which is now argocd-e2e
 #     ["run-sanity-tests.sh", "run-parallel-tests.sh",
 #      "run-sequential-tests-shard1.sh", "run-sequential-tests-shard2.sh",
-#      "run-rollouts-tests.sh", "run-argocd-e2e-operator.sh"]
+#      "run-rollouts-tests.sh", "run-argocd-e2e-standalone.sh"]
 #
 #   middle, ~3.5h, 2 clusters — sequential is the long pole, everything else rides along
 #     ["run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh",
@@ -51,7 +51,7 @@ spec:
         - run-sequential-tests-shard1.sh
         - run-sequential-tests-shard2.sh
         - run-rollouts-tests.sh
-        - run-argocd-e2e-operator.sh
+        - run-argocd-e2e-standalone.sh
     - name: CATALOG_TASK_URL
       type: string
       default: https://github.com/rh-gitops-midstream/catalog
