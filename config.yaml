@@ -120,4 +120,4 @@ channels:
       - name: openshift-gitops-operator.v1.21.4
         replaces: openshift-gitops-operator.v1.21.3
         skipRange: '>=1.21.0 <1.21.4'
-        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:695edcad731d569be85ec95461f7466a5d2c1201a80c30bacba90ebf2d5b777b
+        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:eadbdc3b1f647a8e18fd7f7c8e764485015c03655b228a68bd4be1538ecbdccb
