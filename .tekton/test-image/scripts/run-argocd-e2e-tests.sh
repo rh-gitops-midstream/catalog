@@ -177,6 +177,27 @@ if [[ ! -d "${ARGO_CD_DIR}" ]]; then
     git checkout FETCH_HEAD 2>&1
   fi
 
+  # Assert this is actually Argo CD before compiling anything from it.
+  #
+  # The directory is named argo-cd regardless of what was cloned into it, and
+  # `go test -c ./test/e2e` succeeds against any repo that happens to have a test/e2e
+  # package. Pointed at the gitops-operator repo it compiled the operator's controller
+  # suite, ran 34 specs, and reported SUCCESS — a green leg testing the wrong software,
+  # with nothing in the output to suggest it. A one-line check is worth more here than
+  # any amount of reading the log afterwards.
+  MODULE=$(awk '/^module /{print $2; exit}' go.mod 2>/dev/null || true)
+  case "${MODULE}" in
+    github.com/argoproj/argo-cd*) : ;;
+    *)
+      echo "ERROR: ${TEST_REPO_URL} @ ${BRANCH} is not Argo CD." >&2
+      echo "       go.mod declares module '${MODULE:-<none>}', expected github.com/argoproj/argo-cd." >&2
+      echo "       Compiling ./test/e2e from it would produce a suite that passes while" >&2
+      echo "       testing something else. Set TEST_REPO_URL to the Argo CD repository." >&2
+      exit 1
+      ;;
+  esac
+  echo "Verified checkout is ${MODULE}"
+
   mkdir -p "${ROOT_DIR}/go-cache" "${ROOT_DIR}/go-mod"
   export GOCACHE="${ROOT_DIR}/go-cache"
   export GOMODCACHE="${ROOT_DIR}/go-mod"

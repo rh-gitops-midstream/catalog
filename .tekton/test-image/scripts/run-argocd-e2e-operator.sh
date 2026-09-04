@@ -77,12 +77,40 @@ done
 export ARGOCD_NAMESPACE ARGOCD_SERVER ARGOCD_ADMIN_PASSWORD ARGOCD_SERVER_IMAGE
 export ARGOCD_SERVER_NAME ARGOCD_REPO_SERVER_NAME ARGOCD_APPLICATION_CONTROLLER_NAME ARGOCD_REDIS_NAME
 
+# --- which source tree the suite comes from -----------------------------------------
+#
+# This has to be set explicitly, and getting it wrong is silent. run-argocd-e2e-tests.sh
+# clones $TEST_REPO_URL into a directory called argo-cd and compiles ./test/e2e from it.
+# On a z-stream leg TEST_REPO_URL is inherited from the pipeline, where it is the
+# *operator* repo — correct for the other five legs, which run the operator's suites.
+# Compiling ./test/e2e from the operator repo succeeds: it produces the operator's own
+# controller suite, which ran 34 specs and reported SUCCESS. Nothing failed, nothing
+# warned, and the leg was green while testing the wrong software entirely.
+ARGOCD_TEST_REPO_URL="${ARGOCD_TEST_REPO_URL:-https://github.com/argoproj/argo-cd.git}"
+
+# Pair the suite with the Argo CD actually shipped rather than pinning a tag that goes
+# stale. Ask the running server — the same thing the downstream z-stream task does.
+if [[ -z "${ARGOCD_TEST_REPO_BRANCH:-}" ]]; then
+  RAW=$(oc exec -n "${ARGOCD_NAMESPACE}" "deploy/${ARGOCD_SERVER_NAME}" -- \
+          argocd-server version --short 2>/dev/null | head -1 || true)
+  DETECTED=$(grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' <<<"${RAW}" | head -1 || true)
+  [[ -n "${DETECTED}" ]] \
+    || die "could not determine the Argo CD version from ${ARGOCD_SERVER_NAME}, and ARGOCD_TEST_REPO_BRANCH was not set. Refusing to guess — an unpinned or mismatched checkout is how this leg passed while testing the wrong repository."
+  ARGOCD_TEST_REPO_BRANCH="${DETECTED}"
+  echo "Argo CD server reports ${DETECTED}; testing against that tag."
+fi
+
+export TEST_REPO_URL="${ARGOCD_TEST_REPO_URL}"
+export BRANCH="${ARGOCD_TEST_REPO_BRANCH}"
+export TEST_REPO_BRANCH="${ARGOCD_TEST_REPO_BRANCH}"
+
 cat <<EOF
 --- discovered ---
   namespace  : ${ARGOCD_NAMESPACE}
   server     : ${ARGOCD_SERVER}
   image      : ${ARGOCD_SERVER_IMAGE:-<unresolved>}
   password   : <redacted, ${#ARGOCD_ADMIN_PASSWORD} chars>
+  test repo  : ${TEST_REPO_URL} @ ${BRANCH}
 ------------------
 EOF
 
