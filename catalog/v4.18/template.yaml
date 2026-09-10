@@ -910,6 +910,8 @@ entries:
   - name: openshift-gitops-operator.v1.22.0
     replaces: openshift-gitops-operator.v1.21.4
     skipRange: '>=1.0.0 <1.22.0'
+  - name: openshift-gitops-operator.v99.99.99
+    replaces: openshift-gitops-operator.v99.99.98
   name: latest
   package: openshift-gitops-operator
   schema: olm.channel
@@ -1269,5 +1271,13 @@ entries:
     skipRange: '>=1.0.0 <1.22.0'
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:6ce6008e68a59e7d77ad1419ce4807c578beb8c9b07516dbba7dbaee8ed5da12
+- name: gitops-99.99
+  package: openshift-gitops-operator
+  schema: olm.channel
+  entries:
+  - name: openshift-gitops-operator.v99.99.99
+    replaces: openshift-gitops-operator.v99.99.98
+- schema: olm.bundle
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:d2b4329149f5b248eec9f10f6203c1b41819e32f34acfd7dafc76d39606f815c
 schema: olm.template.basic
 
