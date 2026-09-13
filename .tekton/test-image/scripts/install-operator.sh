@@ -1,6 +1,33 @@
 #!/bin/bash
 set -ex
 
+# Pull-secret content must never reach xtrace: this script runs with `set -x` and its
+# output is uploaded as a task-log artifact. Secrets are therefore only ever held in files
+# under a private directory outside the log directory, and only their paths appear on a
+# command line. The read retries, because a single `oc get` against a freshly claimed
+# cluster can time out, and an empty read used to fail the install as a JSON parse error.
+SECRET_DIR=$(mktemp -d)
+chmod 700 "$SECRET_DIR"
+trap 'rm -rf "$SECRET_DIR"' EXIT
+
+read_cluster_pull_secret() {
+  { set +x; } 2>/dev/null
+  local dest=$1 attempt
+  for attempt in 1 2 3 4 5; do
+    if oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null \
+         | base64 -d > "$dest" 2>/dev/null && [[ -s "$dest" ]]; then
+      set -x
+      return 0
+    fi
+    echo "reading openshift-config/pull-secret failed (attempt ${attempt}/5); retrying in 10s" >&2
+    sleep 10
+  done
+  : > "$dest"
+  echo "ERROR: could not read openshift-config/pull-secret after 5 attempts" >&2
+  set -x
+  return 1
+}
+
 # Environment variables expected:
 # - OPENSHIFT_VERSION (e.g. "4.20" or "4.20.19")
 # - NAMESPACE
@@ -36,10 +63,12 @@ if [[ -f "/quay-pull-credentials/.dockerconfigjson" ]]; then
   CONTROL_PLANE_TOPOLOGY=$(oc get infrastructure cluster -o jsonpath='{.status.controlPlaneTopology}' 2>/dev/null || echo "Unknown")
   echo "Control plane topology: ${CONTROL_PLANE_TOPOLOGY}"
 
-  EXISTING=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d)
-  PULL_SECRET_UP_TO_DATE=$(echo "$EXISTING" | python3 -c "
+  EXISTING_FILE="$SECRET_DIR/existing.json"
+  read_cluster_pull_secret "$EXISTING_FILE"
+  PULL_SECRET_UP_TO_DATE=$(python3 -c "
 import json, sys
-existing = json.load(sys.stdin).get('auths', {})
+with open(sys.argv[1]) as f:
+    existing = json.load(f).get('auths', {})
 with open('/quay-pull-credentials/.dockerconfigjson') as f:
     extra = json.load(f).get('auths', {})
 
@@ -58,7 +87,7 @@ missing = [r for r in extra if not covered(r)]
 print('no' if missing else 'yes')
 if missing:
     print('missing registries: ' + ', '.join(sorted(missing)), file=sys.stderr)
-")
+" "$EXISTING_FILE")
 
   if [[ "$PULL_SECRET_UP_TO_DATE" == "yes" ]]; then
     echo "Cluster pull-secret already carries all required registry credentials — skipping injection."
@@ -66,16 +95,19 @@ if missing:
   else
     # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
     echo "Injecting quay pull credentials into cluster global pull-secret..."
-    MERGED=$(echo "$EXISTING" | python3 -c "
+    MERGED_FILE="$SECRET_DIR/merged.json"
+    python3 -c "
 import json, sys
-existing = json.load(sys.stdin)
+with open(sys.argv[1]) as f:
+    existing = json.load(f)
 with open('/quay-pull-credentials/.dockerconfigjson') as f:
     extra = json.load(f)
 existing.setdefault('auths', {}).update(extra.get('auths', {}))
-print(json.dumps(existing))
-")
-    oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
-    echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+with open(sys.argv[2], 'w') as f:
+    json.dump(existing, f)
+" "$EXISTING_FILE" "$MERGED_FILE"
+    oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson="$MERGED_FILE"
+    echo "Injected $(python3 -c "import json,sys; print(len(json.load(open(sys.argv[1]))['auths']))" "$MERGED_FILE" 2>/dev/null) registry credentials into cluster pull-secret"
 
     if [[ "$CONTROL_PLANE_TOPOLOGY" != "External" ]]; then
       echo "Standalone control plane: the Machine Config Operator will now roll the nodes."
@@ -377,7 +409,8 @@ with open('/quay-pull-credentials/.dockerconfigjson') as f:
 for k in sorted(d.get('auths', {})):
     print(k)
 " 2>/dev/null)
-  CLUSTER_SECRET=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null | base64 -d)
+  CLUSTER_SECRET_FILE="$SECRET_DIR/cluster.json"
+  read_cluster_pull_secret "$CLUSTER_SECRET_FILE" || true
   MISSING=0
   while IFS= read -r repo; do
     # Match by longest path prefix, the way container runtimes resolve registry auth. A
@@ -389,15 +422,16 @@ for k in sorted(d.get('auths', {})):
     #
     # $repo is passed as an argument rather than interpolated into the program text, so
     # a repository name containing a quote cannot break the check.
-    if echo "$CLUSTER_SECRET" | python3 -c '
+    if python3 -c '
 import json, sys
-auths = json.load(sys.stdin).get("auths", {})
+with open(sys.argv[2]) as f:
+    auths = json.load(f).get("auths", {})
 repo = sys.argv[1]
 if repo in auths:
     sys.exit(0)
 parts = repo.split("/")
 sys.exit(0 if any("/".join(parts[:i]) in auths for i in range(len(parts) - 1, 0, -1)) else 1)
-' "$repo" 2>/dev/null; then
+' "$repo" "$CLUSTER_SECRET_FILE" 2>/dev/null; then
       echo "  OK   $repo"
     else
       echo "  MISS $repo"
