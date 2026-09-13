@@ -417,9 +417,9 @@ echo ""
 
 cd "${ARGO_CD_DIR}/test/e2e" || exit 1
 
-# Save KUBECONFIG for tests
 export KUBECONFIG="${KUBECONFIG:-${HOME}/.kube/config}"
-cp "$KUBECONFIG" "${RESULTS_DIR}/kubeconfig" 2>/dev/null || true
+# Not copied into RESULTS_DIR: that directory is uploaded to a public quay repository,
+# and the kubeconfig is the cluster's admin credential.
 
 # Run tests
 # NOTE: go-junit-report is not installed in this image, so no JUnit XML is produced here.
