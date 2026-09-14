@@ -26,6 +26,25 @@ echo ""
 echo "Creating namespace ${NAMESPACE}..."
 oc create namespace "$NAMESPACE" --dry-run=client -o yaml | oc apply -f -
 
+# Let the upstream manifests run unmodified on OpenShift.
+#
+# Upstream's install.yaml is already hardened: non-root, all capabilities dropped, no
+# privilege escalation, seccompProfile RuntimeDefault. Most components run under the default
+# restricted-v2 SCC as-is. Two pin a UID outside the namespace's allocated range — dex
+# (1001) and redis (999) — which restricted-v2 rejects. anyuid admits the UID but rejects the
+# RuntimeDefault seccomp profile ("seccomp may not be set"), which is why granting anyuid
+# only worked for a component after its seccompProfile was patched out; dex never was, and
+# never became Available.
+#
+# nonroot-v2 admits exactly this profile — any non-root UID, runtime/default seccomp, ALL
+# capabilities dropped, no privilege escalation — so no manifest needs patching. Granted to
+# every ServiceAccount in the namespace, and before the manifests are applied so that the
+# first pods are admitted rather than rejected and retried. Verified on FIPS OpenShift 4.22
+# with Argo CD v3.5.2: dex and redis admitted under nonroot-v2, every other component under
+# restricted-v2, all seven workloads ready.
+echo "Granting nonroot-v2 SCC to service accounts in ${NAMESPACE}..."
+oc adm policy add-scc-to-group nonroot-v2 "system:serviceaccounts:${NAMESPACE}"
+
 # Download upstream ArgoCD manifests for the requested version
 echo "Downloading ArgoCD ${ARGOCD_VERSION} manifests from upstream..."
 UPSTREAM_URL="https://raw.githubusercontent.com/argoproj/argo-cd/${ARGOCD_VERSION}/manifests/install.yaml"
@@ -50,30 +69,16 @@ if ! oc get secret argocd-redis -n "$NAMESPACE" &>/dev/null; then
       -n "$NAMESPACE"
 fi
 
-# Grant anyuid SCC to service accounts to allow running as UID 999
-# Upstream ArgoCD manifests use hardcoded UIDs that don't match OpenShift's allocated ranges
-echo "  Granting anyuid SCC to ArgoCD service accounts..."
-for sa in argocd-application-controller argocd-server argocd-repo-server argocd-dex-server argocd-redis; do
-    oc adm policy add-scc-to-user anyuid -z "$sa" -n "$NAMESPACE" 2>/dev/null || true
-done
-
-# Remove seccompProfile from Redis deployment — upstream sets RuntimeDefault which
-# OpenShift's anyuid SCC rejects
-echo "  Patching Redis deployment to remove seccompProfile..."
-oc patch deployment argocd-redis -n "$NAMESPACE" --type json -p '[
-  {"op": "remove", "path": "/spec/template/spec/securityContext/seccompProfile"},
-  {"op": "remove", "path": "/spec/template/spec/initContainers/0/securityContext/seccompProfile"}
-]' 2>/dev/null || true
-
 # Patch argocd-server deployment to use custom image
 echo "Patching argocd-server to use image: ${ARGOCD_SERVER_IMAGE}"
 oc set image deployment/argocd-server \
   argocd-server="$ARGOCD_SERVER_IMAGE" \
   -n "$NAMESPACE"
 
-# Wait for deployments to be ready
+# Wait for every workload the manifest created, not a hand-picked subset: a component the
+# SCC rejects (as dex was) should fail the deploy here, not surface later as a test failure.
 echo "Waiting for ArgoCD deployments to become ready..."
-for deploy in argocd-redis argocd-server argocd-repo-server argocd-dex-server; do
+for deploy in $(oc get deployments -n "$NAMESPACE" -o jsonpath='{.items[*].metadata.name}'); do
   echo "  Waiting for $deploy..."
   if ! oc wait --for=condition=Available deployment/"$deploy" -n "$NAMESPACE" --timeout=10m; then
     echo "ERROR: deployment/$deploy did not become Available"
