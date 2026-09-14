@@ -170,6 +170,19 @@ if ! command -v kubectl >/dev/null 2>&1; then
   fi
 fi
 
+# FIPS clusters: make gpg non-interactive. EnsureCleanState imports the fixture's signing
+# key with a bare `gpg --import` before every test. On a FIPS node that key's cipher
+# preferences (3DES) are unavailable, gpg stops to ask on the terminal, finds no /dev/tty
+# and exits 2 — after importing the key — so every test fails in setup. With --batch the
+# same import exits 0 and the key signs normally. Only on FIPS, so other runs keep calling
+# gpg exactly as upstream does.
+if [[ "$(cat /proc/sys/crypto/fips_enabled 2>/dev/null)" == "1" ]]; then
+  REAL_GPG=$(command -v gpg)
+  printf '#!/bin/bash\nexec %s --batch "$@"\n' "${REAL_GPG}" > /tmp/bin/gpg
+  chmod +x /tmp/bin/gpg
+  echo "FIPS mode: gpg wrapped with --batch (${REAL_GPG})"
+fi
+
 # See lib/goreman-shim.sh for why the v3.x fixture needs this. Copied in by the outer script.
 if [[ -f /opt/e2e-test/lib/goreman-shim.sh ]]; then
   source /opt/e2e-test/lib/goreman-shim.sh
