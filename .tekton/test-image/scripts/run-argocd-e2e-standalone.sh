@@ -55,10 +55,26 @@ fi
 # The standalone pipeline parses the File-Based Catalog to find this. Here the operator
 # is already installed on the cluster, so its CSV lists the same image in relatedImages —
 # fewer moving parts, and guaranteed to be the image this operator would actually use.
-CSV=$(oc get csv -n "${OPERATOR_NAMESPACE}" \
-        -o jsonpath='{.items[?(@.status.phase=="Succeeded")].metadata.name}' 2>/dev/null \
-        | tr ' ' '\n' | grep -i gitops | head -1 || true)
-[[ -n "${CSV}" ]] || die "no Succeeded gitops CSV in ${OPERATOR_NAMESPACE} — did install-operator run?"
+#
+# Wait for it rather than looking once. A CSV that has just reached Succeeded can drop
+# back to InstallReady/Installing for a short while as OLM re-reconciles its deployment,
+# and this step starts seconds after install-operator saw Succeeded — a single look lands
+# in that window often enough to fail a leg on an operator that is installed and fine.
+CSV=""
+PHASE=""
+for _ in $(seq 1 60); do
+  CSV=$(oc get csv -n "${OPERATOR_NAMESPACE}" -o name 2>/dev/null \
+          | sed 's|.*/||' | grep -i gitops | head -1 || true)
+  if [[ -n "${CSV}" ]]; then
+    PHASE=$(oc get csv "${CSV}" -n "${OPERATOR_NAMESPACE}" \
+              -o jsonpath='{.status.phase}' 2>/dev/null || true)
+    [[ "${PHASE}" == "Succeeded" ]] && break
+  fi
+  sleep 10
+done
+[[ -n "${CSV}" ]] || die "no gitops CSV in ${OPERATOR_NAMESPACE} after 10m — did install-operator run?"
+[[ "${PHASE}" == "Succeeded" ]] \
+  || die "CSV ${CSV} in ${OPERATOR_NAMESPACE} did not return to Succeeded within 10m (phase: ${PHASE:-unknown}, reason: $(oc get csv "${CSV}" -n "${OPERATOR_NAMESPACE}" -o jsonpath='{.status.reason}' 2>/dev/null || true))"
 
 ARGOCD_SERVER_IMAGE=$(oc get csv "${CSV}" -n "${OPERATOR_NAMESPACE}" -o json 2>/dev/null \
   | jq -r '[.spec.relatedImages[]? | select(.name|test("argocd|argo-cd";"i")) | .image]
