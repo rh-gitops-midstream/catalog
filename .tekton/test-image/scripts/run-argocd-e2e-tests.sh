@@ -407,6 +407,44 @@ fi
 echo "ArgoCD CLI version:"
 "${DIST_DIR}/argocd" version --client 2>&1 || true
 
+# --- goreman stand-in -------------------------------------------------------------------
+#
+# Since v3.x the fixture's EnsureCleanState runs `goreman run status` before every test,
+# remote mode included, and fails the test when the binary is missing. Upstream's remote
+# harness (test/remote) gets away with it because its runner image carries goreman and a
+# Procfile with none of the Argo CD process names in it, so there is nothing to start.
+#
+# Here the components are Kubernetes workloads, so the stand-in reports no local
+# processes and turns the fixture's start requests (RestartProcess, used by the sharding
+# tests) into rollout restarts. It cannot apply the environment variables the fixture
+# writes to /tmp/argocd-e2e-env, so tests that depend on those will fail visibly rather
+# than pass by accident.
+if ! command -v goreman >/dev/null 2>&1; then
+  GOREMAN_SHIM_DIR=$(mktemp -d)
+  cat > "${GOREMAN_SHIM_DIR}/goreman" <<SHIM
+#!/bin/bash
+# goreman run <status|start|stop> [process]
+[[ "\${1:-}" == run ]] || exit 0
+case "\${2:-}" in
+  start)
+    case "\${3:-}" in
+      controller)   target="statefulset/${ARGOCD_APPLICATION_CONTROLLER_NAME}" ;;
+      api-server)   target="deployment/${ARGOCD_SERVER_NAME}" ;;
+      repo-server)  target="deployment/${ARGOCD_REPO_SERVER_NAME}" ;;
+      redis)        target="deployment/${ARGOCD_REDIS_NAME}" ;;
+      *)            exit 0 ;;
+    esac
+    oc rollout restart "\${target}" -n "${ARGOCD_NAMESPACE}" >&2 &&
+      oc rollout status "\${target}" -n "${ARGOCD_NAMESPACE}" --timeout=5m >&2
+    ;;
+  *) exit 0 ;;
+esac
+SHIM
+  chmod +x "${GOREMAN_SHIM_DIR}/goreman"
+  export PATH="${GOREMAN_SHIM_DIR}:${PATH}"
+  echo "goreman not installed — using the Kubernetes stand-in at ${GOREMAN_SHIM_DIR}/goreman"
+fi
+
 # --- Run E2E tests ---
 
 echo ""
@@ -428,7 +466,9 @@ export KUBECONFIG="${KUBECONFIG:-${HOME}/.kube/config}"
 # and the invocation is changed to:
 #   ./../../e2e.test -test.v ... 2>&1 | tee "${RESULTS_DIR}/test.log" \
 #     | go-junit-report -set-exit-code > "${RESULTS_DIR}/junit-results.xml" || TEST_EXIT_CODE=$?
-./../../e2e.test -test.v -test.timeout 60m \
+# ARGOCD_E2E_TEST_TIMEOUT: go test -test.timeout. 60m suits a skip-filtered run; the full
+# suite needs hours, and hitting the timeout panics the binary and loses every later result.
+./../../e2e.test -test.v -test.timeout "${ARGOCD_E2E_TEST_TIMEOUT:-60m}" \
   ${ARGOCD_E2E_SKIP:+-test.skip "$ARGOCD_E2E_SKIP"} 2>&1 | tee "${RESULTS_DIR}/test.log"
 
 TEST_EXIT_CODE=${PIPESTATUS[0]}

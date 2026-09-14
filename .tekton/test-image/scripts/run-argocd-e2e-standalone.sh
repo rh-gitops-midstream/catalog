@@ -125,6 +125,11 @@ export ARGOCD_REPO_SERVER_NAME="argocd-repo-server"
 export ARGOCD_APPLICATION_CONTROLLER_NAME="argocd-application-controller"
 export ARGOCD_REDIS_NAME="argocd-redis"
 
+# The whole upstream suite, not a filtered subset, so the runner's 60m default would panic
+# the test binary partway through. 4h fits inside the z-stream leg's 7h30m task timeout and
+# 7h claim, after the ~25 minutes that deploy and compilation take.
+export ARGOCD_E2E_TEST_TIMEOUT="${ARGOCD_E2E_TEST_TIMEOUT:-4h}"
+
 # The suite source must match the deployed server, so both come from ARGOCD_VERSION.
 export TEST_REPO_URL="${ARGOCD_TEST_REPO_URL:-https://github.com/argoproj/argo-cd.git}"
 export BRANCH="${ARGOCD_VERSION}"
