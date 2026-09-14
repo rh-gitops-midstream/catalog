@@ -166,6 +166,30 @@ if [[ -n "${GINKGO_SKIP:-}" ]]; then
   echo "Skipping tests matching: ${GINKGO_SKIP}"
 fi
 
+# GINKGO_SHARD=i/n: run every n-th test file of TEST_DIR, starting at the i-th, in C-locale
+# sorted order, so the shards of a suite partition whatever the branch actually contains.
+# All *.go files, not only *_test.go: the package's non-test files compile into the suite
+# too, and upstream keeps specs in several of them (1-084, 1-092, 1-103, 1-120, 1-121, 1-135).
+# An explicit GINKGO_FOCUS_FILE wins.
+if [[ -n "${GINKGO_SHARD:-}" && -z "${GINKGO_FOCUS_FILE:-}" ]]; then
+  SHARD_INDEX="${GINKGO_SHARD%/*}"
+  SHARD_COUNT="${GINKGO_SHARD#*/}"
+  mapfile -t SHARD_FILES < <(find "${TEST_DIR}" -maxdepth 1 -name '*.go' ! -name 'suite_test.go' \
+                               -printf '%f\n' | LC_ALL=C sort)
+  SHARD_SELECTED=()
+  for i in "${!SHARD_FILES[@]}"; do
+    if (( i % SHARD_COUNT == SHARD_INDEX - 1 )); then
+      SHARD_SELECTED+=("${SHARD_FILES[$i]//./\\.}")
+    fi
+  done
+  if [[ ${#SHARD_SELECTED[@]} -eq 0 ]]; then
+    echo "ERROR: shard ${GINKGO_SHARD} selected no test files in ${TEST_DIR}"
+    exit 1
+  fi
+  GINKGO_FOCUS_FILE=$(IFS='|'; echo "${SHARD_SELECTED[*]}")
+  echo "Shard ${GINKGO_SHARD}: ${#SHARD_SELECTED[@]} of ${#SHARD_FILES[@]} test files in ${TEST_DIR}"
+fi
+
 if [[ -n "${GINKGO_FOCUS_FILE:-}" ]]; then
   GINKGO_ARGS+=("--focus-file=${GINKGO_FOCUS_FILE}")
   echo "Focusing on files matching: ${GINKGO_FOCUS_FILE}"
