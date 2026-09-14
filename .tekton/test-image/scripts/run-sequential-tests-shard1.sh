@@ -9,7 +9,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib/load-skip-patterns.sh"
 
 export TEST_DIR="${TEST_DIR:-./test/openshift/e2e/ginkgo/sequential}"
 export PROCS="${PROCS:-1}"
-export TIMEOUT="${TIMEOUT:-120m}"
+# Upstream gives the whole sequential suite 240m in one process. Split by file count, not
+# by runtime, one shard can carry most of the slow specs: on upstream v1.22 shard 1 hit
+# 120m with specs still unrun and no xks specs in it. 180m each leaves room for that.
+export TIMEOUT="${TIMEOUT:-180m}"
 
 # Shard 1 of 2: every 1st, 3rd, 5th... test file of the checked-out branch, in sorted order.
 # Computed by run-e2e-tests.sh after checkout, not listed here. A fixed list is written

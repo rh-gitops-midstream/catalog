@@ -195,6 +195,17 @@ if [[ -n "${GINKGO_FOCUS_FILE:-}" ]]; then
   echo "Focusing on files matching: ${GINKGO_FOCUS_FILE}"
 fi
 
+# OpenShift runs exclude specs labelled xks (non-OpenShift Kubernetes only), as upstream's
+# own OpenShift targets do with OCP_LABEL_FILTER. Upstream started labelling in v1.22
+# (#1216); on a branch without labels "!xks" excludes nothing. Without it, an xks-only spec
+# like 1-135's imagePullSecret propagation runs against OpenShift, fails after ~6 minutes
+# each, and on the first v1.22 run seven of them ate a sequential shard's timeout.
+GINKGO_LABEL_FILTER="${GINKGO_LABEL_FILTER-!xks}"
+if [[ -n "${GINKGO_LABEL_FILTER}" ]]; then
+  GINKGO_ARGS+=("--label-filter=${GINKGO_LABEL_FILTER}")
+  echo "Label filter: ${GINKGO_LABEL_FILTER}"
+fi
+
 # Enable parallel mode only when PROCS > 1
 PARALLEL_FLAG=""
 if [[ "${PROCS:-1}" -gt 1 ]]; then
