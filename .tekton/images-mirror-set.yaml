@@ -31,6 +31,14 @@ spec:
       - registry.stage.redhat.io/openshift-gitops-1/console-plugin-rhel9
 
   # -------------------------
+  # Console Plugin 4.18
+  # -------------------------
+  - source: registry.redhat.io/openshift-gitops-1/console-plugin-4-18-rhel9
+    mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/console-plugin-4-18-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/console-plugin-4-18-rhel9
+
+  # -------------------------
   # Dex
   # -------------------------
   - source: registry.redhat.io/openshift-gitops-1/dex-rhel8
@@ -143,3 +151,19 @@ spec:
     mirrors:
       - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-image-updater-rhel9
       - registry.stage.redhat.io/openshift-gitops-1/argocd-image-updater-rhel9
+
+  # -------------------------
+  # GitOps Promoter
+  # -------------------------
+  - source: registry.redhat.io/openshift-gitops-1/gitops-promoter-rhel9
+    mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-promoter-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/gitops-promoter-rhel9
+
+  # -------------------------
+  # ArgoCD Promoter Extension
+  # -------------------------
+  - source: registry.redhat.io/openshift-gitops-1/argocd-promoter-extension-rhel9
+    mirrors:
+      - quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/argocd-promoter-extension-rhel9
+      - registry.stage.redhat.io/openshift-gitops-1/argocd-promoter-extension-rhel9
