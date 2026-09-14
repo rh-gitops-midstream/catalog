@@ -199,11 +199,16 @@ cd "${ARGO_CD_DIR}/test/e2e"
 
 # Crash-resilient test runner: upstream fixture code contains log.Fatal() calls
 # that kill the entire test binary when certain operations fail (repo add, cluster
-# upsert). This loop detects crashes, identifies the offending test, adds it to
-# the skip list, and re-runs the remaining tests.
-MAX_CRASH_RETRIES=5
+# upsert), and a test can panic outright. This loop detects crashes, identifies the
+# offending test, and re-runs the binary on what has not run yet.
+#
+# Resuming, not restarting: every test that already reported PASS/FAIL/SKIP goes into the
+# skip list along with the crashed one. Without that a crash 270 tests in re-ran all 270,
+# costing another hour per crash and counting each of them twice in the totals.
+MAX_CRASH_RETRIES=20
 CRASH_RETRY=0
 CRASH_SKIP=""
+DONE_TESTS=""
 TOTAL_PASSED=0
 TOTAL_FAILED=0
 TOTAL_SKIPPED=0
@@ -212,8 +217,9 @@ TEST_LOG="/tmp/e2e-test-run.log"
 
 while true; do
   FULL_SKIP="${ARGOCD_E2E_SKIP}"
-  if [[ -n "${CRASH_SKIP}" ]]; then
-    FULL_SKIP="${FULL_SKIP:+${FULL_SKIP}|}${CRASH_SKIP}"
+  if [[ -n "${CRASH_SKIP}${DONE_TESTS}" ]]; then
+    RESUME_SKIP="${CRASH_SKIP}${CRASH_SKIP:+${DONE_TESTS:+|}}${DONE_TESTS}"
+    FULL_SKIP="${FULL_SKIP:+${FULL_SKIP}|}^(${RESUME_SKIP})\$"
   fi
 
   if [[ ${CRASH_RETRY} -gt 0 ]]; then
@@ -229,7 +235,11 @@ while true; do
   echo ""
   echo "Running: ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout ${ARGOCD_E2E_TEST_TIMEOUT}"
   [[ -n "${TEST_RUN_FILTER}" ]] && echo "  Run:  ${TEST_RUN_FILTER}"
-  echo "  Skip: ${FULL_SKIP}"
+  if [[ ${CRASH_RETRY} -gt 0 ]]; then
+    echo "  Skip: ${ARGOCD_E2E_SKIP} + $(tr '|' '\n' <<<"${DONE_TESTS}" | grep -c .) already-run tests + crashed: ${CRASH_SKIP}"
+  else
+    echo "  Skip: ${FULL_SKIP}"
+  fi
   echo ""
 
   set +e
@@ -269,7 +279,11 @@ while true; do
     break
   fi
 
-  TOTAL_FAILED=$((TOTAL_FAILED + 1))
+  # A panicking test usually prints its own --- FAIL line before the binary dies, and it
+  # is already counted above; only count the crash when it did not.
+  if ! grep -q "^--- FAIL: ${CRASHED_TEST} " "${TEST_LOG}"; then
+    TOTAL_FAILED=$((TOTAL_FAILED + 1))
+  fi
 
   echo ""
   echo "=========================================="
@@ -285,6 +299,11 @@ while true; do
   fi
 
   CRASH_SKIP="${CRASH_SKIP:+${CRASH_SKIP}|}${CRASHED_TEST}"
+  RUN_DONE=$(grep -E '^--- (PASS|FAIL|SKIP): ' "${TEST_LOG}" | awk '{print $3}' \
+               | grep -vx "${CRASHED_TEST}" | paste -sd '|' || true)
+  if [[ -n "${RUN_DONE}" ]]; then
+    DONE_TESTS="${DONE_TESTS:+${DONE_TESTS}|}${RUN_DONE}"
+  fi
   echo "Skipping ${CRASHED_TEST}, retrying remaining tests..."
 done
 
