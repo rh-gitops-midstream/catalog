@@ -17,7 +17,13 @@ export GOCACHE="${CACHE_DIR}/go-cache"
 export GOMODCACHE="${CACHE_DIR}/go-mod"
 mkdir -p "$GOCACHE" "$GOMODCACHE"
 
-oc status
+# `oc status` reads OpenShift projects and fails on other Kubernetes; the xks pipeline runs
+# these same suites on EKS and GKE.
+if oc api-resources --api-group=project.openshift.io 2>/dev/null | grep -q '^projects'; then
+  oc status
+else
+  kubectl cluster-info
+fi
 
 # --- Ensure argocd CLI is available (some tests call `argocd login` etc.) ---
 # Extract the release-candidate argocd binary from the deployed operator image.
