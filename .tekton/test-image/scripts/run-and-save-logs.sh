@@ -33,11 +33,9 @@ mkdir -p "${LOG_DIR}"
     env | grep -v -E '^(PATH=|HOME=|USER=|HOSTNAME=|PWD=|OLDPWD=|LS_COLORS=|DOCKER_CONFIG=|.*PASSWORD.*=|.*SECRET.*=|.*TOKEN.*=|.*KEY.*=)' | sort
 } > "${LOG_DIR}/env.sh"
 
-# Copy KUBECONFIG if it exists and is a file
-if [[ -n "${KUBECONFIG:-}" && -f "${KUBECONFIG}" ]]; then
-    cp "${KUBECONFIG}" "${LOG_DIR}/kubeconfig"
-    echo "Saved KUBECONFIG to ${LOG_DIR}/kubeconfig"
-fi
+# The kubeconfig is deliberately NOT saved into the log directory. These logs are pushed
+# to a public quay repository, and the kubeconfig is the cluster's admin credential.
+# lib/oras-helpers.sh also refuses to upload credential files, as a second line of defence.
 
 # Create a reproduce.sh script
 {
@@ -52,7 +50,7 @@ fi
     echo '#   1. Extract the logs artifact: oras pull <quay-ref>'
     echo '#      tar xzf <task>-logs.tar.gz'
     echo '#   2. Source the environment: source env.sh'
-    echo '#   3. Set KUBECONFIG: export KUBECONFIG=kubeconfig (if present)'
+    echo '#   3. Point KUBECONFIG at the cluster yourself — it is not included in the artifact'
     echo '#   4. Run the command below (adjust paths as needed)'
     echo ''
     echo 'set -x'
