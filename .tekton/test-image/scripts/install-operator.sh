@@ -1,6 +1,33 @@
 #!/bin/bash
 set -ex
 
+# Pull-secret content must never reach xtrace: this script runs with `set -x` and its
+# output is uploaded as a task-log artifact. Secrets are therefore only ever held in files
+# under a private directory outside the log directory, and only their paths appear on a
+# command line. The read retries, because a single `oc get` against a freshly claimed
+# cluster can time out, and an empty read used to fail the install as a JSON parse error.
+SECRET_DIR=$(mktemp -d)
+chmod 700 "$SECRET_DIR"
+trap 'rm -rf "$SECRET_DIR"' EXIT
+
+read_cluster_pull_secret() {
+  { set +x; } 2>/dev/null
+  local dest=$1 attempt
+  for attempt in 1 2 3 4 5; do
+    if oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null \
+         | base64 -d > "$dest" 2>/dev/null && [[ -s "$dest" ]]; then
+      set -x
+      return 0
+    fi
+    echo "reading openshift-config/pull-secret failed (attempt ${attempt}/5); retrying in 10s" >&2
+    sleep 10
+  done
+  : > "$dest"
+  echo "ERROR: could not read openshift-config/pull-secret after 5 attempts" >&2
+  set -x
+  return 1
+}
+
 # Environment variables expected:
 # - OPENSHIFT_VERSION (e.g. "4.20" or "4.20.19")
 # - NAMESPACE
@@ -23,17 +50,21 @@ echo "Target namespace: ${NAMESPACE}"
 if [[ -f "/quay-pull-credentials/.dockerconfigjson" ]]; then
   # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
   echo "Injecting quay pull credentials into cluster global pull-secret..."
-  EXISTING=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d)
-  MERGED=$(echo "$EXISTING" | python3 -c "
+  EXISTING_FILE="$SECRET_DIR/existing.json"
+  MERGED_FILE="$SECRET_DIR/merged.json"
+  read_cluster_pull_secret "$EXISTING_FILE"
+  python3 -c "
 import json, sys
-existing = json.load(sys.stdin)
+with open(sys.argv[1]) as f:
+    existing = json.load(f)
 with open('/quay-pull-credentials/.dockerconfigjson') as f:
     extra = json.load(f)
 existing.setdefault('auths', {}).update(extra.get('auths', {}))
-print(json.dumps(existing))
-")
-  oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
-  echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+with open(sys.argv[2], 'w') as f:
+    json.dump(existing, f)
+" "$EXISTING_FILE" "$MERGED_FILE"
+  oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson="$MERGED_FILE"
+  echo "Injected $(python3 -c "import json,sys; print(len(json.load(open(sys.argv[1]))['auths']))" "$MERGED_FILE" 2>/dev/null) registry credentials into cluster pull-secret"
 
   # 1b. Create additional-pull-secret in kube-system (HyperShift-native mechanism).
   # The Hosted Cluster Config Operator detects this secret and deploys a DaemonSet
@@ -320,10 +351,11 @@ with open('/quay-pull-credentials/.dockerconfigjson') as f:
 for k in sorted(d.get('auths', {})):
     print(k)
 " 2>/dev/null)
-  CLUSTER_SECRET=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null | base64 -d)
+  CLUSTER_SECRET_FILE="$SECRET_DIR/cluster.json"
+  read_cluster_pull_secret "$CLUSTER_SECRET_FILE" || true
   MISSING=0
   while IFS= read -r repo; do
-    if echo "$CLUSTER_SECRET" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if '$repo' in d.get('auths',{}) else 1)" 2>/dev/null; then
+    if python3 -c "import json,sys; d=json.load(open(sys.argv[2])); sys.exit(0 if sys.argv[1] in d.get('auths',{}) else 1)" "$repo" "$CLUSTER_SECRET_FILE" 2>/dev/null; then
       echo "  OK   $repo"
     else
       echo "  MISS $repo"
