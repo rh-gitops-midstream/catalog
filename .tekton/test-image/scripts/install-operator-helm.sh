@@ -36,7 +36,14 @@ trap 'rm -f "$CRDS" "$REST"' EXIT
 python3 - "$MANIFEST" "$CRDS" "$REST" <<'PY'
 import sys, yaml
 src, crds, rest = sys.argv[1:]
-docs = [d for d in yaml.safe_load_all(open(src)) if d]
+# Anything without a kind is not a manifest — e.g. the "Pulled:"/"Digest:" lines
+# `helm template oci://...` prints to stdout. Report it rather than fail the apply on it.
+docs = []
+for d in yaml.safe_load_all(open(src)):
+    if isinstance(d, dict) and d.get("kind") and d.get("apiVersion"):
+        docs.append(d)
+    elif d:
+        print(f"ignoring a non-manifest document: {sorted(d) if isinstance(d, dict) else type(d).__name__}")
 with open(crds, "w") as c, open(rest, "w") as r:
     yaml.safe_dump_all([d for d in docs if d.get("kind") == "CustomResourceDefinition"], c)
     yaml.safe_dump_all([d for d in docs if d.get("kind") != "CustomResourceDefinition"], r)
