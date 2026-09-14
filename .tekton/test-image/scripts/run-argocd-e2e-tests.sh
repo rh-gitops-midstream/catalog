@@ -407,43 +407,13 @@ fi
 echo "ArgoCD CLI version:"
 "${DIST_DIR}/argocd" version --client 2>&1 || true
 
-# --- goreman stand-in -------------------------------------------------------------------
-#
-# Since v3.x the fixture's EnsureCleanState runs `goreman run status` before every test,
-# remote mode included, and fails the test when the binary is missing. Upstream's remote
-# harness (test/remote) gets away with it because its runner image carries goreman and a
-# Procfile with none of the Argo CD process names in it, so there is nothing to start.
-#
-# Here the components are Kubernetes workloads, so the stand-in reports no local
-# processes and turns the fixture's start requests (RestartProcess, used by the sharding
-# tests) into rollout restarts. It cannot apply the environment variables the fixture
-# writes to /tmp/argocd-e2e-env, so tests that depend on those will fail visibly rather
-# than pass by accident.
-if ! command -v goreman >/dev/null 2>&1; then
-  GOREMAN_SHIM_DIR=$(mktemp -d)
-  cat > "${GOREMAN_SHIM_DIR}/goreman" <<SHIM
-#!/bin/bash
-# goreman run <status|start|stop> [process]
-[[ "\${1:-}" == run ]] || exit 0
-case "\${2:-}" in
-  start)
-    case "\${3:-}" in
-      controller)   target="statefulset/${ARGOCD_APPLICATION_CONTROLLER_NAME}" ;;
-      api-server)   target="deployment/${ARGOCD_SERVER_NAME}" ;;
-      repo-server)  target="deployment/${ARGOCD_REPO_SERVER_NAME}" ;;
-      redis)        target="deployment/${ARGOCD_REDIS_NAME}" ;;
-      *)            exit 0 ;;
-    esac
-    oc rollout restart "\${target}" -n "${ARGOCD_NAMESPACE}" >&2 &&
-      oc rollout status "\${target}" -n "${ARGOCD_NAMESPACE}" --timeout=5m >&2
-    ;;
-  *) exit 0 ;;
-esac
-SHIM
-  chmod +x "${GOREMAN_SHIM_DIR}/goreman"
-  export PATH="${GOREMAN_SHIM_DIR}:${PATH}"
-  echo "goreman not installed — using the Kubernetes stand-in at ${GOREMAN_SHIM_DIR}/goreman"
+# See lib/goreman-shim.sh for why the v3.x fixture needs this.
+if [[ -f /usr/local/bin/lib/goreman-shim.sh ]]; then
+  source /usr/local/bin/lib/goreman-shim.sh
+else
+  source "${SCRIPT_DIR}/lib/goreman-shim.sh"
 fi
+install_goreman_shim oc
 
 # --- Run E2E tests ---
 

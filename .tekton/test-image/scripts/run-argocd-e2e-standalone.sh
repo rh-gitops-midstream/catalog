@@ -145,4 +145,9 @@ cat <<EOF
 --------------------------------------------------
 EOF
 
-exec "${SCRIPT_DIR}/run-argocd-e2e-tests.sh"
+# The in-pod runner, not run-argocd-e2e-tests.sh. The suite pushes fixtures to, and points
+# Argo CD at, in-cluster service names (git server, argocd-server). This leg's step runs on
+# the pipeline's runner cluster, not on the claimed cluster, so those names do not resolve
+# from here; every test fails in setup on the first `git push`. The in-pod runner compiles
+# and runs the suite in a pod on the claimed cluster, as the Konflux test-argocd task does.
+exec "${SCRIPT_DIR}/run-argocd-e2e-tests-in-pod.sh"

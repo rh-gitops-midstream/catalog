@@ -15,6 +15,9 @@ set -euo pipefail
 : "${ARGOCD_APPLICATION_CONTROLLER_NAME:?ARGOCD_APPLICATION_CONTROLLER_NAME must be set}"
 : "${ARGOCD_E2E_SKIP:?ARGOCD_E2E_SKIP must be set}"
 TEST_RUN_FILTER="${TEST_RUN_FILTER:-}"
+# go test -test.timeout. 60m suits a skip-filtered run; the full suite needs hours, and
+# hitting the timeout panics the binary and loses every later result.
+ARGOCD_E2E_TEST_TIMEOUT="${ARGOCD_E2E_TEST_TIMEOUT:-60m}"
 
 echo "=========================================="
 echo "ArgoCD E2E Tests (Inside Pod)"
@@ -167,6 +170,12 @@ if ! command -v kubectl >/dev/null 2>&1; then
   fi
 fi
 
+# See lib/goreman-shim.sh for why the v3.x fixture needs this. Copied in by the outer script.
+if [[ -f /opt/e2e-test/lib/goreman-shim.sh ]]; then
+  source /opt/e2e-test/lib/goreman-shim.sh
+  install_goreman_shim kubectl
+fi
+
 echo ""
 echo "Connectivity checks:"
 getent hosts "argocd-server.${ARGOCD_NAMESPACE}.svc.cluster.local" || echo "  WARNING: ArgoCD DNS failed"
@@ -205,13 +214,13 @@ while true; do
     kubectl create namespace argocd-e2e-external-2 --dry-run=client -o yaml | kubectl apply -f - 2>/dev/null || true
   fi
   echo ""
-  echo "Running: ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout 60m"
+  echo "Running: ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout ${ARGOCD_E2E_TEST_TIMEOUT}"
   [[ -n "${TEST_RUN_FILTER}" ]] && echo "  Run:  ${TEST_RUN_FILTER}"
   echo "  Skip: ${FULL_SKIP}"
   echo ""
 
   set +e
-  ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout 60m \
+  ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout ${ARGOCD_E2E_TEST_TIMEOUT} \
     ${TEST_RUN_FILTER:+-test.run "${TEST_RUN_FILTER}"} \
     ${FULL_SKIP:+-test.skip "${FULL_SKIP}"} 2>&1 | tee "${TEST_LOG}"
   EXIT_CODE=${PIPESTATUS[0]}
