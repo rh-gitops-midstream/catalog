@@ -39,6 +39,19 @@ setup_oras_auth() {
     fi
 }
 
+# Returns 0 if a file must never leave the pod in an uploaded artifact: anything named
+# like a kubeconfig, or any file whose content carries a kube client credential, a
+# service-account token field, a private key, or registry auth.
+_is_credential_file() {
+    local path=$1 base
+    base=$(basename "$path")
+    case "$base" in
+        kubeconfig|kubeconfig.*|*.kubeconfig|*-kubeconfig) return 0 ;;
+    esac
+    [ -r "$path" ] || return 1
+    grep -qE 'client-key-data:|client-certificate-data:|^[[:space:]]*token:[[:space:]]*[A-Za-z0-9._-]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|"auths"[[:space:]]*:' "$path" 2>/dev/null
+}
+
 # Push a directory as a gzipped tarball to an OCI registry using oras.
 # The tarball is created in /tmp and cleaned up after push.
 #
@@ -72,11 +85,36 @@ oras_push_tarball() {
     local tarball_name="${tag}.tar.gz"
     local full_ref="${quay_repo}:${tag}"
 
-    # Create tarball with path transformation
-    if ! tar czf "/tmp/${tarball_name}" --transform "s,^,${tarball_prefix}/," -C "$source_dir" .; then
+    # Create the tarball from everything in source_dir EXCEPT credential files.
+    #
+    # These artifacts go to a public repository with listable tags, so nothing uploaded
+    # here may carry a credential. Log directories have picked up the test cluster's admin
+    # kubeconfig in the past; this filter makes that impossible regardless of which script
+    # copied it in.
+    #
+    # Excluded rather than deleted, because a test that is still running may be pointing
+    # at a file in this directory. Anything a script copies in later is caught here too;
+    # this is the one place every log upload passes through (go-cache.sh pushes a build
+    # cache, not logs). If a new uploader bypasses this function, it needs the same filter.
+    local file_list excluded=0
+    file_list=$(mktemp)
+    while IFS= read -r -d '' f; do
+        if _is_credential_file "$source_dir/$f"; then
+            echo "Excluding credential file from upload: ${f#./}" >&2
+            excluded=$((excluded + 1))
+        else
+            printf '%s\0' "$f" >> "$file_list"
+        fi
+    done < <(cd "$source_dir" && find . \( -type f -o -type l \) -print0)
+
+    if ! tar czf "/tmp/${tarball_name}" --transform "s,^,${tarball_prefix}/," \
+            -C "$source_dir" --null -T "$file_list"; then
         echo "ERROR: Failed to create tarball" >&2
+        rm -f "$file_list"
         return 1
     fi
+    rm -f "$file_list"
+    [ "$excluded" -gt 0 ] && echo "Excluded ${excluded} credential file(s) from ${tag}" >&2
 
     # Push to registry
     if ( cd /tmp && oras push --no-tty \

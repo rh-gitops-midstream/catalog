@@ -17,7 +17,13 @@ export GOCACHE="${CACHE_DIR}/go-cache"
 export GOMODCACHE="${CACHE_DIR}/go-mod"
 mkdir -p "$GOCACHE" "$GOMODCACHE"
 
-oc status
+# `oc status` reads OpenShift projects and fails on other Kubernetes; the xks pipeline runs
+# these same suites on EKS and GKE.
+if oc api-resources --api-group=project.openshift.io 2>/dev/null | grep -q '^projects'; then
+  oc status
+else
+  kubectl cluster-info
+fi
 
 # --- Ensure argocd CLI is available (some tests call `argocd login` etc.) ---
 # Extract the release-candidate argocd binary from the deployed operator image.
@@ -166,9 +172,44 @@ if [[ -n "${GINKGO_SKIP:-}" ]]; then
   echo "Skipping tests matching: ${GINKGO_SKIP}"
 fi
 
+# GINKGO_SHARD=i/n: run every n-th test file of TEST_DIR, starting at the i-th, in C-locale
+# sorted order, so the shards of a suite partition whatever the branch actually contains.
+# All *.go files, not only *_test.go: the package's non-test files compile into the suite
+# too, and upstream keeps specs in several of them (1-084, 1-092, 1-103, 1-120, 1-121, 1-135).
+# An explicit GINKGO_FOCUS_FILE wins.
+if [[ -n "${GINKGO_SHARD:-}" && -z "${GINKGO_FOCUS_FILE:-}" ]]; then
+  SHARD_INDEX="${GINKGO_SHARD%/*}"
+  SHARD_COUNT="${GINKGO_SHARD#*/}"
+  mapfile -t SHARD_FILES < <(find "${TEST_DIR}" -maxdepth 1 -name '*.go' ! -name 'suite_test.go' \
+                               -printf '%f\n' | LC_ALL=C sort)
+  SHARD_SELECTED=()
+  for i in "${!SHARD_FILES[@]}"; do
+    if (( i % SHARD_COUNT == SHARD_INDEX - 1 )); then
+      SHARD_SELECTED+=("${SHARD_FILES[$i]//./\\.}")
+    fi
+  done
+  if [[ ${#SHARD_SELECTED[@]} -eq 0 ]]; then
+    echo "ERROR: shard ${GINKGO_SHARD} selected no test files in ${TEST_DIR}"
+    exit 1
+  fi
+  GINKGO_FOCUS_FILE=$(IFS='|'; echo "${SHARD_SELECTED[*]}")
+  echo "Shard ${GINKGO_SHARD}: ${#SHARD_SELECTED[@]} of ${#SHARD_FILES[@]} test files in ${TEST_DIR}"
+fi
+
 if [[ -n "${GINKGO_FOCUS_FILE:-}" ]]; then
   GINKGO_ARGS+=("--focus-file=${GINKGO_FOCUS_FILE}")
   echo "Focusing on files matching: ${GINKGO_FOCUS_FILE}"
+fi
+
+# OpenShift runs exclude specs labelled xks (non-OpenShift Kubernetes only), as upstream's
+# own OpenShift targets do with OCP_LABEL_FILTER. Upstream started labelling in v1.22
+# (#1216); on a branch without labels "!xks" excludes nothing. Without it, an xks-only spec
+# like 1-135's imagePullSecret propagation runs against OpenShift, fails after ~6 minutes
+# each, and on the first v1.22 run seven of them ate a sequential shard's timeout.
+GINKGO_LABEL_FILTER="${GINKGO_LABEL_FILTER-!xks}"
+if [[ -n "${GINKGO_LABEL_FILTER}" ]]; then
+  GINKGO_ARGS+=("--label-filter=${GINKGO_LABEL_FILTER}")
+  echo "Label filter: ${GINKGO_LABEL_FILTER}"
 fi
 
 # Enable parallel mode only when PROCS > 1
