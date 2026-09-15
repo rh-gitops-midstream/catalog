@@ -13,7 +13,8 @@ set -euo pipefail
 : "${ARGOCD_REDIS_NAME:?ARGOCD_REDIS_NAME must be set}"
 : "${ARGOCD_REPO_SERVER_NAME:?ARGOCD_REPO_SERVER_NAME must be set}"
 : "${ARGOCD_APPLICATION_CONTROLLER_NAME:?ARGOCD_APPLICATION_CONTROLLER_NAME must be set}"
-: "${ARGOCD_E2E_SKIP:?ARGOCD_E2E_SKIP must be set}"
+# May be empty: a full run (ARGOCD_E2E_USE_SKIP_LIST=false in the outer script) skips nothing.
+ARGOCD_E2E_SKIP="${ARGOCD_E2E_SKIP-}"
 TEST_RUN_FILTER="${TEST_RUN_FILTER:-}"
 # go test -test.timeout. 60m suits a skip-filtered run; the full suite needs hours, and
 # hitting the timeout panics the binary and loses every later result.
@@ -149,8 +150,10 @@ export ARGOCD_E2E_REPO_HTTPS_SUBMODULE_PARENT="https://argocd-e2e-server:9443/ar
 export ARGOCD_E2E_REPO_HELM="https://argocd-e2e-server:9444/helm-repo"
 export ARGOCD_E2E_REPO_DEFAULT="http://argocd-e2e-server:9081/argo-e2e/testdata.git"
 # Skip flags
-export ARGOCD_E2E_SKIP_GPG=true
-export ARGOCD_E2E_SKIP_OPENSHIFT=true
+# The fixture's own env skips (SkipOnEnv): GPG covers 26 tests, OPENSHIFT 19. Defaults keep
+# the previous behaviour; a full run turns both off from the outer script.
+export ARGOCD_E2E_SKIP_GPG="${ARGOCD_E2E_SKIP_GPG:-true}"
+export ARGOCD_E2E_SKIP_OPENSHIFT="${ARGOCD_E2E_SKIP_OPENSHIFT:-true}"
 export ARGOCD_E2E_SKIP_HELM=false
 export ARGOCD_E2E_K3S=true
 export ARGOCD_E2E_DEFAULT_TIMEOUT=30
@@ -205,7 +208,8 @@ cd "${ARGO_CD_DIR}/test/e2e"
 # Resuming, not restarting: every test that already reported PASS/FAIL/SKIP goes into the
 # skip list along with the crashed one. Without that a crash 270 tests in re-ran all 270,
 # costing another hour per crash and counting each of them twice in the totals.
-MAX_CRASH_RETRIES=20
+# A full run includes tests the skip list excluded for crashing the binary, so it needs more.
+MAX_CRASH_RETRIES="${ARGOCD_E2E_MAX_CRASH_RETRIES:-20}"
 CRASH_RETRY=0
 CRASH_SKIP=""
 DONE_TESTS=""
