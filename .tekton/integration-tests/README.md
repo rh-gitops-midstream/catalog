@@ -356,6 +356,7 @@ To skip a test globally (e.g. flaky on HyperShift):
 | `collect-logs-sidecar.sh` | Sidecar: incrementally pushes task logs to Quay during the run |
 | `collect-and-upload-logs.sh` | Wrapup: merges all task logs with cluster logs and uploads the bundle |
 | `collect-build-metadata.sh` | Collects installed component versions (ArgoCD, Helm, etc.) into a JSON file |
+| `gotest-log-to-junit.py` | Builds a JUnit report from a `go test -v` log, for suites that produce none |
 | `parse-test-results.py` | Parses JUnit XML into the results JSON format |
 | `parse-dast-results.py` | Parses RapidAST/ZAP output into the results JSON format |
 | `publish-results.sh` | Commits and pushes the results JSON to the catalog-results repo |

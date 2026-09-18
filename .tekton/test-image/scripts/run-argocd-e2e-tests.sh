@@ -430,18 +430,24 @@ export KUBECONFIG="${KUBECONFIG:-${HOME}/.kube/config}"
 # and the kubeconfig is the cluster's admin credential.
 
 # Run tests
-# NOTE: go-junit-report is not installed in this image, so no JUnit XML is produced here.
-# The dashboard will show no per-test counts for ArgoCD e2e results until go-junit-report
-# is added to the Dockerfile (e.g. RUN go install github.com/jstemmer/go-junit-report/v2@latest)
-# and the invocation is changed to:
-#   ./../../e2e.test -test.v ... 2>&1 | tee "${RESULTS_DIR}/test.log" \
-#     | go-junit-report -set-exit-code > "${RESULTS_DIR}/junit-results.xml" || TEST_EXIT_CODE=$?
+# The JUnit report is built from the log afterwards by gotest-log-to-junit.py rather than
+# piped through go-junit-report, which is not installed in this image.
 # ARGOCD_E2E_TEST_TIMEOUT: go test -test.timeout. 60m suits a skip-filtered run; the full
 # suite needs hours, and hitting the timeout panics the binary and loses every later result.
 ./../../e2e.test -test.v -test.timeout "${ARGOCD_E2E_TEST_TIMEOUT:-60m}" \
   ${ARGOCD_E2E_SKIP:+-test.skip "$ARGOCD_E2E_SKIP"} 2>&1 | tee "${RESULTS_DIR}/test.log"
 
 TEST_EXIT_CODE=${PIPESTATUS[0]}
+
+# Without this report parse-test-results.py has nothing to read, and the run is published
+# with no counts and a bare ERROR status even when the suite finished cleanly.
+if [[ -x /usr/local/bin/gotest-log-to-junit.py ]]; then
+  GOTEST_TO_JUNIT=/usr/local/bin/gotest-log-to-junit.py
+else
+  GOTEST_TO_JUNIT="${SCRIPT_DIR}/gotest-log-to-junit.py"
+fi
+python3 "${GOTEST_TO_JUNIT}" "${RESULTS_DIR}/test.log" "${RESULTS_DIR}/junit-results.xml" \
+  || echo "WARNING: could not build a JUnit report from the test log"
 
 echo ""
 echo "=========================================="
