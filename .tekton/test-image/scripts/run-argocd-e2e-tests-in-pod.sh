@@ -273,6 +273,19 @@ while true; do
 done
 rm -f "${TMP_CHUNK}"
 
+# Turn the log into the JUnit report every downstream consumer looks for. Without it
+# parse-test-results.py has nothing to read, and the run is published with no counts and
+# a bare ERROR status even when the suite finished cleanly. This suite is a plain Go test
+# binary and go-junit-report is not in the image, so the report is reconstructed here from
+# the log we already streamed.
+if [[ -x /usr/local/bin/gotest-log-to-junit.py ]]; then
+  GOTEST_TO_JUNIT=/usr/local/bin/gotest-log-to-junit.py
+else
+  GOTEST_TO_JUNIT="${SCRIPT_DIR}/gotest-log-to-junit.py"
+fi
+python3 "${GOTEST_TO_JUNIT}" "${RESULTS_DIR}/test.log" "${RESULTS_DIR}/junit-results.xml" \
+  || echo "WARNING: could not build a JUnit report from the test log"
+
 echo ""
 echo "=========================================="
 echo "Tests completed with exit code: ${TEST_EXIT_CODE}"
