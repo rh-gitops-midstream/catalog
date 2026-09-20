@@ -177,6 +177,27 @@ if [[ ! -d "${ARGO_CD_DIR}" ]]; then
     git checkout FETCH_HEAD 2>&1
   fi
 
+  # Assert this is actually Argo CD before compiling anything from it.
+  #
+  # The directory is named argo-cd regardless of what was cloned into it, and
+  # `go test -c ./test/e2e` succeeds against any repo that happens to have a test/e2e
+  # package. Pointed at the gitops-operator repo it compiled the operator's controller
+  # suite, ran 34 specs, and reported SUCCESS — a green leg testing the wrong software,
+  # with nothing in the output to suggest it. A one-line check is worth more here than
+  # any amount of reading the log afterwards.
+  MODULE=$(awk '/^module /{print $2; exit}' go.mod 2>/dev/null || true)
+  case "${MODULE}" in
+    github.com/argoproj/argo-cd*) : ;;
+    *)
+      echo "ERROR: ${TEST_REPO_URL} @ ${BRANCH} is not Argo CD." >&2
+      echo "       go.mod declares module '${MODULE:-<none>}', expected github.com/argoproj/argo-cd." >&2
+      echo "       Compiling ./test/e2e from it would produce a suite that passes while" >&2
+      echo "       testing something else. Set TEST_REPO_URL to the Argo CD repository." >&2
+      exit 1
+      ;;
+  esac
+  echo "Verified checkout is ${MODULE}"
+
   mkdir -p "${ROOT_DIR}/go-cache" "${ROOT_DIR}/go-mod"
   export GOCACHE="${ROOT_DIR}/go-cache"
   export GOMODCACHE="${ROOT_DIR}/go-mod"
@@ -386,6 +407,14 @@ fi
 echo "ArgoCD CLI version:"
 "${DIST_DIR}/argocd" version --client 2>&1 || true
 
+# See lib/goreman-shim.sh for why the v3.x fixture needs this.
+if [[ -f /usr/local/bin/lib/goreman-shim.sh ]]; then
+  source /usr/local/bin/lib/goreman-shim.sh
+else
+  source "${SCRIPT_DIR}/lib/goreman-shim.sh"
+fi
+install_goreman_shim oc
+
 # --- Run E2E tests ---
 
 echo ""
@@ -396,9 +425,9 @@ echo ""
 
 cd "${ARGO_CD_DIR}/test/e2e" || exit 1
 
-# Save KUBECONFIG for tests
 export KUBECONFIG="${KUBECONFIG:-${HOME}/.kube/config}"
-cp "$KUBECONFIG" "${RESULTS_DIR}/kubeconfig" 2>/dev/null || true
+# Not copied into RESULTS_DIR: that directory is uploaded to a public quay repository,
+# and the kubeconfig is the cluster's admin credential.
 
 # Run tests
 # NOTE: go-junit-report is not installed in this image, so no JUnit XML is produced here.
@@ -407,7 +436,9 @@ cp "$KUBECONFIG" "${RESULTS_DIR}/kubeconfig" 2>/dev/null || true
 # and the invocation is changed to:
 #   ./../../e2e.test -test.v ... 2>&1 | tee "${RESULTS_DIR}/test.log" \
 #     | go-junit-report -set-exit-code > "${RESULTS_DIR}/junit-results.xml" || TEST_EXIT_CODE=$?
-./../../e2e.test -test.v -test.timeout 60m \
+# ARGOCD_E2E_TEST_TIMEOUT: go test -test.timeout. 60m suits a skip-filtered run; the full
+# suite needs hours, and hitting the timeout panics the binary and loses every later result.
+./../../e2e.test -test.v -test.timeout "${ARGOCD_E2E_TEST_TIMEOUT:-60m}" \
   ${ARGOCD_E2E_SKIP:+-test.skip "$ARGOCD_E2E_SKIP"} 2>&1 | tee "${RESULTS_DIR}/test.log"
 
 TEST_EXIT_CODE=${PIPESTATUS[0]}

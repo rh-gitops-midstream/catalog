@@ -13,8 +13,12 @@ set -euo pipefail
 : "${ARGOCD_REDIS_NAME:?ARGOCD_REDIS_NAME must be set}"
 : "${ARGOCD_REPO_SERVER_NAME:?ARGOCD_REPO_SERVER_NAME must be set}"
 : "${ARGOCD_APPLICATION_CONTROLLER_NAME:?ARGOCD_APPLICATION_CONTROLLER_NAME must be set}"
-: "${ARGOCD_E2E_SKIP:?ARGOCD_E2E_SKIP must be set}"
+# May be empty: a full run (ARGOCD_E2E_USE_SKIP_LIST=false in the outer script) skips nothing.
+ARGOCD_E2E_SKIP="${ARGOCD_E2E_SKIP-}"
 TEST_RUN_FILTER="${TEST_RUN_FILTER:-}"
+# go test -test.timeout. 60m suits a skip-filtered run; the full suite needs hours, and
+# hitting the timeout panics the binary and loses every later result.
+ARGOCD_E2E_TEST_TIMEOUT="${ARGOCD_E2E_TEST_TIMEOUT:-60m}"
 
 echo "=========================================="
 echo "ArgoCD E2E Tests (Inside Pod)"
@@ -146,8 +150,10 @@ export ARGOCD_E2E_REPO_HTTPS_SUBMODULE_PARENT="https://argocd-e2e-server:9443/ar
 export ARGOCD_E2E_REPO_HELM="https://argocd-e2e-server:9444/helm-repo"
 export ARGOCD_E2E_REPO_DEFAULT="http://argocd-e2e-server:9081/argo-e2e/testdata.git"
 # Skip flags
-export ARGOCD_E2E_SKIP_GPG=true
-export ARGOCD_E2E_SKIP_OPENSHIFT=true
+# The fixture's own env skips (SkipOnEnv): GPG covers 26 tests, OPENSHIFT 19. Defaults keep
+# the previous behaviour; a full run turns both off from the outer script.
+export ARGOCD_E2E_SKIP_GPG="${ARGOCD_E2E_SKIP_GPG:-true}"
+export ARGOCD_E2E_SKIP_OPENSHIFT="${ARGOCD_E2E_SKIP_OPENSHIFT:-true}"
 export ARGOCD_E2E_SKIP_HELM=false
 export ARGOCD_E2E_K3S=true
 export ARGOCD_E2E_DEFAULT_TIMEOUT=30
@@ -167,6 +173,25 @@ if ! command -v kubectl >/dev/null 2>&1; then
   fi
 fi
 
+# FIPS clusters: make gpg non-interactive. EnsureCleanState imports the fixture's signing
+# key with a bare `gpg --import` before every test. On a FIPS node that key's cipher
+# preferences (3DES) are unavailable, gpg stops to ask on the terminal, finds no /dev/tty
+# and exits 2 — after importing the key — so every test fails in setup. With --batch the
+# same import exits 0 and the key signs normally. Only on FIPS, so other runs keep calling
+# gpg exactly as upstream does.
+if [[ "$(cat /proc/sys/crypto/fips_enabled 2>/dev/null)" == "1" ]]; then
+  REAL_GPG=$(command -v gpg)
+  printf '#!/bin/bash\nexec %s --batch "$@"\n' "${REAL_GPG}" > /tmp/bin/gpg
+  chmod +x /tmp/bin/gpg
+  echo "FIPS mode: gpg wrapped with --batch (${REAL_GPG})"
+fi
+
+# See lib/goreman-shim.sh for why the v3.x fixture needs this. Copied in by the outer script.
+if [[ -f /opt/e2e-test/lib/goreman-shim.sh ]]; then
+  source /opt/e2e-test/lib/goreman-shim.sh
+  install_goreman_shim kubectl
+fi
+
 echo ""
 echo "Connectivity checks:"
 getent hosts "argocd-server.${ARGOCD_NAMESPACE}.svc.cluster.local" || echo "  WARNING: ArgoCD DNS failed"
@@ -177,11 +202,17 @@ cd "${ARGO_CD_DIR}/test/e2e"
 
 # Crash-resilient test runner: upstream fixture code contains log.Fatal() calls
 # that kill the entire test binary when certain operations fail (repo add, cluster
-# upsert). This loop detects crashes, identifies the offending test, adds it to
-# the skip list, and re-runs the remaining tests.
-MAX_CRASH_RETRIES=5
+# upsert), and a test can panic outright. This loop detects crashes, identifies the
+# offending test, and re-runs the binary on what has not run yet.
+#
+# Resuming, not restarting: every test that already reported PASS/FAIL/SKIP goes into the
+# skip list along with the crashed one. Without that a crash 270 tests in re-ran all 270,
+# costing another hour per crash and counting each of them twice in the totals.
+# A full run includes tests the skip list excluded for crashing the binary, so it needs more.
+MAX_CRASH_RETRIES="${ARGOCD_E2E_MAX_CRASH_RETRIES:-20}"
 CRASH_RETRY=0
 CRASH_SKIP=""
+DONE_TESTS=""
 TOTAL_PASSED=0
 TOTAL_FAILED=0
 TOTAL_SKIPPED=0
@@ -190,8 +221,9 @@ TEST_LOG="/tmp/e2e-test-run.log"
 
 while true; do
   FULL_SKIP="${ARGOCD_E2E_SKIP}"
-  if [[ -n "${CRASH_SKIP}" ]]; then
-    FULL_SKIP="${FULL_SKIP:+${FULL_SKIP}|}${CRASH_SKIP}"
+  if [[ -n "${CRASH_SKIP}${DONE_TESTS}" ]]; then
+    RESUME_SKIP="${CRASH_SKIP}${CRASH_SKIP:+${DONE_TESTS:+|}}${DONE_TESTS}"
+    FULL_SKIP="${FULL_SKIP:+${FULL_SKIP}|}^(${RESUME_SKIP})\$"
   fi
 
   if [[ ${CRASH_RETRY} -gt 0 ]]; then
@@ -205,13 +237,17 @@ while true; do
     kubectl create namespace argocd-e2e-external-2 --dry-run=client -o yaml | kubectl apply -f - 2>/dev/null || true
   fi
   echo ""
-  echo "Running: ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout 60m"
+  echo "Running: ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout ${ARGOCD_E2E_TEST_TIMEOUT}"
   [[ -n "${TEST_RUN_FILTER}" ]] && echo "  Run:  ${TEST_RUN_FILTER}"
-  echo "  Skip: ${FULL_SKIP}"
+  if [[ ${CRASH_RETRY} -gt 0 ]]; then
+    echo "  Skip: ${ARGOCD_E2E_SKIP} + $(tr '|' '\n' <<<"${DONE_TESTS}" | grep -c .) already-run tests + crashed: ${CRASH_SKIP}"
+  else
+    echo "  Skip: ${FULL_SKIP}"
+  fi
   echo ""
 
   set +e
-  ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout 60m \
+  ${ARGO_CD_DIR}/e2e.test -test.v -test.timeout ${ARGOCD_E2E_TEST_TIMEOUT} \
     ${TEST_RUN_FILTER:+-test.run "${TEST_RUN_FILTER}"} \
     ${FULL_SKIP:+-test.skip "${FULL_SKIP}"} 2>&1 | tee "${TEST_LOG}"
   EXIT_CODE=${PIPESTATUS[0]}
@@ -247,7 +283,11 @@ while true; do
     break
   fi
 
-  TOTAL_FAILED=$((TOTAL_FAILED + 1))
+  # A panicking test usually prints its own --- FAIL line before the binary dies, and it
+  # is already counted above; only count the crash when it did not.
+  if ! grep -q "^--- FAIL: ${CRASHED_TEST} " "${TEST_LOG}"; then
+    TOTAL_FAILED=$((TOTAL_FAILED + 1))
+  fi
 
   echo ""
   echo "=========================================="
@@ -263,6 +303,11 @@ while true; do
   fi
 
   CRASH_SKIP="${CRASH_SKIP:+${CRASH_SKIP}|}${CRASHED_TEST}"
+  RUN_DONE=$(grep -E '^--- (PASS|FAIL|SKIP): ' "${TEST_LOG}" | awk '{print $3}' \
+               | grep -vx "${CRASHED_TEST}" | paste -sd '|' || true)
+  if [[ -n "${RUN_DONE}" ]]; then
+    DONE_TESTS="${DONE_TESTS:+${DONE_TESTS}|}${RUN_DONE}"
+  fi
   echo "Skipping ${CRASHED_TEST}, retrying remaining tests..."
 done
 
