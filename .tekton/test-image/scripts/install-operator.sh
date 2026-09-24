@@ -214,10 +214,25 @@ EOF
 if [[ -n "${OPERATOR_VERSION:-}" ]]; then
   SUBSCRIPTION_YAML+="
   startingCSV: openshift-gitops-operator.v${OPERATOR_VERSION}"
+  # startingCSV alone does not hold a cluster at that version: with the default Automatic
+  # approval OLM installs it and then walks up the channel unattended, which for the 4.22
+  # catalog means landing on the newest release before a test can look at the old one. An
+  # upgrade test sets HOLD_AT_VERSION so the install stops here and upgrade-operator.sh
+  # decides when to move.
+  if [[ "${HOLD_AT_VERSION:-false}" == "true" ]]; then
+    SUBSCRIPTION_YAML+="
+  installPlanApproval: Manual"
+  fi
 fi
 
 echo "$SUBSCRIPTION_YAML" | oc apply -f -
-echo "Subscription created: channel=${OPERATOR_CHANNEL}${OPERATOR_VERSION:+, startingCSV=v${OPERATOR_VERSION}}"
+echo "Subscription created: channel=${OPERATOR_CHANNEL}${OPERATOR_VERSION:+, startingCSV=v${OPERATOR_VERSION}}${HOLD_AT_VERSION:+, approval=Manual}"
+
+# Nothing installs under Manual approval until an InstallPlan is approved, so wait_for_csv
+# below would time out on a Subscription that is working exactly as asked.
+if [[ "${HOLD_AT_VERSION:-false}" == "true" && -n "${OPERATOR_VERSION:-}" ]]; then
+  approve_install_plan "openshift-gitops-operator.v${OPERATOR_VERSION}" "${NAMESPACE}" 600 || exit 1
+fi
 
 # 6. Wait for installation
 if ! wait_for_csv gitops-operator-konflux "${NAMESPACE}" "${INSTALL_TIMEOUT}"; then

@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Environment variables expected:
 # - UPGRADE (true/false)
-# - UPGRADE_TO_CHANNEL (target channel)
+# - UPGRADE_TO_CHANNEL (target channel; empty or the current channel upgrades within it)
+# - UPGRADE_TO_VERSION (optional, e.g. "1.22.0" -- the CSV an in-channel upgrade waits for)
 # - NAMESPACE (default: openshift-gitops-operator)
 # - INSTALL_TIMEOUT (e.g., "25m")
 # - KUBECONFIG
@@ -18,10 +19,11 @@ if [[ "$UPGRADE" != "true" ]]; then
   exit 0
 fi
 
-if [[ -z "$UPGRADE_TO_CHANNEL" ]]; then
-  echo "ERROR: UPGRADE is enabled but UPGRADE_TO_CHANNEL is not set"
-  exit 1
-fi
+# UPGRADE_TO_CHANNEL is optional. The 4.22 catalog carries per-minor channels only up to
+# gitops-1.16; everything newer lives in `latest`, where 1.22.0 replaces 1.21.4. So there is
+# no channel to switch to for that upgrade, and the move is made by approving the InstallPlan
+# the Subscription is already holding. Leave UPGRADE_TO_CHANNEL empty, or set it to the
+# current channel, to upgrade within the channel.
 
 SUBSCRIPTION_NAME=$(oc get subscription -n "$NAMESPACE" -o jsonpath='{.items[0].metadata.name}')
 if [[ -z "$SUBSCRIPTION_NAME" ]]; then
@@ -32,10 +34,23 @@ fi
 CURRENT_CHANNEL=$(oc get subscription "$SUBSCRIPTION_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.channel}')
 PRE_UPGRADE_CSV=$(oc get subscription "$SUBSCRIPTION_NAME" -n "$NAMESPACE" -o jsonpath='{.status.installedCSV}')
 echo "Current channel: ${CURRENT_CHANNEL}, installed CSV: ${PRE_UPGRADE_CSV}"
-echo "Upgrading to channel: ${UPGRADE_TO_CHANNEL}"
+echo "Upgrading to: ${UPGRADE_TO_CHANNEL:-${CURRENT_CHANNEL} (same channel)}${UPGRADE_TO_VERSION:+, expecting v${UPGRADE_TO_VERSION}}"
 
-oc patch subscription "$SUBSCRIPTION_NAME" -n "$NAMESPACE" --type merge \
-  -p "{\"spec\":{\"channel\":\"${UPGRADE_TO_CHANNEL}\",\"installPlanApproval\":\"Automatic\"}}"
+if [[ -n "$UPGRADE_TO_CHANNEL" && "$UPGRADE_TO_CHANNEL" != "$CURRENT_CHANNEL" ]]; then
+  oc patch subscription "$SUBSCRIPTION_NAME" -n "$NAMESPACE" --type merge \
+    -p "{\"spec\":{\"channel\":\"${UPGRADE_TO_CHANNEL}\",\"installPlanApproval\":\"Automatic\"}}"
+else
+  # Same channel: hand OLM back the wheel and approve whatever it is holding. Automatic alone
+  # is enough where an InstallPlan already exists; approve_install_plan covers the case where
+  # OLM has not created one yet, and names the CSV so a stale plan cannot be approved by
+  # accident.
+  echo "Upgrading within channel ${CURRENT_CHANNEL}"
+  oc patch subscription "$SUBSCRIPTION_NAME" -n "$NAMESPACE" --type merge \
+    -p '{"spec":{"installPlanApproval":"Automatic"}}'
+  if [[ -n "${UPGRADE_TO_VERSION:-}" ]]; then
+    approve_install_plan "openshift-gitops-operator.v${UPGRADE_TO_VERSION}" "$NAMESPACE" 600 || exit 1
+  fi
+fi
 
 echo "Waiting for upgrade to complete..."
 if [[ "$INSTALL_TIMEOUT" =~ ^([0-9]+)m$ ]]; then
