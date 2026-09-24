@@ -197,6 +197,47 @@ wait_for_csv() {
     return 0
 }
 
+# Approve the pending InstallPlan that installs a given CSV, and only that one.
+#
+# With `installPlanApproval: Manual` OLM creates an InstallPlan and then waits, which is the
+# only way to hold a cluster at a chosen version: with Automatic approval a Subscription
+# pinned by startingCSV installs that version and then walks straight up the channel.
+#
+# Args:
+#   $1 - csv: the ClusterServiceVersion the InstallPlan must install
+#   $2 - namespace
+#   $3 - timeout in seconds (default: 600)
+#
+# Returns:
+#   0 once approved, 1 on timeout
+approve_install_plan() {
+    local csv=$1
+    local namespace=$2
+    local timeout=${3:-600}
+    local deadline=$(( $(date +%s) + timeout ))
+    local ip
+
+    echo "Waiting for an InstallPlan for $csv in $namespace..."
+    while [ "$(date +%s)" -lt "$deadline" ]; do
+        ip=$(oc get installplan -n "$namespace" -o json 2>/dev/null \
+             | jq -r --arg csv "$csv" '.items[]
+                  | select(.spec.clusterServiceVersionNames[]? == $csv)
+                  | select(.spec.approved != true)
+                  | .metadata.name' 2>/dev/null | head -1)
+        if [ -n "$ip" ]; then
+            oc patch installplan "$ip" -n "$namespace" --type merge -p '{"spec":{"approved":true}}' >/dev/null
+            echo "Approved InstallPlan $ip for $csv"
+            return 0
+        fi
+        sleep 5
+    done
+
+    echo "ERROR: no unapproved InstallPlan for $csv appeared within ${timeout}s"
+    oc get installplan -n "$namespace" -o wide 2>/dev/null || true
+    oc get subscription -n "$namespace" -o yaml 2>/dev/null || true
+    return 1
+}
+
 # Wait for ArgoCD workloads to be updated after an operator upgrade.
 # Polls until the ArgoCD server container image changes (indicating
 # the new operator has reconciled), then waits for all workload

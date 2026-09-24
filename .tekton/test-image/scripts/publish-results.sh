@@ -46,6 +46,19 @@ for key, env in (("platform", "PLATFORM"), ("kubernetesVersion", "KUBERNETES_VER
     if os.environ.get(env):
         record[key] = os.environ[env]
 
+# Which catalog build this row actually covers. CATALOG_IMAGE is a tag -- catalog:v<minor> is
+# the artifact that gets promoted, so a run tests whatever it points at that day. Without the
+# digest install-operator.sh resolved, "v4.22" cannot be tied to a release candidate after the
+# fact, and two rows weeks apart can name the same tag having tested different builds.
+shared_dir = os.environ.get("SHARED_DIR", "/shared")
+for key, fname in (("catalogImage", "catalog-image-tag.txt"), ("catalogDigest", "catalog-image-digest.txt")):
+    path = os.path.join(shared_dir, fname)
+    if os.path.isfile(path):
+        with open(path) as f:
+            value = f.read().strip()
+        if value:
+            record[key] = value
+
 test_results = os.path.join(os.environ.get("SHARED_DIR", "/shared"), "test-results.json")
 if os.path.isfile(test_results):
     with open(test_results) as f:
