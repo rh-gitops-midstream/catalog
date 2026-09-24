@@ -184,6 +184,31 @@ spec:
       interval: 30m
 EOF
 
+# 3b. Record which build the tag actually resolved to.
+#
+# CATALOG_IMAGE is a tag on purpose -- catalog:v<minor> is what gets promoted as the release,
+# so every run should test whatever it points at now rather than a frozen digest. The cost is
+# that "we tested v4.22" does not say *what* was tested: the tag moves with each release
+# candidate. The digest is recoverable from the catalog pod OLM starts, so record it.
+record_catalog_digest() {
+  local shared="${SHARED_DIR:-/shared}" digest="" attempt
+  for attempt in $(seq 1 30); do
+    digest=$(oc get pods -n openshift-marketplace -l olm.catalogSource=gitops-stage \
+               -o jsonpath='{.items[0].status.containerStatuses[0].imageID}' 2>/dev/null || true)
+    [[ -n "$digest" ]] && break
+    sleep 10
+  done
+  if [[ -z "$digest" ]]; then
+    echo "WARNING: could not resolve the catalog digest -- results will name only ${CATALOG_IMAGE}"
+    return 0
+  fi
+  echo "Catalog under test: ${CATALOG_IMAGE} -> ${digest}"
+  mkdir -p "$shared"
+  printf '%s\n' "$digest" > "${shared}/catalog-image-digest.txt"
+  printf '%s\n' "$CATALOG_IMAGE" > "${shared}/catalog-image-tag.txt"
+}
+record_catalog_digest
+
 # 4. Create OperatorGroup
 cat <<EOF | oc apply -f -
 apiVersion: operators.coreos.com/v1
