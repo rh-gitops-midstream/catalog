@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: gitops-catalog-operator-dast-
+spec:
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: https://github.com/rh-gitops-midstream/catalog
+      - name: revision
+        value: konflux-integration
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-dast.yaml
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

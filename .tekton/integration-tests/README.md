@@ -1,6 +1,7 @@
 # Integration Tests
 
-This directory contains the Konflux integration test infrastructure for the GitOps operator. Tests run on ephemeral HyperShift clusters provisioned by EaaS (Ephemeral-as-a-Service) and exercise the operator installed via OLM from a real FBC catalog image.
+This directory contains the Konflux integration test infrastructure for the GitOps operator. Tests run on ephemeral
+HyperShift clusters provisioned by OpenShift CI and exercise the operator installed via OLM from a real FBC catalog image.
 
 ---
 
@@ -9,10 +10,11 @@ This directory contains the Konflux integration test infrastructure for the GitO
 ```
 .tekton/
 ├── integration-tests/
-│   ├── pipelines/                          # Tekton Pipeline definitions
+│   ├── pipelines/                          # Reusable Tekton Pipeline definitions
 │   │   ├── catalog-gitops-operator-e2e.yaml  # Main operator e2e pipeline
 │   │   ├── catalog-argocd-e2e.yaml           # Upstream ArgoCD e2e pipeline
 │   │   └── catalog-gitops-operator-dast.yaml # DAST (ZAP) pipeline
+│   ├── pipelineruns/                       # PipelineRun wrappers with shared PVCs
 │   └── scenarios/                          # IntegrationTestScenario CRs (one file per channel)
 │       ├── gitops-operator-tests.yaml      # latest channel (current dev)
 │       ├── gitops-sanity-tests.yaml        # latest channel sanity only
@@ -24,12 +26,11 @@ This directory contains the Konflux integration test infrastructure for the GitO
 │       └── gitops-dast.yaml               # DAST scan
 ├── stepactions/
 │   ├── check-gate-labels.yaml             # Gate-label check before running tests
-│   ├── resolve-openshift-version.yaml     # Resolve latest patch for an OCP minor version
 │   └── extract-image-content-sources.yaml # Extract ImageContentSourcePolicy from catalog
 ├── tasks/
 │   ├── build-ginkgo-test-image.yaml       # Build the base test image from Dockerfile
 │   ├── overlay-test-scripts.yaml          # Overlay current scripts onto the built image
-│   ├── provision-cluster.yaml             # Provision HyperShift cluster via EaaS
+│   ├── prepare-cluster-env.yaml           # Prepare OpenShift CI environment workspace files
 │   ├── install-operator.yaml              # Install gitops-operator via OLM
 │   ├── test-operator.yaml                 # Run e2e test suite
 │   ├── pipeline-wrapup.yaml               # Upload logs, publish results, send Slack
@@ -54,10 +55,10 @@ check-gate-labels
 build-test-image ──► overlay-test-scripts
                               │
                               ▼
-                     provision-eaas-space
+                     prepare-cluster-env
                               │
                               ▼
-                     provision-cluster  (HyperShift on AWS)
+                     provision-cluster  (OpenShift CI HyperShift on AWS)
                               │
                               ▼
                      install-operator   (OLM + FBC catalog image)
@@ -82,7 +83,10 @@ The test image is built in two stages on every run:
 
 ### Step 3 — Cluster provisioning
 
-`provision-cluster` requests an ephemeral HyperShift cluster from EaaS. The cluster runs on AWS with the requested OCP version and instance type (default `m6g.large`). The task waits until the cluster API is reachable and writes a kubeconfig to a shared workspace.
+`prepare-cluster-env` extracts the image mirror configuration and builds the OpenShift CI workflow environment.
+`provision-cluster` then requests an ephemeral HyperShift cluster using the shared `aws-konflux-prod` profile. The
+cluster runs on AWS with the requested OCP version, node count, and instance type. OpenShift CI returns the cluster
+credentials in a Secret that downstream tasks mount directly.
 
 ### Step 4 — Operator installation
 

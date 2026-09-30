@@ -26,14 +26,14 @@ spec:
       value: rc-sanity-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -64,14 +64,14 @@ spec:
       value: rc-sanity-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -104,14 +104,14 @@ spec:
       value: rc-sanity-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -146,14 +146,14 @@ spec:
       value: rc-sanity-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -182,14 +182,14 @@ spec:
       value: rc-operator-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -220,14 +220,14 @@ spec:
       value: rc-operator-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -260,14 +260,14 @@ spec:
       value: rc-operator-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -296,14 +296,14 @@ spec:
       value: rc-operator-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -332,14 +332,14 @@ spec:
       value: rc-ui-check,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -362,11 +362,11 @@ spec:
       value: run-dast,channel-1.21
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-dast.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-dast.yaml
