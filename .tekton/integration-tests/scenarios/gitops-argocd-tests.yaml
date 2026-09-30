@@ -22,14 +22,14 @@ spec:
       value: rc-argocd-check
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-argocd-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-argocd-e2e.yaml
 ---
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
@@ -56,11 +56,11 @@ spec:
       value: rc-argocd-check
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-argocd-e2e.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-argocd-e2e.yaml
