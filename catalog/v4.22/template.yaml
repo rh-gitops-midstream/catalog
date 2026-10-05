@@ -1241,6 +1241,9 @@ entries:
   - name: openshift-gitops-operator.v1.21.4
     replaces: openshift-gitops-operator.v1.21.3
     skipRange: '>=1.21.0 <1.21.4'
+  - name: openshift-gitops-operator.v1.21.5
+    replaces: openshift-gitops-operator.v1.21.4
+    skipRange: '>=1.21.0 <1.21.5'
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:fc5565b546154b179739109ab730b1caf4e8d57632d1090720d08dae602fbee5
 - schema: olm.bundle
@@ -1274,5 +1277,7 @@ entries:
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:151d79fd0a881375ec0d39b45a1be0811d34adde2d47998abb7de648d92838ec
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:5b68b3c0bae4429238f723910f48ead084ccf40b41158676c3a8874ae65b35ca
+- schema: olm.bundle
+  image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:d89b3cee47cade7f1cf7450c1565211aee95213a80ff3a03e4a4332a761821bb
 schema: olm.template.basic
 
