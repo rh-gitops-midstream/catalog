@@ -20,11 +20,11 @@ spec:
       value: run-dast
   resolverRef:
     resolver: git
-    resourceKind: pipeline
+    resourceKind: pipelinerun
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-dast.yaml
+        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-dast.yaml
