@@ -2,7 +2,7 @@
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
-  name: gitops-catalog-ui-e2e
+  name: gitops-catalog-nightly-1-19
   namespace: rh-openshift-gitops-tenant
   labels:
     test.appstudio.openshift.io/optional: "true"
@@ -12,27 +12,31 @@ spec:
     - description: execute on component build
       name: component_catalog-4-20
   params:
-    - name: TEST_IMAGE_URL
-      value: quay.io/devtools_gitops/test_image:konflux_v1.21.0
-    - name: TEST_SCRIPT
-      value: run-ui-e2e-tests.sh
-    - name: OPENSHIFT_VERSION
-      value: "4.20"
-    - name: OPERATOR_CHANNEL
-      value: latest
+    - name: SUITES
+      value: "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh,run-argocd-e2e-standalone.sh"
     - name: TEST_REPO_URL
       value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: konflux-integration-latest
+      value: konflux-integration-1.19
+    - name: OPENSHIFT_VERSION
+      value: "4.20"
+    - name: OPERATOR_CHANNEL
+      value: gitops-1.19
     - name: GATE_LABEL
-      value: rc-ui-check
+      value: nightly
+    - name: POOL_NAME
+      value: pool-1
+    - name: POOL_NAMESPACE
+      value: hive-pool-1
+    - name: CLAIM_LIFETIME
+      value: "8h"
   resolverRef:
     resolver: git
-    resourceKind: pipelinerun
+    resourceKind: pipeline
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-e2e.yaml
+        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e-nightly.yaml

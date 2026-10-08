@@ -2,7 +2,7 @@
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
-  name: gitops-catalog-operator-dast
+  name: gitops-catalog-sanity-1-21
   namespace: rh-openshift-gitops-tenant
   labels:
     test.appstudio.openshift.io/optional: "true"
@@ -12,19 +12,31 @@ spec:
     - description: execute on component build
       name: component_catalog-4-20
   params:
+    - name: TEST_SCRIPT
+      value: run-sanity-tests.sh
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-1.21
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
-      value: latest
+      value: gitops-1.21
     - name: GATE_LABEL
-      value: run-dast
+      value: rc-sanity-check
+    - name: POOL_NAME
+      value: pool-1
+    - name: POOL_NAMESPACE
+      value: hive-pool-1
+    - name: CLAIM_LIFETIME
+      value: "2h"
   resolverRef:
     resolver: git
-    resourceKind: pipelinerun
+    resourceKind: pipeline
     params:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
         value: konflux-integration
       - name: pathInRepo
-        value: .tekton/integration-tests/pipelineruns/catalog-gitops-operator-dast.yaml
+        value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e-hive.yaml
