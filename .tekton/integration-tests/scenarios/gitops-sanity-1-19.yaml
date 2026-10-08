@@ -37,6 +37,6 @@ spec:
       - name: url
         value: https://github.com/rh-gitops-midstream/catalog
       - name: revision
-        value: konflux-integration
+        value: main
       - name: pathInRepo
         value: .tekton/integration-tests/pipelines/catalog-gitops-operator-e2e-hive.yaml
