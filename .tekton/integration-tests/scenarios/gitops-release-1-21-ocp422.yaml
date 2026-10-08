@@ -12,12 +12,11 @@ spec:
     - description: execute on component build
       name: component_catalog-4-20
   params:
-    # Three legs, one cluster each. Everything is covered and wall clock is the
-    # argocd-e2e leg (~4h30m) rather than the ~6h a single-cluster run would take.
+    # Two legs, mirroring the 4.20 scenario so the two OpenShift versions are compared
+    # on the same split rather than on different ones.
     - name: LEGS
       values:
-        - "run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
-        - "run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
+        - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
         - "run-argocd-e2e-standalone.sh"
     - name: TEST_REPO_URL
       value: https://github.com/rh-gitops-release-qa/gitops-operator
@@ -33,8 +32,10 @@ spec:
       value: pool-3
     - name: POOL_NAMESPACE
       value: hive-pool-3
+    # Leg 1 runs about six hours of tests on top of a cluster claim and operator
+    # install, so 6h would cut it close. 8h is the pool ceiling.
     - name: CLAIM_LIFETIME
-      value: "6h"
+      value: "8h"
   resolverRef:
     resolver: git
     resourceKind: pipeline

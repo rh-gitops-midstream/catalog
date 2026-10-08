@@ -12,12 +12,14 @@ spec:
     - description: execute on component build
       name: component_catalog-4-20
   params:
-    # Three legs, one cluster each. Everything is covered and wall clock is the
-    # argocd-e2e leg (~4h30m) rather than the ~6h a single-cluster run would take.
+    # Two legs, one cluster each. argocd-e2e gets its own because it does not share a
+    # cluster well with the operator suites; everything else rides one cluster in
+    # sequence. Splitting further is tempting for wall clock but the AWS account has
+    # already hit AWSVPCLimitExceeded at six concurrent pool clusters, so the release
+    # tier deliberately stays narrow — see hive-ops pools/pool-1/clusterpool.yaml.
     - name: LEGS
       values:
-        - "run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
-        - "run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
+        - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
         - "run-argocd-e2e-standalone.sh"
     - name: TEST_REPO_URL
       value: https://github.com/rh-gitops-release-qa/gitops-operator
@@ -33,8 +35,10 @@ spec:
       value: pool-1
     - name: POOL_NAMESPACE
       value: hive-pool-1
+    # Leg 1 runs about six hours of tests on top of a cluster claim and operator
+    # install, so 6h would cut it close. 8h is the pool ceiling.
     - name: CLAIM_LIFETIME
-      value: "6h"
+      value: "8h"
   resolverRef:
     resolver: git
     resourceKind: pipeline
