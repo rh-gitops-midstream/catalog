@@ -57,7 +57,7 @@ spec:
       default: https://github.com/rh-gitops-midstream/catalog
     - name: CATALOG_TASK_REVISION
       type: string
-      default: konflux-integration
+      default: main
     - name: OPENSHIFT_VERSION
       type: string
       default: "4.20"
@@ -96,7 +96,11 @@ spec:
       default: hive-hub-kubeconfig
     - name: GATE_LABEL
       type: string
-      default: ""
+      default: "release-candidate"
+      description: >-
+        PR label required to run. A release run claims one cluster per LEGS entry, so
+        this must stay set — without a gate every snapshot would fan out the full
+        matrix. Set to empty only for manual testing.
 
   tasks:
     - name: parse-metadata
@@ -113,8 +117,63 @@ spec:
         - name: SNAPSHOT
           value: $(params.SNAPSHOT)
 
-    - name: build-test-image
+    - name: check-gate
       runAfter: [parse-metadata]
+      taskSpec:
+        params:
+          - name: gate-labels
+            type: string
+          - name: source-git-url
+            type: string
+          - name: source-git-revision
+            type: string
+          - name: catalog-task-url
+            type: string
+          - name: catalog-task-revision
+            type: string
+        results:
+          - name: proceed
+            description: "true if tests should run, false to skip"
+        steps:
+          - name: check
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: $(params.catalog-task-url)
+                - name: revision
+                  value: $(params.catalog-task-revision)
+                - name: pathInRepo
+                  value: .tekton/stepactions/check-gate-labels.yaml
+            params:
+              - name: gate-labels
+                value: $(params.gate-labels)
+              - name: source-git-url
+                value: $(params.source-git-url)
+              - name: source-git-revision
+                value: $(params.source-git-revision)
+          - name: propagate-result
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            script: |
+              cat /tekton/steps/step-check/results/proceed > $(results.proceed.path)
+      params:
+        - name: gate-labels
+          value: $(params.GATE_LABEL)
+        - name: source-git-url
+          value: $(tasks.parse-metadata.results.source-git-url)
+        - name: source-git-revision
+          value: $(tasks.parse-metadata.results.source-git-revision)
+        - name: catalog-task-url
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalog-task-revision
+          value: $(params.CATALOG_TASK_REVISION)
+
+    - name: build-test-image
+      runAfter: [check-gate]
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
       taskRef:
         resolver: git
         params:
@@ -134,6 +193,10 @@ spec:
 
     - name: overlay-test-scripts
       runAfter: [build-test-image]
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
       taskRef:
         resolver: git
         params:
@@ -156,6 +219,10 @@ spec:
     # rows it published to catalog-results.
     - name: run-legs
       runAfter: [overlay-test-scripts]
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
       matrix:
         params:
           - name: suites
