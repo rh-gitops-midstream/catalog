@@ -2,15 +2,27 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: pipeline-wrapup
+  name: hive-pipeline-wrapup
 spec:
   description: |
     Collects logs, publishes results, and sends Slack notification.
     Consolidates upload-logs, publish-results, and send-slack-notification
     into a single task with shared volumes between steps.
   params:
-    - name: clusterCredentialsSecretRef
+    - name: hubSecretRef
       type: string
+      default: hive-hub-kubeconfig
+    - name: claimName
+      type: string
+    - name: poolNamespace
+      type: string
+      default: hive-pool-1
+    - name: catalogTaskUrl
+      type: string
+      default: https://github.com/rh-gitops-midstream/catalog
+    - name: catalogTaskRevision
+      type: string
+      default: konflux-integration
     - name: pipelineRunName
       type: string
     - name: testImageUrl
@@ -59,8 +71,7 @@ spec:
       default: "/quay-credentials/.dockerconfigjson"
   volumes:
     - name: credentials
-      secret:
-        secretName: $(params.clusterCredentialsSecretRef)
+      emptyDir: {}
     - name: shared
       emptyDir: {}
     - name: quay-credentials
@@ -70,7 +81,29 @@ spec:
       secret:
         secretName: catalog-results-deploy-key
         defaultMode: 0400
+    - name: hub-kubeconfig
+      secret:
+        secretName: $(params.hubSecretRef)
   steps:
+    - name: get-kubeconfig
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.catalogTaskUrl)
+          - name: revision
+            value: $(params.catalogTaskRevision)
+          - name: pathInRepo
+            value: .tekton/stepactions/hive-get-kubeconfig.yaml
+      params:
+        - name: hubSecretRef
+          value: $(params.hubSecretRef)
+        - name: claimName
+          value: $(params.claimName)
+        - name: poolNamespace
+          value: $(params.poolNamespace)
+        - name: credentials
+          value: credentials
     - name: collect-and-upload-logs
       onError: continue
       image: $(params.testImageUrl)
@@ -96,7 +129,6 @@ spec:
           mountPath: /quay-credentials
         - name: shared
           mountPath: /shared
-
     - name: publish-results
       onError: continue
       image: $(params.testImageUrl)
@@ -137,7 +169,6 @@ spec:
           readOnly: true
         - name: shared
           mountPath: /shared
-
     - name: send-slack-notification
       onError: continue
       image: $(params.testImageUrl)
@@ -182,3 +213,51 @@ spec:
           mountPath: /quay-credentials
         - name: shared
           mountPath: /shared
+    - name: release-cluster
+      image: registry.redhat.io/openshift4/ose-cli:latest
+      volumeMounts:
+        - name: hub-kubeconfig
+          mountPath: /hub
+      env:
+        - name: CLAIM_NAME
+          value: $(params.claimName)
+        - name: POOL_NAMESPACE
+          value: $(params.poolNamespace)
+      script: |
+        #!/bin/bash
+        # Releases the leased cluster back to the pool. Deleting the ClusterClaim destroys
+        # the cluster; Hive then provisions a replacement to restore the pool to its declared
+        # size. That is what makes inter-run residue impossible.
+        #
+        # This lives as the LAST STEP OF WRAPUP rather than as its own finally task on purpose:
+        # Tekton runs all finally tasks in parallel, so a separate release task would race log
+        # collection above and could destroy the cluster mid-collection. Steps within a task
+        # are ordered, so logs are always gathered before the cluster goes away.
+        #
+        # Not `set -e` — this runs in finally and must never turn a reportable test failure
+        # into an opaque cleanup failure. ClusterClaim.spec.lifetime is the real backstop if
+        # anything here fails.
+        set -uo pipefail
+
+        export KUBECONFIG=/hub/kubeconfig
+
+        if [[ -z "${CLAIM_NAME:-}" ]]; then
+          echo "no claim name — nothing to release"
+          exit 0
+        fi
+
+        if ! oc get clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" >/dev/null 2>&1; then
+          echo "claim $CLAIM_NAME already gone — nothing to release"
+          exit 0
+        fi
+
+        echo "releasing claim $CLAIM_NAME (this destroys the cluster)"
+        if oc delete clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" --wait=false; then
+          echo "released; Hive will deprovision and refill the pool"
+        else
+          echo "WARNING: could not delete claim $CLAIM_NAME." >&2
+          echo "         It will be reclaimed when its lifetime expires. Check:" >&2
+          echo "           oc get clusterclaim $CLAIM_NAME -n $POOL_NAMESPACE -o yaml" >&2
+        fi
+
+        oc get clusterpool -n "$POOL_NAMESPACE" -o custom-columns=NAME:.metadata.name,SIZE:.spec.size,READY:.status.ready,STANDBY:.status.standby 2>/dev/null || true

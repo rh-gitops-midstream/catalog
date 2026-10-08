@@ -1,0 +1,164 @@
+---
+# Leases a cluster from a Hive ClusterPool. The Hive counterpart to provision-cluster.
+#
+# The difference that matters: this task does not provision anything. The pool is
+# declared in the hive-ops repo and Hive keeps warm clusters ready; this only creates a
+# ClusterClaim and waits to be handed one. It has no permission to create or delete a
+# ClusterDeployment, so it cannot provision or destroy a cluster outside the pool's
+# rules.
+#
+# Cluster hygiene is handled by the pool rather than here: releasing a claim destroys
+# the cluster and Hive provisions a replacement, so no cluster is ever handed out twice
+# and there is no inter-run state to reset.
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: hive-claim-cluster
+spec:
+  description: |
+    Claims a pre-provisioned OpenShift cluster from a Hive ClusterPool and waits for it
+    to be running and reachable.
+  params:
+    - name: hubSecretRef
+      type: string
+      description: Secret in the pipeline namespace holding a kubeconfig for the Hive hub.
+      default: hive-hub-kubeconfig
+    - name: poolName
+      type: string
+      default: pool-1
+    - name: poolNamespace
+      type: string
+      default: hive-pool-1
+    - name: serviceAccountName
+      type: string
+      description: |
+        Hub ServiceAccount to grant access to the claimed cluster's namespace. Hive
+        creates a RoleBinding for the subjects listed on the claim, which is what lets
+        hive-get-kubeconfig read the admin kubeconfig without cluster-wide secret reads.
+      default: konflux-pool-claimer
+    - name: lifetime
+      type: string
+      description: |
+        How long the claim may hold the cluster. This is the backstop for a cancelled or
+        hung PipelineRun — when it expires Hive reclaims the cluster instead of leaving a
+        full IPI cluster billing. Cannot exceed the pool's maximum.
+      default: "4h"
+    - name: claimTimeout
+      type: string
+      description: |
+        How long to wait for the pool to hand over a cluster. A claim is near-instant if
+        a running cluster is free, ~5-10min if one has to resume from hibernation, and
+        up to a full install (~40min) if the pool is empty and has to provision.
+      default: "45m"
+    - name: pipelineRunName
+      type: string
+  results:
+    - name: claimName
+      description: Name of the ClusterClaim, needed to fetch credentials and to release.
+      value: $(steps.claim.results.claimName)
+    - name: clusterNamespace
+      description: Namespace Hive placed the claimed cluster in.
+      value: $(steps.claim.results.clusterNamespace)
+    - name: webConsoleURL
+      value: $(steps.claim.results.webConsoleURL)
+  volumes:
+    - name: hub-kubeconfig
+      secret:
+        secretName: $(params.hubSecretRef)
+  steps:
+    - name: claim
+      image: registry.redhat.io/openshift4/ose-cli:latest
+      volumeMounts:
+        - name: hub-kubeconfig
+          mountPath: /hub
+      env:
+        - name: POOL_NAME
+          value: $(params.poolName)
+        - name: POOL_NAMESPACE
+          value: $(params.poolNamespace)
+        - name: SA_NAME
+          value: $(params.serviceAccountName)
+        - name: LIFETIME
+          value: $(params.lifetime)
+        - name: CLAIM_TIMEOUT
+          value: $(params.claimTimeout)
+        - name: PIPELINE_RUN
+          value: $(params.pipelineRunName)
+      results:
+        - name: claimName
+        - name: clusterNamespace
+        - name: webConsoleURL
+      script: |
+        #!/bin/bash
+        set -euo pipefail
+
+        export KUBECONFIG=/hub/kubeconfig
+
+        # Named after the PipelineRun so an orphaned claim is traceable back to the run
+        # that made it. Truncated because claim names become part of Kubernetes object
+        # names downstream.
+        CLAIM_NAME="$(echo "$PIPELINE_RUN" | cut -c1-50)"
+        echo "claiming from $POOL_NAMESPACE/$POOL_NAME as $CLAIM_NAME"
+
+        echo "--- pool state before claim ---"
+        oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" \
+          -o custom-columns='SIZE:.spec.size,RUNNING:.spec.runningCount,MAXSIZE:.spec.maxSize,READY:.status.ready,STANDBY:.status.standby,SIZE_NOW:.status.size' || true
+
+        cat <<EOF | oc apply -f -
+        apiVersion: hive.openshift.io/v1
+        kind: ClusterClaim
+        metadata:
+          name: ${CLAIM_NAME}
+          namespace: ${POOL_NAMESPACE}
+          labels:
+            hive-ops/pipelinerun: "${PIPELINE_RUN}"
+        spec:
+          clusterPoolName: ${POOL_NAME}
+          lifetime: ${LIFETIME}
+          subjects:
+            - kind: ServiceAccount
+              name: ${SA_NAME}
+              namespace: ${POOL_NAMESPACE}
+        EOF
+
+        # Record the name immediately, before the wait. If the wait times out the
+        # release task still needs this to clean up, otherwise a timeout leaks a
+        # cluster — the exact failure this pool design exists to prevent.
+        printf '%s' "$CLAIM_NAME" > "$(step.results.claimName.path)"
+
+        echo "--- waiting up to $CLAIM_TIMEOUT for the claim to be granted ---"
+        if ! oc wait clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" \
+               --for=condition=Pending=False --timeout="$CLAIM_TIMEOUT"; then
+          echo "ERROR: claim not granted within $CLAIM_TIMEOUT" >&2
+          oc get clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" -o yaml >&2 || true
+          echo "--- pool state ---" >&2
+          oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" -o yaml >&2 || true
+          exit 1
+        fi
+
+        CLUSTER_NS=$(oc get clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" -o jsonpath='{.spec.namespace}')
+        printf '%s' "$CLUSTER_NS" > "$(step.results.clusterNamespace.path)"
+        echo "granted: cluster namespace $CLUSTER_NS"
+
+        CD_NAME=$(oc get clusterdeployment -n "$CLUSTER_NS" -o jsonpath='{.items[0].metadata.name}')
+
+        # A pooled cluster may have been hibernating. Claiming resumes it, but the API
+        # is not reachable until it is actually Running, so wait for that rather than
+        # letting the first downstream oc call fail.
+        echo "--- waiting for $CD_NAME to be Running ---"
+        for i in $(seq 1 60); do
+          POWER=$(oc get clusterdeployment "$CD_NAME" -n "$CLUSTER_NS" -o jsonpath='{.status.powerState}' 2>/dev/null || true)
+          [[ "$POWER" == "Running" ]] && break
+          echo "  powerState=$POWER ($i/60)"
+          sleep 15
+        done
+        if [[ "$POWER" != "Running" ]]; then
+          echo "ERROR: cluster did not reach Running (powerState=$POWER)" >&2
+          exit 1
+        fi
+
+        CONSOLE=$(oc get clusterdeployment "$CD_NAME" -n "$CLUSTER_NS" -o jsonpath='{.status.webConsoleURL}' 2>/dev/null || true)
+        printf '%s' "$CONSOLE" > "$(step.results.webConsoleURL.path)"
+
+        echo "claimed $CD_NAME in $CLUSTER_NS"
+        echo "console: $CONSOLE"

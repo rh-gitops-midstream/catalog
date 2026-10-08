@@ -2,15 +2,21 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: test-operator
+  name: hive-test-operator
 spec:
   description: |
     Runs GitOps operator E2E tests (Ginkgo) on an ephemeral cluster.
     Includes a log-collector sidecar that uploads logs to Quay.
   params:
-    - name: testImageUrl
+    - name: hubSecretRef
       type: string
-    - name: clusterCredentialsSecretRef
+      default: hive-hub-kubeconfig
+    - name: claimName
+      type: string
+    - name: poolNamespace
+      type: string
+      default: hive-pool-1
+    - name: testImageUrl
       type: string
     - name: pipelineRunName
       type: string
@@ -36,13 +42,18 @@ spec:
       type: string
       default: ""
       description: "Catalog repo revision (for smoke test app source)"
+    - name: catalogTaskUrl
+      type: string
+      default: https://github.com/rh-gitops-midstream/catalog
+    - name: catalogTaskRevision
+      type: string
+      default: konflux-integration
   results:
     - name: LOG_ARTIFACT_TAG
       description: Tag of uploaded log artifact from sidecar
   volumes:
     - name: credentials
-      secret:
-        secretName: $(params.clusterCredentialsSecretRef)
+      emptyDir: {}
     - name: quay-credentials
       secret:
         secretName: gitops-test-runner-image-push
@@ -51,6 +62,25 @@ spec:
         secretName: confluence-api-credentials
         optional: true
   steps:
+    - name: get-kubeconfig
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.catalogTaskUrl)
+          - name: revision
+            value: $(params.catalogTaskRevision)
+          - name: pathInRepo
+            value: .tekton/stepactions/hive-get-kubeconfig.yaml
+      params:
+        - name: hubSecretRef
+          value: $(params.hubSecretRef)
+        - name: claimName
+          value: $(params.claimName)
+        - name: poolNamespace
+          value: $(params.poolNamespace)
+        - name: credentials
+          value: credentials
     - name: run-tests
       image: $(params.testImageUrl)
       volumeMounts:

@@ -1,0 +1,494 @@
+---
+# One cluster's entire lifecycle for the z-stream pipeline: claim it, install the operator
+# from the snapshot under test, run one or more suites on it, publish each suite's result,
+# release it.
+#
+# The whole leg is a single Task on purpose. That is what lets the z-stream pipeline
+# matrix over it, so how many clusters a release run uses is a *parameter* rather than a
+# pipeline structure. One entry per suite fans out across five clusters and finishes in
+# about the time of the longest suite; one entry listing every suite runs them all
+# serially on a single cluster for a fifth of the AWS spend. Nothing but the list changes.
+#
+# Every step captures its own failure instead of aborting the Task. That matters for two
+# reasons: a failing suite must not prevent the ones after it from running, and the
+# release step must run even when everything before it went wrong — otherwise a failed
+# leg leaks a cluster until its ClusterClaim lifetime expires. The verdict step at the end
+# is what actually fails the leg.
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: hive-suite-leg
+spec:
+  description: |
+    Claims a cluster from a Hive ClusterPool, installs the GitOps operator from the
+    catalog under test, runs the given suites on it, publishes results, releases it.
+  params:
+    - name: suites
+      type: string
+      description: >-
+        Comma-separated list of test scripts to run on this cluster, in order, e.g.
+        "run-sanity-tests.sh,run-parallel-tests.sh". Each gets its own log artifact and
+        its own row in catalog-results.
+    - name: testImageUrl
+      type: string
+    - name: pipelineRunName
+      type: string
+    - name: hubSecretRef
+      type: string
+      default: hive-hub-kubeconfig
+    - name: poolName
+      type: string
+      default: pool-1
+    - name: poolNamespace
+      type: string
+      default: hive-pool-1
+    - name: claimLifetime
+      type: string
+      description: >-
+        Backstop if this leg dies without releasing. Must exceed the longest suite in it —
+        the sequential shards run to about 1h45m each.
+      default: "6h"
+    - name: openshiftVersion
+      type: string
+      default: "4.20"
+    - name: operatorChannel
+      type: string
+      default: latest
+    - name: operatorVersion
+      type: string
+      default: ""
+    - name: namespace
+      type: string
+      default: openshift-gitops-operator
+    - name: installTimeout
+      type: string
+      default: 25m
+    - name: testRepoUrl
+      type: string
+      default: https://github.com/redhat-developer/gitops-operator.git
+    - name: testRepoBranch
+      type: string
+      default: master
+    - name: quayRepo
+      type: string
+      default: quay.io/devtools_gitops/test_image
+    - name: catalogUrl
+      type: string
+      default: https://github.com/rh-gitops-midstream/catalog
+    - name: catalogRevision
+      type: string
+      default: konflux-integration
+  results:
+    - name: verdict
+      description: '"pass" or "fail" for this leg.'
+    - name: clusterName
+      description: Cluster this leg ran on, for correlating with the hub.
+  volumes:
+    - name: shared
+      emptyDir: {}
+    - name: hub-kubeconfig
+      secret:
+        secretName: $(params.hubSecretRef)
+    - name: quay-credentials
+      secret:
+        secretName: gitops-test-runner-image-push
+    - name: quay-pull-credentials
+      secret:
+        secretName: gitops-quay-pull-secret-merged
+    - name: deploy-key
+      secret:
+        secretName: catalog-results-deploy-key
+        optional: true
+        defaultMode: 0400
+  steps:
+    # ---------------------------------------------------------------- claim ------
+    - name: claim-cluster
+      image: registry.redhat.io/openshift4/ose-cli:latest
+      volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: hub-kubeconfig
+          mountPath: /hub
+      env:
+        - name: SUITES
+          value: $(params.suites)
+        - name: POOL_NAME
+          value: $(params.poolName)
+        - name: POOL_NAMESPACE
+          value: $(params.poolNamespace)
+        - name: LIFETIME
+          value: $(params.claimLifetime)
+        - name: PIPELINE_RUN
+          value: $(params.pipelineRunName)
+      script: |
+        #!/bin/bash
+        set -uo pipefail
+        export KUBECONFIG=/hub/kubeconfig
+        : > /shared/failed
+
+        # Deterministic but unique per leg. The suite list is the only thing that
+        # distinguishes legs of the same PipelineRun, and it contains commas and dots,
+        # so hash it rather than trying to slug it into a DNS-safe name.
+        SLUG=$(printf '%s' "$SUITES" | md5sum | cut -c1-6)
+        CLAIM="$(printf '%s' "$PIPELINE_RUN" | cut -c1-45)-$SLUG"
+        printf '%s' "$CLAIM" > /shared/claim
+        echo "leg suites : $SUITES"
+        echo "claim name : $CLAIM"
+
+        cat <<EOF | oc apply -f -
+        apiVersion: hive.openshift.io/v1
+        kind: ClusterClaim
+        metadata:
+          name: ${CLAIM}
+          namespace: ${POOL_NAMESPACE}
+          labels:
+            hive-ops/pipelinerun: "${PIPELINE_RUN}"
+        spec:
+          clusterPoolName: ${POOL_NAME}
+          lifetime: ${LIFETIME}
+          subjects:
+            - kind: ServiceAccount
+              name: konflux-pool-claimer
+              namespace: ${POOL_NAMESPACE}
+        EOF
+
+        if ! oc wait clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" \
+               --for=condition=Pending=False --timeout=45m; then
+          echo "::error::claim not granted within 45m"
+          oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" -o yaml || true
+          echo "claim" >> /shared/failed
+          exit 0
+        fi
+
+        CLUSTER_NS=$(oc get clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" -o jsonpath='{.spec.namespace}')
+        CD=$(oc get clusterdeployment -n "$CLUSTER_NS" -o jsonpath='{.items[0].metadata.name}')
+        printf '%s' "$CD" > /shared/cluster-name
+
+        # A pooled cluster may have been hibernating; claiming resumes it but the API is
+        # not reachable until it is Running.
+        for _ in $(seq 1 60); do
+          P=$(oc get clusterdeployment "$CD" -n "$CLUSTER_NS" -o jsonpath='{.status.powerState}' 2>/dev/null)
+          [[ "$P" == "Running" ]] && break
+          sleep 15
+        done
+        if [[ "${P:-}" != "Running" ]]; then
+          echo "::error::cluster did not reach Running (powerState=${P:-unknown})"
+          echo "claim" >> /shared/failed
+          exit 0
+        fi
+
+        SECRET=$(oc get clusterdeployment "$CD" -n "$CLUSTER_NS" \
+                   -o jsonpath='{.spec.clusterMetadata.adminKubeconfigSecretRef.name}')
+        oc extract "secret/$SECRET" -n "$CLUSTER_NS" --keys=kubeconfig --to=- > /shared/kubeconfig
+        chmod 600 /shared/kubeconfig
+        # Hive's kubeconfig sets no namespace; without one, oc falls back to the pod's
+        # ServiceAccount namespace, which does not exist on the spoke.
+        KUBECONFIG=/shared/kubeconfig oc config set-context --current --namespace=default >/dev/null
+        echo "claimed $CD ($(KUBECONFIG=/shared/kubeconfig oc whoami --show-server))"
+
+        # powerState: Running is Hive's view — the EC2 instances are up. It is not the
+        # same as the cluster being ready to install an operator on. A pool cluster that
+        # was hibernating has only just resumed, and its marketplace and OLM operators
+        # are still reconciling; a CatalogSource created into that window never gets
+        # served, and the Subscription sits with an empty installedCSV until the install
+        # times out.
+        #
+        # That is not hypothetical: with runningCount 1 and two legs claiming at once,
+        # one leg gets the running cluster and succeeds while the other gets a resumed
+        # one and fails the install every time.
+        # Checking ClusterOperator conditions is NOT enough, and the first version of this
+        # gate did exactly that and let four legs through onto clusters that could not
+        # install anything. ClusterOperators are CRD-backed: the kube-apiserver serves
+        # them, so they stay readable and keep reporting Available=True from before
+        # hibernation while the *aggregation layer* is still starting. The gate passed on
+        # its first check, with zero retries, onto a cluster where 13 aggregated API
+        # groups were dead.
+        #
+        # What actually has to be true is that the aggregated APIs are serving, because
+        # one of them is packages.operators.coreos.com — OLM's package server. Without it
+        # OLM cannot enumerate the catalog, so a Subscription never resolves, installedCSV
+        # stays empty, and the install times out five minutes later with no clue as to why.
+        #
+        # So: check the APIServices, and then prove the thing we actually need by listing
+        # packagemanifests. The functional probe is the one that matters — an APIService
+        # can report Available a moment before it serves.
+        echo "--- waiting for the cluster to actually be ready to install onto ---"
+        export KUBECONFIG=/shared/kubeconfig
+        READY=no
+        for i in $(seq 1 60); do
+          WHY=""
+
+          # 1. Cluster operators. Kept because it catches degraded clusters that the
+          #    aggregation checks below would happily pass.
+          CO=$(oc get clusteroperators -o json 2>/dev/null \
+                | jq -r '[.items[]
+                          | . as $co
+                          | ([$co.status.conditions[]?|select(.type=="Available" and .status=="True")]|length) as $up
+                          | ([$co.status.conditions[]?|select(.type=="Degraded"  and .status=="True")]|length) as $bad
+                          | select($up == 0 or $bad > 0)
+                          | .metadata.name] | join(",")' 2>/dev/null)
+          # An unreadable API is not the same as a healthy one; treat it as not ready.
+          if [[ -z "$CO" ]] && ! oc get clusteroperators >/dev/null 2>&1; then
+            WHY="cannot read clusteroperators"
+          elif [[ -n "$CO" ]]; then
+            WHY="degraded operators: $CO"
+          fi
+
+          # 2. The aggregation layer, which is what was actually broken.
+          if [[ -z "$WHY" ]]; then
+            AS=$(oc get apiservices -o json 2>/dev/null \
+                  | jq -r '[.items[] | select([.status.conditions[]?|select(.type=="Available" and .status!="True")]|length>0)
+                            | .metadata.name] | join(",")' 2>/dev/null)
+            [[ -n "$AS" ]] && WHY="unavailable APIServices: $AS"
+          fi
+
+          # 3. The functional probe: can OLM's package server actually answer? This is
+          #    precisely what the Subscription needs and what silently was not true.
+          if [[ -z "$WHY" ]] && ! oc get packagemanifests -n openshift-marketplace >/dev/null 2>&1; then
+            WHY="OLM package server not serving packagemanifests"
+          fi
+
+          if [[ -z "$WHY" ]]; then READY=yes; break; fi
+          echo "  [$i/60] not ready: ${WHY:0:160}"
+          sleep 15
+        done
+        export KUBECONFIG=/hub/kubeconfig
+        if [[ "$READY" != "yes" ]]; then
+          echo "::error::cluster did not become ready to install onto within 15m"
+          echo "claim" >> /shared/failed
+          exit 0
+        fi
+        echo "cluster ready — operators settled and OLM package server serving"
+
+    # ------------------------------------------------------------- install -------
+    - name: install-operator
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: quay-credentials
+          mountPath: /quay-credentials
+          readOnly: true
+        - name: quay-pull-credentials
+          mountPath: /quay-pull-credentials
+          readOnly: true
+      env:
+        - name: KUBECONFIG
+          value: /shared/kubeconfig
+        - name: NAMESPACE
+          value: $(params.namespace)
+        - name: OPENSHIFT_VERSION
+          value: $(params.openshiftVersion)
+        - name: OPERATOR_CHANNEL
+          value: $(params.operatorChannel)
+        - name: OPERATOR_VERSION
+          value: $(params.operatorVersion)
+        - name: INSTALL_TIMEOUT
+          value: $(params.installTimeout)
+        - name: TASK_LOG_NAME
+          value: install-operator
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      command:
+        - /bin/bash
+        - -c
+        - |
+          set -uo pipefail
+          if grep -q . /shared/failed 2>/dev/null; then
+            echo "skipping install — the claim step failed"
+            exit 0
+          fi
+          /usr/local/bin/run-and-save-logs.sh /usr/local/bin/install-operator.sh || {
+            echo "::error::operator install failed"
+            echo "install" >> /shared/failed
+          }
+          exit 0
+
+    # -------------------------------------------------------------- suites -------
+    - name: run-suites
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: quay-credentials
+          mountPath: /quay-credentials
+          readOnly: true
+      env:
+        - name: KUBECONFIG
+          value: /shared/kubeconfig
+        - name: CI
+          value: konflux
+        - name: SUITES
+          value: $(params.suites)
+        - name: TEST_REPO_URL
+          value: $(params.testRepoUrl)
+        - name: BRANCH
+          value: $(params.testRepoBranch)
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+        - name: OPENSHIFT_VERSION
+          value: $(params.openshiftVersion)
+        - name: CATALOG_URL
+          value: $(params.catalogUrl)
+        - name: CATALOG_REVISION
+          value: $(params.catalogRevision)
+      computeResources:
+        requests:
+          memory: "4Gi"
+          cpu: "1000m"
+        limits:
+          memory: "8Gi"
+          cpu: "2000m"
+      command:
+        - /bin/bash
+        - -c
+        - |
+          set -uo pipefail
+          if grep -q . /shared/failed 2>/dev/null; then
+            echo "skipping suites — an earlier step failed"
+            exit 0
+          fi
+          /usr/local/bin/print-cluster-login-info.sh || true
+
+          IFS=',' read -ra LIST <<< "$SUITES"
+          for s in "${LIST[@]}"; do
+            s="$(echo "$s" | xargs)"   # trim
+            [[ -z "$s" ]] && continue
+            echo "==================== $s ===================="
+            # Distinct log name per suite so artifacts do not collide within a leg.
+            export TASK_LOG_NAME="${s%.sh}"
+            export TEST_SCRIPT="$s"
+            if /usr/local/bin/run-and-save-logs.sh /usr/local/bin/"$s"; then
+              echo "$s PASSED"
+              echo "$s pass" >> /shared/suite-results
+            else
+              rc=$?
+              echo "::warning::$s FAILED (exit $rc)"
+              echo "$s fail" >> /shared/suite-results
+              echo "suite:$s" >> /shared/failed
+            fi
+          done
+          # Always zero: the verdict step decides the leg, so that publish and release
+          # below still run.
+          exit 0
+
+    # ------------------------------------------------------------- publish -------
+    - name: publish-results
+      image: $(params.testImageUrl)
+      volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: deploy-key
+          mountPath: /deploy-key
+          readOnly: true
+      env:
+        - name: KUBECONFIG
+          value: /shared/kubeconfig
+        - name: PIPELINE_RUN_NAME
+          value: $(params.pipelineRunName)
+        - name: OPENSHIFT_VERSION
+          value: $(params.openshiftVersion)
+        - name: OPERATOR_CHANNEL
+          value: $(params.operatorChannel)
+        - name: NAMESPACE
+          value: $(params.namespace)
+        - name: PIPELINE_NAME
+          value: gitops-z-stream
+        - name: SHARED_DIR
+          value: /shared
+        - name: RESOLVED_OPENSHIFT_VERSION
+          value: $(params.openshiftVersion)
+        - name: QUAY_REPO
+          value: $(params.quayRepo)
+      command:
+        - /bin/bash
+        - -c
+        - |
+          set -uo pipefail
+          # One row per suite, which is what makes the results repo the place to
+          # aggregate rather than this pipeline.
+          if [[ ! -s /shared/suite-results ]]; then
+            echo "no suite results to publish"
+            exit 0
+          fi
+
+          # publish-results.sh keys the row's pass/fail off AGGREGATE_STATUS, using the
+          # same vocabulary Tekton uses for $(tasks.status).
+          CSV=$(KUBECONFIG=/shared/kubeconfig oc get csv -n "$NAMESPACE" \
+                  -o jsonpath='{.items[?(@.spec.displayName=="Red Hat OpenShift GitOps")].metadata.name}' 2>/dev/null | awk '{print $1}')
+          export INSTALLED_CSV="${CSV:-}"
+
+          while read -r script outcome; do
+            export TEST_SCRIPT="$script"
+            if [[ "$outcome" == "pass" ]]; then
+              export AGGREGATE_STATUS="Succeeded"
+            else
+              export AGGREGATE_STATUS="Failed"
+            fi
+            # Each suite uploaded its own log artifact under this tag.
+            export LOGS_ARTIFACT="${QUAY_REPO}:${PIPELINE_RUN_NAME}-task-${script%.sh}-logs"
+            echo "publishing $script -> $AGGREGATE_STATUS"
+            /usr/local/bin/publish-results.sh || \
+              echo "::warning::could not publish result for $script"
+          done < /shared/suite-results
+          exit 0
+
+    # ------------------------------------------------------------- release -------
+    - name: release-cluster
+      image: registry.redhat.io/openshift4/ose-cli:latest
+      volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: hub-kubeconfig
+          mountPath: /hub
+      env:
+        - name: POOL_NAMESPACE
+          value: $(params.poolNamespace)
+      script: |
+        #!/bin/bash
+        # Runs regardless of what failed above. Deleting the claim destroys the cluster
+        # and Hive provisions a replacement, so no cluster is ever handed out twice.
+        set -uo pipefail
+        export KUBECONFIG=/hub/kubeconfig
+        CLAIM=$(cat /shared/claim 2>/dev/null || true)
+        if [[ -z "$CLAIM" ]]; then
+          echo "no claim recorded — nothing to release"
+          exit 0
+        fi
+        if ! oc get clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" >/dev/null 2>&1; then
+          echo "claim $CLAIM already gone"
+          exit 0
+        fi
+        echo "releasing $CLAIM (destroys the cluster)"
+        oc delete clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" --wait=false \
+          || echo "::warning::release failed; the claim lifetime will reclaim it"
+        exit 0
+
+    # ------------------------------------------------------------- verdict -------
+    - name: verdict
+      image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+      volumeMounts:
+        - name: shared
+          mountPath: /shared
+      script: |
+        #!/bin/bash
+        set -uo pipefail
+        printf '%s' "$(cat /shared/cluster-name 2>/dev/null || echo unknown)" \
+          > "$(results.clusterName.path)"
+
+        echo "--- suites ---"
+        cat /shared/suite-results 2>/dev/null || echo "(none ran)"
+
+        if [[ -s /shared/failed ]]; then
+          printf 'fail' > "$(results.verdict.path)"
+          echo "--- failures ---"
+          cat /shared/failed
+          echo "::error::leg failed"
+          exit 1
+        fi
+        printf 'pass' > "$(results.verdict.path)"
+        echo "leg passed"

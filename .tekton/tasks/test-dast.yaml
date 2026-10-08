@@ -9,11 +9,10 @@ spec:
     ArgoCD REST API deployed by the GitOps operator on an ephemeral cluster.
 
     Steps:
-      1. get-kubeconfig  — fetch EaaS cluster credentials
-      2. get-cluster-info — extract API URL, apps domain, kubeadmin password;
+      1. get-cluster-info — extract API URL, apps domain, kubeadmin password;
                             wait for ArgoCD server to be Available
-      3. run-dast        — authenticate to ArgoCD via OC OAuth, run RapidAST/ZAP
-      4. collect-results — parse ZAP JSON to JUnit XML, upload task artifact
+      2. run-dast        — authenticate to ArgoCD via OC OAuth, run RapidAST/ZAP
+      3. collect-results — parse ZAP JSON to JUnit XML, upload task artifact
 
     The scan result is determined by dast-false-positives.json (baked into
     the overlay image at /usr/local/config/dast-false-positives.json).
@@ -24,9 +23,7 @@ spec:
   params:
     - name: testImageUrl
       type: string
-    - name: eaasSpaceSecretRef
-      type: string
-    - name: clusterName
+    - name: clusterCredentialsSecretRef
       type: string
     - name: pipelineRunName
       type: string
@@ -41,7 +38,8 @@ spec:
       description: Tag of the uploaded log artifact
   volumes:
     - name: credentials
-      emptyDir: {}
+      secret:
+        secretName: $(params.clusterCredentialsSecretRef)
     - name: dast-data
       emptyDir: {}
     - name: quay-credentials
@@ -51,41 +49,6 @@ spec:
       secret:
         secretName: gcp
   steps:
-    - name: get-kubeconfig
-      image: $(params.testImageUrl)
-      onError: continue
-      env:
-        - name: CLUSTER_NAME
-          value: $(params.clusterName)
-        - name: KUBECONFIG_VALUE
-          valueFrom:
-            secretKeyRef:
-              name: $(params.eaasSpaceSecretRef)
-              key: kubeconfig
-      volumeMounts:
-        - name: credentials
-          mountPath: /credentials
-      script: |
-        #!/bin/bash
-        set -eo pipefail
-
-        echo "${KUBECONFIG_VALUE}" > /tmp/eaas-kubeconfig
-        export KUBECONFIG=/tmp/eaas-kubeconfig
-
-        CLUSTER_KUBECONFIG="/credentials/${CLUSTER_NAME}-kubeconfig"
-
-        SECRET=$(oc get cti "${CLUSTER_NAME}" -o=jsonpath='{.status.kubeconfig.name}')
-        echo "Found kubeconfig secret: ${SECRET}"
-        oc get secret "${SECRET}" -o go-template --template='{{.data.kubeconfig|base64decode}}' \
-          > "${CLUSTER_KUBECONFIG}"
-        echo "Wrote kubeconfig to ${CLUSTER_KUBECONFIG}"
-
-        PWD_SECRET=$(oc get cti "${CLUSTER_NAME}" -o=jsonpath='{.status.adminPassword.name}')
-        echo "Found admin password secret: ${PWD_SECRET}"
-        oc get secret "${PWD_SECRET}" -o jsonpath='{.data.password}' | base64 -d \
-          > "/credentials/${CLUSTER_NAME}-password"
-        echo "Wrote admin password to /credentials/${CLUSTER_NAME}-password"
-
     - name: get-cluster-info
       image: $(params.testImageUrl)
       volumeMounts:
@@ -97,8 +60,8 @@ spec:
         #!/bin/bash
         set -euo pipefail
 
-        KUBECONFIG=$(find /credentials -name "*kubeconfig" -type f 2>/dev/null | head -1)
-        if [[ -z "${KUBECONFIG:-}" ]]; then
+        KUBECONFIG=/credentials/kubeconfig
+        if [[ ! -f "${KUBECONFIG}" ]]; then
           echo "ERROR: no kubeconfig found in /credentials"
           ls -la /credentials/ 2>/dev/null || true
           exit 1
@@ -113,8 +76,8 @@ spec:
         APPSURL="${CONSOLE_HOST#console-openshift-console.}"
         echo "Apps domain: ${APPSURL}"
 
-        PASS_FILE=$(find /credentials -name "*password" -type f 2>/dev/null | head -1)
-        if [[ -n "${PASS_FILE}" ]]; then
+        PASS_FILE=/credentials/kubeAdminPassword
+        if [[ -f "${PASS_FILE}" ]]; then
           KPWD=$(cat "${PASS_FILE}")
           echo "Loaded kubeadmin password from ${PASS_FILE}"
         else
@@ -288,4 +251,3 @@ spec:
         fi
 
         exit "${PARSE_EXIT}"
-
