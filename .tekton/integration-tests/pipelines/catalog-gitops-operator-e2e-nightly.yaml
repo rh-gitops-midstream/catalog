@@ -1,0 +1,264 @@
+---
+# Nightly integration pipeline: one Hive cluster per channel, all suites in sequence.
+#
+# Triggered by PRs carrying the "nightly" label (set by GitHub Actions automation).
+# Runs the full test suite in order on a single claimed cluster, so wall-clock time is
+# the sum of all suites (~4-6 hours) rather than the parallel z-stream layout.
+#
+# The SUITES param controls what runs. The default is the full nightly set; individual
+# suites can be omitted for debugging without changing the pipeline structure.
+#
+# Cluster provisioning uses the same hive-suite-leg task as the z-stream pipeline, so
+# the sophisticated cluster-readiness gate, per-suite result publishing, and guaranteed
+# cluster release are all inherited.
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: gitops-catalog-operator-e2e-nightly
+spec:
+  params:
+    - name: SNAPSHOT
+      type: string
+      default: '{"components": [{"name":"catalog-4-20", "containerImage": "quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:latest"}]}'
+    - name: CATALOG_TASK_URL
+      type: string
+      default: "https://github.com/rh-gitops-midstream/catalog"
+    - name: CATALOG_TASK_REVISION
+      type: string
+      default: "konflux-integration"
+    - name: OPENSHIFT_VERSION
+      type: string
+      default: "4.20"
+    - name: OPERATOR_CHANNEL
+      type: string
+      default: "latest"
+    - name: SUITES
+      type: string
+      description: >-
+        Comma-separated list of test scripts to run sequentially on the claimed cluster.
+        The default is the full nightly set. Omit individual scripts for partial runs.
+      default: "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh,run-argocd-e2e-standalone.sh"
+    - name: TEST_REPO_URL
+      type: string
+      default: "https://github.com/rh-gitops-release-qa/gitops-operator"
+    - name: TEST_REPO_BRANCH
+      type: string
+      default: "konflux-integration-latest"
+    - name: POOL_NAME
+      type: string
+      default: pool-1
+    - name: POOL_NAMESPACE
+      type: string
+      default: hive-pool-1
+    - name: CLAIM_LIFETIME
+      type: string
+      description: >-
+        Backstop TTL on the claim. Must exceed the total runtime of all SUITES combined.
+        The full nightly suite runs about 4-6 hours; 8h gives a comfortable buffer.
+      default: "8h"
+    - name: HIVE_HUB_SECRET
+      type: string
+      default: hive-hub-kubeconfig
+    - name: GATE_LABEL
+      type: string
+      default: "nightly"
+      description: >-
+        PR label required to run. Default is "nightly" so only nightly automation PRs
+        trigger this pipeline. Set to empty to always run (e.g. for manual testing).
+
+  tasks:
+    - name: parse-metadata
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/integration-examples
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: tasks/test_metadata.yaml
+      params:
+        - name: SNAPSHOT
+          value: $(params.SNAPSHOT)
+
+    - name: check-gate
+      runAfter: [parse-metadata]
+      taskSpec:
+        params:
+          - name: gate-labels
+            type: string
+          - name: source-git-url
+            type: string
+          - name: source-git-revision
+            type: string
+          - name: catalog-task-url
+            type: string
+          - name: catalog-task-revision
+            type: string
+        results:
+          - name: proceed
+            description: "true if tests should run, false to skip"
+        steps:
+          - name: check
+            ref:
+              resolver: git
+              params:
+                - name: url
+                  value: $(params.catalog-task-url)
+                - name: revision
+                  value: $(params.catalog-task-revision)
+                - name: pathInRepo
+                  value: .tekton/stepactions/check-gate-labels.yaml
+            params:
+              - name: gate-labels
+                value: $(params.gate-labels)
+              - name: source-git-url
+                value: $(params.source-git-url)
+              - name: source-git-revision
+                value: $(params.source-git-revision)
+          - name: propagate-result
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            script: |
+              cat /tekton/steps/step-check/results/proceed > $(results.proceed.path)
+      params:
+        - name: gate-labels
+          value: $(params.GATE_LABEL)
+        - name: source-git-url
+          value: $(tasks.parse-metadata.results.source-git-url)
+        - name: source-git-revision
+          value: $(tasks.parse-metadata.results.source-git-revision)
+        - name: catalog-task-url
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalog-task-revision
+          value: $(params.CATALOG_TASK_REVISION)
+
+    - name: build-test-image
+      runAfter: [check-gate]
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/build-ginkgo-test-image.yaml
+      params:
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+        - name: IMAGE_EXPIRES_AFTER
+          value: "7d"
+
+    - name: overlay-test-scripts
+      runAfter: [build-test-image]
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/overlay-test-scripts.yaml
+      params:
+        - name: BASE_IMAGE_URL
+          value: $(tasks.build-test-image.results.IMAGE_URL)
+        - name: SOURCE_URL
+          value: $(params.CATALOG_TASK_URL)
+        - name: SOURCE_REVISION
+          value: $(params.CATALOG_TASK_REVISION)
+
+    - name: run-leg
+      runAfter: [overlay-test-scripts]
+      when:
+        - input: $(tasks.check-gate.results.proceed)
+          operator: in
+          values: ["true"]
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/hive-suite-leg.yaml
+      params:
+        - name: suites
+          value: $(params.SUITES)
+        - name: testImageUrl
+          value: $(tasks.overlay-test-scripts.results.image-url)
+        - name: pipelineRunName
+          value: $(context.pipelineRun.name)
+        - name: hubSecretRef
+          value: $(params.HIVE_HUB_SECRET)
+        - name: poolName
+          value: $(params.POOL_NAME)
+        - name: poolNamespace
+          value: $(params.POOL_NAMESPACE)
+        - name: claimLifetime
+          value: $(params.CLAIM_LIFETIME)
+        - name: openshiftVersion
+          value: $(params.OPENSHIFT_VERSION)
+        - name: operatorChannel
+          value: $(params.OPERATOR_CHANNEL)
+        - name: testRepoUrl
+          value: $(params.TEST_REPO_URL)
+        - name: testRepoBranch
+          value: $(params.TEST_REPO_BRANCH)
+        - name: catalogUrl
+          value: $(params.CATALOG_TASK_URL)
+        - name: catalogRevision
+          value: $(params.CATALOG_TASK_REVISION)
+
+  finally:
+    - name: summary
+      params:
+        - name: verdict
+          value: $(tasks.run-leg.results.verdict)
+        - name: cluster
+          value: $(tasks.run-leg.results.clusterName)
+        - name: pipelineRunName
+          value: $(context.pipelineRun.name)
+        - name: aggregateStatus
+          value: $(tasks.status)
+        - name: channel
+          value: $(params.OPERATOR_CHANNEL)
+      taskSpec:
+        params:
+          - name: verdict
+            type: string
+          - name: cluster
+            type: string
+          - name: pipelineRunName
+            type: string
+          - name: aggregateStatus
+            type: string
+          - name: channel
+            type: string
+        steps:
+          - name: report
+            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+            script: |
+              #!/bin/bash
+              set -uo pipefail
+              echo "=========================================================="
+              echo " nightly run $(params.pipelineRunName)"
+              echo " channel    : $(params.channel)"
+              echo " cluster    : $(params.cluster)"
+              echo " verdict    : $(params.verdict)"
+              echo " overall    : $(params.aggregateStatus)"
+              echo "=========================================================="
+              echo
+              echo "Per-suite results are in rh-gitops-release-qa/catalog-results,"
+              echo "tagged with this run name."
