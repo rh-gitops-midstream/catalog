@@ -7,9 +7,19 @@ spec:
     - name: gitUrl
       type: string
       description: Git repository URL containing the images-mirror-set.yaml file
+      default: ""
     - name: gitRevision
       type: string
       description: Git revision (branch, tag, or commit SHA) to checkout
+      default: ""
+    - name: fallbackGitUrl
+      type: string
+      description: Fallback URL when gitUrl is empty (e.g. the task branch itself)
+      default: ""
+    - name: fallbackGitRevision
+      type: string
+      description: Fallback revision when gitRevision is empty
+      default: ""
     - name: mirrorSetPath
       type: string
       description: Path to the ImageDigestMirrorSet YAML file within the repository
@@ -23,6 +33,10 @@ spec:
       value: $(params.gitUrl)
     - name: GIT_REVISION
       value: $(params.gitRevision)
+    - name: FALLBACK_GIT_URL
+      value: $(params.fallbackGitUrl)
+    - name: FALLBACK_GIT_REVISION
+      value: $(params.fallbackGitRevision)
     - name: MIRROR_SET_PATH
       value: $(params.mirrorSetPath)
     - name: OUTPUT_PATH
@@ -33,12 +47,17 @@ spec:
     set -e
     pip install pyyaml --quiet >/dev/null 2>&1
 
+    # Use fallback when the source URL is not available (e.g. manual runs where
+    # the Konflux integration service hasn't injected PAC event context).
+    EFFECTIVE_URL="${GIT_URL:-$FALLBACK_GIT_URL}"
+    EFFECTIVE_REVISION="${GIT_REVISION:-$FALLBACK_GIT_REVISION}"
+
     WORK=$(mktemp -d)
-    git clone --depth=1 "$GIT_URL" "$WORK/repo"
+    git clone --depth=1 "$EFFECTIVE_URL" "$WORK/repo"
     cd "$WORK/repo"
     # GIT_REVISION may be a branch (already present) or a specific commit SHA.
     # Try a shallow fetch of the exact revision first; fall back to a local checkout.
-    git fetch --depth=1 origin "$GIT_REVISION" 2>/dev/null && git checkout FETCH_HEAD || git checkout "$GIT_REVISION"
+    git fetch --depth=1 origin "$EFFECTIVE_REVISION" 2>/dev/null && git checkout FETCH_HEAD || git checkout "$EFFECTIVE_REVISION"
 
     python3 -c "
     import yaml, json, sys
@@ -47,4 +66,4 @@ spec:
     json.dump(data['spec']['imageDigestMirrors'], sys.stdout)
     " > "$OUTPUT_PATH"
 
-    echo "Successfully extracted imageContentSources from $GIT_URL"
+    echo "Successfully extracted imageContentSources from $EFFECTIVE_URL"

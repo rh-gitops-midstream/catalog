@@ -60,5 +60,9 @@ spec:
           value: $(params.sourceGitUrl)
         - name: gitRevision
           value: $(params.sourceGitRevision)
+        - name: fallbackGitUrl
+          value: $(params.taskGitUrl)
+        - name: fallbackGitRevision
+          value: $(params.taskGitRevision)
         - name: outputPath
           value: $(workspaces.env-files.path)/cluster-env/IMAGE_CONTENT_SOURCES
