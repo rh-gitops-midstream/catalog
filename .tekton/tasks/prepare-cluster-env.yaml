@@ -41,6 +41,7 @@ spec:
         set -eu
         env_dir="$(workspaces.env-files.path)/cluster-env"
         mkdir -p "${env_dir}"
+        chmod 777 "${env_dir}"
         printf '%s' "${COMPUTE_NODE_TYPE}" > "${env_dir}/COMPUTE_NODE_TYPE"
         printf '%s' "${HYPERSHIFT_NODE_COUNT}" > "${env_dir}/HYPERSHIFT_NODE_COUNT"
         printf '%s' "${HOSTED_MANAGEMENT_CLUSTER}" > "${env_dir}/HOSTED_MANAGEMENT_CLUSTER"
