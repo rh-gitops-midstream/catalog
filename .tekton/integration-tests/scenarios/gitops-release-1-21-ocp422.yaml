@@ -27,7 +27,7 @@ spec:
     - name: OPERATOR_CHANNEL
       value: gitops-1.21
     - name: GATE_LABEL
-      value: release-candidate
+      value: channel-1.21
     - name: POOL_NAME
       value: pool-3
     - name: POOL_NAMESPACE
