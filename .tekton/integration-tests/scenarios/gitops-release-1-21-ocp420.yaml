@@ -14,9 +14,10 @@ spec:
   params:
     # Two legs, one cluster each. argocd-e2e gets its own because it does not share a
     # cluster well with the operator suites; everything else rides one cluster in
-    # sequence. Splitting further is tempting for wall clock but the AWS account has
-    # already hit AWSVPCLimitExceeded at six concurrent pool clusters, so the release
-    # tier deliberately stays narrow — see hive-ops pools/pool-1/clusterpool.yaml.
+    # sequence. The split was chosen when this ran on AWS, where the account had already
+    # hit AWSVPCLimitExceeded at six concurrent pool clusters. On pool-2 that ceiling no
+    # longer binds, so widening is possible — but it would have to be paid for in pool-2's
+    # runningCount, which is sized for this shape.
     - name: LEGS
       values:
         - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
@@ -32,9 +33,9 @@ spec:
     - name: GATE_LABEL
       value: release-candidate
     - name: POOL_NAME
-      value: pool-1
+      value: pool-2
     - name: POOL_NAMESPACE
-      value: hive-pool-1
+      value: hive-pool-2
     # Leg 1 runs about six hours of tests on top of a cluster claim and operator
     # install, so 6h would cut it close. 8h is the pool ceiling.
     - name: CLAIM_LIFETIME
