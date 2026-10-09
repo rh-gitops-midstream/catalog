@@ -2,7 +2,7 @@
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
-  name: gitops-catalog-release-1-21-ocp420
+  name: gitops-catalog-release-1-22-ocp422
   namespace: rh-openshift-gitops-tenant
   labels:
     test.appstudio.openshift.io/optional: "true"
@@ -12,30 +12,35 @@ spec:
     - description: execute on component build
       name: component_catalog-4-20
   params:
-    # Two legs, one cluster each. argocd-e2e gets its own because it does not share a
-    # cluster well with the operator suites; everything else rides one cluster in
-    # sequence. The split was chosen when this ran on AWS, where the account had already
-    # hit AWSVPCLimitExceeded at six concurrent pool clusters. On pool-2 that ceiling no
-    # longer binds, so widening is possible — but it would have to be paid for in pool-2's
-    # runningCount, which is sized for this shape.
+    # Two legs, matching the 1.21 scenarios so channels stay comparable.
     - name: LEGS
       values:
         - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
         - "run-argocd-e2e-standalone.sh"
     - name: TEST_REPO_URL
       value: https://github.com/rh-gitops-release-qa/gitops-operator
+    # There is no konflux-integration-1.22 branch yet. This is 1.21's, used as a
+    # stand-in so the pipeline can be exercised against a 1.22 build -- it is the
+    # newest branch that exists; konflux-integration-latest is older still
+    # (2026-07-02 against 1.21's 2026-07-05) and does not track 1.22 despite the name.
+    # Repoint this the moment a 1.22 branch is cut: until then a failure here may be
+    # test drift rather than a product regression.
     - name: TEST_REPO_BRANCH
       value: konflux-integration-1.21
     - name: OPENSHIFT_VERSION
-      value: "4.20"
+      value: "4.22"
     - name: OPERATOR_CHANNEL
-      value: gitops-1.21
+      value: gitops-1.22
+    # Channel-scoped gate only. The release-candidate label is deliberately NOT required
+    # while the RC-creation automation is still being built -- gating on channel-1.22
+    # alone lets this tier be exercised by hand without depending on that work or
+    # disturbing it. Add release-candidate back once the automation lands.
     - name: GATE_LABEL
-      value: channel-1.21
+      value: channel-1.22
     - name: POOL_NAME
-      value: pool-2
+      value: pool-3
     - name: POOL_NAMESPACE
-      value: hive-pool-2
+      value: hive-pool-3
     # Leg 1 runs about six hours of tests on top of a cluster claim and operator
     # install, so 6h would cut it close. 8h is the pool ceiling.
     - name: CLAIM_LIFETIME
