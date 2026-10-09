@@ -25,9 +25,9 @@ spec:
     - name: GATE_LABEL
       value: nightly
     - name: POOL_NAME
-      value: pool-1
+      value: pool-2
     - name: POOL_NAMESPACE
-      value: hive-pool-1
+      value: hive-pool-2
     - name: CLAIM_LIFETIME
       value: "8h"
   resolverRef:
