@@ -7,10 +7,12 @@ metadata:
   labels:
     test.appstudio.openshift.io/optional: "true"
 spec:
-  application: catalog-4-20
+  # Bound to the 4.22 catalog, not 4.20: the Snapshot this fires on is the catalog built
+  # for this OpenShift version, and it is that image the operator is installed from.
+  application: catalog-4-22
   contexts:
     - description: execute on component build
-      name: component_catalog-4-20
+      name: component_catalog-4-22
   params:
     # Two legs, matching the 1.21 scenarios so channels stay comparable.
     - name: LEGS
