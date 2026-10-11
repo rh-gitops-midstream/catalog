@@ -212,10 +212,17 @@ spec:
         # So: check the APIServices, and then prove the thing we actually need by listing
         # packagemanifests. The functional probe is the one that matters — an APIService
         # can report Available a moment before it serves.
+        # 30 minutes, not 15. A claim that lands on a hibernated standby pays the resume
+        # and then waits for the cluster to settle, and OLM's package server is among the
+        # last things to come back. On 2026-10-11 a pool-3 claim spent the whole 15m
+        # reporting "OLM package server not serving packagemanifests" with every
+        # ClusterOperator Available and every APIService healthy -- the cluster was fine,
+        # the budget was not. Against a claim lifetime of hours this costs nothing when
+        # the cluster is warm, because the loop breaks as soon as the probe answers.
         echo "--- waiting for the cluster to actually be ready to install onto ---"
         export KUBECONFIG=/shared/kubeconfig
         READY=no
-        for i in $(seq 1 60); do
+        for i in $(seq 1 120); do
           WHY=""
 
           # 1. Cluster operators. Kept because it catches degraded clusters that the
@@ -249,12 +256,12 @@ spec:
           fi
 
           if [[ -z "$WHY" ]]; then READY=yes; break; fi
-          echo "  [$i/60] not ready: ${WHY:0:160}"
+          echo "  [$i/120] not ready: ${WHY:0:160}"
           sleep 15
         done
         export KUBECONFIG=/hub/kubeconfig
         if [[ "$READY" != "yes" ]]; then
-          echo "::error::cluster did not become ready to install onto within 15m"
+          echo "::error::cluster did not become ready to install onto within 30m"
           echo "claim" >> /shared/failed
           exit 0
         fi
