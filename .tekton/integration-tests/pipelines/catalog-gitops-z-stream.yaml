@@ -265,6 +265,10 @@ spec:
           value: $(params.CATALOG_TASK_URL)
         - name: catalogRevision
           value: $(params.CATALOG_TASK_REVISION)
+        # The catalog FBC built for this Snapshot. Without it install-operator falls
+        # back to the floating catalog:v<ocp> tag -- main, not the change under test.
+        - name: catalogImage
+          value: $(tasks.parse-metadata.results.component-container-image)
 
   finally:
     # Deliberately thin. Each leg already published one row per suite to catalog-results

@@ -266,6 +266,10 @@ spec:
           - name: pathInRepo
             value: .tekton/tasks/hive-install-operator.yaml
       params:
+        # The catalog FBC built for this Snapshot. Without it install-operator falls back
+        # to the floating catalog:v<ocp> tag -- main, not the change under test.
+        - name: catalogImage
+          value: $(tasks.parse-metadata.results.component-container-image)
         - name: hubSecretRef
           value: $(params.HIVE_HUB_SECRET)
         - name: claimName

@@ -13,7 +13,25 @@ set -ex
 source "$(dirname "${BASH_SOURCE[0]}")/lib/wait-for-resources.sh"
 
 MINOR_VERSION=$(echo "${OPENSHIFT_VERSION}" | grep -oP '^\d+\.\d+')
-CATALOG_IMAGE="quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v${MINOR_VERSION}"
+
+# The catalog under test comes from the Snapshot. It used to be derived from the OpenShift
+# version alone -- catalog:v${MINOR_VERSION} -- which is a floating tag pointing at the last
+# build pushed from main. That meant every run, in every tier, installed main rather than
+# the change under review, and nothing said so. On 2026-10-11 a release-candidate run for
+# v1.22.2 silently installed v1.22.1: the Snapshot's catalog had v1.22.2, the floating tag
+# did not, and the Snapshot's image was never consulted.
+#
+# The fallback is kept for runs with no Snapshot behind them -- a hand-written PipelineRun
+# -- but which source was used is logged either way, because the failure mode this replaces
+# was invisible.
+if [[ -n "${CATALOG_IMAGE:-}" ]]; then
+  echo "Catalog image: ${CATALOG_IMAGE} (from the Snapshot under test)"
+else
+  CATALOG_IMAGE="quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:v${MINOR_VERSION}"
+  echo "WARNING: no catalog image was passed in; falling back to the floating tag"
+  echo "WARNING:   ${CATALOG_IMAGE}"
+  echo "WARNING: this is whatever was last pushed from main, NOT the change under test."
+fi
 
 echo "Installing GitOps Operator from catalog: ${CATALOG_IMAGE}"
 echo "OpenShift version: ${OPENSHIFT_VERSION} (minor: ${MINOR_VERSION})"

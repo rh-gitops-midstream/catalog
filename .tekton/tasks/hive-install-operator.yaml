@@ -51,6 +51,12 @@ spec:
     - name: catalogTaskRevision
       type: string
       default: konflux-integration
+    # The FBC image to install from -- the Snapshot's catalog component. Empty makes
+    # install-operator fall back to the floating catalog:v<ocp> tag, which is main
+    # rather than the change under test.
+    - name: catalogImage
+      type: string
+      default: ""
   results:
     - name: installedCSV
       value: "$(steps.get-installed-version.results.installedCSV)"
@@ -97,6 +103,8 @@ spec:
       env:
         - name: OPENSHIFT_VERSION
           value: $(params.openshiftVersion)
+        - name: CATALOG_IMAGE
+          value: $(params.catalogImage)
         - name: NAMESPACE
           value: $(params.namespace)
         - name: INSTALL_TIMEOUT

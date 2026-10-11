@@ -78,6 +78,13 @@ spec:
     - name: catalogRevision
       type: string
       default: konflux-integration
+    # The FBC image to install the operator from -- the Snapshot's own catalog component,
+    # not the catalog git repo above. Empty makes install-operator fall back to the
+    # floating catalog:v<ocp> tag, which is the last build pushed from main rather than
+    # the change under test; it says so loudly when it does.
+    - name: catalogImage
+      type: string
+      default: ""
   results:
     - name: verdict
       description: '"pass" or "fail" for this leg.'
@@ -286,6 +293,8 @@ spec:
           value: $(params.namespace)
         - name: OPENSHIFT_VERSION
           value: $(params.openshiftVersion)
+        - name: CATALOG_IMAGE
+          value: $(params.catalogImage)
         - name: OPERATOR_CHANNEL
           value: $(params.operatorChannel)
         - name: OPERATOR_VERSION
