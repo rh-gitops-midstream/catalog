@@ -36,6 +36,11 @@ spec:
       value: pool-2
     - name: POOL_NAMESPACE
       value: hive-pool-2
+    # The hub credential is per pool: each pool has its own konflux-pool-claimer
+    # ServiceAccount, scoped to its own namespace, so one shared secret cannot claim
+    # from more than one. Must match POOL_NAME above.
+    - name: HIVE_HUB_SECRET
+      value: hive-hub-kubeconfig-pool-2
     # Leg 1 runs about six hours of tests on top of a cluster claim and operator
     # install, so 6h would cut it close. 8h is the pool ceiling.
     - name: CLAIM_LIFETIME
