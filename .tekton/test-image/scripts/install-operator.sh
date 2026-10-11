@@ -155,6 +155,48 @@ fi
 
 echo "Operator installed successfully (CSV: ${CSV_NAME})"
 
+# --- Assert we installed what the catalog actually advertises -------------------------
+#
+# The installed version has always been recorded -- in this log, in the catalog-results
+# row, and in the results directory path -- and never compared against anything. That is
+# how a release-candidate run for v1.22.2 spent weeks reporting green while installing
+# v1.22.1 from a floating tag: the row said v1.22.1, accurately, and nothing objected.
+#
+# So: ask the catalog under test what it considers the head of this channel, and refuse
+# to continue if OLM resolved something else. With OPERATOR_VERSION pinned the head is
+# deliberately not what we want, so compare against the pin instead.
+#
+# Determining the expectation is best-effort -- a packagemanifest we cannot read is not
+# proof of a problem -- but a mismatch we *can* see is fatal. The point is that silence
+# must stop meaning success.
+if [[ -n "${OPERATOR_VERSION:-}" ]]; then
+  EXPECTED_CSV="openshift-gitops-operator.v${OPERATOR_VERSION}"
+  EXPECTED_FROM="the pinned OPERATOR_VERSION"
+else
+  EXPECTED_CSV=$(oc get packagemanifests -n openshift-marketplace -l "catalog=gitops-stage" -o json 2>/dev/null \
+    | jq -r --arg ch "${OPERATOR_CHANNEL}" '
+        .items[]
+        | select(.status.packageName == "openshift-gitops-operator")
+        | .status.channels[]
+        | select(.name == $ch)
+        | .currentCSV' 2>/dev/null | head -1)
+  EXPECTED_FROM="the head of channel ${OPERATOR_CHANNEL} in the catalog under test"
+fi
+
+if [[ -z "${EXPECTED_CSV}" ]]; then
+  echo "WARNING: could not determine the expected CSV from the catalog; skipping the"
+  echo "WARNING: self-consistency check. Installed: ${CSV_NAME}"
+elif [[ "${EXPECTED_CSV}" != "${CSV_NAME}" ]]; then
+  echo "::error::installed the wrong operator version"
+  echo "  expected : ${EXPECTED_CSV}  (${EXPECTED_FROM})"
+  echo "  installed: ${CSV_NAME}"
+  echo "The catalog under test and the installed operator disagree. Testing would"
+  echo "produce a result that looks valid and describes the wrong build."
+  exit 1
+else
+  echo "Version check: ${CSV_NAME} matches ${EXPECTED_FROM}"
+fi
+
 # 7. Fallback: inject pull credentials into openshift-gitops namespace
 # In case the additional-pull-secret DaemonSet (step 1b) hasn't fully propagated
 # by the time ArgoCD pods start, this background loop links a namespace-scoped
