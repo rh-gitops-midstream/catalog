@@ -288,8 +288,13 @@ spec:
           #    with the real reason instead of running hours of suites on a cluster that
           #    cannot pass them.
           if [[ -z "$WHY" && "$MIN_WORKERS" -gt 0 ]]; then
-            W=$(oc get nodes -l node-role.kubernetes.io/worker -o json 2>/dev/null \
-                 | jq '[.items[] | select([.status.conditions[]?|select(.type=="Ready" and .status=="True")]|length>0)] | length' 2>/dev/null)
+            # Counted from the STATUS column with grep, not from JSON with jq: this
+            # step's image (ose-cli) has no jq. The first version of this check piped
+            # to jq, got nothing back, and reported "0 of 3 worker nodes Ready" for 30
+            # minutes on two clusters that each had three (run ...-ocp422-b5npm,
+            # 2026-10-12). "Ready,SchedulingDisabled" counts; "NotReady" does not.
+            W=$(oc get nodes -l node-role.kubernetes.io/worker --no-headers 2>/dev/null \
+                 | grep -cE '^[^ ]+ +Ready( |,|$)')
             [[ "${W:-0}" -lt "$MIN_WORKERS" ]] && WHY="${W:-0} of $MIN_WORKERS worker nodes Ready"
           fi
 
