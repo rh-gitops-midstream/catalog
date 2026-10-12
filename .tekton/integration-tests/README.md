@@ -16,6 +16,7 @@ HyperShift clusters provisioned by OpenShift CI and exercise the operator instal
 │   │   └── catalog-gitops-operator-dast.yaml # DAST (ZAP) pipeline
 │   ├── pipelineruns/                       # PipelineRun wrappers with shared PVCs
 │   └── scenarios/                          # IntegrationTestScenario CRs (one file per channel)
+│       ├── paused/                         # scenarios not applied to the tenant; see its README
 │       ├── gitops-operator-tests.yaml      # latest channel (current dev)
 │       ├── gitops-sanity-tests.yaml        # latest channel sanity only
 │       ├── gitops-ui-tests.yaml            # latest channel UI only
@@ -136,7 +137,7 @@ All scripts ultimately call `run-e2e-tests.sh` (except UI), which:
 | Channel | Upstream branch | QA fork branch |
 |---------|----------------|----------------|
 | latest | master | `konflux-integration-latest` |
-| gitops-1.22 | v1.22 | none yet -- the 1.22 scenarios use upstream `v1.22` directly |
+| gitops-1.22 | v1.22 | `konflux-integration-1.22` |
 | gitops-1.21 | v1.21 | `konflux-integration-1.21` |
 | gitops-1.20 | v1.20 | `konflux-integration-1.20` |
 | gitops-1.19 | v1.19 | `konflux-integration-1.19` |
