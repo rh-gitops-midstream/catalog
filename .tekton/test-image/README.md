@@ -251,3 +251,52 @@ Test skip lists in `config/`:
 - `skip-ui-e2e.txt` - UI E2E tests to skip
 
 Format: One test name per line, regex supported, `#` for comments.
+
+### What skip-argocd.txt actually hides
+
+Measured on 2026-09-15 by running the Argo CD suite with and without it — same build
+(v1.22.0, FIPS, OCP 4.22), same pool:
+
+| | with the skiplist | without |
+|---|---|---|
+| passed | 327 | 417 |
+| failed | 17 | **86** |
+| skipped | 14 | 9 |
+
+Dropping it runs 154 more tests: 90 more pass and **69 more fail**. Those 69 are not 69
+unrelated bugs — they cluster tightly: 13 config-management-plugin (`TestCMP*`,
+`TestCustomTool*`), 11 ApplicationSet generators, 10 Helm repo and Helm OCI, 7 Hydrator,
+6 `TestNamespaced*`, 5 OCI image, 3 GPG-signed commits and tags.
+
+**14 fail either way**, and those are the real signal because the skiplist is not hiding
+them: the four `Hydrator` tests, the three OIDC `Logout*` tests,
+`TestAddHelmRepoInsecureSkipVerify`, `TestAddRemoveHelmRepo`, the
+`TestDiff_*CRDNoAnnotationTracking` pair, `TestAPIServiceLateRegistrationIsDiscovered`,
+`TestCanAddAppFromPrivateRepoWithCredCfg` and `TestGitSubmoduleHTTPSSupport`.
+
+Three tests failed *only* in the skiplist run and passed without it
+(`TestKnownTypesInCRDDiffing`, `TestMultiSyncCRDServerSideChangedBig`,
+`TestDiff_DuplicatedResourcesAndNamespaceNormalization`), so a single-run failure here is
+not trustworthy on its own.
+
+**`run-argocd-e2e-standalone.sh` does not currently load this file.** It supports
+`ARGOCD_E2E_SKIP` but nothing populates it, so that suite runs unfiltered — a 2026-10-11
+run reported 47 failures where the filtered historical figure is around 17. That is a
+deliberate "run without it for now", not an oversight, but read the number with it in
+mind. The older `run-argocd-e2e-tests.sh` and `-full.sh` do read it, from
+`/usr/local/config/skip-argocd.txt`.
+
+### Two traps in the Argo CD e2e environment
+
+**Test the tools the image ships, not upstream's pins.** The suite must exercise the
+`helm`, `kustomize` and `argocd` binaries bundled in the Argo CD image under test; a run
+on upstream's `hack/tool-versions.sh` versions answers a different question, and those
+pins move between releases (v2.14 wants helm 3.16, v3.0 wants 3.17, v3.5 wants helm 4).
+`run-argocd-e2e-standalone.sh` copies them out of the image and falls back to the pins
+only when the bundled binary will not execute, saying so when it does.
+
+**Binaries copied out of a container can arrive truncated, silently.** The copy exits 0
+and the damage only shows up as a segfault much later, read as a mysterious test failure.
+Verify with a checksum and retry — the standalone script extracts to `.part`, compares
+`md5sum`, and only then renames into place. Gate on the binary actually running rather
+than on `command -v`, because a truncated file is still on `PATH`.
