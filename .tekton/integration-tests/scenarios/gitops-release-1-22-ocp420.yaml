@@ -17,16 +17,21 @@ spec:
       values:
         - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
         - "run-argocd-e2e-standalone.sh"
+    # Upstream's v1.22 branch directly, not the QA fork the other channels use: the fork
+    # has no konflux-integration-1.22 yet. The 1.21 fork branch was the stand-in until
+    # 2026-10-12, and against a 1.22 build its expectations are simply stale -- seven of
+    # the eight parallel failures in gitops-catalog-release-1-22-ocp422-7cblr were the
+    # tests asserting 1.21 behaviour (redis TLS args, the trailing-dot service FQDN, the
+    # projected dex token and its volume mount), all of which upstream v1.22 expects.
+    #
+    # What this gives up is the fork's downstream patches. On 1.21 those are two commits:
+    # the agent default-image checks in 1-051/1-052 and the UI tour dialog, which no leg
+    # here runs. If 1.22 turns out to need the same, cut konflux-integration-1.22 from
+    # upstream/v1.22 as the README describes and point both values back at the fork.
     - name: TEST_REPO_URL
-      value: https://github.com/rh-gitops-release-qa/gitops-operator
-    # There is no konflux-integration-1.22 branch yet. This is 1.21's, used as a
-    # stand-in so the pipeline can be exercised against a 1.22 build -- it is the
-    # newest branch that exists; konflux-integration-latest is older still
-    # (2026-07-02 against 1.21's 2026-07-05) and does not track 1.22 despite the name.
-    # Repoint this the moment a 1.22 branch is cut: until then a failure here may be
-    # test drift rather than a product regression.
+      value: https://github.com/redhat-developer/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: konflux-integration-1.21
+      value: v1.22
     - name: OPENSHIFT_VERSION
       value: "4.20"
     - name: OPERATOR_CHANNEL
