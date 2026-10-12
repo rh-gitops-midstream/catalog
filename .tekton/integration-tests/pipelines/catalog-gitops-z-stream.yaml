@@ -271,6 +271,79 @@ spec:
           value: $(tasks.parse-metadata.results.component-container-image)
 
   finally:
+    # Releases any ClusterClaim this run still holds. Each leg releases its own claim in
+    # its release-cluster step, but a leg that is killed never gets there: the pipeline's
+    # tasks timeout, a cancelled run or an evicted pod stops the pod first. The claim's
+    # lifetime was then the only backstop. On 2026-10-12 the operator leg of
+    # gitops-catalog-release-1-22-ocp422-7cblr was cancelled at the 4h tasks timeout and
+    # its claim kept pool-3-dwnkj, with four hours of its 8h lifetime left, until it was
+    # deleted by hand.
+    #
+    # Finally tasks run however the legs ended, and have their own timeout. Claims are
+    # found by the hive-ops/pipelinerun label hive-suite-leg puts on them, so this can
+    # only touch claims this PipelineRun created, and it uses the same per-pool credential
+    # the legs use, whose Role allows deleting claims in that pool and nothing else.
+    #
+    # Ported from hive-ops' copy of this pipeline, which has had it since its PR #30.
+    - name: release-leftover-claims
+      params:
+        - name: hubSecretRef
+          value: $(params.HIVE_HUB_SECRET)
+        - name: poolNamespace
+          value: $(params.POOL_NAMESPACE)
+        - name: pipelineRunName
+          value: $(context.pipelineRun.name)
+      taskSpec:
+        params:
+          - name: hubSecretRef
+            type: string
+          - name: poolNamespace
+            type: string
+          - name: pipelineRunName
+            type: string
+        volumes:
+          - name: hub-kubeconfig
+            secret:
+              secretName: $(params.hubSecretRef)
+        steps:
+          - name: release
+            # The image hive-suite-leg's own claim and release steps use, so it is known
+            # to pull here. Not the pipeline's test image: this has to work when the
+            # build of that image is the thing that went wrong.
+            image: registry.redhat.io/openshift4/ose-cli:latest
+            volumeMounts:
+              - name: hub-kubeconfig
+                mountPath: /hub
+            env:
+              - name: POOL_NAMESPACE
+                value: $(params.poolNamespace)
+              - name: PIPELINE_RUN
+                value: $(params.pipelineRunName)
+            script: |
+              #!/bin/bash
+              set -uo pipefail
+              export KUBECONFIG=/hub/kubeconfig
+              if ! left=$(oc get clusterclaim -n "$POOL_NAMESPACE" \
+                            -l "hive-ops/pipelinerun=$PIPELINE_RUN" \
+                            -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); then
+                # Say so rather than report "nothing to release" on a failed lookup.
+                echo "::warning::could not list claims for $PIPELINE_RUN; any left behind will be reclaimed by their lifetime"
+                exit 0
+              fi
+              if [[ -z "$left" ]]; then
+                echo "no leftover claims for $PIPELINE_RUN — every leg released its own"
+                exit 0
+              fi
+              while IFS= read -r claim; do
+                [[ -z "$claim" ]] && continue
+                echo "releasing leftover claim $claim (its leg did not reach release-cluster)"
+                oc delete clusterclaim "$claim" -n "$POOL_NAMESPACE" --wait=false || \
+                  echo "::warning::could not delete $claim; its lifetime will reclaim the cluster"
+              done <<<"$left"
+              # Never fail the run from here: a release problem is not a test result, and
+              # the claim lifetime remains as the backstop.
+              exit 0
+
     # Deliberately thin. Each leg already published one row per suite to catalog-results
     # and uploaded its own logs, so there is nothing to collate here — this just says
     # where to look and how each leg came out.
