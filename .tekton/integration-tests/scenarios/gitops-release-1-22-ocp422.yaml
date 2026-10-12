@@ -6,6 +6,20 @@ metadata:
   namespace: rh-openshift-gitops-tenant
   labels:
     test.appstudio.openshift.io/optional: "true"
+  annotations:
+    # Without these the integration service applies its defaults -- tasks 4h, finally 2h,
+    # pipeline 6h -- and 4h is not enough for the operator leg. On 2026-10-12 both 1.22
+    # runs (…-ocp420-xd5vp, …-ocp422-shmrx) reached the rollouts suite about 3h40m in,
+    # with sanity, parallel and both sequential shards done, and were cut off there.
+    #
+    # 7h of tasks fits inside CLAIM_LIFETIME below: the claim is made about ten minutes
+    # into the run and lasts 8h, so the leg is stopped by this timeout, and releases its
+    # cluster, well before Hive would take the cluster away mid-test. finally only prints
+    # a summary and releases leftover claims, so it does not need the default 2h.
+    # pipeline must be at least tasks + finally.
+    test.appstudio.openshift.io/tasks_timeout: "7h"
+    test.appstudio.openshift.io/finally_timeout: "30m"
+    test.appstudio.openshift.io/pipeline_timeout: "7h30m"
 spec:
   # Bound to the 4.22 catalog, not 4.20: the Snapshot this fires on is the catalog built
   # for this OpenShift version, and it is that image the operator is installed from.
