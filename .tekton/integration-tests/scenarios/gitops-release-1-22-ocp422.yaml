@@ -28,11 +28,25 @@ spec:
     - description: execute on component build
       name: component_catalog-4-22
   params:
-    # Two legs, matching the 1.21 scenarios so channels stay comparable.
+    # Two legs, each on its own cluster, cut so that neither is the long pole:
+    #
+    #   leg A  sanity, parallel, then the Argo CD e2e suite     about 2h to 2h25m
+    #   leg B  both sequential shards, then rollouts            about 2h25m plus rollouts
+    #
+    # (timings from the 2026-10-12 runs; rollouts has never finished, so its share is
+    # unknown). The old cut put all five operator suites on one cluster, about 3h20m
+    # before rollouts, and gave the Argo CD suite a cluster to itself for 65-90 minutes.
+    #
+    # The order within a leg is not arbitrary. The sequential suite deletes every test
+    # namespace and resets the operator Subscription before each spec, and rollouts
+    # patches that Subscription and deletes Rollouts cluster-wide, so those must never
+    # share a cluster with the parallel suite at the same time -- and here they never
+    # share one at all. The Argo CD suite tests its own standalone Argo CD, so it can
+    # follow sanity and parallel on their cluster.
     - name: LEGS
       values:
-        - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
-        - "run-argocd-e2e-standalone.sh"
+        - "run-sanity-tests.sh,run-parallel-tests.sh,run-argocd-e2e-standalone.sh"
+        - "run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
     # The QA fork's 1.22 branch: upstream v1.22 plus one downstream patch. Upstream's
     # 1-051 and 1-052 expect the quay.io/argoprojlabs agent image whenever CI is set, and
     # hive-suite-leg sets CI=konflux, so against the productized operator 1-051 failed on
@@ -57,17 +71,21 @@ spec:
     # disturbing it. Add release-candidate back once the automation lands.
     - name: GATE_LABEL
       value: channel-1.22
+    # gcp-422: OpenShift 4.22, standard (not FIPS), on GCP -- the one configuration the
+    # release tier runs against while it is being made reliable. It keeps two clusters
+    # warm, exactly this scenario's two legs; a second overlapping run waits for the
+    # pool to install more rather than failing.
     - name: POOL_NAME
-      value: pool-3
+      value: gcp-422
     - name: POOL_NAMESPACE
-      value: hive-pool-3
+      value: hive-pool-gcp-422
     # The hub credential is per pool: each pool has its own konflux-pool-claimer
     # ServiceAccount, scoped to its own namespace, so one shared secret cannot claim
     # from more than one. Must match POOL_NAME above.
     - name: HIVE_HUB_SECRET
-      value: hive-hub-kubeconfig-pool-3
-    # Leg 1 runs about six hours of tests on top of a cluster claim and operator
-    # install, so 6h would cut it close. 8h is the pool ceiling.
+      value: hive-hub-kubeconfig-gcp-422
+    # The backstop if a leg dies without releasing its cluster. Far longer than either
+    # leg should need; 8h is the pool ceiling.
     - name: CLAIM_LIFETIME
       value: "8h"
   resolverRef:
