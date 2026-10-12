@@ -16,7 +16,7 @@ HyperShift clusters provisioned by OpenShift CI and exercise the operator instal
 │   │   └── catalog-gitops-operator-dast.yaml # DAST (ZAP) pipeline
 │   ├── pipelineruns/                       # PipelineRun wrappers with shared PVCs
 │   └── scenarios/                          # IntegrationTestScenario CRs (one file per channel)
-│       └── paused/                         # scenarios not applied to the tenant; see its README
+│       ├── paused/                         # scenarios not applied to the tenant; see its README
 │       ├── gitops-operator-tests.yaml      # latest channel (current dev)
 │       ├── gitops-sanity-tests.yaml        # latest channel sanity only
 │       ├── gitops-ui-tests.yaml            # latest channel UI only
