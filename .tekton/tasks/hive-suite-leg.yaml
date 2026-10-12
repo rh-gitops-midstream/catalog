@@ -48,6 +48,12 @@ spec:
         Backstop if this leg dies without releasing. Must exceed the longest suite in it —
         the sequential shards run to about 1h45m each.
       default: "6h"
+    - name: minWorkers
+      type: string
+      description: >-
+        Ready worker nodes the cluster must have before anything is installed on it. The
+        pools install three; "0" turns the check off.
+      default: "3"
     - name: openshiftVersion
       type: string
       default: "4.20"
@@ -127,6 +133,8 @@ spec:
           value: $(params.claimLifetime)
         - name: PIPELINE_RUN
           value: $(params.pipelineRunName)
+        - name: MIN_WORKERS
+          value: $(params.minWorkers)
       script: |
         #!/bin/bash
         set -uo pipefail
@@ -159,9 +167,15 @@ spec:
               namespace: ${POOL_NAMESPACE}
         EOF
 
+        # 75 minutes: longer than one install, on purpose. A claim that finds no ready
+        # cluster is not refused -- it stays Pending while the pool installs a cluster for
+        # it, and a full IPI install here is about 45 minutes. At the old 45m a claim that
+        # had to wait for an install timed out just as its cluster arrived. With a pool
+        # that keeps exactly one run's worth of clusters warm, this is what lets a second,
+        # overlapping run wait for the refill instead of failing.
         if ! oc wait clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" \
-               --for=condition=Pending=False --timeout=45m; then
-          echo "::error::claim not granted within 45m"
+               --for=condition=Pending=False --timeout=75m; then
+          echo "::error::claim not granted within 75m"
           oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" -o yaml || true
           echo "claim" >> /shared/failed
           exit 0
@@ -262,6 +276,23 @@ spec:
             WHY="OLM package server not serving packagemanifests"
           fi
 
+          # 4. Enough workers. The installer does not wait for every worker, and a
+          #    Machine whose instance never appeared is marked Failed and never retried,
+          #    so a pool cluster can be handed out a worker short with every operator
+          #    Available. On 2026-10-12 both release runs landed on two-worker clusters
+          #    and lost every spec that spreads three replicas (redis HA: 1-065, 1-069,
+          #    1-118, 1-071, 1-107, 1-020) to
+          #      0/5 nodes are available: 2 node(s) didn't match pod anti-affinity rules
+          #    which reads as a product failure and is not one. Waiting here gives a
+          #    replacement Machine time to join; if none does, fail the leg at claim
+          #    with the real reason instead of running hours of suites on a cluster that
+          #    cannot pass them.
+          if [[ -z "$WHY" && "$MIN_WORKERS" -gt 0 ]]; then
+            W=$(oc get nodes -l node-role.kubernetes.io/worker -o json 2>/dev/null \
+                 | jq '[.items[] | select([.status.conditions[]?|select(.type=="Ready" and .status=="True")]|length>0)] | length' 2>/dev/null)
+            [[ "${W:-0}" -lt "$MIN_WORKERS" ]] && WHY="${W:-0} of $MIN_WORKERS worker nodes Ready"
+          fi
+
           if [[ -z "$WHY" ]]; then READY=yes; break; fi
           echo "  [$i/120] not ready: ${WHY:0:160}"
           sleep 15
@@ -272,7 +303,7 @@ spec:
           echo "claim" >> /shared/failed
           exit 0
         fi
-        echo "cluster ready — operators settled and OLM package server serving"
+        echo "cluster ready — operators settled, OLM package server serving, workers present"
 
     # ------------------------------------------------------------- install -------
     - name: install-operator
