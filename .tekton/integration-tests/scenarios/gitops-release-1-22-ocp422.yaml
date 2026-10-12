@@ -19,21 +19,20 @@ spec:
       values:
         - "run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
         - "run-argocd-e2e-standalone.sh"
-    # Upstream's v1.22 branch directly, not the QA fork the other channels use: the fork
-    # has no konflux-integration-1.22 yet. The 1.21 fork branch was the stand-in until
-    # 2026-10-12, and against a 1.22 build its expectations are simply stale -- seven of
-    # the eight parallel failures in gitops-catalog-release-1-22-ocp422-7cblr were the
-    # tests asserting 1.21 behaviour (redis TLS args, the trailing-dot service FQDN, the
-    # projected dex token and its volume mount), all of which upstream v1.22 expects.
+    # The QA fork's 1.22 branch: upstream v1.22 plus one downstream patch. Upstream's
+    # 1-051 and 1-052 expect the quay.io/argoprojlabs agent image whenever CI is set, and
+    # hive-suite-leg sets CI=konflux, so against the productized operator 1-051 failed on
+    #   Expected registry.redhat.io/openshift-gitops-1/argocd-agent-rhel9@sha256:...
+    #   to equal quay.io/argoprojlabs/argocd-agent:v0.9.0
+    # (running upstream v1.22 directly, 2026-10-12). The fork branch drops CI from that
+    # one condition in both specs.
     #
-    # What this gives up is the fork's downstream patches. On 1.21 those are two commits:
-    # the agent default-image checks in 1-051/1-052 and the UI tour dialog, which no leg
-    # here runs. If 1.22 turns out to need the same, cut konflux-integration-1.22 from
-    # upstream/v1.22 as the README describes and point both values back at the fork.
+    # The branch is a snapshot. Upstream v1.22 keeps moving, so rebase it when a failure
+    # here looks like a stale expectation rather than a product change.
     - name: TEST_REPO_URL
-      value: https://github.com/redhat-developer/gitops-operator
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
-      value: v1.22
+      value: konflux-integration-1.22
     - name: OPENSHIFT_VERSION
       value: "4.22"
     - name: OPERATOR_CHANNEL
