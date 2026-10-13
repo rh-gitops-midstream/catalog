@@ -16,8 +16,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib/wait-for-resources.sh"
 RESULTS_DIR="${RESULTS_DIR:-/tmp/task-logs}"
 mkdir -p "${RESULTS_DIR}"
 
-exit_code=0
-failed=0
+failed_phases=()
 
 OPERATOR_NAMESPACE=$(oc get deployment openshift-gitops-operator-controller-manager \
   -n openshift-gitops-operator -o jsonpath='{.metadata.namespace}' --ignore-not-found)
@@ -66,6 +65,33 @@ disable_rollouts_config() {
   wait_for_operator_pods "$OPERATOR_NAMESPACE"
 }
 
+# Runs one test phase, copying its output to a log file, and records the phase as failed
+# if the command fails. The status has to come from PIPESTATUS: the status of
+# `cmd | tee` is tee's, which is always 0, and that is how this script reported
+# "All rollouts tests passed" on 2026-10-13 (gitops-catalog-release-1-22-ocp422-kzpcc)
+# when every one of its four phases had failed. pipefail is not set script-wide because
+# the helpers above pipe oc into `grep -q`, which can SIGPIPE oc and fail the check.
+run_phase() {
+  local name="$1" log="$2" rc
+  shift 2
+  "$@" 2>&1 | tee "$log"
+  rc=${PIPESTATUS[0]}
+  if [[ $rc != 0 ]]; then
+    echo "ERROR: ${name} failed (exit ${rc})"
+    failed_phases+=("$name")
+  fi
+}
+
+# Removes -race from an upstream `go test` line. The test image has no C compiler, so
+# cgo is off, and with -race every phase that uses it stops before compiling:
+#   go: -race requires cgo; enable cgo by setting CGO_ENABLED=1
+# The race detector would only watch the test binary -- the operator and the Rollouts
+# controller under test run in the cluster -- so nothing about the product is lost.
+# If upstream moves the flag, the phase fails with the error above rather than silently.
+drop_race_flag() {
+  sed -i 's/ -race / /' "$1"
+}
+
 cleanup() {
   disable_rollouts_config
   oc delete rollouts -A --all 2>/dev/null || true
@@ -109,6 +135,8 @@ else
   echo "rollouts-plugin commit (from rollouts-manager go.mod): ${TARGET_PLUGIN_COMMIT}"
 fi
 
+drop_race_flag hack/run-rollouts-manager-e2e-tests.sh
+
 export GOCACHE="${ROLLOUTS_TMP_DIR}/go-cache"
 export GOMODCACHE="${ROLLOUTS_TMP_DIR}/go-mod"
 mkdir -p "$GOCACHE" "$GOMODCACHE"
@@ -120,22 +148,16 @@ go_cache_pull "rollouts-${TARGET_ROLLOUT_MANAGER_COMMIT}"
 enable_rollouts_cluster_scoped
 
 echo "=== Running cluster-scoped E2E tests ==="
-DISABLE_METRICS=true make test-e2e-cluster-scoped 2>&1 | tee "${RESULTS_DIR}/rollout-manager-cluster-scoped.log" || exit_code=$?
-if [[ $exit_code != 0 ]]; then
-  failed=$exit_code
-  exit_code=0
-fi
+run_phase "argo-rollouts-manager cluster-scoped" "${RESULTS_DIR}/rollout-manager-cluster-scoped.log" \
+  env DISABLE_METRICS=true make test-e2e-cluster-scoped
 
 kubectl delete rolloutmanagers --all -n test-rom-ns-1 || true
 
 enable_rollouts_namespace_scoped
 
 echo "=== Running namespace-scoped E2E tests ==="
-DISABLE_METRICS=true make test-e2e-namespace-scoped 2>&1 | tee "${RESULTS_DIR}/rollout-manager-namespace-scoped.log" || exit_code=$?
-if [[ $exit_code != 0 ]]; then
-  failed=$exit_code
-  exit_code=0
-fi
+run_phase "argo-rollouts-manager namespace-scoped" "${RESULTS_DIR}/rollout-manager-namespace-scoped.log" \
+  env DISABLE_METRICS=true make test-e2e-namespace-scoped
 
 kubectl delete rolloutmanagers --all -n test-rom-ns-1 || true
 
@@ -146,11 +168,8 @@ enable_rollouts_cluster_scoped
 cd "$ROLLOUTS_TMP_DIR/argo-rollouts-manager"
 
 echo "=== Running upstream argo-rollouts E2E tests ==="
-SKIP_RUN_STEP=true hack/run-upstream-argo-rollouts-e2e-tests.sh 2>&1 | tee "${RESULTS_DIR}/argo-rollouts-upstream.log" || exit_code=$?
-if [[ $exit_code != 0 ]]; then
-  failed=$exit_code
-  exit_code=0
-fi
+run_phase "upstream argo-rollouts" "${RESULTS_DIR}/argo-rollouts-upstream.log" \
+  env SKIP_RUN_STEP=true hack/run-upstream-argo-rollouts-e2e-tests.sh
 
 # --- 3. rollouts-plugin-trafficrouter-openshift E2E tests ---
 
@@ -175,17 +194,18 @@ git clone https://github.com/argoproj-labs/rollouts-plugin-trafficrouter-openshi
 cd "$ROLLOUTS_TMP_DIR/rollouts-plugin-trafficrouter-openshift"
 git checkout "$TARGET_PLUGIN_COMMIT"
 
-make test-e2e 2>&1 | tee "${RESULTS_DIR}/rollouts-plugin.log" || exit_code=$?
-if [[ $exit_code != 0 ]]; then
-  failed=$exit_code
-fi
+drop_race_flag Makefile
+
+run_phase "rollouts-plugin-trafficrouter-openshift" "${RESULTS_DIR}/rollouts-plugin.log" \
+  make test-e2e
 
 # --- Done ---
 
 go_cache_push "rollouts-${TARGET_ROLLOUT_MANAGER_COMMIT}"
 
-if [[ $failed != 0 ]]; then
-  echo "ERROR: One or more rollouts test suites failed"
+if [[ ${#failed_phases[@]} != 0 ]]; then
+  echo "ERROR: ${#failed_phases[@]} of 4 rollouts test phases failed:"
+  printf '  - %s\n' "${failed_phases[@]}"
   exit 1
 fi
 
