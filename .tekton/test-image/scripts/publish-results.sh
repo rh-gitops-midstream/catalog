@@ -40,7 +40,11 @@ record = {
     "logsArtifact": os.environ.get("LOGS_ARTIFACT", ""),
 }
 
-test_results = os.path.join(os.environ.get("SHARED_DIR", "/shared"), "test-results.json")
+# TEST_RESULTS_FILE names the counts for the one suite this row is about. A pipeline that
+# runs several suites in one task sets it per row; without it every row would read the
+# same shared file and repeat the numbers of the last suite.
+test_results = os.environ.get("TEST_RESULTS_FILE") or \
+    os.path.join(os.environ.get("SHARED_DIR", "/shared"), "test-results.json")
 if os.path.isfile(test_results):
     with open(test_results) as f:
         tr = json.load(f)
