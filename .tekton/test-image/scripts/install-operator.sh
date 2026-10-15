@@ -41,6 +41,9 @@ echo "Target namespace: ${NAMESPACE}"
 if [[ -f "/quay-pull-credentials/.dockerconfigjson" ]]; then
   # 1a. Patch global pull-secret (may take time to propagate on HyperShift)
   echo "Injecting quay pull credentials into cluster global pull-secret..."
+  # Tracing off while the pull secret is in a variable: `set -x` would print every
+  # registry credential on the cluster into the log, and the log is uploaded to quay.
+  { set +x; } 2>/dev/null
   EXISTING=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d)
   MERGED=$(echo "$EXISTING" | python3 -c "
 import json, sys
@@ -52,6 +55,8 @@ print(json.dumps(existing))
 ")
   oc set data secret/pull-secret -n openshift-config --from-literal=.dockerconfigjson="$MERGED"
   echo "Injected $(echo "$MERGED" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['auths']))" 2>/dev/null) registry credentials into cluster pull-secret"
+  unset EXISTING MERGED
+  set -x
 
   # 1b. Create additional-pull-secret in kube-system (HyperShift-native mechanism).
   # The Hosted Cluster Config Operator detects this secret and deploys a DaemonSet
@@ -380,6 +385,8 @@ with open('/quay-pull-credentials/.dockerconfigjson') as f:
 for k in sorted(d.get('auths', {})):
     print(k)
 " 2>/dev/null)
+  # Tracing off again: the cluster pull secret is in a variable until the loop ends.
+  { set +x; } 2>/dev/null
   CLUSTER_SECRET=$(oc get secret pull-secret -n openshift-config -o jsonpath='{.data.\.dockerconfigjson}' 2>/dev/null | base64 -d)
   MISSING=0
   while IFS= read -r repo; do
@@ -390,6 +397,8 @@ for k in sorted(d.get('auths', {})):
       MISSING=$((MISSING + 1))
     fi
   done <<< "$EXPECTED_REPOS"
+  unset CLUSTER_SECRET
+  set -x
   if [[ $MISSING -gt 0 ]]; then
     echo "WARNING: $MISSING repo(s) missing from cluster pull-secret"
   else

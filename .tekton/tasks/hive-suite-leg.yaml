@@ -414,6 +414,9 @@ spec:
             # Distinct log name per suite so artifacts do not collide within a leg.
             export TASK_LOG_NAME="${s%.sh}"
             export TEST_SCRIPT="$s"
+            # Suites in a leg share /shared and /tmp/task-logs. Remove the previous
+            # suite's result files, or this suite's row would be published with them.
+            rm -f /shared/test-results.json /tmp/task-logs/junit-results.xml
             if /usr/local/bin/run-and-save-logs.sh /usr/local/bin/"$s"; then
               echo "$s PASSED"
               echo "$s pass" >> /shared/suite-results
@@ -422,6 +425,17 @@ spec:
               echo "::warning::$s FAILED (exit $rc)"
               echo "$s fail" >> /shared/suite-results
               echo "suite:$s" >> /shared/failed
+            fi
+            # Keep this suite's counts under its own name for the publish step. The
+            # Argo CD suite writes them itself; the ginkgo suites leave a JUnit report.
+            # A suite that leaves neither is published with a status and no counts.
+            mkdir -p /shared/suite-counts
+            counts="/shared/suite-counts/${s%.sh}.json"
+            if [[ -s /shared/test-results.json ]]; then
+              mv /shared/test-results.json "$counts"
+            elif [[ -s /tmp/task-logs/junit-results.xml ]]; then
+              python3 /usr/local/bin/parse-test-results.py \
+                /tmp/task-logs/junit-results.xml "$counts" >/dev/null || rm -f "$counts"
             fi
           done
           # Always zero: the verdict step decides the leg, so that publish and release
@@ -481,8 +495,10 @@ spec:
             else
               export AGGREGATE_STATUS="Failed"
             fi
-            # Each suite uploaded its own log artifact under this tag.
-            export LOGS_ARTIFACT="${QUAY_REPO}:${PIPELINE_RUN_NAME}-task-${script%.sh}-logs"
+            # Each suite uploaded its own log artifact under this tag; it must match
+            # IMAGE_TAG in run-and-save-logs.sh.
+            export LOGS_ARTIFACT="${QUAY_REPO}:${PIPELINE_RUN_NAME}-task-${script%.sh}"
+            export TEST_RESULTS_FILE="/shared/suite-counts/${script%.sh}.json"
             echo "publishing $script -> $AGGREGATE_STATUS"
             /usr/local/bin/publish-results.sh || \
               echo "::warning::could not publish result for $script"
