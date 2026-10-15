@@ -271,21 +271,27 @@ spec:
           value: $(tasks.parse-metadata.results.component-container-image)
 
   finally:
-    # Releases any ClusterClaim this run still holds. Each leg releases its own claim in
-    # its release-cluster step, but a leg that is killed never gets there: the pipeline's
-    # tasks timeout, a cancelled run or an evicted pod stops the pod first. The claim's
-    # lifetime was then the only backstop. On 2026-10-12 the operator leg of
-    # gitops-catalog-release-1-22-ocp422-7cblr was cancelled at the 4h tasks timeout and
-    # its claim kept pool-3-dwnkj, with four hours of its 8h lifetime left, until it was
-    # deleted by hand.
+    # Finally tasks run however the legs ended, and have their own timeout.
     #
-    # Finally tasks run however the legs ended, and have their own timeout. Claims are
-    # found by the hive-ops/pipelinerun label hive-suite-leg puts on them, so this can
-    # only touch claims this PipelineRun created, and it uses the same per-pool credential
-    # the legs use, whose Role allows deleting claims in that pool and nothing else.
+    # Both are task files, not inline taskSpecs. Konflux resolves this pipeline at the
+    # Snapshot's own commit -- a rerun of an older Snapshot gets that commit's copy of this
+    # file -- but resolves tasks at CATALOG_TASK_REVISION. On 2026-10-15 a rerun of a
+    # 2026-10-12 Snapshot ran with neither of these tasks as they stood on main: no Slack
+    # step, and no leftover-claim release, so a leg killed mid-suite kept its cluster. What
+    # these do now lives in the task files; this file only wires up their params.
     #
-    # Ported from hive-ops' copy of this pipeline, which has had it since its PR #30.
+    # Releases any ClusterClaim this run still holds, for legs that never reached their
+    # own release-cluster step. See the task file for why and how it is scoped.
     - name: release-leftover-claims
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/release-leftover-claims.yaml
       params:
         - name: hubSecretRef
           value: $(params.HIVE_HUB_SECRET)
@@ -293,61 +299,18 @@ spec:
           value: $(params.POOL_NAMESPACE)
         - name: pipelineRunName
           value: $(context.pipelineRun.name)
-      taskSpec:
-        params:
-          - name: hubSecretRef
-            type: string
-          - name: poolNamespace
-            type: string
-          - name: pipelineRunName
-            type: string
-        volumes:
-          - name: hub-kubeconfig
-            secret:
-              secretName: $(params.hubSecretRef)
-        steps:
-          - name: release
-            # The image hive-suite-leg's own claim and release steps use, so it is known
-            # to pull here. Not the pipeline's test image: this has to work when the
-            # build of that image is the thing that went wrong.
-            image: registry.redhat.io/openshift4/ose-cli:latest
-            volumeMounts:
-              - name: hub-kubeconfig
-                mountPath: /hub
-            env:
-              - name: POOL_NAMESPACE
-                value: $(params.poolNamespace)
-              - name: PIPELINE_RUN
-                value: $(params.pipelineRunName)
-            script: |
-              #!/bin/bash
-              set -uo pipefail
-              export KUBECONFIG=/hub/kubeconfig
-              if ! left=$(oc get clusterclaim -n "$POOL_NAMESPACE" \
-                            -l "hive-ops/pipelinerun=$PIPELINE_RUN" \
-                            -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); then
-                # Say so rather than report "nothing to release" on a failed lookup.
-                echo "::warning::could not list claims for $PIPELINE_RUN; any left behind will be reclaimed by their lifetime"
-                exit 0
-              fi
-              if [[ -z "$left" ]]; then
-                echo "no leftover claims for $PIPELINE_RUN — every leg released its own"
-                exit 0
-              fi
-              while IFS= read -r claim; do
-                [[ -z "$claim" ]] && continue
-                echo "releasing leftover claim $claim (its leg did not reach release-cluster)"
-                oc delete clusterclaim "$claim" -n "$POOL_NAMESPACE" --wait=false || \
-                  echo "::warning::could not delete $claim; its lifetime will reclaim the cluster"
-              done <<<"$left"
-              # Never fail the run from here: a release problem is not a test result, and
-              # the claim lifetime remains as the backstop.
-              exit 0
 
-    # Deliberately thin. Each leg already published one row per suite to catalog-results
-    # and uploaded its own logs, so there is nothing to collate here — this just says
-    # where to look and how each leg came out.
+    # Prints how each leg came out and posts the same to Slack.
     - name: summary
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: $(params.CATALOG_TASK_URL)
+          - name: revision
+            value: $(params.CATALOG_TASK_REVISION)
+          - name: pathInRepo
+            value: .tekton/tasks/z-stream-summary.yaml
       params:
         - name: verdicts
           value: $(tasks.run-legs.results.verdict[*])
@@ -367,130 +330,3 @@ spec:
           value: $(params.SNAPSHOT)
         - name: gitRevision
           value: $(tasks.parse-metadata.results.source-git-revision)
-      taskSpec:
-        params:
-          - name: verdicts
-            type: array
-          - name: clusters
-            type: array
-          - name: pipelineRunName
-            type: string
-          - name: aggregateStatus
-            type: string
-          - name: suites
-            type: array
-          - name: openshiftVersion
-            type: string
-          - name: operatorChannel
-            type: string
-          - name: snapshot
-            type: string
-          - name: gitRevision
-            type: string
-        steps:
-          - name: report
-            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
-            args: ["$(params.verdicts[*])"]
-            script: |
-              #!/bin/bash
-              # Plain stdout. This is a Tekton task, not a GitHub Actions step — there is
-              # no $GITHUB_STEP_SUMMARY here, and referencing one under `set -u` is an
-              # unbound variable that fails the step.
-              set -uo pipefail
-              echo "=========================================================="
-              echo " z-stream run $(params.pipelineRunName)"
-              echo " overall: $(params.aggregateStatus)"
-              echo "=========================================================="
-              i=0
-              for v in "$@"; do
-                echo "  leg $i: $v"
-                i=$((i+1))
-              done
-              echo
-              echo "Per-suite results, including which specs failed, are in"
-              echo "rh-gitops-release-qa/catalog-results — one row per suite, tagged"
-              echo "with this run name."
-
-          # Posts the same summary to Slack, one line per suite. Only runs that reach the
-          # legs get here: a run the gate skipped has no leg results, so this task is
-          # skipped with it and the channel only hears about real test runs.
-          #
-          # Never fails the run: a notification problem is not a test result.
-          - name: notify-slack
-            image: registry.access.redhat.com/ubi9/ubi-minimal:latest
-            onError: continue
-            env:
-              - name: SLACK_WEBHOOK_URL
-                valueFrom:
-                  secretKeyRef:
-                    name: slack-gitops-test-notification-url
-                    key: hook-url
-                    # Without the secret the run should still complete, just quietly.
-                    optional: true
-              - name: PIPELINE_RUN
-                value: $(params.pipelineRunName)
-              - name: STATUS
-                value: $(params.aggregateStatus)
-              - name: OPENSHIFT_VERSION
-                value: $(params.openshiftVersion)
-              - name: OPERATOR_CHANNEL
-                value: $(params.operatorChannel)
-              - name: SNAPSHOT
-                value: $(params.snapshot)
-              - name: GIT_REVISION
-                value: $(params.gitRevision)
-            # Three arrays, one index per leg, separated by "--".
-            args: ["$(params.verdicts[*])", "--", "$(params.clusters[*])", "--", "$(params.suites[*])"]
-            script: |
-              #!/bin/bash
-              set -uo pipefail
-              if [[ -z "${SLACK_WEBHOOK_URL:-}" ]]; then
-                echo "no Slack webhook configured; not notifying"
-                exit 0
-              fi
-
-              verdicts=(); clusters=(); suites=(); part=0
-              for a in "$@"; do
-                if [[ "$a" == "--" ]]; then part=$((part+1)); continue; fi
-                case $part in
-                  0) verdicts+=("$a") ;;
-                  1) clusters+=("$a") ;;
-                  *) suites+=("$a") ;;
-                esac
-              done
-
-              # The Snapshot carries its Application, which is part of the UI link.
-              app=$(grep -oE '"application" *: *"[^"]+"' <<<"$SNAPSHOT" | head -1 | sed -E 's/.*"([^"]+)"$/\1/')
-              ui="https://konflux-ui.apps.stone-prd-rh01.pg1f.p1.openshiftapps.com/ns/rh-openshift-gitops-tenant"
-              [[ -n "$app" ]] && ui="$ui/applications/$app/pipelineruns/$PIPELINE_RUN"
-
-              if [[ "$STATUS" == "Succeeded" || "$STATUS" == "Completed" ]]; then
-                head=":white_check_mark: *GitOps release tests passed*"
-              else
-                head=":x: *GitOps release tests failed*"
-              fi
-
-              msg="$head: \`$OPERATOR_CHANNEL\` on OpenShift $OPENSHIFT_VERSION"
-              msg+=$'\n'"Run <$ui|$PIPELINE_RUN>, catalog commit \`${GIT_REVISION:0:7}\`"
-              for i in "${!verdicts[@]}"; do
-                msg+=$'\n\n'"*Leg $((i+1))* (${clusters[$i]:-unknown}): ${verdicts[$i]}"
-                lines="${suites[$i]:-}"
-                [[ -z "$lines" ]] && msg+=$'\n'"    no suites ran (the claim or the install failed)"
-                while read -r script outcome passed failed; do
-                  [[ -z "$script" ]] && continue
-                  icon=":white_check_mark:"; [[ "$outcome" == "pass" ]] || icon=":x:"
-                  line="$icon ${script%.sh}"
-                  [[ -n "${passed:-}" ]] && line+=" — $passed passed, $failed failed"
-                  msg+=$'\n'"$line"
-                done <<<"$lines"
-              done
-              msg+=$'\n\n'"Per-suite rows and log links: rh-gitops-release-qa/catalog-results"
-
-              # JSON-escape by hand; this image has no jq or python.
-              esc=$(printf '%s' "$msg" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/\t/\\t/g' | sed -e ':a;N;$!ba;s/\n/\\n/g')
-              if curl -fsS -m 20 -X POST -H 'Content-type: application/json' \
-                   --data "{\"text\":\"$esc\"}" "$SLACK_WEBHOOK_URL" >/dev/null; then
-                echo "posted the summary to Slack"
-              else
-                echo "::warning::could not post the summary to Slack"
-              fi
