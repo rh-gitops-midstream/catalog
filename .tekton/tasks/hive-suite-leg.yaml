@@ -96,6 +96,10 @@ spec:
       description: '"pass" or "fail" for this leg.'
     - name: clusterName
       description: Cluster this leg ran on, for correlating with the hub.
+    - name: suites
+      description: >-
+        One line per suite that ran: script, pass or fail, and the passed and failed
+        counts when the suite reported them. For the run summary.
   volumes:
     - name: shared
       emptyDir: {}
@@ -550,6 +554,22 @@ spec:
 
         echo "--- suites ---"
         cat /shared/suite-results 2>/dev/null || echo "(none ran)"
+
+        # The same lines with counts added, for the Slack summary. Plain grep, not jq:
+        # this image has neither jq nor python, and both counts files (the Argo CD
+        # suite's and parse-test-results.py's) write "passed" and "failed" as numbers.
+        : > "$(results.suites.path)"
+        while read -r script outcome; do
+          [[ -z "$script" ]] && continue
+          line="$script $outcome"
+          counts="/shared/suite-counts/${script%.sh}.json"
+          if [[ -s "$counts" ]]; then
+            passed=$(grep -oE '"passed": *[0-9]+' "$counts" | grep -oE '[0-9]+$')
+            failed=$(grep -oE '"failed": *[0-9]+' "$counts" | grep -oE '[0-9]+$')
+            [[ -n "$passed" && -n "$failed" ]] && line="$line $passed $failed"
+          fi
+          echo "$line" >> "$(results.suites.path)"
+        done < <(cat /shared/suite-results 2>/dev/null)
 
         if [[ -s /shared/failed ]]; then
           printf 'fail' > "$(results.verdict.path)"
