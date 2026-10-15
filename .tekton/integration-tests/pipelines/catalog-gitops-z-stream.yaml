@@ -152,6 +152,10 @@ spec:
                 value: $(params.source-git-url)
               - name: source-git-revision
                 value: $(params.source-git-revision)
+              # A release run claims a cluster per leg; it must never start without a
+              # labelled PR, not even for a push GitHub cannot match to one.
+              - name: require-pr
+                value: "true"
           - name: propagate-result
             image: registry.access.redhat.com/ubi9/ubi-minimal:latest
             script: |
