@@ -54,13 +54,19 @@ spec:
         #!/bin/bash
         set -uo pipefail
         export KUBECONFIG=/hub/kubeconfig
-        if ! left=$(oc get clusterclaim -n "$POOL_NAMESPACE" \
+        # A claim its leg already released stays listed, with a deletionTimestamp, until
+        # Hive finishes deprovisioning the cluster; that is not a leftover. (oc's JSONPath
+        # has no negated filter, hence the second column, read back in plain bash.)
+        if ! claims=$(oc get clusterclaim -n "$POOL_NAMESPACE" \
                       -l "hive-ops/pipelinerun=$PIPELINE_RUN" \
-                      -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'); then
+                      -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.metadata.deletionTimestamp}{"\n"}{end}'); then
           # Say so rather than report "nothing to release" on a failed lookup.
           echo "::warning::could not list claims for $PIPELINE_RUN; any left behind will be reclaimed by their lifetime"
           exit 0
         fi
+        left=$(while read -r name deleting; do
+                 [[ -n "$name" && -z "${deleting:-}" ]] && echo "$name"
+               done <<<"$claims")
         if [[ -z "$left" ]]; then
           echo "no leftover claims for $PIPELINE_RUN — every leg released its own"
           exit 0

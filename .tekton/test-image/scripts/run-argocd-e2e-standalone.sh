@@ -150,6 +150,12 @@ cmd_setup() {
   deploy_runner
   say "Compiling the suite -- 10-15 minutes, once per pod"
   run_in_pod '^$'
+  # follow() returns once the pod is done, however it ended. A compile that failed has to
+  # stop setup here: carrying on to "Ready" and then `ci`'s full run only buries the cause
+  # under a second, misleading error.
+  local rc
+  rc=$(oc exec -n "$NS" "$POD" -- cat "$EXITF" 2>/dev/null || echo "")
+  [[ "$rc" == 0 ]] || die "compiling the suite failed (exit ${rc:-unknown}); the log above says why"
   say "Ready.  $0 run TestFoo"
   if is_openshift; then
     oc get route argocd-server -n "$NS" -o jsonpath='UI: https://{.spec.host}  admin/password{"\n"}' 2>/dev/null || true
@@ -619,11 +625,22 @@ git config --global user.name e2e
 if [[ ! -f $SRC/e2e.test ]]; then
   [[ -n "$BRANCH" ]] || { echo "ERROR: nothing compiled in this pod and no Argo CD version known -- run setup, or pass --argocd-version"; exit 1; }
   echo "$BRANCH" > $W/branch
+  # No e2e.test means no finished compile, so whatever checkout is here is from one that
+  # died part way. Cloning over it fails ("destination path already exists"), and that is
+  # how a single failed module download used to turn into a suite that never ran.
+  rm -rf "$SRC"
   git clone --branch "$BRANCH" --depth 1 https://github.com/argoproj/argo-cd.git "$SRC" || exit 1
   cd "$SRC" || exit 1
   V=$(cat VERSION 2>/dev/null || echo "$BRANCH"); V=${V#v}
   MOD=$(awk 'NR==1{print $2}' go.mod)
-  go mod download || exit 1
+  # proxy.golang.org drops the odd stream ("stream error: ... INTERNAL_ERROR"); what was
+  # already fetched stays in GOMODCACHE, so a retry only fetches the rest.
+  for try in 1 2 3; do
+    go mod download && break
+    [[ $try -lt 3 ]] || { echo "ERROR: go mod download failed 3 times"; exit 1; }
+    echo "go mod download failed; retrying in $((try * 30))s"
+    sleep $((try * 30))
+  done
   echo "Compiling e2e.test (10-15 min)..."
   ( while sleep 60; do echo "  still compiling..."; done ) & HB=$!
   go test -c -ldflags "-X ${MOD}/common.version=${V}" -o e2e.test ./test/e2e; rc=$?

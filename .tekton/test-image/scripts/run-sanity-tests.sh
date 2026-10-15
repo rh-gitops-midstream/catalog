@@ -139,6 +139,13 @@ if [[ -z "$CSV_NAME" ]]; then
 else
   echo "Installed CSV: ${CSV_NAME}"
 
+  # Waited for, not read once. OLM can briefly take a Succeeded CSV back through
+  # InstallReady while it re-applies the install, and a one-shot read then fails sanity on
+  # an operator that is fine: gitops-catalog-release-1-22-ocp422-bbv6n (2026-10-15) saw
+  # InstallReady minutes after install-operator had waited for Succeeded. A CSV that does
+  # not get back to Succeeded within the wait still fails.
+  oc wait --for=jsonpath='{.status.phase}'=Succeeded csv/"${CSV_NAME}" -n "${NAMESPACE}" \
+    --timeout=10m >/dev/null 2>&1 || true
   CSV_PHASE=$(oc get csv "${CSV_NAME}" -n "${NAMESPACE}" -o jsonpath='{.status.phase}' 2>/dev/null || true)
   if [[ "$CSV_PHASE" == "Succeeded" ]]; then
     pass "CSV phase is Succeeded"
