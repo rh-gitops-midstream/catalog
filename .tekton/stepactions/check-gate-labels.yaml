@@ -12,8 +12,16 @@ spec:
     "rc-sanity-check,channel-1.19"). All listed labels must be present
     for the step to emit proceed=true.
 
-    Push events (no PR found for the commit) always proceed regardless
-    of labels. An empty GATE_LABELS value also always proceeds.
+    Push events (GitHub answers that no PR contains the commit) proceed
+    regardless of labels, unless require-pr is "true". An empty GATE_LABELS
+    value always proceeds.
+
+    A GitHub API call that fails (rate limit, outage) after retries skips
+    the tests: "could not tell" is not "no PR". Anonymous calls share a
+    60/hour limit per egress IP across the whole Konflux cluster, so this
+    happens. On 2026-10-15 the commit lookup for #318's merge returned
+    nothing for one gate and #318 for another a few seconds apart, and the
+    one that got nothing started a full release run.
   params:
     - name: gate-labels
       type: string
@@ -34,6 +42,13 @@ spec:
         per IP) in shared Konflux environments. Pass an empty string to
         fall back to unauthenticated requests.
       default: ""
+    - name: require-pr
+      type: string
+      description: >
+        "true" to skip when no PR is found for the commit, instead of treating
+        it as a push event. For gates that must only ever run on a labelled PR,
+        such as the release tier, which claims a cluster per leg.
+      default: "false"
   results:
     - name: proceed
       description: "true if tests should run, false to skip"
@@ -47,6 +62,8 @@ spec:
       value: $(params.source-git-revision)
     - name: GITHUB_TOKEN
       value: $(params.github-token)
+    - name: REQUIRE_PR
+      value: $(params.require-pr)
   script: |
     #!/bin/sh
     set -eu
@@ -73,33 +90,55 @@ spec:
       REPO_SLUG=$(echo "${SOURCE_GIT_URL}" | sed 's|.*github.com/||' | sed 's|\.git$||')
     fi
 
+    # GET a GitHub API path into $BODY. Retries, and returns non-zero if it never
+    # got a 200 -- the caller must not read a failed call as an empty answer.
+    gh_get() {
+      for attempt in 1 2 3 4; do
+        if [ -n "${GITHUB_AUTH_HEADER}" ]; then
+          RESP=$(curl -sS -m 30 -w '\n%{http_code}' -H "${GITHUB_AUTH_HEADER}" "https://api.github.com/repos/${REPO_SLUG}/$1" 2>&1 || true)
+        else
+          RESP=$(curl -sS -m 30 -w '\n%{http_code}' "https://api.github.com/repos/${REPO_SLUG}/$1" 2>&1 || true)
+        fi
+        CODE=$(printf '%s' "$RESP" | tail -n1)
+        BODY=$(printf '%s' "$RESP" | sed '$d')
+        [ "$CODE" = "200" ] && return 0
+        echo "GitHub API $1: HTTP ${CODE:-none} (attempt $attempt)"
+        sleep $((attempt * 15))
+      done
+      return 1
+    }
+
+    skip() {
+      echo "$1, skipping tests"
+      echo -n false > $(step.results.proceed.path)
+      echo "Result: proceed=false"
+      exit 0
+    }
+
     PR_NUMBER=""
     if [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
       echo "Looking up PRs for commit ${SOURCE_GIT_REVISION}..."
-      if [ -n "${GITHUB_AUTH_HEADER}" ]; then
-        COMMIT_PRS=$(curl -sf -H "${GITHUB_AUTH_HEADER}" "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
-      else
-        COMMIT_PRS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/commits/${SOURCE_GIT_REVISION}/pulls" || true)
-      fi
-      if [ -n "${COMMIT_PRS}" ] && echo "${COMMIT_PRS}" | grep -q '"number"'; then
-        PR_NUMBER=$(echo "${COMMIT_PRS}" | grep -o '"number": *[0-9]*' | head -1 | grep -o '[0-9]*' || true)
-      fi
+      # Right after a merge GitHub can briefly answer [] for the merge commit, so
+      # ask again before concluding there is no PR.
+      for lookup in 1 2 3; do
+        gh_get "commits/${SOURCE_GIT_REVISION}/pulls" || skip "Could not look up PRs for the commit"
+        PR_NUMBER=$(echo "${BODY}" | grep -o '"number": *[0-9]*' | head -1 | grep -o '[0-9]*' || true)
+        [ -n "${PR_NUMBER}" ] && break
+        [ "${REQUIRE_PR}" = "true" ] || break
+        sleep 20
+      done
     fi
 
     if [ -z "${PR_NUMBER}" ]; then
+      [ "${REQUIRE_PR}" = "true" ] && skip "No PR found for this commit and require-pr is set"
       echo "No PR found for this commit, proceeding (push event)"
       echo -n "${PROCEED}" > $(step.results.proceed.path)
       exit 0
     fi
 
     echo "Found PR #${PR_NUMBER}, checking labels..."
-    if [ -n "${GITHUB_AUTH_HEADER}" ]; then
-      LABELS=$(curl -sf -H "${GITHUB_AUTH_HEADER}" "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
-        | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
-    else
-      LABELS=$(curl -sf "https://api.github.com/repos/${REPO_SLUG}/pulls/${PR_NUMBER}" \
-        | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
-    fi
+    gh_get "pulls/${PR_NUMBER}" || skip "Could not read the labels of PR #${PR_NUMBER}"
+    LABELS=$(echo "${BODY}" | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
     echo "PR labels: ${LABELS:-none}"
 
     # All required labels must be present.
