@@ -1,0 +1,149 @@
+---
+# The end-of-run summary of catalog-gitops-z-stream: prints how each leg came out and
+# posts the same to Slack. Run as a finally task.
+#
+# Deliberately thin. Each leg already published one row per suite to catalog-results and
+# uploaded its own logs, so there is nothing to collate here.
+#
+# A task file rather than the pipeline's inline taskSpec because Konflux resolves the
+# pipeline at the Snapshot's own commit, while tasks are resolved at CATALOG_TASK_REVISION
+# (main). On 2026-10-15 a rerun of a 2026-10-12 Snapshot ran without the Slack step that
+# had been merged to main that morning. A change here reaches every run from then on,
+# reruns of older Snapshots included. For the same reason any new param needs a default:
+# pipelines already built will not pass it.
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: z-stream-summary
+spec:
+  params:
+    - name: verdicts
+      type: array
+    - name: clusters
+      type: array
+    - name: pipelineRunName
+      type: string
+    - name: aggregateStatus
+      type: string
+    - name: suites
+      type: array
+      default: []
+    - name: openshiftVersion
+      type: string
+      default: ""
+    - name: operatorChannel
+      type: string
+      default: ""
+    - name: snapshot
+      type: string
+      default: ""
+    - name: gitRevision
+      type: string
+      default: ""
+  steps:
+    - name: report
+      image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+      args: ["$(params.verdicts[*])"]
+      script: |
+        #!/bin/bash
+        # Plain stdout. This is a Tekton task, not a GitHub Actions step — there is
+        # no $GITHUB_STEP_SUMMARY here, and referencing one under `set -u` is an
+        # unbound variable that fails the step.
+        set -uo pipefail
+        echo "=========================================================="
+        echo " z-stream run $(params.pipelineRunName)"
+        echo " overall: $(params.aggregateStatus)"
+        echo "=========================================================="
+        i=0
+        for v in "$@"; do
+          echo "  leg $i: $v"
+          i=$((i+1))
+        done
+        echo
+        echo "Per-suite results, including which specs failed, are in"
+        echo "rh-gitops-release-qa/catalog-results — one row per suite, tagged"
+        echo "with this run name."
+
+    # Posts the same summary to Slack, one line per suite. Only runs that reach the
+    # legs get here: a run the gate skipped has no leg results, so this task is
+    # skipped with it and the channel only hears about real test runs.
+    #
+    # Never fails the run: a notification problem is not a test result.
+    - name: notify-slack
+      image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+      onError: continue
+      env:
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: slack-gitops-test-notification-url
+              key: hook-url
+              # Without the secret the run should still complete, just quietly.
+              optional: true
+        - name: PIPELINE_RUN
+          value: $(params.pipelineRunName)
+        - name: STATUS
+          value: $(params.aggregateStatus)
+        - name: OPENSHIFT_VERSION
+          value: $(params.openshiftVersion)
+        - name: OPERATOR_CHANNEL
+          value: $(params.operatorChannel)
+        - name: SNAPSHOT
+          value: $(params.snapshot)
+        - name: GIT_REVISION
+          value: $(params.gitRevision)
+      # Three arrays, one index per leg, separated by "--".
+      args: ["$(params.verdicts[*])", "--", "$(params.clusters[*])", "--", "$(params.suites[*])"]
+      script: |
+        #!/bin/bash
+        set -uo pipefail
+        if [[ -z "${SLACK_WEBHOOK_URL:-}" ]]; then
+          echo "no Slack webhook configured; not notifying"
+          exit 0
+        fi
+
+        verdicts=(); clusters=(); suites=(); part=0
+        for a in "$@"; do
+          if [[ "$a" == "--" ]]; then part=$((part+1)); continue; fi
+          case $part in
+            0) verdicts+=("$a") ;;
+            1) clusters+=("$a") ;;
+            *) suites+=("$a") ;;
+          esac
+        done
+
+        # The Snapshot carries its Application, which is part of the UI link.
+        app=$(grep -oE '"application" *: *"[^"]+"' <<<"$SNAPSHOT" | head -1 | sed -E 's/.*"([^"]+)"$/\1/')
+        ui="https://konflux-ui.apps.stone-prd-rh01.pg1f.p1.openshiftapps.com/ns/rh-openshift-gitops-tenant"
+        [[ -n "$app" ]] && ui="$ui/applications/$app/pipelineruns/$PIPELINE_RUN"
+
+        if [[ "$STATUS" == "Succeeded" || "$STATUS" == "Completed" ]]; then
+          head=":white_check_mark: *GitOps release tests passed*"
+        else
+          head=":x: *GitOps release tests failed*"
+        fi
+
+        msg="$head: \`$OPERATOR_CHANNEL\` on OpenShift $OPENSHIFT_VERSION"
+        msg+=$'\n'"Run <$ui|$PIPELINE_RUN>, catalog commit \`${GIT_REVISION:0:7}\`"
+        for i in "${!verdicts[@]}"; do
+          msg+=$'\n\n'"*Leg $((i+1))* (${clusters[$i]:-unknown}): ${verdicts[$i]}"
+          lines="${suites[$i]:-}"
+          [[ -z "$lines" ]] && msg+=$'\n'"    no suites ran (the claim or the install failed)"
+          while read -r script outcome passed failed; do
+            [[ -z "$script" ]] && continue
+            icon=":white_check_mark:"; [[ "$outcome" == "pass" ]] || icon=":x:"
+            line="$icon ${script%.sh}"
+            [[ -n "${passed:-}" ]] && line+=" — $passed passed, $failed failed"
+            msg+=$'\n'"$line"
+          done <<<"$lines"
+        done
+        msg+=$'\n\n'"Per-suite rows and log links: rh-gitops-release-qa/catalog-results"
+
+        # JSON-escape by hand; this image has no jq or python.
+        esc=$(printf '%s' "$msg" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/\t/\\t/g' | sed -e ':a;N;$!ba;s/\n/\\n/g')
+        if curl -fsS -m 20 -X POST -H 'Content-type: application/json' \
+             --data "{\"text\":\"$esc\"}" "$SLACK_WEBHOOK_URL" >/dev/null; then
+          echo "posted the summary to Slack"
+        else
+          echo "::warning::could not post the summary to Slack"
+        fi
