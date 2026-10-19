@@ -37,7 +37,7 @@ spec:
       value: 10d
     - name: additional-tags
       value:
-        - nightly
+        - v4.15-nightly
       filter: '"nightly" in labels'
     - name: dockerfile
       value: Dockerfile
