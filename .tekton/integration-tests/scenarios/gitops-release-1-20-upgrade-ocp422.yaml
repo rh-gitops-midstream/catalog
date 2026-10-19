@@ -61,7 +61,7 @@ spec:
     - name: OPERATOR_CHANNEL
       value: gitops-1.20
     - name: GATE_LABEL
-      value: channel-1.20
+      value: "channel-1.20|release-1.20"
     # gcp-422: OpenShift 4.22, standard (not FIPS), on GCP -- the one configuration the
     # release tier runs against while it is being made reliable. It keeps two clusters
     # warm, exactly this scenario's two legs; a second overlapping run waits for the
