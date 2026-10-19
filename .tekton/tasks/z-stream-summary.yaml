@@ -64,7 +64,8 @@ spec:
         echo "rh-gitops-release-qa/catalog-results — one row per suite, tagged"
         echo "with this run name."
 
-    # Posts the same summary to Slack, one line per suite. Only runs that reach the
+    # Posts the same summary to Slack, one line per suite plus its failures, new ones by
+    # name and known ones as a count. Only runs that reach the
     # legs get here: a run the gate skipped has no leg results, so this task is
     # skipped with it and the channel only hears about real test runs.
     #
@@ -117,27 +118,57 @@ spec:
         ui="https://konflux-ui.apps.stone-prd-rh01.pg1f.p1.openshiftapps.com/ns/rh-openshift-gitops-tenant"
         [[ -n "$app" ]] && ui="$ui/applications/$app/pipelineruns/$PIPELINE_RUN"
 
+        # Each leg's suites result is one line per suite ("script outcome [passed failed]"),
+        # followed, for a failed suite, by tab-indented lines from classify-failures.py:
+        # new failures by name, and known ones (catalog-results' known-failures.yaml) as a
+        # count with their reasons. A failed suite whose failures are all known counts as
+        # explained; the run is "known failures only" when every failed suite is.
+        body=""; unexplained=0
+        for i in "${!verdicts[@]}"; do
+          body+=$'\n\n'"*Leg $((i+1))* (${clusters[$i]:-unknown}): ${verdicts[$i]}"
+          lines="${suites[$i]:-}"
+          [[ -z "$lines" ]] && body+=$'\n'"    no suites ran (the claim or the install failed)"
+          open=0   # 1 while the current suite has failed and nothing has explained it yet
+          failedsuites=0
+          while IFS= read -r raw; do
+            [[ -z "${raw//[[:space:]]/}" ]] && continue
+            if [[ "$raw" == $'\t'* ]]; then
+              # Tab is IFS whitespace, so read drops the leading one itself.
+              IFS=$'\t' read -r kind a b <<<"$raw"
+              case "$kind" in
+                new)         body+=$'\n'"      • \`$a\`"; open=2 ;;
+                new-more)    body+=$'\n'"      …and $a more new"; open=2 ;;
+                known)       body+=$'\n'"      _$a known: ${b}_"; [[ $open == 1 ]] && open=0 ;;
+                known-suite) body+=$'\n'"      _known: ${a}_"; [[ $open == 1 ]] && open=0 ;;
+              esac
+              continue
+            fi
+            (( open )) && unexplained=$((unexplained+1))
+            read -r script outcome passed failed <<<"$raw"
+            icon=":white_check_mark:"; open=0
+            [[ "$outcome" == "pass" ]] || { icon=":x:"; open=1; failedsuites=$((failedsuites+1)); }
+            line="$icon ${script%.sh}"
+            [[ -n "${passed:-}" ]] && line+=" — $passed passed, $failed failed"
+            body+=$'\n'"$line"
+          done <<<"$lines"
+          (( open )) && unexplained=$((unexplained+1))
+          # A leg that failed outside its suites (claim, install, a crash) is never "known".
+          [[ "${verdicts[$i]}" != pass && $failedsuites == 0 ]] && unexplained=$((unexplained+1))
+        done
+
         if [[ "$STATUS" == "Succeeded" || "$STATUS" == "Completed" ]]; then
           head=":white_check_mark: *GitOps release tests passed*"
+        elif (( unexplained == 0 )); then
+          head=":large_orange_circle: *GitOps release tests failed, known failures only*"
         else
           head=":x: *GitOps release tests failed*"
         fi
 
         msg="$head: \`$OPERATOR_CHANNEL\` on OpenShift $OPENSHIFT_VERSION"
         msg+=$'\n'"Run <$ui|$PIPELINE_RUN>, catalog commit \`${GIT_REVISION:0:7}\`"
-        for i in "${!verdicts[@]}"; do
-          msg+=$'\n\n'"*Leg $((i+1))* (${clusters[$i]:-unknown}): ${verdicts[$i]}"
-          lines="${suites[$i]:-}"
-          [[ -z "$lines" ]] && msg+=$'\n'"    no suites ran (the claim or the install failed)"
-          while read -r script outcome passed failed; do
-            [[ -z "$script" ]] && continue
-            icon=":white_check_mark:"; [[ "$outcome" == "pass" ]] || icon=":x:"
-            line="$icon ${script%.sh}"
-            [[ -n "${passed:-}" ]] && line+=" — $passed passed, $failed failed"
-            msg+=$'\n'"$line"
-          done <<<"$lines"
-        done
+        msg+="$body"
         msg+=$'\n\n'"Per-suite rows and log links: rh-gitops-release-qa/catalog-results"
+        msg+=$'\n'"Known failures are listed in catalog-results' known-failures.yaml"
 
         # JSON-escape by hand; this image has no jq or python.
         esc=$(printf '%s' "$msg" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e 's/\t/\\t/g' | sed -e ':a;N;$!ba;s/\n/\\n/g')
