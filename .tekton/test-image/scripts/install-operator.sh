@@ -98,8 +98,14 @@ else
   echo "WARNING: No quay pull credentials found at /quay-pull-credentials/.dockerconfigjson"
 fi
 
+# CATALOG_ONLY: stop once the catalog under test is being served, and install nothing.
+# Set by hive-suite-leg when the leg starts with run-upgrade-baseline.sh, whose suite
+# installs the previous version itself and requires a cluster without the operator --
+# it refuses to start if the operator namespace already exists, hence step 2 is skipped.
+if [[ "${CATALOG_ONLY:-false}" != "true" ]]; then
 # 2. Ensure the operator namespace exists
 oc create namespace "${NAMESPACE}" --dry-run=client -o yaml | oc apply -f -
+fi
 
 # 3. Create CatalogSource
 cat <<EOF | oc apply -f -
@@ -117,6 +123,24 @@ spec:
     registryPoll:
       interval: 30m
 EOF
+
+if [[ "${CATALOG_ONLY:-false}" == "true" ]]; then
+  echo "CATALOG_ONLY: waiting for the gitops-stage catalog to serve the operator package..."
+  for _ in $(seq 1 60); do
+    if oc get packagemanifest -n openshift-marketplace -l catalog=gitops-stage \
+         -o jsonpath='{.items[*].metadata.name}' 2>/dev/null | grep -qw openshift-gitops-operator; then
+      echo "gitops-stage serves openshift-gitops-operator; channels:"
+      oc get packagemanifest -n openshift-marketplace -l catalog=gitops-stage \
+        -o jsonpath='{range .items[*].status.channels[*]}{.name}{" -> "}{.currentCSV}{"\n"}{end}' || true
+      echo "CATALOG_ONLY: not installing the operator; the leg's first suite does"
+      exit 0
+    fi
+    sleep 10
+  done
+  echo "ERROR: gitops-stage did not serve openshift-gitops-operator within 10 minutes"
+  oc get catalogsource gitops-stage -n openshift-marketplace -o yaml || true
+  exit 1
+fi
 
 # 4. Create OperatorGroup
 cat <<EOF | oc apply -f -
