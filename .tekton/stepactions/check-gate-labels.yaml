@@ -50,8 +50,9 @@ spec:
       type: string
       description: >
         test-event-type from Konflux's test metadata ("pull_request" or
-        "push"). With require-pr "true", a push skips: the change was already
-        tested as its PR, and a merged PR's labels would otherwise run it again.
+        "push"), logged. A push is NOT skipped: the release-candidate PRs merge
+        before any PR snapshot is built (#324, #325 have push snapshots only),
+        so their push snapshot is the only one there is to test.
       default: ""
     - name: pr-number
       type: string
@@ -136,13 +137,7 @@ spec:
       exit 0
     }
 
-    # A merge is tested as its PR; a gate that must only run on a labelled PR does not
-    # run the merge commit again. Before this, a labelled PR that merged ran twice: on
-    # its PR snapshot, and on the push snapshot, whose commit GitHub maps back to it.
-    if [ "${REQUIRE_PR}" = "true" ] && [ "${EVENT_TYPE}" = "push" ]; then
-      skip "Push event, and this gate runs on pull requests only"
-    fi
-
+    echo "Event: ${EVENT_TYPE:-unknown}"
     PR_NUMBER=$(printf '%s' "${PR_NUMBER_IN}" | tr -cd '0-9')
     if [ -n "${PR_NUMBER}" ]; then
       echo "PR #${PR_NUMBER} from the test metadata"

@@ -162,8 +162,8 @@ spec:
               # labelled PR, not even for a push GitHub cannot match to one.
               - name: require-pr
                 value: "true"
-              # So a merged PR is not run again on its push snapshot, and the PR is read
-              # directly instead of looked up from the commit.
+              # The PR is read directly instead of looked up from the commit; the event
+              # type is logged.
               - name: event-type
                 value: $(params.event-type)
               - name: pr-number
