@@ -48,10 +48,6 @@ spec:
       values:
         - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
         - "run-upgrade-baseline.sh:gitops-1.19,run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
-    # The upgrade-baseline support in hive-suite-leg is on this branch until
-    # rh-gitops-midstream/catalog#328 merges; then drop this and use main like the rest.
-    - name: CATALOG_TASK_REVISION
-      value: feat/upgrade-baseline-leg
     - name: TEST_REPO_URL
       value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
