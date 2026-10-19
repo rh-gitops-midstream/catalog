@@ -131,6 +131,12 @@ spec:
             type: string
           - name: catalog-task-revision
             type: string
+          - name: event-type
+            type: string
+            default: ""
+          - name: pr-number
+            type: string
+            default: ""
         results:
           - name: proceed
             description: "true if tests should run, false to skip"
@@ -156,6 +162,12 @@ spec:
               # labelled PR, not even for a push GitHub cannot match to one.
               - name: require-pr
                 value: "true"
+              # The PR is read directly instead of looked up from the commit; the event
+              # type is logged.
+              - name: event-type
+                value: $(params.event-type)
+              - name: pr-number
+                value: $(params.pr-number)
           - name: propagate-result
             image: registry.access.redhat.com/ubi9/ubi-minimal:latest
             script: |
@@ -171,6 +183,10 @@ spec:
           value: $(params.CATALOG_TASK_URL)
         - name: catalog-task-revision
           value: $(params.CATALOG_TASK_REVISION)
+        - name: event-type
+          value: $(tasks.parse-metadata.results.test-event-type)
+        - name: pr-number
+          value: $(tasks.parse-metadata.results.pull-request-number)
 
     - name: build-test-image
       runAfter: [check-gate]

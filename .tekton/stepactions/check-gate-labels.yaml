@@ -10,7 +10,11 @@ spec:
 
     GATE_LABELS is a comma-separated list of label names (e.g.
     "rc-sanity-check,channel-1.19"). All listed labels must be present
-    for the step to emit proceed=true.
+    for the step to emit proceed=true. Alternatives are separated by "|":
+    "channel-1.22|release-1.22" proceeds on either label, and
+    "release-1.22,nightly|channel-1.22" on both of the first two or on the
+    third. The nightly-catalog automation labels its PRs release-X.Y, so
+    this lets the release tier take those without relabelling.
 
     Push events (GitHub answers that no PR contains the commit) proceed
     regardless of labels, unless require-pr is "true". An empty GATE_LABELS
@@ -42,6 +46,20 @@ spec:
         per IP) in shared Konflux environments. Pass an empty string to
         fall back to unauthenticated requests.
       default: ""
+    - name: event-type
+      type: string
+      description: >
+        test-event-type from Konflux's test metadata ("pull_request" or
+        "push"), logged. A push is NOT skipped: the release-candidate PRs merge
+        before any PR snapshot is built (#324, #325 have push snapshots only),
+        so their push snapshot is the only one there is to test.
+      default: ""
+    - name: pr-number
+      type: string
+      description: >
+        pull-request-number from Konflux's test metadata. When set, the PR is
+        read directly instead of looked up from the commit.
+      default: ""
     - name: require-pr
       type: string
       description: >
@@ -64,6 +82,10 @@ spec:
       value: $(params.github-token)
     - name: REQUIRE_PR
       value: $(params.require-pr)
+    - name: EVENT_TYPE
+      value: $(params.event-type)
+    - name: PR_NUMBER_IN
+      value: $(params.pr-number)
   script: |
     #!/bin/sh
     set -eu
@@ -115,8 +137,11 @@ spec:
       exit 0
     }
 
-    PR_NUMBER=""
-    if [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
+    echo "Event: ${EVENT_TYPE:-unknown}"
+    PR_NUMBER=$(printf '%s' "${PR_NUMBER_IN}" | tr -cd '0-9')
+    if [ -n "${PR_NUMBER}" ]; then
+      echo "PR #${PR_NUMBER} from the test metadata"
+    elif [ -n "${REPO_SLUG}" ] && [ -n "${SOURCE_GIT_REVISION}" ]; then
       echo "Looking up PRs for commit ${SOURCE_GIT_REVISION}..."
       # Right after a merge GitHub can briefly answer [] for the merge commit, so
       # ask again before concluding there is no PR.
@@ -141,23 +166,30 @@ spec:
     LABELS=$(echo "${BODY}" | grep -o '"name": *"[^"]*"' | sed 's/"name": *"//;s/"$//' || true)
     echo "PR labels: ${LABELS:-none}"
 
-    # All required labels must be present.
-    # Convert the comma-separated list to newlines so each label becomes its
-    # own input line; with a single 'read' variable, IFS splitting does not
-    # distribute across commas — the whole string would land in $required.
-    while IFS= read -r required; do
-      required=$(echo "$required" | tr -d ' ')
-      if [ -z "$required" ]; then
-        continue
-      fi
-      if echo "${LABELS}" | grep -qx "$required"; then
-        echo "Label '$required' found"
-      else
-        echo "Label '$required' NOT found, skipping tests"
-        PROCEED=false
+    # Groups separated by "|" are alternatives; within a group, separated by ",",
+    # every label must be present. The first group that is complete proceeds.
+    # Splitting goes through tr so each item is its own input line: a single 'read'
+    # variable does not distribute IFS fields across commas.
+    PROCEED=false
+    while IFS= read -r group; do
+      group=$(echo "$group" | tr -d ' ')
+      [ -z "$group" ] && continue
+      complete=true
+      while IFS= read -r required; do
+        [ -z "$required" ] && continue
+        if ! echo "${LABELS}" | grep -qx "$required"; then
+          complete=false
+          break
+        fi
+      done <<< "$(printf '%s' "$group" | tr ',' '\n')"
+      if [ "$complete" = true ]; then
+        echo "Labels '${group}' found"
+        PROCEED=true
         break
       fi
-    done <<< "$(printf '%s' "${GATE_LABELS}" | tr ',' '\n')"
+      echo "Labels '${group}' not all present"
+    done <<< "$(printf '%s' "${GATE_LABELS}" | tr '|' '\n')"
+    [ "$PROCEED" = true ] || echo "No label group complete, skipping tests"
 
     echo -n "${PROCEED}" > $(step.results.proceed.path)
     echo "Result: proceed=${PROCEED}"
