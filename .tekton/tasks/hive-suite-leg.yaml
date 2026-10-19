@@ -343,6 +343,8 @@ spec:
           value: $(params.installTimeout)
         - name: TASK_LOG_NAME
           value: install-operator
+        - name: SUITES
+          value: $(params.suites)
         - name: PIPELINE_RUN_NAME
           value: $(params.pipelineRunName)
         - name: QUAY_REPO
@@ -355,6 +357,13 @@ spec:
           if grep -q . /shared/failed 2>/dev/null; then
             echo "skipping install — the claim step failed"
             exit 0
+          fi
+          # A leg that starts with the upgrade baseline installs the operator in that
+          # suite, from the previous version; here only the catalog under test is set up.
+          first=$(printf '%s' "$SUITES" | cut -d, -f1 | xargs)
+          if [[ "$first" == run-upgrade-baseline.sh:* ]]; then
+            export CATALOG_ONLY=true
+            echo "leg starts with $first: creating the catalog only"
           fi
           /usr/local/bin/run-and-save-logs.sh /usr/local/bin/install-operator.sh || {
             echo "::error::operator install failed"
@@ -392,6 +401,11 @@ spec:
           value: $(params.catalogUrl)
         - name: CATALOG_REVISION
           value: $(params.catalogRevision)
+        # The upgrade target, for run-upgrade-baseline.sh.
+        - name: OPERATOR_CHANNEL
+          value: $(params.operatorChannel)
+        - name: OPERATOR_VERSION
+          value: $(params.operatorVersion)
       computeResources:
         requests:
           memory: "4Gi"
@@ -414,6 +428,21 @@ spec:
           for s in "${LIST[@]}"; do
             s="$(echo "$s" | xargs)"   # trim
             [[ -z "$s" ]] && continue
+            run="$s"
+            # run-upgrade-baseline.sh:<channel>[:<version>] -- the upgrade source rides
+            # along in the suite name. Logs and rows get a name per source, so two
+            # upgrade legs in one run do not overwrite each other's.
+            if [[ "$s" == run-upgrade-baseline.sh:* ]]; then
+              IFS=: read -r run UPGRADE_FROM_CHANNEL UPGRADE_FROM_VERSION <<< "$s"
+              export UPGRADE_FROM_CHANNEL UPGRADE_FROM_VERSION
+              s="run-upgrade-baseline-from-${UPGRADE_FROM_CHANNEL}${UPGRADE_FROM_VERSION:+-$UPGRADE_FROM_VERSION}.sh"
+            fi
+            # Set by a suite after which the rest cannot mean anything (the upgrade
+            # baseline leaving no operator installed).
+            if [[ -s /shared/stop-suites ]]; then
+              echo "skipping $s: $(head -1 /shared/stop-suites)"
+              continue
+            fi
             echo "==================== $s ===================="
             # Distinct log name per suite so artifacts do not collide within a leg.
             export TASK_LOG_NAME="${s%.sh}"
@@ -421,7 +450,7 @@ spec:
             # Suites in a leg share /shared and /tmp/task-logs. Remove the previous
             # suite's result files, or this suite's row would be published with them.
             rm -f /shared/test-results.json /tmp/task-logs/junit-results.xml
-            if /usr/local/bin/run-and-save-logs.sh /usr/local/bin/"$s"; then
+            if /usr/local/bin/run-and-save-logs.sh /usr/local/bin/"$run"; then
               echo "$s PASSED"
               echo "$s pass" >> /shared/suite-results
             else
