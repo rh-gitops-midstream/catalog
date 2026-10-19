@@ -32,6 +32,12 @@ export NEW_VERSION="${OPERATOR_VERSION:-}"
 # source and the target must be in it; the RC catalogs carry every released version.
 export CATALOG_SOURCE=gitops-stage
 
+# The name install-operator.sh gives the Subscription. In CI mode the e2e fixture finds the
+# Subscription by the prefix gitops-operator-, so under the suite's default name
+# (openshift-gitops-operator) every suite after this one found none: 17 sequential and 2
+# parallel specs failed at fixture.go:456 on the first 1.20.9 upgrade run.
+export SUBSCRIPTION_NAME=gitops-operator-konflux
+
 # The suite is not on the konflux-integration-* branches yet; it lives on its own branch
 # of the QA fork, based on upstream master, and is independent of the operator version
 # under test: it drives OLM and checks CRs, it does not import operator code.
@@ -51,7 +57,7 @@ rc=$?
 # The suite approves InstallPlans by hand, so the Subscription is left on Manual approval.
 # The suites that follow expect what install-operator.sh sets up -- Automatic -- and some
 # change the Subscription's config, which must not wait for an approval nobody gives.
-oc patch subscription openshift-gitops-operator -n openshift-gitops-operator --type merge \
+oc patch subscription "$SUBSCRIPTION_NAME" -n openshift-gitops-operator --type merge \
   -p '{"spec":{"installPlanApproval":"Automatic"}}' || true
 
 # What the next suites will run against, for whoever reads the log.
