@@ -2,8 +2,9 @@
 # Upgrade baseline: installs the previous version of the operator, configures it, checks
 # every configured feature, upgrades to the version under test, and checks them again --
 # the Ginkgo suite in test/openshift/e2e/ginkgo/upgrade (rh-gitops-release-qa/gitops-operator
-# PR #2). It leaves the upgraded, configured installation in place, so the suites listed
-# after it in the same leg run against an upgraded installation instead of a clean one.
+# PR #2). Afterwards it removes the suite's fixture but keeps the upgraded operator, so the
+# suites listed after it in the same leg run against an upgraded installation instead of a
+# clean one.
 #
 # Used as the first suite of a leg, with the upgrade source after colons:
 #
@@ -59,6 +60,44 @@ rc=$?
 # change the Subscription's config, which must not wait for an approval nobody gives.
 oc patch subscription "$SUBSCRIPTION_NAME" -n openshift-gitops-operator --type merge \
   -p '{"spec":{"installPlanApproval":"Automatic"}}' || true
+
+# Take away what the suite added, so the next suites start from an upgraded operator in
+# the state install-operator.sh would have left it, not from the suite's fixture. On the
+# first full 1.20.9 upgrade run (…-upgrade-ocp422-bj487) the cluster-scoped RolloutManager
+# in upgrade-rollouts was still there, and with it every Rollouts spec that needs its own
+# RolloutManager failed on both legs: 1-100, 1-101 and 1-121, passing on a clean install.
+#
+# Kept: the operator itself, at the upgraded version, and the suite's patch to the
+# default instance in openshift-gitops, which the suites reset where they depend on it.
+#
+# Order matters. The ApplicationSet and Applications go before the namespaces they deploy
+# to, or automated sync recreates those namespaces; the RolloutManager and ArgoCD go
+# before their namespaces so the operator, not namespace deletion, tears them down.
+echo "--- removing the upgrade suite's fixture ---"
+oc delete applicationset,application --all -n upgrade-argocd --ignore-not-found --wait=true --timeout=5m || true
+oc delete rollout,rolloutmanager --all -n upgrade-rollouts --ignore-not-found --wait=true --timeout=5m || true
+oc delete argocd --all -n upgrade-argocd --ignore-not-found --wait=true --timeout=5m || true
+oc delete namespace upgrade-app upgrade-appset upgrade-argocd upgrade-rollouts \
+  --ignore-not-found --wait=true --timeout=10m || true
+
+# install-operator.sh sets no config at all. The suite set ARGOCD_CLUSTER_CONFIG_NAMESPACES
+# and CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES; without them removed, the default instance
+# keeps cluster-wide permissions and Rollouts stays cluster-scoped for upgrade-rollouts.
+if oc get subscription "$SUBSCRIPTION_NAME" -n openshift-gitops-operator \
+     -o jsonpath='{.spec.config}' 2>/dev/null | grep -q .; then
+  oc patch subscription "$SUBSCRIPTION_NAME" -n openshift-gitops-operator --type json \
+    -p '[{"op":"remove","path":"/spec/config"}]' || true
+  # OLM rewrites the operator Deployment from the Subscription; wait for the env to go
+  # and the new pod to be the one running.
+  for _ in {1..60}; do
+    oc get deployment openshift-gitops-operator-controller-manager -n openshift-gitops-operator \
+      -o jsonpath='{.spec.template.spec.containers[*].env}' 2>/dev/null \
+      | grep -qE 'ARGOCD_CLUSTER_CONFIG_NAMESPACES|CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES' || break
+    sleep 5
+  done
+  oc rollout status deployment/openshift-gitops-operator-controller-manager \
+    -n openshift-gitops-operator --timeout=5m || true
+fi
 
 # What the next suites will run against, for whoever reads the log.
 echo "--- installed after the upgrade baseline ---"
