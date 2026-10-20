@@ -151,3 +151,9 @@ channels:
         replaces: openshift-gitops-operator.v1.22.1
         skipRange: '>=1.22.0 <1.22.2'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:2ba58c50f771c08bbc5a1d8572c7b058df55bc71667cc66026d42840eb4bee6d
+  - name: gitops-99.99
+    versions:
+      - name: openshift-gitops-operator.v99.99.99
+        replaces: openshift-gitops-operator.v99.99.98
+        skipRange: ''
+        bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:cb97a64cdecca56e5b08513af6076976280ad7a74ed970fb89dfe46ca02a7fe8
