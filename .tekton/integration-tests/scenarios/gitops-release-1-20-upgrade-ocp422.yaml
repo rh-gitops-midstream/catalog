@@ -31,23 +31,31 @@ spec:
     # Upgrade, not clean install: each leg starts with the upgrade baseline (the Ginkgo
     # upgrade suite, see run-upgrade-baseline.sh), which installs an older version,
     # configures it, and upgrades it to this channel's head in the Snapshot's catalog --
-    # the release candidate. The operator suites then run against that upgraded,
-    # configured installation. One leg per upgrade path a customer takes into the RC:
+    # the release candidate. It then removes its own fixture, and the operator suites run
+    # against the upgraded installation. Two upgrade paths a customer takes into the RC:
     #
-    #   leg A  within the channel, from the previous z-stream (1.20.8)
-    #   leg B  across channels, from the head of gitops-1.19
+    #   from 1.20.8      within the channel, from the previous z-stream
+    #   from gitops-1.19 across channels, from the head of the previous minor
     #
-    # Each leg carries the whole operator suite set, about 5h with the upgrade, so both
-    # paths get every suite. No Argo CD e2e: it tests its own standalone Argo CD, not the
-    # operator, so an upgrade changes nothing for it.
+    # Each path is split over two legs, two clusters, each upgrading on its own. One leg
+    # with every suite does not fit: on 2026-10-19 (…-upgrade-ocp422-bj487) both legs
+    # were still in the rollouts suite when the 7h task timeout cut them off, and nothing
+    # was published. A cluster cannot be held longer, 8h is the pool's claimLifetime
+    # maximum. Split, each leg is about 3h30m: claim and baseline about 1h, then
+    # sanity, parallel and rollouts (2h20m) or the two sequential shards (2h10m).
+    # Four clusters per run, so it competes with the clean-install run for gcp-422's six.
+    #
+    # No Argo CD e2e: it tests its own standalone Argo CD, not the operator, so an
+    # upgrade changes nothing for it.
     #
     # Failures here only mean something next to a clean-install run of the same
-    # Snapshot (gitops-catalog-release-1-20-ocp422): the suites were written against a
-    # default installation, and this one is deliberately not default.
+    # Snapshot (gitops-catalog-release-1-20-ocp422).
     - name: LEGS
       values:
-        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
-        - "run-upgrade-baseline.sh:gitops-1.19,run-sanity-tests.sh,run-parallel-tests.sh,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
+        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
+        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
+        - "run-upgrade-baseline.sh:gitops-1.19,run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
+        - "run-upgrade-baseline.sh:gitops-1.19,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
     - name: TEST_REPO_URL
       value: https://github.com/rh-gitops-release-qa/gitops-operator
     - name: TEST_REPO_BRANCH
@@ -60,8 +68,8 @@ spec:
       value: "channel-1.20|release-1.20"
     # gcp-422: OpenShift 4.22, standard (not FIPS), on GCP -- the one configuration the
     # release tier runs against while it is being made reliable. It keeps two clusters
-    # warm, exactly this scenario's two legs; a second overlapping run waits for the
-    # pool to install more rather than failing.
+    # warm; this scenario's other legs wait for the pool to install more (about 45m,
+    # inside the 75m claim wait) rather than failing.
     - name: POOL_NAME
       value: gcp-422
     - name: POOL_NAMESPACE

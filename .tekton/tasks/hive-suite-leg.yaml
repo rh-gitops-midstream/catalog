@@ -432,8 +432,8 @@ spec:
             [[ -z "$s" ]] && continue
             run="$s"
             # run-upgrade-baseline.sh:<channel>[:<version>] -- the upgrade source rides
-            # along in the suite name. Logs and rows get a name per source, so two
-            # upgrade legs in one run do not overwrite each other's.
+            # along in the suite name. Logs and rows get a name per source, so upgrade
+            # legs from different sources in one run do not overwrite each other's.
             if [[ "$s" == run-upgrade-baseline.sh:* ]]; then
               IFS=: read -r run UPGRADE_FROM_CHANNEL UPGRADE_FROM_VERSION <<< "$s"
               export UPGRADE_FROM_CHANNEL UPGRADE_FROM_VERSION
@@ -448,6 +448,12 @@ spec:
             echo "==================== $s ===================="
             # Distinct log name per suite so artifacts do not collide within a leg.
             export TASK_LOG_NAME="${s%.sh}"
+            # Two legs of one run can share an upgrade baseline, the same path split over
+            # two clusters; its log gets the cluster too, or the second upload replaces the
+            # first. The publish step below names the artifact the same way.
+            if [[ "$s" == run-upgrade-baseline-from-* ]]; then
+              TASK_LOG_NAME+="-$(cat /shared/cluster-name 2>/dev/null || echo unknown)"
+            fi
             export TEST_SCRIPT="$s"
             # Suites in a leg share /shared and /tmp/task-logs. Remove the previous
             # suite's result files, or this suite's row would be published with them.
@@ -564,6 +570,9 @@ spec:
             # Each suite uploaded its own log artifact under this tag; it must match
             # IMAGE_TAG in run-and-save-logs.sh.
             export LOGS_ARTIFACT="${QUAY_REPO}:${PIPELINE_RUN_NAME}-task-${script%.sh}"
+            if [[ "$script" == run-upgrade-baseline-from-* ]]; then
+              LOGS_ARTIFACT+="-$(cat /shared/cluster-name 2>/dev/null || echo unknown)"
+            fi
             export TEST_RESULTS_FILE="/shared/suite-counts/${script%.sh}.json"
             echo "publishing $script -> $AGGREGATE_STATUS"
             /usr/local/bin/publish-results.sh || \
