@@ -71,11 +71,21 @@ disable_rollouts_config() {
 # "All rollouts tests passed" on 2026-10-13 (gitops-catalog-release-1-22-ocp422-kzpcc)
 # when every one of its four phases had failed. pipefail is not set script-wide because
 # the helpers above pipe oc into `grep -q`, which can SIGPIPE oc and fail the check.
+#
+# Each phase is also cut off after PHASE_TIMEOUT. Upstream's scripts wait without a limit
+# in places: on 2026-10-20 (gitops-catalog-release-1-20-upgrade-ocp422-zfgcl) the upstream
+# argo-rollouts phase polled for deployment/argo-rollouts for five hours, until the
+# pipeline timeout cancelled the leg and nothing it had run was published. A whole clean
+# run of this script takes about 1h40m.
+PHASE_TIMEOUT="${PHASE_TIMEOUT:-60m}"
 run_phase() {
   local name="$1" log="$2" rc
   shift 2
-  "$@" 2>&1 | tee "$log"
+  timeout --kill-after=1m "$PHASE_TIMEOUT" "$@" 2>&1 | tee "$log"
   rc=${PIPESTATUS[0]}
+  if [[ $rc == 124 || $rc == 137 ]]; then
+    echo "ERROR: ${name} did not finish within ${PHASE_TIMEOUT}"
+  fi
   if [[ $rc != 0 ]]; then
     echo "ERROR: ${name} failed (exit ${rc})"
     failed_phases+=("$name")
@@ -144,6 +154,17 @@ mkdir -p "$GOCACHE" "$GOMODCACHE"
 # shellcheck source=/dev/null
 source /usr/local/bin/go-cache.sh
 go_cache_pull "rollouts-${TARGET_ROLLOUT_MANAGER_COMMIT}"
+
+# Start from no RolloutManagers at all. The Rollouts operator refuses to mix cluster- and
+# namespace-scoped RolloutManagers, and a suite run earlier on the same cluster can leave
+# one behind: 1-121_validate_custom_labels_rollouts (parallel) creates a namespace-scoped
+# RolloutManager in openshift-gitops and never deletes it. With it there, every
+# cluster-scoped spec below failed with the RolloutManager in phase Failure (…-zfgcl,
+# both legs that ran parallel before this).
+echo "=== Removing RolloutManagers left by earlier suites ==="
+oc get rolloutmanager -A 2>/dev/null || true
+oc delete rollouts -A --all --wait=true --timeout=5m 2>/dev/null || true
+oc delete rolloutmanager -A --all --wait=true --timeout=5m 2>/dev/null || true
 
 enable_rollouts_cluster_scoped
 
