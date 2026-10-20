@@ -30,12 +30,19 @@ mkdir -p "${RESULTS_DIR}"
 TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/argoproj/argo-cd.git}"
 BRANCH="${BRANCH:-v2.14.1}"
 
+# ARGOCD_E2E_USE_SKIP_LIST=false runs the whole suite: no skip file and none of the
+# built-in skips. The file was collected against EaaS HyperShift clusters, so on a regular
+# OpenShift cluster it can hide tests that actually pass; a full run is how to find out.
 SKIP_FILE=/usr/local/config/skip-argocd.txt
 SKIP_FROM_FILE=""
-if [[ -f "$SKIP_FILE" ]]; then
-  SKIP_FROM_FILE=$(grep -v '^\s*#' "$SKIP_FILE" | grep -v '^\s*$' | paste -sd '|')
+if [[ "${ARGOCD_E2E_USE_SKIP_LIST:-true}" == "true" ]]; then
+  if [[ -f "$SKIP_FILE" ]]; then
+    SKIP_FROM_FILE=$(grep -v '^\s*#' "$SKIP_FILE" | grep -v '^\s*$' | paste -sd '|')
+  fi
+  SKIP_FROM_FILE="${SKIP_FROM_FILE:-TestCreateAndUseAccount|TestCanIGetLogs|TestAccountSessionToken}"
+else
+  echo "Skip list disabled (ARGOCD_E2E_USE_SKIP_LIST=false): running every test"
 fi
-SKIP_FROM_FILE="${SKIP_FROM_FILE:-TestCreateAndUseAccount|TestCanIGetLogs|TestAccountSessionToken}"
 
 if [[ -n "${ARGOCD_E2E_SKIP:-}" && -n "${SKIP_FROM_FILE}" ]]; then
   ARGOCD_E2E_SKIP="${SKIP_FROM_FILE}|${ARGOCD_E2E_SKIP}"
@@ -192,6 +199,8 @@ else
   echo "Go-cache scripts not found, skipping (compilation will run without cache)"
 fi
 
+oc cp /usr/local/bin/lib/goreman-shim.sh "${ARGOCD_NAMESPACE}/e2e-test-runner:/opt/e2e-test/lib/goreman-shim.sh"
+
 echo "Helper scripts copied"
 
 # --- Step 3: Build and run tests inside pod ---
@@ -205,6 +214,12 @@ echo "=========================================="
 oc cp /usr/local/bin/run-argocd-e2e-in-pod-inner.sh \
   "${ARGOCD_NAMESPACE}/e2e-test-runner:/tmp/run_test.sh"
 
+# Detached, not one long `oc exec`. A full v3.x suite runs for hours, and an exec stream
+# held open that long through the API server's load balancer can drop — which would end
+# this step with the suite still running and its result lost. So start the suite in the
+# background inside the pod and poll its log and exit code over short-lived execs.
+POD_LOG=/opt/e2e-test/run.log
+POD_EXIT=/opt/e2e-test/run.exit
 echo "Executing tests inside pod..."
 oc exec -n "${ARGOCD_NAMESPACE}" e2e-test-runner -- \
   env \
@@ -218,11 +233,45 @@ oc exec -n "${ARGOCD_NAMESPACE}" e2e-test-runner -- \
     ARGOCD_REPO_SERVER_NAME="${ARGOCD_REPO_SERVER_NAME}" \
     ARGOCD_APPLICATION_CONTROLLER_NAME="${ARGOCD_APPLICATION_CONTROLLER_NAME}" \
     ARGOCD_E2E_SKIP="${ARGOCD_E2E_SKIP}" \
+    ARGOCD_E2E_TEST_TIMEOUT="${ARGOCD_E2E_TEST_TIMEOUT:-60m}" \
+    ARGOCD_E2E_MAX_CRASH_RETRIES="${ARGOCD_E2E_MAX_CRASH_RETRIES:-20}" \
+    ARGOCD_E2E_SKIP_GPG="${ARGOCD_E2E_SKIP_GPG:-true}" \
+    ARGOCD_E2E_SKIP_OPENSHIFT="${ARGOCD_E2E_SKIP_OPENSHIFT:-true}" \
     TEST_RUN_FILTER="${TEST_RUN_FILTER:-}" \
     USE_RC_ARGOCD_CLI="${EXTRACTED_RC}" \
-  bash /tmp/run_test.sh
+  bash -c "rm -f ${POD_EXIT}; nohup bash -c 'bash /tmp/run_test.sh > ${POD_LOG} 2>&1; echo \$? > ${POD_EXIT}' >/dev/null 2>&1 &"
 
-TEST_EXIT_CODE=$?
+LOG_OFFSET=0
+POLL_FAILURES=0
+TEST_EXIT_CODE=1
+: > "${RESULTS_DIR}/test.log"
+TMP_CHUNK=$(mktemp)
+while true; do
+  if oc exec -n "${ARGOCD_NAMESPACE}" e2e-test-runner -- \
+       tail -c +"$((LOG_OFFSET + 1))" "${POD_LOG}" > "${TMP_CHUNK}" 2>/dev/null; then
+    POLL_FAILURES=0
+    if [[ -s "${TMP_CHUNK}" ]]; then
+      tee -a "${RESULTS_DIR}/test.log" < "${TMP_CHUNK}"
+      LOG_OFFSET=$((LOG_OFFSET + $(wc -c < "${TMP_CHUNK}")))
+    fi
+  else
+    POLL_FAILURES=$((POLL_FAILURES + 1))
+    if [[ ${POLL_FAILURES} -ge 20 ]]; then
+      echo "ERROR: lost contact with e2e-test-runner for 20 consecutive polls"
+      break
+    fi
+  fi
+  if EXIT_VALUE=$(oc exec -n "${ARGOCD_NAMESPACE}" e2e-test-runner -- \
+                    cat "${POD_EXIT}" 2>/dev/null) && [[ -n "${EXIT_VALUE}" ]]; then
+    # One last read so output written between the log poll and the exit file is kept.
+    oc exec -n "${ARGOCD_NAMESPACE}" e2e-test-runner -- \
+      tail -c +"$((LOG_OFFSET + 1))" "${POD_LOG}" 2>/dev/null | tee -a "${RESULTS_DIR}/test.log" || true
+    TEST_EXIT_CODE="${EXIT_VALUE}"
+    break
+  fi
+  sleep 30
+done
+rm -f "${TMP_CHUNK}"
 
 echo ""
 echo "=========================================="

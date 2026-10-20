@@ -1,0 +1,107 @@
+# Manual launcher for the six-leg z-stream — the full release set.
+#
+# The pipeline normally runs as an IntegrationTestScenario against a real snapshot. This
+# is for running it by hand while the pipeline itself is being developed, which is how
+# every run so far has been started:
+#
+#   oc create -f .tekton/integration-tests/pipelineruns/zstream-6leg.yaml
+#
+# `generateName` means repeated runs do not collide.
+#
+# ---------------------------------------------------------------------------------------
+# BEFORE LAUNCHING
+#
+# 1. Refresh SNAPSHOT below. It pins a specific catalog build by digest and is the one
+#    thing here that goes stale — a run against a months-old snapshot tests months-old
+#    content while looking perfectly healthy. Take the newest from:
+#
+#      oc get snapshot -n rh-openshift-gitops-tenant \
+#        -l appstudio.openshift.io/application=catalog-4-20 \
+#        --sort-by=.metadata.creationTimestamp
+#
+#    then rebuild the JSON from that snapshot's .spec.
+#
+# 2. Restore the cluster pool. Six legs claim six clusters simultaneously, and
+#    hive-ops parks pool-1 at size 0 when nobody is running pipelines. Set it back to
+#    size 6 / runningCount 2 and let it fill — roughly two rounds of ~40 minute installs
+#    at maxConcurrent 3 — before starting a run, or legs queue behind installs and the
+#    claim lifetimes below start burning.
+#
+# 3. Log in to Konflux. The token expires within hours:
+#
+#      oc login --web --server=https://api.stone-prd-rh01.pg1f.p1.openshiftapps.com:6443
+# ---------------------------------------------------------------------------------------
+#
+# On the leg set: with runningCount 2 and six simultaneous claims, four legs land on
+# hibernated clusters and have to resume. That is the widest exercise of the readiness
+# gate in hive-suite-leg, which waits on the aggregation layer rather than on
+# ClusterOperator conditions — see the comment there for why the obvious check is wrong.
+#
+# argocd-e2e is by far the longest leg: it deploys a standalone Argo CD from the
+# release-candidate image and runs the upstream suite, several hundred tests. Downstream
+# allows that suite 4h30m on its own, and here it shares a pipeline with five others, so
+# it sets both the wall clock and the claim lifetime rather than the sequential shards.
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: zstream-6leg-
+  namespace: rh-openshift-gitops-tenant
+spec:
+  timeouts:
+    pipeline: "8h0m0s"
+  taskRunTemplate:
+    serviceAccountName: konflux-integration-runner
+  pipelineRef:
+    resolver: git
+    params:
+      - name: url
+        value: https://github.com/rh-gitops-midstream/catalog
+      - name: revision
+        value: hive-pool-e2e
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/catalog-gitops-z-stream.yaml
+  params:
+    # Point-in-time. See step 1 above — refresh before every run.
+    - name: SNAPSHOT
+      value: "{\"application\":\"catalog-4-20\",\"components\":[{\"name\":\"catalog-4-20\",\"containerImage\":\"quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog@sha256:8c4d3a9dde0f594b0ff125c84add887483598b1f1701f77d145eec4efbe23549\",\"source\":{\"git\":{\"context\":\"catalog/v4.20\",\"revision\":\"1526636e967a02b23cf7019e71fa068e15c2ee25\",\"url\":\"https://github.com/rh-gitops-midstream/catalog\"}}}]}"
+
+    # One cluster per leg, in parallel. Drop entries to run a subset — the matrix fans out
+    # over whatever is listed, so a two-leg trial is just a shorter list.
+    - name: LEGS
+      value:
+        - "run-sanity-tests.sh"
+        - "run-parallel-tests.sh"
+        - "run-sequential-tests-shard1.sh"
+        - "run-sequential-tests-shard2.sh"
+        - "run-rollouts-tests.sh"
+        - "run-argocd-e2e-standalone.sh"
+
+    # Tasks and StepActions resolve from the same branch as the pipeline, so a run always
+    # uses one consistent set. Change both together when testing another branch.
+    - name: CATALOG_TASK_URL
+      value: https://github.com/rh-gitops-midstream/catalog
+    - name: CATALOG_TASK_REVISION
+      value: hive-pool-e2e
+
+    - name: OPENSHIFT_VERSION
+      value: "4.20"
+    - name: OPERATOR_CHANNEL
+      value: latest
+
+    # Where the operator test suites come from. Not the Argo CD suite — the argocd-e2e leg
+    # derives that from argoproj/argo-cd at the version the release candidate ships, and
+    # refuses to run against a checkout whose go.mod is not argo-cd.
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-latest
+
+    - name: POOL_NAME
+      value: pool-1
+    - name: POOL_NAMESPACE
+      value: hive-pool-1
+
+    # Has to outlive the longest leg or Hive reclaims a cluster mid-suite. Kept an hour
+    # under the pipeline timeout above. pool-1 allows a maximum of 8h.
+    - name: CLAIM_LIFETIME
+      value: "7h"

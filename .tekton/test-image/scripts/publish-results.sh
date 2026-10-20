@@ -40,6 +40,12 @@ record = {
     "logsArtifact": os.environ.get("LOGS_ARTIFACT", ""),
 }
 
+# Set by the xks pipeline (EKS/GKE, operator from a Helm chart); absent on OpenShift rows.
+for key, env in (("platform", "PLATFORM"), ("kubernetesVersion", "KUBERNETES_VERSION"),
+                 ("installMethod", "INSTALL_METHOD"), ("chart", "CHART")):
+    if os.environ.get(env):
+        record[key] = os.environ[env]
+
 test_results = os.path.join(os.environ.get("SHARED_DIR", "/shared"), "test-results.json")
 if os.path.isfile(test_results):
     with open(test_results) as f:

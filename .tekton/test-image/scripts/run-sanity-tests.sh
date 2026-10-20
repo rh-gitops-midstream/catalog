@@ -139,11 +139,23 @@ if [[ -z "$CSV_NAME" ]]; then
 else
   echo "Installed CSV: ${CSV_NAME}"
 
-  CSV_PHASE=$(oc get csv "${CSV_NAME}" -n "${NAMESPACE}" -o jsonpath='{.status.phase}' 2>/dev/null || true)
-  if [[ "$CSV_PHASE" == "Succeeded" ]]; then
+  # A single sample of .status.phase is not a health check. OLM re-enters its install
+  # strategy whenever it re-reconciles, so a CSV that already reached Succeeded drops back
+  # through InstallReady/Installing and returns -- an instantaneous read taken in that
+  # window reports a perfectly healthy operator as broken. Seen 2026-09-20 on FIPS 4.22:
+  # this failed with 'InstallReady' on a cluster where the install step had already logged
+  # "install strategy completed with no errors", every operand Deployment was Available,
+  # the ArgoCD API answered 200 and the smoke app synced healthy.
+  #
+  # wait_for_csv() in lib/wait-for-resources.sh does the right thing but keys off a
+  # subscription name to discover the CSV; this script already has the CSV, so it uses the
+  # same 'oc wait' on the phase directly.
+  if oc wait --for=jsonpath='{.status.phase}'=Succeeded "csv/${CSV_NAME}" \
+       -n "${NAMESPACE}" --timeout="${CSV_PHASE_TIMEOUT:-5m}" >/dev/null 2>&1; then
     pass "CSV phase is Succeeded"
   else
-    fail "CSV phase is '${CSV_PHASE}', expected 'Succeeded'"
+    CSV_PHASE=$(oc get csv "${CSV_NAME}" -n "${NAMESPACE}" -o jsonpath='{.status.phase}' 2>/dev/null || true)
+    fail "CSV phase is '${CSV_PHASE}', expected 'Succeeded' after ${CSV_PHASE_TIMEOUT:-5m}"
   fi
 
   RELATED_COUNT=$(oc get csv "${CSV_NAME}" -n "${NAMESPACE}" \
