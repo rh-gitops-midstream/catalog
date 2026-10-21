@@ -1,0 +1,88 @@
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-catalog-release-1-20-ocp418
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: "true"
+  annotations:
+    # Without these the integration service applies its defaults -- tasks 4h, finally 2h,
+    # pipeline 6h -- and 4h is not enough for the operator leg. On 2026-10-12 both 1.22
+    # runs (…-ocp420-xd5vp, …-ocp422-shmrx) reached the rollouts suite about 3h40m in,
+    # with sanity, parallel and both sequential shards done, and were cut off there.
+    #
+    # 7h of tasks fits inside CLAIM_LIFETIME below: the claim is made about ten minutes
+    # into the run and lasts 8h, so the leg is stopped by this timeout, and releases its
+    # cluster, well before Hive would take the cluster away mid-test. finally only prints
+    # a summary and releases leftover claims, so it does not need the default 2h.
+    # pipeline must be at least tasks + finally.
+    test.appstudio.openshift.io/tasks_timeout: "7h"
+    test.appstudio.openshift.io/finally_timeout: "30m"
+    test.appstudio.openshift.io/pipeline_timeout: "7h30m"
+spec:
+  # Bound to the 4.18 catalog: the Snapshot this fires on is the catalog built for this
+  # OpenShift version, and it is that image the operator is installed from.
+  application: catalog-4-18
+  contexts:
+    - description: execute on component build
+      name: component_catalog-4-18
+  params:
+    # Two legs, each on its own cluster, cut so that neither is the long pole:
+    #
+    #   leg A  sanity, parallel, then the Argo CD e2e suite     about 2h to 2h25m
+    #   leg B  both sequential shards, then rollouts            about 2h25m plus rollouts
+    #
+    # (timings from the 2026-10-12 runs; rollouts has never finished, so its share is
+    # unknown). The old cut put all five operator suites on one cluster, about 3h20m
+    # before rollouts, and gave the Argo CD suite a cluster to itself for 65-90 minutes.
+    #
+    # The order within a leg is not arbitrary. The sequential suite deletes every test
+    # namespace and resets the operator Subscription before each spec, and rollouts
+    # patches that Subscription and deletes Rollouts cluster-wide, so those must never
+    # share a cluster with the parallel suite at the same time -- and here they never
+    # share one at all. The Argo CD suite tests its own standalone Argo CD, so it can
+    # follow sanity and parallel on their cluster.
+    - name: LEGS
+      values:
+        - "run-sanity-tests.sh,run-parallel-tests.sh,run-argocd-e2e-standalone.sh"
+        - "run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh,run-rollouts-tests.sh"
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-1.20
+    - name: OPENSHIFT_VERSION
+      value: "4.18"
+    - name: OPERATOR_CHANNEL
+      value: gitops-1.20
+    - name: GATE_LABEL
+      value: "channel-1.20|release-1.20"
+    # aws-418: OpenShift 4.18, standard (not FIPS), on AWS -- the oldest OpenShift version
+    # in the release test plan (pools/aws-418 in hive-ops: gcp-418's configuration
+    # on AWS). It keeps no cluster waiting, so each leg's claim gets a cluster installed for
+    # it, about 45-50m, inside the 75m claim wait. Its maxSize is 4, for the us-east-2
+    # networking quota, so this run and the upgrade run cannot hold all six of
+    # their clusters at once: run them one after the other, or the later legs time out.
+    - name: POOL_NAME
+      value: aws-418
+    - name: POOL_NAMESPACE
+      value: hive-pool-aws-418
+    # The hub credential is per pool: each pool has its own konflux-pool-claimer
+    # ServiceAccount, scoped to its own namespace, so one shared secret cannot claim
+    # from more than one. Must match POOL_NAME above.
+    - name: HIVE_HUB_SECRET
+      value: hive-hub-kubeconfig-aws-418
+    # The backstop if a leg dies without releasing its cluster. Far longer than either
+    # leg should need; 8h is the pool ceiling.
+    - name: CLAIM_LIFETIME
+      value: "8h"
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+      - name: url
+        value: https://github.com/rh-gitops-midstream/catalog
+      - name: revision
+        value: main
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/catalog-gitops-z-stream.yaml
