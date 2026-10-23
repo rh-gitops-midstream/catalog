@@ -60,9 +60,10 @@ spec:
     # aws-418: OpenShift 4.18, standard (not FIPS), on AWS -- the oldest OpenShift version
     # in the release test plan (pools/aws-418 in hive-ops: gcp-418's configuration
     # on AWS). It keeps no cluster waiting, so each leg's claim gets a cluster installed for
-    # it, about 45-50m, inside the 75m claim wait. Its maxSize is 4, for the us-east-2
-    # networking quota, so this run and the upgrade run cannot hold all six of
-    # their clusters at once: run them one after the other, or the later legs time out.
+    # it, about 45-50m, inside the 75m claim wait. Its maxSize is 2, for the us-east-2
+    # networking quota: this scenario's two legs and nothing else. The two upgrade-path
+    # scenarios claim from the same pool and fire on the same Snapshot, and whichever
+    # legs Hive does not grant time out on the 75m claim wait: run them one at a time.
     - name: POOL_NAME
       value: aws-418
     - name: POOL_NAMESPACE

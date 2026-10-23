@@ -2,7 +2,7 @@
 apiVersion: appstudio.redhat.com/v1beta2
 kind: IntegrationTestScenario
 metadata:
-  name: gitops-catalog-release-1-20-upgrade-ocp421-fips
+  name: gitops-catalog-release-1-20-upgrade-from-1-19-ocp421-fips
   namespace: rh-openshift-gitops-tenant
   labels:
     test.appstudio.openshift.io/optional: "true"
@@ -32,18 +32,21 @@ spec:
     # upgrade suite, see run-upgrade-baseline.sh), which installs an older version,
     # configures it, and upgrades it to this channel's head in the Snapshot's catalog --
     # the release candidate. It then removes its own fixture, and the operator suites run
-    # against the upgraded installation. Two upgrade paths a customer takes into the RC:
+    # against the upgraded installation.
     #
-    #   from 1.20.8      within the channel, from the previous z-stream
-    #   from gitops-1.19 across channels, from the head of the previous minor
+    # One upgrade path, from the head of gitops-1.19, across channels: the previous minor.
+    # The other is gitops-catalog-release-1-20-upgrade-from-1-20-8-ocp421-fips.
+    # Both were one four-leg scenario until 2026-10-23, when the AWS pools were capped at
+    # two clusters: four legs on one pool left two of them waiting out the claim timeout
+    # (see POOL_NAME).
+    # As separate scenarios each path can also be rerun on its own.
     #
-    # Each path is split over two legs, two clusters, each upgrading on its own. One leg
+    # The path is split over two legs, two clusters, each upgrading on its own. One leg
     # with every suite does not fit: on 2026-10-19 (…-upgrade-ocp422-bj487) both legs
     # were still in the rollouts suite when the 7h task timeout cut them off, and nothing
     # was published. A cluster cannot be held longer, 8h is the pool's claimLifetime
     # maximum. Split, each leg is about 3h30m: claim and baseline about 1h, then
     # sanity, parallel and rollouts (2h20m) or the two sequential shards (2h10m).
-    # Four clusters per run: the whole of the pool's maxSize of 4.
     #
     # No Argo CD e2e: it tests its own standalone Argo CD, not the operator, so an
     # upgrade changes nothing for it.
@@ -52,8 +55,6 @@ spec:
     # Snapshot (gitops-catalog-release-1-20-ocp421-fips).
     - name: LEGS
       values:
-        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
-        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
         - "run-upgrade-baseline.sh:gitops-1.19,run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
         - "run-upgrade-baseline.sh:gitops-1.19,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
     - name: TEST_REPO_URL
@@ -69,9 +70,11 @@ spec:
     # aws-421-fips: OpenShift 4.21 with FIPS on, on AWS -- the FIPS configuration
     # in the release test plan (pools/aws-421-fips in hive-ops: gcp-421-fips's configuration
     # on AWS). It keeps no cluster waiting, so each leg's claim gets a cluster installed for
-    # it, about 45-50m, inside the 75m claim wait. Its maxSize is 4, for the us-east-2
-    # networking quota, so this run and the clean-install run cannot hold all six of
-    # their clusters at once: run them one after the other, or the later legs time out.
+    # it, about 45-50m, inside the 75m claim wait. Its maxSize is 2, for the us-east-2
+    # networking quota: this scenario's two legs and nothing else. The clean-install
+    # scenario and the other upgrade path claim from the same pool and fire on the same
+    # Snapshot, and whichever legs Hive does not grant time out on the 75m claim wait.
+    # Run them one at a time, labelling the Snapshot for the next when the last finishes.
     - name: POOL_NAME
       value: aws-421-fips
     - name: POOL_NAMESPACE
