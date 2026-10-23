@@ -61,9 +61,9 @@ spec:
     # in the release test plan (pools/aws-422 in hive-ops: gcp-422's configuration on
     # AWS, moved there on 2026-10-21 when the GCP budget was nearly spent). It keeps no
     # cluster waiting, so each leg's claim gets a cluster installed for it, about 45-50m,
-    # inside the 75m claim wait. Its maxSize is 4, for the us-east-2
-    # networking quota, and the 4.22 scenarios of every release share it: two runs at once
-    # fit, a third waits out the claim timeout and fails its legs.
+    # inside the 75m claim wait. Its maxSize is 2, for the us-east-2
+    # networking quota, and the 4.22 scenarios of every release share it: one two-leg run
+    # at a time fits, a second waits out the claim timeout and fails its legs.
     - name: POOL_NAME
       value: aws-422
     - name: POOL_NAMESPACE

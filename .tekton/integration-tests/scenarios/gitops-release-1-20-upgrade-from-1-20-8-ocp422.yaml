@@ -1,0 +1,101 @@
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  name: gitops-catalog-release-1-20-upgrade-from-1-20-8-ocp422
+  namespace: rh-openshift-gitops-tenant
+  labels:
+    test.appstudio.openshift.io/optional: "true"
+  annotations:
+    # Without these the integration service applies its defaults -- tasks 4h, finally 2h,
+    # pipeline 6h -- and 4h is not enough for the operator leg. On 2026-10-12 both 1.22
+    # runs (…-ocp420-xd5vp, …-ocp422-shmrx) reached the rollouts suite about 3h40m in,
+    # with sanity, parallel and both sequential shards done, and were cut off there.
+    #
+    # 7h of tasks fits inside CLAIM_LIFETIME below: the claim is made about ten minutes
+    # into the run and lasts 8h, so the leg is stopped by this timeout, and releases its
+    # cluster, well before Hive would take the cluster away mid-test. finally only prints
+    # a summary and releases leftover claims, so it does not need the default 2h.
+    # pipeline must be at least tasks + finally.
+    test.appstudio.openshift.io/tasks_timeout: "7h"
+    test.appstudio.openshift.io/finally_timeout: "30m"
+    test.appstudio.openshift.io/pipeline_timeout: "7h30m"
+spec:
+  # Bound to the 4.22 catalog, not 4.20: the Snapshot this fires on is the catalog built
+  # for this OpenShift version, and it is that image the operator is installed from.
+  application: catalog-4-22
+  contexts:
+    - description: execute on component build
+      name: component_catalog-4-22
+  params:
+    # Upgrade, not clean install: each leg starts with the upgrade baseline (the Ginkgo
+    # upgrade suite, see run-upgrade-baseline.sh), which installs an older version,
+    # configures it, and upgrades it to this channel's head in the Snapshot's catalog --
+    # the release candidate. It then removes its own fixture, and the operator suites run
+    # against the upgraded installation.
+    #
+    # One upgrade path, from 1.20.8, within the channel: the previous z-stream.
+    # The other is gitops-catalog-release-1-20-upgrade-from-1-19-ocp422.
+    # Both were one four-leg scenario until 2026-10-23, when the AWS pools were capped at
+    # two clusters: four legs on one pool left two of them waiting out the claim timeout
+    # (see POOL_NAME).
+    # As separate scenarios each path can also be rerun on its own.
+    #
+    # The path is split over two legs, two clusters, each upgrading on its own. One leg
+    # with every suite does not fit: on 2026-10-19 (…-upgrade-ocp422-bj487) both legs
+    # were still in the rollouts suite when the 7h task timeout cut them off, and nothing
+    # was published. A cluster cannot be held longer, 8h is the pool's claimLifetime
+    # maximum. Split, each leg is about 3h30m: claim and baseline about 1h, then
+    # sanity, parallel and rollouts (2h20m) or the two sequential shards (2h10m).
+    #
+    # No Argo CD e2e: it tests its own standalone Argo CD, not the operator, so an
+    # upgrade changes nothing for it.
+    #
+    # Failures here only mean something next to a clean-install run of the same
+    # Snapshot (gitops-catalog-release-1-20-ocp422).
+    - name: LEGS
+      values:
+        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sanity-tests.sh,run-parallel-tests.sh,run-rollouts-tests.sh"
+        - "run-upgrade-baseline.sh:gitops-1.20:1.20.8,run-sequential-tests-shard1.sh,run-sequential-tests-shard2.sh"
+    - name: TEST_REPO_URL
+      value: https://github.com/rh-gitops-release-qa/gitops-operator
+    - name: TEST_REPO_BRANCH
+      value: konflux-integration-1.20
+    - name: OPENSHIFT_VERSION
+      value: "4.22"
+    - name: OPERATOR_CHANNEL
+      value: gitops-1.20
+    - name: GATE_LABEL
+      value: "channel-1.20|release-1.20"
+    # aws-422: OpenShift 4.22, standard (not FIPS), on AWS -- the newest OpenShift version
+    # in the release test plan (pools/aws-422 in hive-ops: gcp-422's configuration on
+    # AWS, moved there on 2026-10-21 when the GCP budget was nearly spent). It keeps no
+    # cluster waiting, so each leg's claim gets a cluster installed for it, about 45-50m,
+    # inside the 75m claim wait. Its maxSize is 2, for the us-east-2
+    # networking quota: this scenario's two legs and nothing else. The clean-install
+    # scenario and the other upgrade path claim from the same pool and fire on the same
+    # Snapshot, and whichever legs Hive does not grant time out on the 75m claim wait.
+    # Run them one at a time, labelling the Snapshot for the next when the last finishes.
+    - name: POOL_NAME
+      value: aws-422
+    - name: POOL_NAMESPACE
+      value: hive-pool-aws-422
+    # The hub credential is per pool: each pool has its own konflux-pool-claimer
+    # ServiceAccount, scoped to its own namespace, so one shared secret cannot claim
+    # from more than one. Must match POOL_NAME above.
+    - name: HIVE_HUB_SECRET
+      value: hive-hub-kubeconfig-aws-422
+    # The backstop if a leg dies without releasing its cluster. Far longer than either
+    # leg should need; 8h is the pool ceiling.
+    - name: CLAIM_LIFETIME
+      value: "8h"
+  resolverRef:
+    resolver: git
+    resourceKind: pipeline
+    params:
+      - name: url
+        value: https://github.com/rh-gitops-midstream/catalog
+      - name: revision
+        value: main
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/catalog-gitops-z-stream.yaml
