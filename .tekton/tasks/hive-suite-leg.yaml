@@ -173,15 +173,16 @@ spec:
               namespace: ${POOL_NAMESPACE}
         EOF
 
-        # 75 minutes: longer than one install, on purpose. A claim that finds no ready
+        # 100 minutes: longer than two installs, on purpose. A claim that finds no ready
         # cluster is not refused -- it stays Pending while the pool installs a cluster for
-        # it, and a full IPI install here is about 45 minutes. At the old 45m a claim that
-        # had to wait for an install timed out just as its cluster arrived. With a pool
-        # that keeps exactly one run's worth of clusters warm, this is what lets a second,
-        # overlapping run wait for the refill instead of failing.
+        # it, and a full IPI install here is about 45 minutes. The pools keep no cluster
+        # waiting, so every claim waits for one. At the old 45m a claim timed out just as
+        # its cluster arrived; at 75m it survived one install but not a failed attempt
+        # (quota, capacity) followed by Hive's retry, about 90m in all. A claim queued
+        # behind another leg on a full pool still times out: it waits for that whole leg.
         if ! oc wait clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" \
-               --for=condition=Pending=False --timeout=75m; then
-          echo "::error::claim not granted within 75m"
+               --for=condition=Pending=False --timeout=100m; then
+          echo "::error::claim not granted within 100m"
           oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" -o yaml || true
           echo "claim" >> /shared/failed
           exit 0

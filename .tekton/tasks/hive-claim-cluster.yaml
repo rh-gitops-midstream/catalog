@@ -48,8 +48,9 @@ spec:
       description: |
         How long to wait for the pool to hand over a cluster. A claim is near-instant if
         a running cluster is free, ~5-10min if one has to resume from hibernation, and
-        up to a full install (~40min) if the pool is empty and has to provision.
-      default: "45m"
+        a full install (~45min) if the pool is empty and has to provision. The pools
+        keep no cluster waiting, so 100m leaves room for a failed install and Hive's retry.
+      default: "100m"
     - name: pipelineRunName
       type: string
   results:

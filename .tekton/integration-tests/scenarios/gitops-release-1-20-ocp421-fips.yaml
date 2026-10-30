@@ -60,10 +60,10 @@ spec:
     # aws-421-fips: OpenShift 4.21 with FIPS on, on AWS -- the FIPS configuration
     # in the release test plan (pools/aws-421-fips in hive-ops: gcp-421-fips's configuration
     # on AWS). It keeps no cluster waiting, so each leg's claim gets a cluster installed for
-    # it, about 45-50m, inside the 75m claim wait. Its maxSize is 2, for the us-east-2
+    # it, about 45-50m, inside the 100m claim wait. Its maxSize is 2, for the us-east-2
     # networking quota: this scenario's two legs and nothing else. The two upgrade-path
     # scenarios claim from the same pool and fire on the same Snapshot, and whichever
-    # legs Hive does not grant time out on the 75m claim wait: run them one at a time.
+    # legs Hive does not grant time out on the 100m claim wait: run them one at a time.
     - name: POOL_NAME
       value: aws-421-fips
     - name: POOL_NAMESPACE

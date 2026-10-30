@@ -71,10 +71,10 @@ spec:
     # in the release test plan (pools/aws-422 in hive-ops: gcp-422's configuration on
     # AWS, moved there on 2026-10-21 when the GCP budget was nearly spent). It keeps no
     # cluster waiting, so each leg's claim gets a cluster installed for it, about 45-50m,
-    # inside the 75m claim wait. Its maxSize is 2, for the us-east-2
+    # inside the 100m claim wait. Its maxSize is 2, for the us-east-2
     # networking quota: this scenario's two legs and nothing else. The clean-install
     # scenario and the other upgrade path claim from the same pool and fire on the same
-    # Snapshot, and whichever legs Hive does not grant time out on the 75m claim wait.
+    # Snapshot, and whichever legs Hive does not grant time out on the 100m claim wait.
     # Run them one at a time, labelling the Snapshot for the next when the last finishes.
     - name: POOL_NAME
       value: aws-422
