@@ -35,10 +35,6 @@ spec:
       value: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/catalog:on-pr-{{revision}}
     - name: image-expires-after
       value: 10d
-    - name: additional-tags
-      value:
-        - v4.21-nightly
-      filter: '"nightly" in labels'
     - name: dockerfile
       value: Dockerfile
     - name: path-context
