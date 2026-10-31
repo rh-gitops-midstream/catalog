@@ -920,7 +920,7 @@ entries:
     replaces: openshift-gitops-operator.v1.22.2
     skipRange: '>=1.22.0 <1.22.3'
   - name: openshift-gitops-operator.v1.23.0
-    replaces: openshift-gitops-operator.v1.22.0
+    replaces: openshift-gitops-operator.v1.22.3
     skipRange: '>=1.0.0 <1.23.0'
   name: latest
   package: openshift-gitops-operator
@@ -1331,7 +1331,7 @@ entries:
   schema: olm.channel
   entries:
   - name: openshift-gitops-operator.v1.23.0
-    replaces: openshift-gitops-operator.v1.22.0
+    replaces: openshift-gitops-operator.v1.22.3
     skipRange: '>=1.0.0 <1.23.0'
 - schema: olm.bundle
   image: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:87df6eac253adea9563f4cf3f2a9c5ac627b683c39719aae260bc49ce87dcbca
