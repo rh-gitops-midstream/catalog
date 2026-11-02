@@ -43,6 +43,7 @@ def update_channel_entries(entries, name, replaces, skip_range):
         version_entry["skipRange"] = skip_range
 
     def upsert(entry_list):
+        entry_list[:] = [e for e in entry_list if e is not None]
         for e in entry_list:
             if e.get("name") == name:
                 e.update(version_entry)
