@@ -76,6 +76,23 @@ def ensure_bundle_image(entries, bundle_image):
     })
 
 
+def is_recommended_version(channel, version):
+    versions = channel.get("versions", [])
+    return bool(versions) and versions[-1] is version
+
+
+def widened_recommended_skip_range(version):
+    """
+    Give the recommended (newest) version of the channel the same wide range
+    so it is a valid upgrade target from any older Y-stream on its own.
+    """
+    name = version.get("name", "")
+    m = re.search(r'v(\d+\.\d+\.\d+)$', name)
+    if not m:
+        return version.get("skipRange", "")
+    return f">=1.0.0 <{m.group(1)}"
+
+
 def process_template(template_path, channel, version, allowed_images, latest_channel):
     template = load_yaml_file(template_path)
     entries = template.setdefault("entries", [])
@@ -84,6 +101,8 @@ def process_template(template_path, channel, version, allowed_images, latest_cha
     name = version.get("name", "")
     replaces = version.get("replaces", "")
     skip_range = version.get("skipRange", "")
+    if is_recommended_version(channel, version):
+        skip_range = widened_recommended_skip_range(version)
     bundle = version.get("bundle", "")
 
     allowed_images.add(bundle)
