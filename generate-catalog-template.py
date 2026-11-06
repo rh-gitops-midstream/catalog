@@ -1,7 +1,7 @@
 from ruamel.yaml import YAML
 from pathlib import Path
 import os
-import sys, re
+import sys
 
 yaml = YAML()
 yaml.preserve_quotes = True
@@ -24,13 +24,13 @@ def write_yaml_file(path, data):
 
 
 def load_catalog_templates(supported_ocp):
-    templates = []
+    templates = {}
     for ocp in supported_ocp:
         path = CATALOG_DIR / ocp / "template.yaml"
         if not path.exists():
             print(f"Missing template for {ocp}")
             sys.exit(1)
-        templates.append(path)
+        templates[ocp] = path
     return templates
 
 
@@ -104,7 +104,9 @@ def process_template(template_path, channel, version, allowed_images, latest_cha
     write_yaml_file(template_path, template)
 
 
-def remove_old_images(template_path, allowed_images):
+def remove_unused_bundle_images_in_template(template_path, allowed_images):
+    """Remove bundle images that are no longer referenced in config.yaml
+    for this OCP version."""
     template = load_yaml_file(template_path)
     entries = template.get("entries", [])
     original_len = len(entries)
@@ -119,7 +121,7 @@ def remove_old_images(template_path, allowed_images):
     ]
 
     if len(entries) < original_len:
-        print(f"Cleaned old bundle images in: {template_path.name}")
+        print(f"Cleaned unused bundle images in: {template_path.parent.name}")
         write_yaml_file(template_path, template)
 
 def latest_y_stream_channel(channels):
@@ -140,21 +142,35 @@ def main():
     supported_ocp = config.get("supportedOCP", [])
     channels = config.get("channels", [])
 
-    template_paths = load_catalog_templates(supported_ocp)
-    allowed_images = set()
+    templates = load_catalog_templates(supported_ocp)
+    allowed_images = {path: set() for path in templates.values()}
 
-    channel_names = []
-    for channel in channels:
-        channel_names.append(channel.get("name", ""))
-    latest_channel_name = latest_y_stream_channel(channel_names)
+    def channel_supported_ocp(channel):
+        # Channels without an explicit supportedOCP list are published
+        # to every catalog version.
+        return channel.get("supportedOCP", supported_ocp)
+
+    def latest_supported_channel(ocp):
+        supported = [
+            c.get("name", "") for c in channels
+            if ocp in channel_supported_ocp(c)
+        ]
+        return latest_y_stream_channel(supported) if supported else None
 
     for channel in channels:
+        channel_ocp = channel_supported_ocp(channel)
         for version in channel.get("versions", []):
-            for template_path in template_paths:
-                process_template(template_path, channel, version, allowed_images, latest_channel_name)
+            for ocp, template_path in templates.items():
+                if ocp not in channel_ocp:
+                    continue
+                process_template(
+                    template_path, channel, version,
+                    allowed_images[template_path],
+                    latest_supported_channel(ocp),
+                )
 
-    for template_path in template_paths:
-        remove_old_images(template_path, allowed_images)
+    for template_path in templates.values():
+        remove_unused_bundle_images_in_template(template_path, allowed_images[template_path])
 
 # TODO: fetch latest catalog from redhat instead of using local templates
 if __name__ == "__main__":
