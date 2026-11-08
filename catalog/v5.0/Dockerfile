@@ -13,3 +13,4 @@ RUN ["/bin/opm", "serve", "/configs", "--cache-dir=/tmp/cache", "--cache-only"]
 # Set DC-specific label for the location of the DC root directory
 # in the image
 LABEL operators.operatorframework.io.index.configs.v1=/configs
+LABEL konflux.additional-tags="v5.0-v1.21.8-5-nightly v5.0-v1.21-nightly v5.0-v1.21.8-nightly"
