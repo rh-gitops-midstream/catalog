@@ -1,7 +1,7 @@
 package: openshift-gitops-operator
-supportedOCP: [v4.14, v4.15, v4.16, v4.17, v4.18, v4.19, v4.20, v4.21, v4.22, v5.0]
 channels:
   - name: gitops-1.20
+    supportedOCP: [v4.14, v4.15, v4.16, v4.17, v4.18, v4.19, v4.20, v4.21, v4.22, v5.0]
     versions:
       - name: openshift-gitops-operator.v1.20.0
         replaces: openshift-gitops-operator.v1.19.2
@@ -56,6 +56,7 @@ channels:
         skipRange: '>=1.20.0 <1.20.12'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:2f78ee9c56960c5ad9563df01c59798b91688696a747a5152d79f9a3839f58ac
   - name: gitops-1.21
+    supportedOCP: [v4.14, v4.15, v4.16, v4.17, v4.18, v4.19, v4.20, v4.21, v4.22, v5.0]
     versions:
       - name: openshift-gitops-operator.v1.21.0
         replaces: openshift-gitops-operator.v1.20.4
@@ -94,6 +95,7 @@ channels:
         skipRange: '>=1.21.0 <1.21.8'
         bundle: quay.io/redhat-user-workloads/rh-openshift-gitops-tenant/gitops-operator-bundle@sha256:b64bb3f2fae9d6d1e77d4f27950250ffb297c3ca3afe02749983581be7fb55bd
   - name: gitops-1.22
+    supportedOCP: [v4.14, v4.15, v4.16, v4.17, v4.18, v4.19, v4.20, v4.21, v4.22, v5.0]
     versions:
       - name: openshift-gitops-operator.v1.22.0
         replaces: openshift-gitops-operator.v1.21.4
