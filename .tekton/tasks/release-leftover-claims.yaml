@@ -57,7 +57,7 @@ spec:
         # A claim its leg already released stays listed, with a deletionTimestamp, until
         # Hive finishes deprovisioning the cluster; that is not a leftover. (oc's JSONPath
         # has no negated filter, hence the second column, read back in plain bash.)
-        if ! claims=$(oc get clusterclaim -n "$POOL_NAMESPACE" \
+        if ! claims=$(oc get clusterclaims.hive.openshift.io -n "$POOL_NAMESPACE" \
                       -l "hive-ops/pipelinerun=$PIPELINE_RUN" \
                       -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.metadata.deletionTimestamp}{"\n"}{end}'); then
           # Say so rather than report "nothing to release" on a failed lookup.
@@ -74,7 +74,7 @@ spec:
         while IFS= read -r claim; do
           [[ -z "$claim" ]] && continue
           echo "releasing leftover claim $claim (its leg did not reach release-cluster)"
-          oc delete clusterclaim "$claim" -n "$POOL_NAMESPACE" --wait=false || \
+          oc delete clusterclaims.hive.openshift.io "$claim" -n "$POOL_NAMESPACE" --wait=false || \
             echo "::warning::could not delete $claim; its lifetime will reclaim the cluster"
         done <<<"$left"
         # Never fail the run from here: a release problem is not a test result, and the

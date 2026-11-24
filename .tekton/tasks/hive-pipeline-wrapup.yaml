@@ -246,18 +246,18 @@ spec:
           exit 0
         fi
 
-        if ! oc get clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" >/dev/null 2>&1; then
+        if ! oc get clusterclaims.hive.openshift.io "$CLAIM_NAME" -n "$POOL_NAMESPACE" >/dev/null 2>&1; then
           echo "claim $CLAIM_NAME already gone — nothing to release"
           exit 0
         fi
 
         echo "releasing claim $CLAIM_NAME (this destroys the cluster)"
-        if oc delete clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" --wait=false; then
+        if oc delete clusterclaims.hive.openshift.io "$CLAIM_NAME" -n "$POOL_NAMESPACE" --wait=false; then
           echo "released; Hive will deprovision and refill the pool"
         else
           echo "WARNING: could not delete claim $CLAIM_NAME." >&2
           echo "         It will be reclaimed when its lifetime expires. Check:" >&2
-          echo "           oc get clusterclaim $CLAIM_NAME -n $POOL_NAMESPACE -o yaml" >&2
+          echo "           oc get clusterclaims.hive.openshift.io $CLAIM_NAME -n $POOL_NAMESPACE -o yaml" >&2
         fi
 
         oc get clusterpool -n "$POOL_NAMESPACE" -o custom-columns=NAME:.metadata.name,SIZE:.spec.size,READY:.status.ready,STANDBY:.status.standby 2>/dev/null || true

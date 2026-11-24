@@ -180,7 +180,7 @@ spec:
         # its cluster arrived; at 75m it survived one install but not a failed attempt
         # (quota, capacity) followed by Hive's retry, about 90m in all. A claim queued
         # behind another leg on a full pool still times out: it waits for that whole leg.
-        if ! oc wait clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" \
+        if ! oc wait clusterclaims.hive.openshift.io "$CLAIM" -n "$POOL_NAMESPACE" \
                --for=condition=Pending=False --timeout=100m; then
           echo "::error::claim not granted within 100m"
           oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" -o yaml || true
@@ -188,7 +188,7 @@ spec:
           exit 0
         fi
 
-        CLUSTER_NS=$(oc get clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" -o jsonpath='{.spec.namespace}')
+        CLUSTER_NS=$(oc get clusterclaims.hive.openshift.io "$CLAIM" -n "$POOL_NAMESPACE" -o jsonpath='{.spec.namespace}')
         CD=$(oc get clusterdeployment -n "$CLUSTER_NS" -o jsonpath='{.items[0].metadata.name}')
         printf '%s' "$CD" > /shared/cluster-name
 
@@ -603,12 +603,12 @@ spec:
           echo "no claim recorded — nothing to release"
           exit 0
         fi
-        if ! oc get clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" >/dev/null 2>&1; then
+        if ! oc get clusterclaims.hive.openshift.io "$CLAIM" -n "$POOL_NAMESPACE" >/dev/null 2>&1; then
           echo "claim $CLAIM already gone"
           exit 0
         fi
         echo "releasing $CLAIM (destroys the cluster)"
-        oc delete clusterclaim "$CLAIM" -n "$POOL_NAMESPACE" --wait=false \
+        oc delete clusterclaims.hive.openshift.io "$CLAIM" -n "$POOL_NAMESPACE" --wait=false \
           || echo "::warning::release failed; the claim lifetime will reclaim it"
         exit 0
 
