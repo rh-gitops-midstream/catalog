@@ -128,16 +128,16 @@ spec:
         printf '%s' "$CLAIM_NAME" > "$(step.results.claimName.path)"
 
         echo "--- waiting up to $CLAIM_TIMEOUT for the claim to be granted ---"
-        if ! oc wait clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" \
+        if ! oc wait clusterclaims.hive.openshift.io "$CLAIM_NAME" -n "$POOL_NAMESPACE" \
                --for=condition=Pending=False --timeout="$CLAIM_TIMEOUT"; then
           echo "ERROR: claim not granted within $CLAIM_TIMEOUT" >&2
-          oc get clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" -o yaml >&2 || true
+          oc get clusterclaims.hive.openshift.io "$CLAIM_NAME" -n "$POOL_NAMESPACE" -o yaml >&2 || true
           echo "--- pool state ---" >&2
           oc get clusterpool "$POOL_NAME" -n "$POOL_NAMESPACE" -o yaml >&2 || true
           exit 1
         fi
 
-        CLUSTER_NS=$(oc get clusterclaim "$CLAIM_NAME" -n "$POOL_NAMESPACE" -o jsonpath='{.spec.namespace}')
+        CLUSTER_NS=$(oc get clusterclaims.hive.openshift.io "$CLAIM_NAME" -n "$POOL_NAMESPACE" -o jsonpath='{.spec.namespace}')
         printf '%s' "$CLUSTER_NS" > "$(step.results.clusterNamespace.path)"
         echo "granted: cluster namespace $CLUSTER_NS"
 
