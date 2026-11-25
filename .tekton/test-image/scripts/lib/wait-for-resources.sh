@@ -150,8 +150,15 @@ wait_for_operator_pods() {
 # Args:
 #   $1 - subscription_name: Name of the subscription
 #   $2 - namespace: Namespace containing the subscription
-#   $3 - timeout: Timeout duration for CSV wait (default: 25m)
-#   $4 - max_poll_attempts: Max attempts to find CSV name (default: 30)
+#   $3 - timeout: Timeout duration for each wait, "<n>m" or "<n>s" (default: 25m)
+#   $4 - max_poll_attempts: Max attempts to find CSV name, 10s apart (default: as many
+#        as fit in timeout)
+#
+# The CSV name wait used to stop after 30 attempts (5 minutes) whatever the timeout. On a
+# cluster that has only just come up -- a HyperShift hosted cluster is handed over minutes
+# after its control plane is ready -- OLM can take longer than that to resolve and unpack
+# the first bundle: on 2026-11-25 two 1.21.9 legs gave up at 5 minutes while the
+# Subscription was at BundleUnpacking (rc-1-21-9-1-hcp-ocp422-ptq87, …-ocp418-fips-n8wvp).
 #
 # Returns:
 #   0 on success, 1 on failure
@@ -166,7 +173,13 @@ wait_for_csv() {
     local subscription_name=$1
     local namespace=$2
     local timeout=${3:-25m}
-    local max_poll_attempts=${4:-30}
+    local timeout_s
+    case "$timeout" in
+        *m) timeout_s=$(( ${timeout%m} * 60 )) ;;
+        *s) timeout_s=${timeout%s} ;;
+        *)  timeout_s=1500 ;;
+    esac
+    local max_poll_attempts=${4:-$(( timeout_s / 10 ))}
 
     echo "Waiting for ClusterServiceVersion from subscription $subscription_name..."
 
