@@ -12,7 +12,11 @@ set -exo pipefail
 RESULTS_DIR="${RESULTS_DIR:-/tmp/task-logs}"
 mkdir -p "${RESULTS_DIR}"
 
-CACHE_DIR=$(mktemp -d)
+# Fixed paths, not mktemp: go_cache_push stores these directories by their absolute path,
+# and Go keys build-cache entries on each package's directory. Under a fresh mktemp -d
+# every restore landed in the previous run's directory and nothing was ever reused, so
+# each suite compiled from scratch (6-8 min) after downloading an 860 MB cache.
+CACHE_DIR=/tmp/go-cache-operator
 export GOCACHE="${CACHE_DIR}/go-cache"
 export GOMODCACHE="${CACHE_DIR}/go-mod"
 mkdir -p "$GOCACHE" "$GOMODCACHE"

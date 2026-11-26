@@ -111,7 +111,11 @@ trap cleanup EXIT
 
 # --- Resolve commit pins from gitops-operator go.mod ---
 
-ROLLOUTS_TMP_DIR=$(mktemp -d)
+# A fixed path, for the same reason as the Go cache below: Go keys build-cache entries on
+# each package's directory, and these clones are what gets compiled.
+ROLLOUTS_TMP_DIR=/tmp/rollouts-e2e
+rm -rf "$ROLLOUTS_TMP_DIR"
+mkdir -p "$ROLLOUTS_TMP_DIR"
 cd "$ROLLOUTS_TMP_DIR"
 
 TEST_REPO_URL="${TEST_REPO_URL:-https://github.com/redhat-developer/gitops-operator.git}"
@@ -147,8 +151,11 @@ fi
 
 drop_race_flag hack/run-rollouts-manager-e2e-tests.sh
 
-export GOCACHE="${ROLLOUTS_TMP_DIR}/go-cache"
-export GOMODCACHE="${ROLLOUTS_TMP_DIR}/go-mod"
+# Outside ROLLOUTS_TMP_DIR, which is emptied above, and at a fixed path: go_cache_push
+# stores the directories by absolute path, so under a mktemp -d a restore never reached
+# the directories the next run compiled with.
+export GOCACHE=/tmp/go-cache-rollouts/go-cache
+export GOMODCACHE=/tmp/go-cache-rollouts/go-mod
 mkdir -p "$GOCACHE" "$GOMODCACHE"
 
 # shellcheck source=/dev/null
