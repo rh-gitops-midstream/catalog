@@ -71,7 +71,7 @@ spec:
         echo -n "${COMMIT_SHA}" > /workspace/source/COMMIT_SHA
 
     - name: check-cache
-      image: quay.io/skopeo/stable:v1.22.3@sha256:2681eccb8b02c495b013c2669cbf7f41d5c0b0b0e644e7c69bd3ea9bcb20641f
+      image: quay.io/skopeo/stable:v1.25.1@sha256:9ce297b1309340cb31cf4cd7529a638b912da0bbe30894e210dbf9aae9d8a5d5
       volumeMounts:
         - name: source
           mountPath: /workspace/source
